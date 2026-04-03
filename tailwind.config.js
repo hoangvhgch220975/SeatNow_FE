@@ -1,6 +1,68 @@
-/**
- * @file tailwind.config.js
- * @description Cấu hình Tailwind
- */
-
-// Placeholder content for tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        'surface-variant': '#e1e3e4',
+        'surface-container-high': '#e7e8e9',
+        'inverse-surface': '#2e3132',
+        'on-tertiary-container': '#ffe0cd',
+        'on-error': '#ffffff',
+        'surface-container-highest': '#e1e3e4',
+        'outline-variant': '#ccc3d8',
+        'on-secondary-container': '#fffbff',
+        'surface-container-lowest': '#ffffff',
+        'primary-container': '#7c3aed',
+        'on-secondary-fixed-variant': '#581db3',
+        'on-error-container': '#93000a',
+        'tertiary-container': '#a15100',
+        'on-background': '#191c1d',
+        'on-surface-variant': '#4a4455',
+        'error': '#ba1a1a',
+        'on-tertiary': '#ffffff',
+        'on-surface': '#191c1d',
+        'surface-container': '#edeeef',
+        'on-secondary': '#ffffff',
+        'primary-fixed': '#eaddff',
+        'on-primary-container': '#ede0ff',
+        'surface': '#f8f9fa',
+        'outline': '#7b7487',
+        'secondary-container': '#8856e5',
+        'tertiary': '#7d3d00',
+        'tertiary-fixed-dim': '#ffb784',
+        'on-primary-fixed': '#25005a',
+        'on-secondary-fixed': '#250059',
+        'primary-fixed-dim': '#d2bbff',
+        'on-primary-fixed-variant': '#5a00c6',
+        'on-tertiary-fixed': '#301400',
+        'secondary': '#6e3aca',
+        'surface-bright': '#f8f9fa',
+        'primary': '#630ed4',
+        'inverse-primary': '#d2bbff',
+        'surface-tint': '#732ee4',
+        'secondary-fixed': '#ebddff',
+        'surface-dim': '#d9dadb',
+        'tertiary-fixed': '#ffdcc6',
+        'surface-container-low': '#f3f4f5',
+        'error-container': '#ffdad6',
+        'background': '#f8f9fa',
+        'on-primary': '#ffffff',
+        'secondary-fixed-dim': '#d3bbff',
+      },
+      fontFamily: {
+        headline: ["Plus Jakarta Sans", "sans-serif"],
+        body: ["Plus Jakarta Sans", "sans-serif"],
+        label: ["Plus Jakarta Sans", "sans-serif"],
+      },
+      borderRadius: {
+        'lg': '2rem',
+        'xl': '3rem',
+      }
+    },
+  },
+  plugins: [],
+}

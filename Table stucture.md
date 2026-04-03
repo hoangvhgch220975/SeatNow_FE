@@ -198,6 +198,7 @@ Restaurants CK_Restaurants_status CHECK
 Tables PK_Tables PRIMARY KEY
 Tables FK_Tables_restaurant FOREIGN KEY
 Tables CK_Tables_status CHECK
+Tables CK_Tables_location CHECK
 Transactions CK_Transactions_type CHECK
 Transactions CK_Transactions_Amount CHECK
 Transactions CK_Transactions_Currency CHECK
@@ -283,6 +284,7 @@ Wallets UQ_Wallets_UserOnly NONCLUSTERED userId
 - **Wallets.owner**: `(userId IS NOT NULL AND restaurantId IS NULL) OR (userId IS NULL AND restaurantId IS NOT NULL)`
 - **Tables.type**: `'standard'`, `'vip'`, `'outdoor'`
 - **Tables.status**: `'available'`, `'unavailable'`, `'maintenance'`
+- **Tables.location**: `'1st Floor'`, `'2nd Floor'`, `'3rd Floor'`, `'4th Floor'`, `'5th Floor'`, `'Rooftop'`, `'Terrace'`, `'Outdoor'`
 - **Restaurants.priceRange**: `BETWEEN 1 AND 4`
 - **Restaurants.status**: `'pending'`, `'active'`, `'suspended'`
 - **Users.role**: `'CUSTOMER'`, `'RESTAURANT_OWNER'`, `'ADMIN'`

@@ -1,6 +1,22 @@
+import { z } from 'zod';
+
 /**
  * @file schemas.js
- * @description Validate form auth
+ * @description Định nghĩa các Schema validation bằng Zod cho module Auth.
  */
 
-// Placeholder content for schemas.js
+export const loginSchema = z.object({
+  identifier: z.string().min(1, 'Please enter Email or Phone Number'),
+  password: z.string().min(8, 'Password must be at least 8 characters long'),
+});
+
+export const registerSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters long'),
+  email: z.string().email('Invalid email address'),
+  phone: z.string().regex(/^(0|\+84)[0-9]{9,11}$/, 'Invalid phone number (e.g. 0912345678 or +84912345678)'),
+  password: z.string().min(8, 'Password must be at least 8 characters long'),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});

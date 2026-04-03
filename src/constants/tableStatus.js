@@ -1,6 +1,8 @@
 /**
- * @file tableStatus.js
- * @description available/unavailable/maintenance
+ * Trạng thái của bàn trong nhà hàng tại một thời điểm
  */
-
-// Placeholder content for tableStatus.js
+export const TABLE_STATUS = {
+  AVAILABLE: 'available',     // Trống, có thể được gán hoặc đặt
+  UNAVAILABLE: 'unavailable', // Đang được sử dụng / có khách ngồi
+  MAINTENANCE: 'maintenance', // Đang bảo trì, dọn dẹp không thể sử dụng
+};

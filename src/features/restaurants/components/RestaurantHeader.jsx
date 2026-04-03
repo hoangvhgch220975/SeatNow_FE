@@ -1,0 +1,50 @@
+import React, { useState } from 'react';
+
+const RestaurantHeader = ({ onSearch }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    onSearch(searchQuery);
+  };
+
+  return (
+    <header className="pt-4 pb-16 -mt-8 flex flex-col items-center text-center space-y-8">
+      <div className="space-y-4 max-w-3xl">
+        <h1 className="text-6xl font-extrabold tracking-tight text-on-surface font-headline leading-tight">
+          Explore <span className="text-primary italic">Extraordinary</span> Dining
+        </h1>
+        <p className="text-lg text-on-surface-variant font-body">
+          Discover hand-curated gastronomic experiences designed for the discerning palate. From Michelin-starred classics to avant-garde fusion.
+        </p>
+      </div>
+      
+      {/* Elegant Search Bar */}
+      <form onSubmit={handleSearch} className="w-full max-w-4xl mt-8 px-4">
+        <div className="relative group">
+          <div className="absolute inset-0 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+          <div className="relative flex items-center bg-white p-2 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-200/50 focus-within:border-primary/40 focus-within:ring-0 focus-within:outline-none outline-none ring-0 transition-all">
+            <div className="pl-6 pr-4 text-primary">
+              <span className="material-symbols-outlined text-3xl">search</span>
+            </div>
+            <input 
+              className="w-full bg-transparent border-none focus:ring-0 focus:outline-none outline-none text-on-surface text-lg placeholder:text-slate-400" 
+              placeholder="Search by restaurant, cuisine, or mood..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              type="text"
+            />
+            <button 
+              type="submit"
+              className="bg-primary text-white px-10 py-4 rounded-full font-bold text-sm tracking-widest uppercase hover:bg-primary-container transition-all active:scale-95"
+            >
+              Find Restaurant
+            </button>
+          </div>
+        </div>
+      </form>
+    </header>
+  );
+};
+
+export default RestaurantHeader;

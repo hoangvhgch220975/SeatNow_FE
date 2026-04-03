@@ -1,6 +1,8 @@
 /**
- * @file roles.js
- * @description Enum role
+ * Định nghĩa alias roles đơn giản cho việc kiểm tra Router Guard và UI Button 
  */
-
-// Placeholder content for roles.js
+export const ROLES = {
+  CUSTOMER: 'CUSTOMER',
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+};

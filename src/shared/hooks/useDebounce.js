@@ -1,6 +1,21 @@
-/**
- * @file useDebounce.js
- * @description Debounce input/filter/search
- */
+import { useState, useEffect } from 'react';
 
-// Placeholder content for useDebounce.js
+/**
+ * Trì hoãn việc update value sau một khoảng thời gian (delay). 
+ * Hữu ích cho việc giảm API Call khi User gõ Search Input
+ */
+export const useDebounce = (value, delay = 500) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};

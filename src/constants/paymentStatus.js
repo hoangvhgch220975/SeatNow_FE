@@ -1,6 +1,8 @@
 /**
- * @file paymentStatus.js
- * @description pending/completed/failed
+ * Trạng thái giao dịch thanh toán (Thường dùng cho tiền cọc)
  */
-
-// Placeholder content for paymentStatus.js
+export const PAYMENT_STATUS = {
+  PENDING: 'pending',     // Đang chờ thanh toán
+  COMPLETED: 'completed', // Thanh toán thành công qua ví điện tử
+  FAILED: 'failed',       // Thanh toán thất bại hoặc quá hạn
+};
