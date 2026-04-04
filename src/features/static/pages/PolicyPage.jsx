@@ -6,7 +6,7 @@ import React from 'react';
  */
 const PolicyPage = () => {
   return (
-    <main className="-mt-16 min-h-screen">
+    <main className="-mt-10 min-h-screen">
       {/* Hero Section */}
       <section className="relative w-full h-[300px] flex items-center justify-center overflow-hidden bg-surface-container-low mb-20 rounded-3xl">
         <div className="absolute inset-0 z-0 opacity-20">

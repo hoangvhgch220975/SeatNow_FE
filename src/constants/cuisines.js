@@ -8,6 +8,7 @@ export const CUISINES = [
   { value: 'Korean Cuisine', label: 'Korean Cuisine' },
   { value: 'Chinese Cuisine', label: 'Chinese Cuisine' },
   { value: 'Italian Cuisine', label: 'Italian Cuisine' },
+  { value: 'French Cuisine', label: 'French Cuisine' },
   { value: 'European Cuisine', label: 'European Cuisine' },
   { value: 'Thai Cuisine', label: 'Thai Cuisine' },
   { value: 'Hotpot', label: 'Hotpot' },

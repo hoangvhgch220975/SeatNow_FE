@@ -10,8 +10,9 @@ export const useAuthStore = create((set) => ({
   token: storage.getToken() || null,
   isAuthenticated: !!storage.getToken(),
 
-  login: (userData, authToken) => {
+  login: (userData, authToken, refreshToken) => {
     storage.setToken(authToken);
+    if (refreshToken) storage.setRefreshToken(refreshToken);
     storage.setItem('user', userData);
     set({ user: userData, token: authToken, isAuthenticated: true });
   },

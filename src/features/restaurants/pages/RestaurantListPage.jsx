@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+
 import RestaurantHeader from '../components/RestaurantHeader';
 import RestaurantFilters from '../components/RestaurantFilters';
 import RestaurantCard from '../components/RestaurantCard';
-import RestaurantPagination from '../components/RestaurantPagination';
+import Pagination from '../../../shared/ui/Pagination.jsx';
 import { useRestaurants } from '../hooks.js';
 
 /**
@@ -35,32 +36,51 @@ const RestaurantSkeleton = () => (
   </div>
 );
 const RestaurantListPage = () => {
-  // 1. Quản lý State cho bộ lọc (Filters State) - Khôi phục page/limit
+  // 1. Quản lý State cho bộ lọc (Filters State) - Giới hạn 6 nhà hàng/trang
   const [filters, setFilters] = useState({
     cuisine: '',
     priceRange: null,
     sort: 'rating',
     location: '',
     q: '',
-    page: 1,      // Khôi phục Phân trang
-    limit: 10     // Đảm bảo load đủ 4+ nhà hàng
+    page: 1,
+    limit: 6
   });
+
+
 
   // 2. Gọi API thông qua Hook React Query
   const { data, isLoading, isError, error } = useRestaurants(filters);
 
-  // Chuẩn hóa dữ liệu từ Restaurant Service ({ data: restaurants, meta: { total } })
-  const restaurants = Array.isArray(data) ? data : (data?.data || data?.restaurants || []);
-  const meta = data?.meta || {};
-  const totalCount = meta.total || meta.totalCount || restaurants.length;
-  const totalPages = Math.ceil(totalCount / filters.limit) || 1;
+  // Chuẩn hóa danh sách nhà hàng
+  const restaurants = useMemo(() => {
+    return data?.data || [];
+  }, [data]);
+  
+  // Tổng số lượng lấy từ metadata của API (Hàng Thật hoặc 0 nếu không tìm thấy)
+  const totalCount = data?.total || 0;
+
+  // LOGIC LAI (HYBRID): 
+  // 1. Ưu tiên dùng 'total' thật nếu có.
+  // 2. Nếu không có 'total', dùng logic "phỏng đoán" để không mất phân trang.
+  const totalPages = useMemo(() => {
+    if (totalCount > 0) return Math.ceil(totalCount / filters.limit);
+    return data?.hasMore ? filters.page + 1 : filters.page;
+  }, [totalCount, filters.limit, filters.page, data?.hasMore]);
+
+
+
+
+
+
+
 
   // 3. Xử lý logic thay đổi bộ lọc & phân trang
   const handleFilterChange = (newFilters) => {
     setFilters((prev) => ({
       ...prev,
       ...newFilters,
-      page: 1 // Reset về trang 1 khi lọc mới để tránh lệch offset
+      page: 1 // Reset về trang 1 khi đổi bộ lọc
     }));
   };
 
@@ -80,6 +100,7 @@ const RestaurantListPage = () => {
           <RestaurantFilters 
             currentFilters={filters} 
             onChange={handleFilterChange} 
+            onClearAll={() => setFilters({ sort: 'rating', q: '', cuisine: '', priceRange: null, page: 1, limit: 6 })}
           />
         </aside>
 
@@ -138,8 +159,8 @@ const RestaurantListPage = () => {
                 ))}
               </div>
               
-              {/* Thanh Phân trang - Khôi phục logic limit/offset */}
-              <RestaurantPagination 
+              {/* Thanh Phân trang - Premium Pagination */}
+              <Pagination 
                 currentPage={filters.page} 
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
@@ -156,7 +177,7 @@ const RestaurantListPage = () => {
                 <br/>Try searching with fewer criteria.
               </p>
               <button 
-                onClick={() => setFilters({ sort: 'rating', q: '', cuisine: '', priceRange: null, page: 1, limit: 10 })}
+                onClick={() => setFilters({ sort: 'rating', q: '', cuisine: '', priceRange: null, page: 1, limit: 6 })}
                 className="mt-10 px-12 py-4 bg-primary text-white font-bold rounded-full hover:bg-primary-container transition-all transform active:scale-95 shadow-xl shadow-primary/20 tracking-widest uppercase text-xs"
               >
                 Clear All Filters

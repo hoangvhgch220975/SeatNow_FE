@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import RatingSummary from './RatingSummary';
 import ReviewList from './ReviewList';
-import RestaurantPagination from '../../restaurants/components/RestaurantPagination';
+import Pagination from '../../../shared/ui/Pagination.jsx';
 import { useRestaurantReviews, useRestaurantReviewSummary } from '../hooks.js';
 
 /**
@@ -19,14 +19,15 @@ const ReviewSection = ({ restaurantId, baseRestaurant }) => {
   const { data: summaryData, isLoading: summaryLoading } = useRestaurantReviewSummary(restaurantId);
   const { data: reviewsData, isLoading: reviewsLoading } = useRestaurantReviews(restaurantId, reviewPage, REVIEW_LIMIT);
 
-  // 2. Chuẩn hóa dữ liệu từ API (Body có thể chứa trường 'data' hoặc không)
+  // 2. Chuẩn hóa dữ liệu từ API (Body mới { data, total, meta })
   const summary = summaryData?.data || summaryData || {};
-  const reviews = Array.isArray(reviewsData?.data) ? reviewsData.data : (Array.isArray(reviewsData) ? reviewsData : []);
+  const reviews = reviewsData?.data || (Array.isArray(reviewsData) ? reviewsData : []);
   
-  // 3. Ưu tiên lấy rating & total từ summary API, fallback về dữ liệu cơ bản từ nhà hàng
+  // 3. Ưu tiên lấy total từ reviewsData.total (chính xác theo phân trang), fallback summary/base
+  const totalReviews = reviewsData?.total || summary?.totalReviews || baseRestaurant?.reviewCount || 0;
   const rating = summary?.averageRating || baseRestaurant?.rating || 0;
-  const totalReviews = summary?.totalReviews || baseRestaurant?.reviewCount || 0;
   const totalPages = Math.ceil(totalReviews / REVIEW_LIMIT) || 1;
+
 
   const handlePageChange = (newPage) => {
     setReviewPage(newPage);
@@ -50,17 +51,14 @@ const ReviewSection = ({ restaurantId, baseRestaurant }) => {
       />
 
       {/* Thanh phân trang (Chỉ hiện khi có trên 3 bản ghi) */}
-      {totalPages > 1 && (
-        <div className="pt-8">
-          <RestaurantPagination 
-            currentPage={reviewPage} 
-            totalPages={totalPages} 
-            onPageChange={handlePageChange} 
-          />
-        </div>
-      )}
+      <Pagination 
+        currentPage={reviewPage} 
+        totalPages={totalPages} 
+        onPageChange={handlePageChange} 
+      />
     </div>
   );
 };
 
 export default ReviewSection;
+

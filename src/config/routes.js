@@ -8,6 +8,7 @@ export const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   REGISTER_OWNER: '/register-owner',
+  OWNER_JOIN: '/owner/join',
   VERIFY_OTP: '/verify-otp',
   FORGOT_PASSWORD: '/forgot-password',
   
@@ -16,7 +17,6 @@ export const ROUTES = {
   RESTAURANT_LIST: '/restaurants',
   RESTAURANT_DETAIL: (idOrSlug) => `/restaurants/${idOrSlug}`,
   RESTAURANT_MENU: (idOrSlug) => `/restaurants/${idOrSlug}/menu`,
-  NEAR_ME: '/near-me',
   TRACK_BOOKING: '/track-booking',
   POLICIES: '/policies',
   CONTACT: '/contact',

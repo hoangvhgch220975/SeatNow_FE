@@ -12,7 +12,7 @@ const TrackBookingPage = () => {
   const [bookingData, setBookingData] = useState(null);
 
   return (
-    <main className="max-w-4xl mx-auto px-6 -mt-8 pb-16 min-h-screen w-full">
+    <main className="max-w-4xl mx-auto px-6 pb-16 min-h-screen w-full">
       
       {/* Hero Header */}
       <header className="text-center mb-16">

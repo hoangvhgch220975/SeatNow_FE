@@ -3,8 +3,13 @@
  */
 export const storage = {
   getToken: () => localStorage.getItem('access_token'),
-  setToken: (token) => localStorage.setItem('access_token', token),
-  clearToken: () => localStorage.removeItem('access_token'),
+  setToken: (token) => storage.setItem('access_token', token),
+  getRefreshToken: () => localStorage.getItem('refresh_token'),
+  setRefreshToken: (token) => storage.setItem('refresh_token', token),
+  clearToken: () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+  },
   
   getItem: (key) => {
     try {

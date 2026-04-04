@@ -12,6 +12,63 @@ import { parseApiError, parseApiSuccess } from '../../shared/utils/parseApiError
  * @description Hook quản lý logic xác thực, tích hợp React Query.
  */
 
+/**
+ * @description Tìm kiếm Token và User một cách linh hoạt trong dữ liệu trả về của API.
+ * Hỗ trợ bóc tách từ lớp ngoài hoặc lớp data lồng nhau.
+ */
+const extractTokenAndUser = (response) => {
+  const root = response.data || response;
+  
+  // Danh sách các trường có thể chứa token (bao gồm cả lồng nhau)
+  const tokenCandidates = [
+    root.accessToken, root.token, root.access_token,
+    root.data?.accessToken, root.data?.token, root.data?.access_token,
+    root.userData?.token, root.userData?.accessToken
+  ];
+  
+  let rawToken = tokenCandidates.find(t => !!t);
+
+  // NẾU TOKEN LÀ OBJECT HOẶC JSON STRING: Bóc tiếp lớp bên trong
+  const unwrap = (val) => {
+    if (!val) return val;
+    if (typeof val === 'object') {
+        return val.token || val.accessToken || val.access_token || JSON.stringify(val);
+    }
+    if (typeof val === 'string' && val.trim().startsWith('{')) {
+        try {
+            const p = JSON.parse(val);
+            return p.token || p.accessToken || p.access_token || p.refreshToken || p.refresh_token || val;
+        } catch(e) { return val; }
+    }
+    return val;
+  };
+
+  rawToken = unwrap(rawToken);
+
+  // CHUẨN HÓA: Cắt bỏ "Bearer " nếu có
+  if (typeof rawToken === 'string') {
+    rawToken = rawToken.replace(/^Bearer\s+/i, '').trim();
+  }
+  
+  // User extraction
+  const userCandidates = [
+    root.user, root.data?.user, root.profile, root.data?.profile, root.userData?.user
+  ];
+
+  // Refresh token extraction
+  const refreshCandidates = [
+    root.refreshToken, root.refresh_token, root.data?.refreshToken, root.data?.refresh_token
+  ];
+
+  let rawRefreshToken = unwrap(refreshCandidates.find(r => !!r));
+
+  return {
+    user: userCandidates.find(u => !!u) || root,
+    token: typeof rawToken === 'string' ? rawToken : null,
+    refreshToken: typeof rawRefreshToken === 'string' ? rawRefreshToken : null
+  };
+};
+
 // ============================================================
 // ĐĂNG NHẬP
 // ============================================================
@@ -22,14 +79,17 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: (credentials) => authApi.login(credentials),
     onSuccess: (response) => {
-      const { user, accessToken } = response.data || response;
-      setAuth(user, accessToken);
+      const { user, token, refreshToken } = extractTokenAndUser(response);
+      
+      if (token) {
+        setAuth(user, token, refreshToken);
+      }
       
       // Delay 1.5s trước khi thông báo và chuyển trang
       setTimeout(() => {
         const displayName = user?.fullName || user?.name || 'User';
         toast.success(response.message || `Welcome back, ${displayName}!`, { duration: 1000 });
-        navigate('/customer/dashboard');
+        navigate('/');
       }, 1500);
     },
     onError: (error) => {
@@ -50,13 +110,16 @@ export const useGoogleLoginMutation = () => {
   const mutation = useMutation({
     mutationFn: (idToken) => authApi.googleSignIn(idToken),
     onSuccess: (response) => {
-      const { user, accessToken } = response.data || response;
-      setAuth(user, accessToken);
+      const { user, token, refreshToken } = extractTokenAndUser(response);
+      
+      if (token) {
+        setAuth(user, token, refreshToken);
+      }
       
       setTimeout(() => {
         const displayName = user?.fullName || user?.name || 'User';
         toast.success(response.message || `Welcome, ${displayName}!`, { duration: 1000 });
-        navigate('/customer/dashboard');
+        navigate('/');
       }, 1500);
     },
     onError: (error) => {
@@ -109,11 +172,6 @@ export const useHandleGoogleRedirect = () => {
 // ============================================================
 // ĐĂNG KÝ - BƯỚC 1: GỬI FORM & KÍCH HOẠT OTP
 // ============================================================
-/**
- * Hook gửi thông tin đăng ký và yêu cầu OTP từ Backend.
- * Khi thành công: Backend đã ghi dữ liệu tạm và gửi OTP qua Firebase.
- * Callback onSuccess nhận về { email, phone } để truyền cho bước verify.
- */
 export const useRegisterMutation = () => {
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.login);
@@ -122,15 +180,15 @@ export const useRegisterMutation = () => {
     mutationFn: (formData) => authApi.register(formData),
     onSuccess: (response) => {
       // Backend trả về token + user sau khi đăng ký thành công kèm OTP
-      const { user, accessToken } = response.data || response;
+      const { user, token, refreshToken } = extractTokenAndUser(response);
       
-      if (user && accessToken) {
-        setAuth(user, accessToken);
+      if (user && token) {
+        setAuth(user, token, refreshToken);
         
         setTimeout(() => {
           const displayName = user?.fullName || user?.name || 'User';
           toast.success(`🎉 Welcome ${displayName}! Your account has been created successfully.`, { duration: 1000 });
-          navigate('/customer/dashboard');
+          navigate('/');
         }, 1500);
       } else {
         setTimeout(() => {
@@ -155,10 +213,6 @@ export const useRegisterMutation = () => {
 // ============================================================
 // ĐĂNG KÝ - BƯỚC 2: XÁC THỰC OTP
 // ============================================================
-/**
- * Hook xác thực mã OTP sau khi đăng ký.
- * Khi OTP hợp lệ: Backend tạo tài khoản chính thức và trả về token.
- */
 export const useVerifyOtpMutation = () => {
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.login);
@@ -167,17 +221,17 @@ export const useVerifyOtpMutation = () => {
     mutationFn: (payload) => authApi.verifyOtp(payload),
     onSuccess: (response) => {
       // Backend trả về token + user sau khi tạo tài khoản thành công
-      const { user, accessToken } = response.data || response;
+      const { user, token, refreshToken } = extractTokenAndUser(response);
 
-      if (user && accessToken) {
+      if (user && token) {
         // Nếu BE trả về token ngay sau verify -> tự động đăng nhập
-        setAuth(user, accessToken);
+        setAuth(user, token, refreshToken);
         
         // Delay 1.5s trước khi thông báo và chuyển trang
         setTimeout(() => {
           const displayName = user?.fullName || user?.name || 'User';
           toast.success(`🎉 Welcome ${displayName}! Your account has been created successfully.`, { duration: 1000 });
-          navigate('/customer/dashboard');
+          navigate('/');
         }, 1500);
       } else {
         // Nếu BE chỉ verify và chưa trả token -> thông báo và chuyển tới login
@@ -213,10 +267,6 @@ export const useSendOtpMutation = () => {
 // ============================================================
 // QUÊN MẬT KHẨU - BƯỚC 1: GỬI YÊU CẦU OTP
 // ============================================================
-/**
- * Gửi OTP về email liên kết với số điện thoại.
- * onSuccess callback nhận về response để trang có thể chuyển bước.
- */
 export const useForgotPasswordRequestMutation = () => {
   return useMutation({
     mutationFn: (payload) => authApi.forgotPasswordRequest(payload),
@@ -234,10 +284,6 @@ export const useForgotPasswordRequestMutation = () => {
 // ============================================================
 // QUÊN MẬT KHẨU - BƯỚC 2: XÁC THỰC OTP & ĐẶT LẠI MẬT KHẨU
 // ============================================================
-/**
- * Xác thực OTP và kích hoạt tạo mật khẩu mới.
- * Sau khi thành công, chuyển hướng người dùng về trang đăng nhập.
- */
 export const useForgotPasswordResetMutation = () => {
   const navigate = useNavigate();
 

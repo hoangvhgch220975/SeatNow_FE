@@ -12,21 +12,27 @@ import { apiClient } from '../../lib/axios.js';
 export const getRestaurants = async (params = {}) => {
   const { page = 1, limit = 10, ...rest } = params;
 
-  // Restaurant Service yêu cầu offset (vị trí bắt đầu) thay vì page index
+  // Restaurant Service yêu cầu offset (vị trí bắt đầu) thay vị page index
   const offset = (page - 1) * limit;
 
   // Chuẩn bị tham số gửi lên API
   const searchParams = {
-    ...rest,
+    // Kết hợp từ khóa tìm kiếm và địa điểm thành một chuỗi query thông minh
+    q: [rest.q, rest.location].filter(Boolean).join(' ').trim(),
     limit,
     offset,
     sort: rest.sort || 'rating',
+    cuisine: rest.cuisine,
+    priceRange: rest.priceRange,
+    lat: rest.lat,
+    lng: rest.lng,
+    radiusKm: rest.radiusKm
   };
 
-  // Loại bỏ các param null/undefined/empty
+  // Loại bỏ các param null/undefined/empty/location (vì đã chuyển vào q)
   const cleanParams = Object.fromEntries(
     Object.entries(searchParams).filter(([key, v]) => 
-      v != null && v !== '' && key !== 'page' // ⚠️ KHÔNG gửi 'page' trực tiếp lên Restaurant Service
+      v != null && v !== '' && key !== 'page' && key !== 'location'
     )
   );
 
@@ -34,12 +40,29 @@ export const getRestaurants = async (params = {}) => {
     params: cleanParams
   });
 
+
   /**
-   * Theo doc: Restaurant Service trả về { data, meta: { limit, offset } }
-   * Tuy nhiên để dễ dùng cho UI, ta chuẩn hóa hoặc trả về toàn bộ payload.
+   * 🏆 HỆ THỐNG ĐÃ ĐỒNG BỘ 100% (Confirmed via Console Test)
+   * Cấu trúc Backend: { data: [...], total: 8, meta: {...} }
    */
-  return response?.data || response;
+  const items = Array.isArray(response.data) ? response.data : (Array.isArray(response) ? response : []);
+  const total = response.total || response.totalCount || items.length;
+
+  return { 
+    data: items, 
+    total: total,
+    meta: response.meta || {}
+  };
 };
+
+
+
+
+
+
+
+
+
 
 /**
  * Lấy chi tiết 1 nhà hàng

@@ -28,7 +28,7 @@ seatnow-fe/
 │ │ │ ├─ Tabs.jsx // Tabs chuyển nội dung
 │ │ │ ├─ Table.jsx // Table UI dùng lại
 │ │ │ ├─ EmptyState.jsx // Trạng thái không có dữ liệu
-│ │ │ ├─ LoadingSpinner.jsx // Loading spinner/skeleton đơn giản
+│ │ │ ├─ LoadingSpinner.jsx // Màn hình loading toàn trang cao cấp
 │ │ │ ├─ ConfirmDialog.jsx // Hộp xác nhận xóa/duyệt/hủy
 │ │ │ ├─ Pagination.jsx // Phân trang dùng chung
 │ │ │ ├─ StatusChip.jsx // Chip màu cho status booking/payment/user
@@ -37,7 +37,8 @@ seatnow-fe/
 │ │ ├─ layout/ // Layout và khung trang
 │ │ │ ├─ MainLayout.jsx // Layout mặc định cho trang public
 │ │ │ ├─ AuthLayout.jsx // Layout cho login/register/otp
-│ │ │ ├─ CustomerLayout.jsx // Layout cho user đã đăng nhập
+│ │ │ ├─ CustomerLayout.jsx // Layout cho user đã đăng 
+│ │ │ ├─ CustomerNavbar.jsx // Thanh điều hướng đầu trang cho user đã đăng nhập
 │ │ │ ├─ OwnerMainLayout.jsx // Layout cấp tài khoản owner (portal)
 │ │ │ ├─ RestaurantWorkspaceLayout.jsx // Layout khi owner vào 1 nhà hàng cụ thể
 │ │ │ ├─ AdminLayout.jsx // Layout dashboard admin
@@ -55,7 +56,7 @@ seatnow-fe/
 │ │ │
 │ │ ├─ feedback/
 │ │ │ ├─ ErrorBoundary.jsx // Bắt lỗi runtime ở component tree
-│ │ │ ├─ ErrorState.jsx // UI hiển thị khi request lỗi
+│ │ │ ├─ ErrorState.jsx // UI hiển thị lỗi phong cách Glassmorphism
 │ │ │ ├─ SuccessState.jsx // UI hiển thị khi thao tác thành công
 │ │ │ └─ NoPermission.jsx // UI khi không có quyền truy cập
 │ │ │
@@ -68,6 +69,8 @@ seatnow-fe/
 │ │ │
 │ │ ├─ components/
 │ │ │ └─ ScrollToTop.jsx // Tự động cuộn lên đầu trang khi điều hướng
+│ │ │ └─ Pagination.jsx // Phân trang
+│ │ │ └─ AIFloatingButton.jsx // Nút AI nổi
 │ │ │
 │ │ └─ utils/
 │ │ ├─ formatCurrency.js // Format tiền tệ
@@ -118,24 +121,27 @@ seatnow-fe/
 │ │ │ │ ├─ LoginPage.jsx // Trang đăng nhập
 │ │ │ │ ├─ RegisterPage.jsx // Trang đăng ký tài khoản khách hàng
 │ │ │ │ ├─ ForgotPasswordPage.jsx // Trang quên mật khẩu 2 bước: nhập Phone → OTP → nhận mật khẩu mới qua Email
+│ │ │ │ ├─ OwnerJoinPage.jsx // Trang placeholder "Join with us" cho chủ nhà hàng
 │ │ │ │ └─ VerifyOtpPage.jsx // Trang xác thực OTP (đăng ký) - chưa triển khai
 │ │ │ └─ components/
 │ │ │ ├─ LoginForm.jsx // Form đăng nhập với validation Zod
 │ │ │ ├─ RegisterForm.jsx // Form đăng ký với validation Zod
 │ │ │ └─ OtpForm.jsx // Form nhập OTP (đăng ký)
 │ │ │
-│ │ ├─ dashboard/
-│ │ │ └─ pages/
-│ │ │ └─ CustomerDashboard.jsx // Trang Dashboard tạm thời cho khách hàng
-│ │ │
 │ │ ├─ profile/
 │ │ │ ├─ api.js // API profile user
 │ │ │ ├─ hooks.js // Hook lấy/cập nhật profile
 │ │ │ ├─ pages/
-│ │ │ │ └─ ProfilePage.jsx // Trang hồ sơ cá nhân
+│ │ │ │ └─ ProfilePage.jsx // Trang hồ sơ cá nhân (Bento Layout)
 │ │ │ └─ components/
-│ │ │ ├─ ProfileForm.jsx // Form cập nhật tên/sđt/email...
-│ │ │ └─ AvatarUploader.jsx // Upload/chọn avatar
+│ │ │   ├─ ProfileSidebar.jsx // Sidebar điều hướng (New)
+│ │ │   ├─ ProfileHero.jsx // Thẻ Hero định danh (New)
+│ │ │   ├─ LoyaltyCard.jsx // Thẻ tích điểm màu Gold (New)
+│ │ │   ├─ InfoSummary.jsx // Tổng hợp thông tin định danh (New)
+│ │ │   ├─ InfoCard.jsx // Thẻ thông tin con (New)
+│ │ │   ├─ RecentOrders.jsx // Danh sách đơn hàng gần nhất (Real Data) - (New)
+│ │ │   ├─ ProfileForm.jsx // Form cập nhật tên/sđt/email...
+│ │ │   └─ AvatarUploader.jsx // Upload/chọn avatar
 │ │ │
 │ │ ├─ restaurants/
 │ │ │ ├─ api.js // API list/detail/availability/menu (Kết nối qua Gateway :7000)
@@ -144,12 +150,10 @@ seatnow-fe/
 │ │ │ │ ├─ RestaurantListPage.jsx // Trang khám phá nhà hàng (Real-time Filtering)
 │ │ │ │ ├─ RestaurantDetailPage.jsx // Trang chi tiết: ưu tiên data MongoDB (summary) cho rating
 │ │ │ │ ├─ RestaurantMenuPage.jsx // Trang thực đơn đầy đủ
-│ │ │ │ └─ NearMePage.jsx // Trang nhà hàng gần tôi (Geolocation)
 │ │ │ └─ components/
 │ │ │ ├─ RestaurantCard.jsx // Card dùng trong danh sách (RestaurantListPage)
 │ │ │ ├─ RestaurantFilters.jsx // Bộ lọc: Location, Cuisine, Price, Rating
 │ │ │ ├─ RestaurantHeader.jsx // Header tích hợp thanh Search keyword
-│ │ │ ├─ RestaurantPagination.jsx // Điều hướng phân trang động
 │ │ │ ├─ RestaurantHero.jsx // Header chi tiết nhà hàng (Detail)
 │ │ │ ├─ RestaurantGallery.jsx // Gallery ảnh nhà hàng (Detail)
 │ │ │ ├─ RestaurantInfo.jsx // Thông tin mô tả/tiện ích/địa chỉ (Detail)
@@ -175,6 +179,9 @@ seatnow-fe/
 │ │ │ ├─ DepositSummary.jsx // Tóm tắt tiền cọc
 │ │ │ ├─ BookingQRCode.jsx // Hiển thị QR check-in
 │ │ │ ├─ BookingStatusBadge.jsx // Badge trạng thái booking
+│ │ │ ├─ BookingCard.jsx // Thẻ hiển thị một đơn đặt bàn (New)
+│ │ │ ├─ BookingFilter.jsx // Bộ lọc tabs: Upcoming, Completed, Canceled (New)
+│ │ │ ├─ BookingEmptyState.jsx // Giao diện khi không có đơn hàng (New)
 │ │ │ └─ CancelBookingDialog.jsx // Xác nhận hủy booking
 │ │ │
 │ │ ├─ reviews/
@@ -319,13 +326,14 @@ seatnow-fe/
 │ │ │ └─ SettlementResultTable.jsx
 │ │ │
 │ │ ├─ ai-assistant/
-│ │ │ ├─ api.js // API hỏi đáp AI
+│ │ │ ├─ api.js // API hỏi đáp AI cho khách vãng lai & customer
+│ │ │ ├─ hooks.js // usePublicAI quản lý luồng chat vãng lai
 │ │ │ ├─ pages/
-│ │ │ │ └─ AIAssistantPage.jsx // Trang trợ lý ảo
+│ │ │ │ └─ AIAssistantPage.jsx // Trang trợ lý ảo thiết kế Premium
 │ │ │ └─ components/
-│ │ │ ├─ ChatBox.jsx // Khung chat chính
-│ │ │ ├─ PromptSuggestions.jsx // Gợi ý câu hỏi nhanh
-│ │ │ └─ MessageBubble.jsx // Bong bóng hội thoại
+│ │ │ ├─ ChatBox.jsx // (Đã tích hợp vào AIAssistantPage)
+│ │ │ ├─ PromptSuggestions.jsx // (Đã tích hợp vào AIAssistantPage)
+│ │ │ └─ MessageBubble.jsx // (Đã tích hợp vào AIAssistantPage)
 │ │ │
 │ │ ├─ map/
 │ │ │ ├─ api.js // API near-me/geocoding nội bộ

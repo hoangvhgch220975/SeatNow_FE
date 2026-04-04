@@ -72,7 +72,7 @@ const ContactPage = () => {
   };
 
   return (
-    <main className="-mt-16 min-h-screen hero-gradient selection:bg-primary/10">
+    <main className="min-h-screen hero-gradient selection:bg-primary/10">
       {/* Hero Header */}
       <section className="max-w-screen-xl mx-auto px-8 mb-20 text-center md:text-left pt-2">
         <h1 className="text-5xl md:text-7xl font-bold text-on-surface mb-6 tracking-tight leading-tight headline uppercase">

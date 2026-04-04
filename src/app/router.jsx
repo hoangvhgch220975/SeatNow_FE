@@ -12,8 +12,12 @@ import ContactPage from '../features/static/pages/ContactPage.jsx';
 import AuthLayout from '../shared/layout/AuthLayout.jsx';
 import LoginPage from '../features/auth/pages/LoginPage.jsx';
 import RegisterPage from '../features/auth/pages/RegisterPage.jsx';
-import CustomerDashboard from '../features/dashboard/pages/CustomerDashboard.jsx';
 import ForgotPasswordPage from '../features/auth/pages/ForgotPasswordPage.jsx';
+import OwnerJoinPage from '../features/auth/pages/OwnerJoinPage.jsx';
+import AIAssistantPage from '../features/ai-assistant/pages/AIAssistantPage.jsx';
+import CustomerLayout from '../shared/layout/CustomerLayout.jsx';
+import ProfilePage from '../features/profile/pages/ProfilePage.jsx';
+import BookingHistoryPage from '../features/booking/pages/BookingHistoryPage.jsx';
 
 /**
  * Cấu trúc Routing Router cấp Root của toàn App 
@@ -48,6 +52,10 @@ export const router = createBrowserRouter([
             element: <RestaurantMenuPage />,
           },
           {
+            path: ROUTES.AI_CHAT,
+            element: <AIAssistantPage />,
+          },
+          {
             path: ROUTES.TRACK_BOOKING,
             element: <TrackBookingPage />,
           },
@@ -60,9 +68,10 @@ export const router = createBrowserRouter([
             element: <ContactPage />,
           },
           {
-            path: ROUTES.CUSTOMER_DASHBOARD,
-            element: <CustomerDashboard />,
+            path: ROUTES.OWNER_JOIN,
+            element: <OwnerJoinPage />,
           },
+          // Đã di chuyển CustomerDashboard xuống CustomerLayout bên dưới
         ],
       },
       {
@@ -86,7 +95,24 @@ export const router = createBrowserRouter([
           },
         ]
       },
-      // { element: <CustomerLayout />, children: [...] } // Layout cho Customer portal sẽ thêm sau
+      {
+        /* 
+          LAYOUT CHO CUSTOMER (LOGGED-IN)
+          Sử dụng Navbar hiện đại từ thiết kế mới
+        */
+        element: <CustomerLayout />,
+        children: [
+          {
+            path: ROUTES.PROFILE,
+            element: <ProfilePage />,
+          },
+          {
+            path: ROUTES.BOOKING_HISTORY,
+            element: <BookingHistoryPage />,
+          },
+          // Có thể thêm các trang như Wallet, Settings ở đây sau này
+        ]
+      },
       // { element: <OwnerLayout />, children: [...] } // Layout cho Owner portal sẽ thêm sau
       // { element: <AdminLayout />, children: [...] } // Layout cho Admin dashboard sẽ thêm sau
     ],

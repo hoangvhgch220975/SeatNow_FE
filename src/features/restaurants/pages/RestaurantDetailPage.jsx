@@ -10,6 +10,8 @@ import AvailabilityPanel from '../components/AvailabilityPanel';
 import ReviewSection from '../../reviews/components/ReviewSection';
 import { useRestaurant, useRestaurantMenu } from '../hooks.js';
 import { useRestaurantReviewSummary } from '../../reviews/hooks.js';
+import LoadingSpinner from '../../../shared/ui/LoadingSpinner';
+import ErrorState from '../../../shared/feedback/ErrorState';
 
 /**
  * Danh sách tiện ích phong phú để chọn ngẫu nhiên (Amenities)
@@ -96,36 +98,14 @@ const RestaurantDetailPage = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-surface">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-slate-500 font-bold animate-pulse">Loading exquisite details...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner message="Curating exquisite details..." />;
   }
 
   if (isError || !restaurant) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface px-8">
-        <div className="max-w-md w-full bg-white p-10 rounded-[2.5rem] shadow-xl border border-slate-100 text-center">
-          <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="material-symbols-outlined text-4xl text-red-500">sentiment_dissatisfied</span>
-          </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Oops! Destination Not Found</h2>
-          <p className="text-slate-500 mb-8">
-            {error?.response?.data?.message || "We couldn't retrieve the details for this restaurant. It might be offline or the link has expired."}
-          </p>
-          <Link 
-            to={ROUTES.RESTAURANT_LIST}
-            className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-full font-bold shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all"
-          >
-            <span className="material-symbols-outlined text-sm">arrow_back</span>
-            Back to Destinations
-          </Link>
-        </div>
-      </div>
+      <ErrorState 
+        message={error?.response?.data?.message || "We couldn't retrieve the details for this restaurant. It might be offline or the link has expired."} 
+      />
     );
   }
 
@@ -142,7 +122,8 @@ const RestaurantDetailPage = () => {
   };
 
   return (
-    <div className="bg-surface pb-20 -mt-20">
+    <div className="bg-surface pb-20 -mt-12">
+
       <RestaurantHero restaurant={uiRestaurant} />
       <RestaurantGallery photos={uiRestaurant.photos} />
 
@@ -151,7 +132,9 @@ const RestaurantDetailPage = () => {
           <RestaurantInfo 
             description={uiRestaurant.description || "Indulge in a premium dining experience where every dish is a masterpiece of flavors and art."} 
             amenities={amenities} 
+            cuisineTypes={restaurant.cuisineTypes || []}
           />
+
           
           {/* Menu Preview - Hiển thị 4 món đầu tiên */}
           <RestaurantMenuPreview 

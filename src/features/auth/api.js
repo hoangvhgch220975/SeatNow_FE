@@ -122,4 +122,12 @@ export const authApi = {
     if (payload.phone) payload.phone = normalizePhone(payload.phone);
     return apiClient.post('/auth/partner-request', payload);
   },
+
+  /**
+   * Làm mới Access Token bằng Refresh Token
+   * @param {string} refreshToken 
+   */
+  refreshToken: async (refreshToken) => {
+    return apiClient.post('/auth/refresh-token', { refreshToken });
+  },
 };

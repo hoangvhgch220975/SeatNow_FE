@@ -7,8 +7,9 @@ import { PRICE_RANGES } from '../../../constants/priceRanges';
  * @description Bộ lọc Sidebar chuyên sâu (5 loại: Destination, Cuisine, Price, Rating, Amenities)
  */
 const RestaurantFilters = ({ currentFilters, onChange }) => {
-  // Lấy danh sách cuisine tiêu biểu từ constants (giới hạn hiển thị 6 cái chính)
-  const mainCuisines = CUISINES.slice(0, 6);
+  // Lấy danh sách cuisine tiêu biểu từ constants (giới hạn hiển thị 7 cái chính)
+  const mainCuisines = CUISINES.slice(0, 7);
+
 
   const handleCuisineChange = (cuisineValue) => {
     // Toggle cuisine: nếu đã chọn thì bỏ chọn, nếu chưa thì chọn mới
@@ -33,11 +34,12 @@ const RestaurantFilters = ({ currentFilters, onChange }) => {
             <option>Da Nang</option>
             <option>Hai Phong</option>
             <option>Can Tho</option>
-            <option>Ha Long Bay (Quang Ninh)</option>
-            <option>Da Lat (Lam Dong)</option>
-            <option>Nha Trang (Khanh Hoa)</option>
+            <option>Quang Ninh</option>
+            <option>Da Lat</option>
+            <option>Nha Trang</option>
             <option>Vung Tau</option>
           </select>
+
           <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
         </div>
       </div>
