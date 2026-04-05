@@ -196,7 +196,6 @@ const CreateBookingPage = () => {
     connectSockets(token);
     
     const onConnect = () => {
-        console.log('🏠 [Socket] Gia nhập room:', restaurantId);
         bookingSocket.emit('joinRestaurant', restaurantId);
     };
 
@@ -211,8 +210,6 @@ const CreateBookingPage = () => {
       const tableId = String(payload.tableId).toLowerCase();
       const storageKey = `${normalizeDate(payload.bookingDate)}_${normalizeTime(payload.bookingTime)}_${tableId}`;
       
-      console.log(`⚡ [Socket Event] Cập nhật Key: ${storageKey} -> ${payload.status}`);
-      
       setRealtimeStatuses(prev => ({
         ...prev,
         [storageKey]: payload.status
@@ -220,7 +217,6 @@ const CreateBookingPage = () => {
     };
 
     const handleAvailabilityChange = (payload) => {
-        console.log('🔄 [Socket Event] availabilityChanged');
         queryClient.invalidateQueries(['booking-restaurants', 'availability', restaurantId]);
     };
 
@@ -228,7 +224,6 @@ const CreateBookingPage = () => {
     bookingSocket.on('availabilityChanged', handleAvailabilityChange);
 
     return () => {
-      console.log('🔌 [Socket] Dọn dẹp kết nối...');
       bookingSocket.off('connect', onConnect);
       bookingSocket.off('tableStatusChanged', handleTableStatusChanged);
       bookingSocket.off('availabilityChanged', handleAvailabilityChange);
@@ -278,8 +273,6 @@ const CreateBookingPage = () => {
     const currentTableId = String(table.id).toLowerCase();
     const selectedId = selectedTable?.id ? String(selectedTable.id).toLowerCase() : null;
 
-    console.log('🎯 [User Action] Chọn bàn:', table.tableNumber, '(ID:', currentTableId, ')');
-
     // Nếu chọn bàn mới hoặc thay đổi lựa chọn
     if (selectedId !== currentTableId) {
         setIsProcessing(true);
@@ -287,7 +280,6 @@ const CreateBookingPage = () => {
             // 1. Nhả bàn cũ (Nếu có) - PHẢI ĐỢI (Await)
             if (selectedTable && lastHoldInfo.current.tableId) {
                 const oldId = String(lastHoldInfo.current.tableId).toLowerCase();
-                console.log('⌛ [Socket] Đang nhả bàn cũ:', oldId);
                 await new Promise((resolve) => {
                     bookingSocket.emit('releaseHold', {
                       restaurantId,
@@ -295,7 +287,6 @@ const CreateBookingPage = () => {
                       bookingDate: lastHoldInfo.current.date,
                       bookingTime: lastHoldInfo.current.time
                     }, (res) => {
-                        console.log('✅ [Socket] Đã nhả bàn cũ thành công');
                         resolve(res);
                     });
                 });
@@ -303,7 +294,6 @@ const CreateBookingPage = () => {
             }
 
             // 2. Giữ bàn mới
-            console.log('🔒 [Socket] Đang gửi lệnh Giữ bàn mới:', currentTableId);
             const payload = {
               restaurantId,
               tableId: table.id,
@@ -313,7 +303,6 @@ const CreateBookingPage = () => {
 
             const response = await new Promise((resolve) => {
               bookingSocket.emit('holdTable', payload, (res) => {
-                console.log('📥 [Socket] Phản hồi giữ bàn:', res);
                 resolve(res);
               });
             });
@@ -334,14 +323,12 @@ const CreateBookingPage = () => {
     } else {
         // 3. Bỏ chọn bàn hiện tại
         setIsProcessing(true);
-        console.log('🔓 [Socket] Đang hủy giữ bàn hiện tại:', currentTableId);
         bookingSocket.emit('releaseHold', {
           restaurantId,
           tableId: table.id,
           bookingDate: lastHoldInfo.current.date,
           bookingTime: lastHoldInfo.current.time
         }, (res) => {
-          console.log('✅ [Socket] Đã hủy giữ bàn xong');
           setSelectedTable(null);
           setRealtimeStatuses(prev => ({ ...prev, [currentTableId]: 'available' }));
           lastHoldInfo.current = { date: null, time: null, tableId: null };
