@@ -1,0 +1,254 @@
+import React, { useState, useMemo } from 'react';
+
+/**
+ * @file TimeSlotPicker.jsx
+ * @description Giao diện Lịch (Monthly Calendar) và khung giờ đặt bàn động (Dynamic 2h Slots).
+ */
+const TimeSlotPicker = ({ 
+  selectedDate, 
+  onSelectDate, 
+  selectedTimeSlot, 
+  onSelectSlot,
+  openingHours // Nhận từ CreateBookingPage
+}) => {
+  // 1. Quản lý tháng đang xem (View Date)
+  const [viewDate, setViewDate] = useState(new Date(selectedDate || new Date()));
+
+  // 2. Logic Lịch (Calendar Logic)
+  const calendarData = useMemo(() => {
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+    
+    // Ngày đầu tiên của tháng
+    const firstDayOfMonth = new Date(year, month, 1);
+    const startDayOfWeek = firstDayOfMonth.getDay(); // 0 (Sun) to 6 (Sat)
+    
+    // Tổng số ngày trong tháng
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    // Mảng các ngày để render
+    const days = [];
+    
+    // Thêm các ô trống của tháng trước
+    for (let i = 0; i < startDayOfWeek; i++) {
+      days.push({ type: 'empty', id: `empty-${i}` });
+    }
+    
+    // Thêm các ngày trong tháng hiện tại
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateObj = new Date(year, month, d);
+      // Định dạng YYYY-MM-DD theo giờ địa phương
+      const fullDateStr = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+      const isPast = dateObj < today;
+      
+      days.push({
+        type: 'day',
+        dayNumber: d,
+        fullDate: fullDateStr,
+        isPast,
+        isToday: dateObj.getTime() === today.getTime()
+      });
+    }
+    
+    return { days, monthName: viewDate.toLocaleString('en-US', { month: 'long' }), year };
+  }, [viewDate]);
+
+  const timeSlots = useMemo(() => {
+    if (!selectedDate || !openingHours) return [];
+    
+    const date = new Date(selectedDate);
+    const dayName = date.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
+    const isWeekend = [0, 6].includes(date.getDay()); // 0: Sun, 6: Sat
+
+    // Hàm tìm kiếm range phù hợp với định dạng dữ liệu đa dạng
+    const getRange = () => {
+      const keys = Object.keys(openingHours);
+      const lowKeys = keys.map(k => ({ original: k, low: k.toLowerCase() }));
+      
+      // 1. Khớp chính xác ngày (Ví dụ: "monday")
+      const exact = lowKeys.find(k => k.low === dayName);
+      if (exact) return openingHours[exact.original];
+
+      // 2. Ưu tiên khớp theo nhóm Weekend/Weekday để tránh nhận nhầm dải gộp
+      if (isWeekend) {
+        // Tìm dải dành cho cuối tuần
+        const weekendRange = lowKeys.find(k => 
+          k.low.includes('weekend') || 
+          k.low.includes('sat-sun') || 
+          (k.low.includes('sat') && k.low.includes('-')) || 
+          (k.low.includes('sun') && k.low.includes('-'))
+        );
+        if (weekendRange) return openingHours[weekendRange.original];
+      } else {
+        // Tìm dải dành cho ngày thường
+        const weekdayRange = lowKeys.find(k => 
+          k.low.includes('weekday') || 
+          k.low.includes('mon-fri') || 
+          k.low.includes('workday') ||
+          k.low.includes(dayName.slice(0, 3)) // Tìm "tue" trong các dải như "mon-wed"
+        );
+        if (weekdayRange) return openingHours[weekdayRange.original];
+      }
+
+      // 3. Khớp dải bao quát toàn bộ (Ví dụ: "Monday-Sunday")
+      const globalRange = lowKeys.find(k => 
+        k.low.includes('mon-sun') || 
+        k.low.includes('monday-sunday') ||
+        k.low.includes('everyday')
+      );
+      if (globalRange) return openingHours[globalRange.original];
+
+      return null;
+    };
+
+    let rawRange = getRange();
+    if (!rawRange || rawRange === 'Closed') return [];
+
+    // Chuẩn hóa: "10:00 - 23:00" -> "10:00-23:00"
+    const range = rawRange.replace(/\s+/g, '');
+
+    // Parse dải giờ
+    try {
+      const [startStr, endStr] = range.split('-');
+      const [startHour, startMin] = startStr.split(':').map(Number);
+      const [endHour, endMin] = endStr.split(':').map(Number);
+
+      const slots = [];
+      let currentHour = startHour;
+
+      // Tạo slot mỗi 2 tiếng
+      while (currentHour <= endHour - 2) {
+        const slotTime = `${String(currentHour).padStart(2, '0')}:00`;
+        const nextTime = `${String(currentHour + 2).padStart(2, '0')}:00`;
+        
+        slots.push({
+          id: slotTime,
+          label: `${slotTime} - ${nextTime}`,
+          status: 'available'
+        });
+        currentHour += 2;
+      }
+
+      return slots;
+    } catch (err) {
+      return [];
+    }
+  }, [selectedDate, openingHours]);
+
+  // Chuyển tháng
+  const changeMonth = (offset) => {
+    setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + offset, 1));
+  };
+
+  return (
+    <div className="flex flex-col xl:flex-row gap-10">
+      
+      {/* CỘT TRÁI: LỊCH (Monthly Calendar) */}
+      <div className="flex-1 space-y-4">
+        <div className="flex items-center justify-between px-2">
+          <label className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60">
+            Select Date
+          </label>
+          <div className="flex gap-2">
+            <button 
+              onClick={() => changeMonth(-1)}
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <span className="material-symbols-outlined text-base">chevron_left</span>
+            </button>
+            <span className="text-sm font-black uppercase tracking-widest text-on-surface">
+              {calendarData.monthName} {calendarData.year}
+            </span>
+            <button 
+              onClick={() => changeMonth(1)}
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <span className="material-symbols-outlined text-base">chevron_right</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Lưới lịch */}
+        <div className="bg-slate-50/50 p-4 rounded-[1.5rem] border border-slate-100">
+          <div className="grid grid-cols-7 gap-1 mb-2">
+            {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+              <div key={`${d}-${i}`} className="text-center text-[9px] font-black text-slate-400 py-2">{d}</div>
+            ))}
+          </div>
+          <div className="grid grid-cols-7 gap-2">
+            {calendarData.days.map((day, idx) => {
+              if (day.type === 'empty') return <div key={day.id} className="aspect-square"></div>;
+              
+              const isSelected = selectedDate === day.fullDate;
+              return (
+                <button
+                  key={day.fullDate}
+                  disabled={day.isPast}
+                  onClick={() => onSelectDate(day.fullDate)}
+                  className={`
+                    aspect-square rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300 relative
+                    ${day.isPast ? 'text-slate-200 cursor-not-allowed' : 'hover:scale-110'}
+                    ${isSelected 
+                      ? 'bg-primary text-white shadow-lg shadow-primary/30 z-10' 
+                      : !day.isPast ? 'bg-white text-on-surface hover:bg-primary/5 hover:text-primary border border-slate-100' : ''}
+                  `}
+                >
+                  {day.dayNumber}
+                  {day.isToday && !isSelected && (
+                    <div className="absolute bottom-1.5 w-1 h-1 bg-primary rounded-full"></div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* CỘT PHẢI: KHUNG GIỜ (Time Slots) */}
+      <div className="w-full xl:w-[320px] space-y-4">
+        <label className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60 px-2 block">
+          Preferred Time Slot
+        </label>
+        
+        <div className="bg-slate-50/50 p-6 rounded-[1.5rem] border border-slate-100 min-h-[300px]">
+          {timeSlots.length > 0 ? (
+            <div className="grid grid-cols-1 gap-3">
+              {timeSlots.map((slot) => {
+                const isSelected = selectedTimeSlot === slot.id;
+                return (
+                  <button
+                    key={slot.id}
+                    onClick={() => onSelectSlot(slot.id)}
+                    className={`
+                      py-4 px-6 rounded-2xl text-center transition-all duration-300 flex items-center justify-between group
+                      ${isSelected 
+                        ? 'bg-primary text-white shadow-xl shadow-primary/20' 
+                        : 'bg-white text-on-surface hover:bg-primary/5 hover:shadow-md border border-slate-100'}
+                    `}
+                  >
+                    <span className="text-xs font-black tracking-widest">{slot.label}</span>
+                    <span className={`material-symbols-outlined text-lg ${isSelected ? 'text-white' : 'text-primary/40 group-hover:text-primary transition-colors'}`}>
+                      {isSelected ? 'check_circle' : 'schedule'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="h-full flex flex-col items-center justify-center py-12 text-center space-y-3 opacity-60">
+              <span className="material-symbols-outlined text-3xl text-slate-300">event_busy</span>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                Restaurant Closed or No Slots available
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TimeSlotPicker;

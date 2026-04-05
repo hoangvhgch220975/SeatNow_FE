@@ -37,7 +37,7 @@ seatnow-fe/
 │ │ ├─ layout/ // Layout và khung trang
 │ │ │ ├─ MainLayout.jsx // Layout mặc định cho trang public
 │ │ │ ├─ AuthLayout.jsx // Layout cho login/register/otp
-│ │ │ ├─ CustomerLayout.jsx // Layout cho user đã đăng 
+│ │ │ ├─ CustomerLayout.jsx // Layout cho user đã đăng
 │ │ │ ├─ CustomerNavbar.jsx // Thanh điều hướng đầu trang cho user đã đăng nhập
 │ │ │ ├─ OwnerMainLayout.jsx // Layout cấp tài khoản owner (portal)
 │ │ │ ├─ RestaurantWorkspaceLayout.jsx // Layout khi owner vào 1 nhà hàng cụ thể
@@ -103,6 +103,7 @@ seatnow-fe/
 │ │
 │ ├─ lib/ // Tầng low-level, dùng chung cho features
 │ │ ├─ axios.js // Axios instance + interceptors + attach token
+│ │ ├─ socket.js // Cấu hình Socket.io tập trung qua Gateway (7000) - (New)
 │ │ ├─ queryClient.js // TanStack Query client
 │ │ ├─ storage.js // localStorage/sessionStorage helpers
 │ │ ├─ cloudinary.js // Hàm low-level upload ảnh trên Cloudinary
@@ -134,14 +135,17 @@ seatnow-fe/
 │ │ │ ├─ pages/
 │ │ │ │ └─ ProfilePage.jsx // Trang hồ sơ cá nhân (Bento Layout)
 │ │ │ └─ components/
-│ │ │   ├─ ProfileSidebar.jsx // Sidebar điều hướng (New)
-│ │ │   ├─ ProfileHero.jsx // Thẻ Hero định danh (New)
-│ │ │   ├─ LoyaltyCard.jsx // Thẻ tích điểm màu Gold (New)
-│ │ │   ├─ InfoSummary.jsx // Tổng hợp thông tin định danh (New)
-│ │ │   ├─ InfoCard.jsx // Thẻ thông tin con (New)
-│ │ │   ├─ RecentOrders.jsx // Danh sách đơn hàng gần nhất (Real Data) - (New)
-│ │ │   ├─ ProfileForm.jsx // Form cập nhật tên/sđt/email...
-│ │ │   └─ AvatarUploader.jsx // Upload/chọn avatar
+│ │ │ ├─ ProfileSidebar.jsx // Sidebar điều hướng (New)
+│ │ │ ├─ ProfileHero.jsx // Thẻ Hero định danh (New)
+│ │ │ ├─ LoyaltyCard.jsx // Thẻ tích điểm màu Gold (New)
+│ │ │ ├─ InfoSummary.jsx // Tổng hợp thông tin định danh (New)
+│ │ │ ├─ InfoCard.jsx // Thẻ thông tin con (New)
+│ │ │ ├─ RecentOrders.jsx // Danh sách đơn hàng gần nhất (Real Data) - (New)
+│ │ │ ├─ SettingsForm.jsx // Thành phần Container quản lý logic cập nhật Profile
+│ │ │ ├─ ProfileForm.jsx // Component UI cho biểu mẫu nhập liệu Profile (New)
+│ │ │ ├─ AvatarUploader.jsx // Component UI cho việc upload/chọn avatar (New)
+│ │ │ ├─ PasswordForm.jsx // Form đổi mật khẩu (New)
+│ │ │ ├─ schemas.js // Schema validation cho Profile (New)
 │ │ │
 │ │ ├─ restaurants/
 │ │ │ ├─ api.js // API list/detail/availability/menu (Kết nối qua Gateway :7000)
@@ -169,19 +173,26 @@ seatnow-fe/
 │ │ │ ├─ store.js // State tạm cho flow đặt bàn nhiều bước
 │ │ │ ├─ schemas.js // Validate form booking
 │ │ │ ├─ pages/
-│ │ │ │ ├─ CreateBookingPage.jsx // Trang đặt bàn
+│ │ │ │ ├─ CreateBookingPage.jsx // Trang đặt bàn (Cinema Style) - (New)
 │ │ │ │ ├─ BookingHistoryPage.jsx // Lịch sử booking user
 │ │ │ │ └─ BookingDetailPage.jsx // Chi tiết booking
 │ │ │ └─ components/
-│ │ │ ├─ BookingForm.jsx // Form chọn ngày/giờ/số khách/yêu cầu
-│ │ │ ├─ TableSelector.jsx // Chọn bàn phù hợp
+│ │ │ ├─ TableSelector.jsx // Chọn bàn kiểu rạp phim (New)
+│ │ │ ├─ FloorFilter.jsx // Bộ lọc tầng/khu vực (New)
+│ │ │ ├─ TimeSlotPicker.jsx // Chọn khung giờ & Ngày (Lịch tháng) - (New)
+│ │ │ ├─ BookingHeader.jsx // Header trang đặt bàn (New)
+│ │ │ ├─ BookingSummary.jsx // Tóm tắt đặt bàn (Sidebar) - (New)
+│ │ │ ├─ BookingForm.jsx // Form nhập thông tin khách hàng (Guest/User) - (New)
+│ │ │ ├─ BookingInfoSection.jsx // Chi tiết Nhà hàng/Khách/Đặt bàn (New)
+│ │ │ ├─ BookingFinancialSummary.jsx // Tóm tắt tiền cọc & ghi chú (New)
+│ │ │ ├─ BookingStatusTimeline.jsx // Thanh tiến trình trạng thái (New)
+│ │ │ ├─ BookingQRCode.jsx // Hiển thị QR check-in (New)
+│ │ │ ├─ BookingStatusBadge.jsx // Badge trạng thái booking
+│ │ │ ├─ BookingCard.jsx // Thẻ hiển thị một đơn đặt bàn
+│ │ │ ├─ BookingFilter.jsx // Bộ lọc tabs: Upcoming, Completed, Canceled
+│ │ │ ├─ BookingEmptyState.jsx // Giao diện khi không có đơn hàng (New)
 │ │ │ ├─ CapacityChecker.jsx // Kiểm tra sức chứa bàn
 │ │ │ ├─ DepositSummary.jsx // Tóm tắt tiền cọc
-│ │ │ ├─ BookingQRCode.jsx // Hiển thị QR check-in
-│ │ │ ├─ BookingStatusBadge.jsx // Badge trạng thái booking
-│ │ │ ├─ BookingCard.jsx // Thẻ hiển thị một đơn đặt bàn (New)
-│ │ │ ├─ BookingFilter.jsx // Bộ lọc tabs: Upcoming, Completed, Canceled (New)
-│ │ │ ├─ BookingEmptyState.jsx // Giao diện khi không có đơn hàng (New)
 │ │ │ └─ CancelBookingDialog.jsx // Xác nhận hủy booking
 │ │ │
 │ │ ├─ reviews/

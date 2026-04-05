@@ -1,10 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '../../../config/routes.js';
 
 /**
  * @file AvailabilityPanel.jsx
  * @description Bảng điều khiển đặt bàn (thường ở cột phải, dạng sticky).
  */
 const AvailabilityPanel = ({ restaurant }) => {
+  const navigate = useNavigate();
+
+  const handleBookNow = () => {
+    // Điều hướng sang trang đặt bàn thực tế (cinema style)
+    navigate(ROUTES.CREATE_BOOKING(restaurant.slug || restaurant.id));
+  };
+
   return (
     <div className="sticky top-28 bg-surface-container-lowest rounded-xl p-10 shadow-lg border border-outline-variant/10 text-center space-y-8">
       <div className="space-y-3">
@@ -16,7 +25,11 @@ const AvailabilityPanel = ({ restaurant }) => {
         </p>
       </div>
 
-      <button className="w-full bg-primary-container text-white py-5 rounded-full font-bold text-lg hover:bg-opacity-90 transition-all shadow-xl shadow-primary/20 active:scale-[0.98]">
+      {/* Nút Đặt bàn chiếm toàn bộ chiều ngang với hiệu ứng đổ bóng và hover nổi bật */}
+      <button 
+        onClick={handleBookNow}
+        className="w-full bg-primary-container text-white py-5 rounded-full font-bold text-lg hover:brightness-110 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/30 transition-all shadow-xl shadow-primary/20 active:scale-[0.98]"
+      >
         Book Now
       </button>
 

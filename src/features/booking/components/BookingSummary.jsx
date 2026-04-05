@@ -1,0 +1,162 @@
+import React from 'react';
+import { toast } from 'react-hot-toast';
+import BookingForm, { isValidEmail, isValidPhone } from './BookingForm';
+import CapacityChecker from './CapacityChecker';
+import DepositSummary, { calculateDepositAmount } from './DepositSummary';
+
+/**
+ * @component BookingSummary
+ * @description Hiển thị sidebar tóm tắt đặt bàn, bao gồm giá cả và thông tin khách.
+ */
+const BookingSummary = ({ 
+  restaurant, 
+  selectedDate, 
+  selectedTimeSlot, 
+  partySize, 
+  onUpdatePartySize,
+  selectedTable,
+  onConfirm,
+  onCancel,
+  isAuthenticated,
+  guestInfo,
+  onGuestInfoChange
+}) => {
+  // Tính toán số tiền cọc (Dùng cho logic nút bấm)
+  const totalDeposit = calculateDepositAmount(restaurant, partySize);
+
+  // Helper: Kiểm tra tính hợp lệ của thông tin khách vãng lai
+  const isFormValid = isAuthenticated || (
+    guestInfo?.guestName?.length >= 2 &&
+    isValidPhone(guestInfo?.guestPhone) &&
+    isValidEmail(guestInfo?.guestEmail)
+  );
+
+  const handlePaymentPlaceholder = () => {
+    toast("Momo/VNPay Integration: Coming soon!", {
+      icon: '💳',
+      style: {
+        borderRadius: '1rem',
+        background: '#333',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: '12px'
+      },
+    });
+  };
+
+  return (
+    <div className="sticky top-32 bg-surface-container-lowest rounded-[1.5rem] p-7 shadow-2xl border border-outline-variant/10">
+      <div className="space-y-6">
+        {/* Tiêu đề */}
+        <div className="flex items-center gap-3 border-b border-outline-variant/10 pb-5">
+          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
+            <span className="material-symbols-outlined text-xl font-filled">restaurant</span>
+          </div>
+          <div>
+            <h3 className="text-lg font-black text-on-surface tracking-tight">Reservation Summary</h3>
+            <p className="text-[9px] font-black uppercase tracking-widest text-primary/60">Secure Booking Process</p>
+          </div>
+        </div>
+
+        {/* Các dòng thông tin */}
+        <div className="space-y-6">
+          <div className="flex justify-between items-center group">
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-slate-400 text-sm">calendar_month</span>
+              <span className="text-on-surface-variant font-bold text-xs uppercase tracking-widest">Date & Time</span>
+            </div>
+            <span className="font-black text-sm text-on-surface">
+              {selectedDate} • {selectedTimeSlot || 'Not Selected'}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center group">
+            <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-slate-400 text-sm">group</span>
+                <span className="text-on-surface-variant font-bold text-xs uppercase tracking-widest">Party Size</span>
+            </div>
+            <div className="flex items-center gap-4 bg-surface-container-low p-1.5 rounded-full">
+              <button 
+                onClick={() => onUpdatePartySize(Math.max(1, partySize - 1))}
+                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm"
+              >
+                <span className="material-symbols-outlined text-sm">remove</span>
+              </button>
+              <span className="font-black text-lg w-4 text-center">{partySize}</span>
+              <button 
+                onClick={() => onUpdatePartySize(partySize + 1)}
+                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm"
+              >
+                <span className="material-symbols-outlined text-sm">add</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center group">
+            <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-slate-400 text-sm">table_bar</span>
+                <span className="text-on-surface-variant font-bold text-xs uppercase tracking-widest">Table Type</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${selectedTable ? 'bg-primary animate-pulse' : 'bg-slate-200'}`}></div>
+              <span className="font-black text-xs text-on-surface">
+                {selectedTable ? `${selectedTable.type?.toUpperCase() || 'STD'} - No. ${selectedTable.tableNumber || selectedTable.number}` : 'No Selection'}
+              </span>
+            </div>
+          </div>
+
+          {/* Kiểm tra sức chứa bàn */}
+          {selectedTable && (
+            <CapacityChecker partySize={partySize} table={selectedTable} />
+          )}
+
+          {/* Tích hợp Form thông tin khách */}
+          {!isAuthenticated && (
+            <BookingForm guestInfo={guestInfo} onGuestInfoChange={onGuestInfoChange} />
+          )}
+
+          {/* Tóm tắt tiền cọc và tài chính */}
+          <DepositSummary restaurant={restaurant} partySize={partySize} />
+        </div>
+
+        {/* Nút hành động */}
+        <div className="space-y-3 pt-2">
+          {totalDeposit > 0 ? (
+            <button 
+              onClick={handlePaymentPlaceholder}
+              disabled={!selectedTable || !selectedTimeSlot || !isFormValid || partySize > selectedTable.capacity}
+              className="w-full bg-primary text-on-primary py-4 rounded-xl font-bold text-sm hover:brightness-110 hover:shadow-xl hover:shadow-primary/20 transition-all scale-100 active:scale-95 disabled:grayscale disabled:opacity-50 group flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-base">payments</span>
+              Proceed to Deposit Payment
+            </button>
+          ) : (
+            <button 
+              onClick={onConfirm}
+              disabled={!selectedTable || !selectedTimeSlot || !isFormValid || partySize > selectedTable.capacity}
+              className="w-full bg-primary text-on-primary py-4 rounded-xl font-bold text-sm hover:brightness-110 hover:shadow-xl hover:shadow-primary/20 transition-all scale-100 active:scale-95 disabled:grayscale disabled:opacity-50 group flex items-center justify-center gap-2"
+            >
+              Confirm Reservation
+              <span className="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </button>
+          )}
+          
+          <button 
+            onClick={onCancel}
+            className="w-full py-3.5 rounded-xl font-black text-rose-500 hover:bg-rose-50 transition-all text-[10px] uppercase tracking-widest border border-transparent hover:border-rose-100"
+          >
+            Cancel & Change Table
+          </button>
+        </div>
+
+        {/* Chú thích bảo mật */}
+        <div className="mt-8 pt-4 border-t border-outline-variant/5 flex items-center gap-2 text-[10px] font-bold text-on-surface-variant/40 justify-center uppercase tracking-tighter">
+          <span className="material-symbols-outlined text-[14px]">lock</span>
+          Secure 256-bit SSL encrypted transaction
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default BookingSummary;

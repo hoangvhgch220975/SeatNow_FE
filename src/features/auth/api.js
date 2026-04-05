@@ -124,6 +124,14 @@ export const authApi = {
   },
 
   /**
+   * Đổi mật khẩu người dùng
+   * @param {Object} data - { oldPassword, newPassword, confirmPassword }
+   */
+  changePassword: async (data) => {
+    return apiClient.put('/auth/change-password', data);
+  },
+
+  /**
    * Làm mới Access Token bằng Refresh Token
    * @param {string} refreshToken 
    */
@@ -131,3 +139,4 @@ export const authApi = {
     return apiClient.post('/auth/refresh-token', { refreshToken });
   },
 };
+

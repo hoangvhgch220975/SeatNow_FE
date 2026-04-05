@@ -38,13 +38,8 @@ const RestaurantHero = ({ restaurant }) => {
             </p>
           </div>
           
-          <div className="flex gap-4">
-            <button className="bg-white text-on-surface px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-surface-container-low transition-all active:scale-95 shadow-lg">
-              <span className="material-symbols-outlined">calendar_today</span>
-              Book Now
-            </button>
-
-          </div>
+          {/* Nút Book Now đã được loại bỏ khỏi Hero để giao diện thoáng hơn, 
+              người dùng sẽ đặt bàn thông qua bảng AvailabilityPanel ở bên phải */}
         </div>
       </div>
     </section>

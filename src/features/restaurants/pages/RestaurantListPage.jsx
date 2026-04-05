@@ -43,14 +43,17 @@ const RestaurantListPage = () => {
     sort: 'rating',
     location: '',
     q: '',
+    radiusKm: 20,
     page: 1,
     limit: 6
   });
 
-
+  const [isLocating, setIsLocating] = useState(false);
 
   // 2. Gọi API thông qua Hook React Query
   const { data, isLoading, isError, error } = useRestaurants(filters);
+
+
 
   // Chuẩn hóa danh sách nhà hàng
   const restaurants = useMemo(() => {
@@ -68,20 +71,92 @@ const RestaurantListPage = () => {
     return data?.hasMore ? filters.page + 1 : filters.page;
   }, [totalCount, filters.limit, filters.page, data?.hasMore]);
 
+  // 3. Xử lý logic lấy tọa độ người dùng cho bộ lọc "Nearest" với cơ chế Dự phòng Đa tầng (Multi-layer Fallback)
+  const requestLocation = () => {
+    return new Promise(async (resolve, reject) => {
+      // Hàm dự phòng lấy vị trí qua nhiều dịch vụ IP khác nhau
+      const fetchLocationByIP = async () => {
+        const apis = [
+          'https://freeipapi.com/api/json',
+          'https://ipapi.co/json/'
+        ];
+        
+        for (const url of apis) {
+          try {
+            const response = await fetch(url);
+            if (!response.ok) continue;
+            const data = await response.json();
+            if (data.latitude && data.longitude) {
+              return { lat: data.latitude, lng: data.longitude };
+            }
+          } catch (err) {
+            // Quietly continue to next fallback
+          }
+
+        }
+        return null;
+      };
+
+      // Vị trí mặc định (Hà Nội) nếu mọi phương thức lấy vị trí tự động đều thất bại
+      const DEFAULT_LOCATION = { lat: 21.0285, lng: 105.8542 };
+
+      if (!navigator.geolocation) {
+        const ipCoords = await fetchLocationByIP();
+        return resolve(ipCoords || DEFAULT_LOCATION);
+      }
+
+      setIsLocating(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setIsLocating(false);
+          resolve({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        async (error) => {
+          const ipCoords = await fetchLocationByIP();
+          setIsLocating(false);
+          
+          if (ipCoords) {
+            resolve(ipCoords);
+          } else {
+            // Dùng vị trí mặc định để người dùng vẫn xài được tính năng
+            resolve(DEFAULT_LOCATION);
+          }
+        },
+
+        { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
+      );
+    });
+  };
 
 
 
 
+  // 4. Xử lý logic thay đổi bộ lọc & phân trang
+  const handleFilterChange = async (newFilters) => {
+    let finalFilters = { ...filters, ...newFilters, page: 1 };
 
+    // Nếu chuyển sang kiểu sắp xếp KHÁC distance, xóa bỏ tọa độ và bán kính để tránh bị lọc "Near Me"
+    if (newFilters.sort && newFilters.sort !== 'distance') {
+      delete finalFilters.lat;
+      delete finalFilters.lng;
+      finalFilters.radiusKm = 20; // Reset radiusKm về 20
+    }
 
+    // Nếu chọn sắp xếp theo khoảng cách mà chưa có tọa độ
+    if (finalFilters.sort === 'distance' && (!finalFilters.lat || !finalFilters.lng)) {
+      try {
+        const coords = await requestLocation();
+        finalFilters = { ...finalFilters, ...coords, radiusKm: 20 };
+      } catch (err) {
+        // Nếu không lấy được vị trí, quay lại sắp xếp theo rating
+        finalFilters.sort = 'rating';
+      }
+    }
 
-  // 3. Xử lý logic thay đổi bộ lọc & phân trang
-  const handleFilterChange = (newFilters) => {
-    setFilters((prev) => ({
-      ...prev,
-      ...newFilters,
-      page: 1 // Reset về trang 1 khi đổi bộ lọc
-    }));
+    setFilters(finalFilters);
   };
 
   const handlePageChange = (page) => {
@@ -100,7 +175,7 @@ const RestaurantListPage = () => {
           <RestaurantFilters 
             currentFilters={filters} 
             onChange={handleFilterChange} 
-            onClearAll={() => setFilters({ sort: 'rating', q: '', cuisine: '', priceRange: null, page: 1, limit: 6 })}
+            onClearAll={() => setFilters({ sort: 'rating', q: '', cuisine: '', priceRange: null, radiusKm: 20, page: 1, limit: 6 })}
           />
         </aside>
 
@@ -111,11 +186,14 @@ const RestaurantListPage = () => {
             <div className="flex-1">
               <h2 className="text-3xl font-bold text-slate-900 headline tracking-tight">Curated Selections</h2>
               <p className="text-slate-500 font-medium mt-1">
-                {isLoading 
-                  ? 'Searching for destinations...' 
-                  : (filters.q || filters.cuisine || filters.priceRange)
-                    ? `Found ${totalCount} exquisite destinations matching your criteria`
-                    : `Discovering ${totalCount} exquisite destinations in Vietnam`}
+                {isLocating 
+                  ? 'Detecting your location...'
+                  : isLoading 
+                    ? 'Searching for destinations...' 
+                    : (filters.q || filters.cuisine || filters.priceRange)
+                      ? `Found ${totalCount} exquisite destinations matching your criteria`
+                      : `Discovering ${totalCount} exquisite destinations in Vietnam`}
+
               </p>
             </div>
             <div className="flex items-center space-x-3 mb-1 shrink-0">
@@ -153,9 +231,17 @@ const RestaurantListPage = () => {
             </div>
           ) : restaurants.length > 0 ? (
             <div className="w-full space-y-12">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
                 {restaurants.map((restaurant) => (
-                  <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+                  <RestaurantCard 
+                    key={restaurant.id} 
+                    restaurant={{
+                      ...restaurant,
+                      // Chỉ cho phép hiển thị khoảng cách nếu đang ở chế độ sắp xếp distance
+                      distanceKm: filters.sort === 'distance' ? restaurant.distanceKm : null
+                    }} 
+                  />
                 ))}
               </div>
               

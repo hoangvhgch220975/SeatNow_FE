@@ -85,7 +85,7 @@ const RestaurantFilters = ({ currentFilters, onChange }) => {
         </div>
       </div>
 
-      {/* 4. Filter Section: Sorting instead of Score Filter */}
+      {/* 4. Filter Section: Sorting */}
       <div className="space-y-4">
         <label className="text-xs font-bold uppercase tracking-widest text-primary">Sort & Ranking</label>
         <div className="space-y-2">
@@ -114,6 +114,8 @@ const RestaurantFilters = ({ currentFilters, onChange }) => {
           ))}
         </div>
       </div>
+
+
     </aside>
   );
 };

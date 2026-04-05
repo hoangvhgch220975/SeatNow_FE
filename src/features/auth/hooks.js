@@ -302,3 +302,18 @@ export const useForgotPasswordResetMutation = () => {
     },
   });
 };
+
+// ============================================================
+// ĐỔI MẬT KHẨU
+// ============================================================
+/**
+ * @hook useChangePasswordMutation
+ * @description Mutation để thực hiện thay đổi mật khẩu của người dùng hiện tại thông qua Auth Service.
+ */
+export const useChangePasswordMutation = () => {
+  return useMutation({
+    mutationFn: (data) => authApi.changePassword(data),
+    // Bạn có thể thêm onSuccess để tự động logout nếu cần thiết
+  });
+};
+

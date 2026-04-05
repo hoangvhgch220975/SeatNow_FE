@@ -1,266 +1,574 @@
 <!DOCTYPE html>
-
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "on-tertiary-fixed": "#301400",
-              "on-tertiary-container": "#ffe0cd",
-              "inverse-on-surface": "#f0f1f2",
-              "error": "#ba1a1a",
-              "surface-variant": "#e1e3e4",
-              "outline-variant": "#ccc3d8",
-              "background": "#f8f9fa",
-              "on-tertiary": "#ffffff",
-              "on-error-container": "#93000a",
-              "tertiary-fixed": "#ffdcc6",
-              "on-primary-container": "#ede0ff",
-              "secondary": "#6e3aca",
-              "primary": "#630ed4",
-              "on-error": "#ffffff",
-              "tertiary-fixed-dim": "#ffb784",
-              "outline": "#7b7487",
-              "tertiary": "#7d3d00",
-              "on-background": "#191c1d",
-              "surface": "#f8f9fa",
-              "primary-fixed": "#eaddff",
-              "surface-dim": "#d9dadb",
-              "on-secondary-fixed": "#250059",
-              "on-primary-fixed": "#25005a",
-              "surface-container": "#edeeef",
-              "surface-tint": "#732ee4",
-              "inverse-primary": "#d2bbff",
-              "surface-container-highest": "#e1e3e4",
-              "secondary-fixed-dim": "#d3bbff",
-              "on-primary": "#ffffff",
-              "on-secondary-fixed-variant": "#581db3",
-              "on-secondary-container": "#fffbff",
-              "inverse-surface": "#2e3132",
-              "surface-bright": "#f8f9fa",
-              "surface-container-low": "#f3f4f5",
-              "secondary-fixed": "#ebddff",
-              "secondary-container": "#8856e5",
-              "surface-container-lowest": "#ffffff",
-              "on-tertiary-fixed-variant": "#713700",
-              "on-surface-variant": "#4a4455",
-              "on-primary-fixed-variant": "#5a00c6",
-              "on-surface": "#191c1d",
-              "tertiary-container": "#a15100",
-              "surface-container-high": "#e7e8e9",
-              "on-secondary": "#ffffff",
-              "primary-fixed-dim": "#d2bbff",
-              "primary-container": "#7c3aed",
-              "error-container": "#ffdad6"
-            },
-            fontFamily: {
-              "headline": ["Plus Jakarta Sans"],
-              "body": ["Plus Jakarta Sans"],
-              "label": ["Plus Jakarta Sans"]
-            },
-            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
-          },
-        },
-      }
-    </script>
-<style>
-      body { font-family: 'Plus Jakarta Sans', sans-serif; }
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-      .ambient-shadow {
-        shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)];
-      }
-    </style>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Socket.IO - Hold/Release Table (Zero-Latency)</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      border-bottom: 3px solid #4CAF50;
+      padding-bottom: 10px;
+    }
+    .section {
+      margin: 20px 0;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 5px;
+      border-left: 4px solid #4CAF50;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 12px 24px;
+      margin: 5px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    button.danger {
+      background: #f44336;
+    }
+    button.danger:hover {
+      background: #da190b;
+    }
+    button.secondary {
+      background: #2196F3;
+    }
+    button.secondary:hover {
+      background: #0b7dda;
+    }
+    .log {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 15px;
+      border-radius: 5px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-top: 20px;
+    }
+    .log-entry {
+      margin: 5px 0;
+      padding: 5px;
+      border-left: 3px solid transparent;
+    }
+    .log-entry.success {
+      border-left-color: #4CAF50;
+      color: #4CAF50;
+    }
+    .log-entry.error {
+      border-left-color: #f44336;
+      color: #f44336;
+    }
+    .log-entry.info {
+      border-left-color: #2196F3;
+      color: #64B5F6;
+    }
+    .log-entry.warning {
+      border-left-color: #ff9800;
+      color: #ffb74d;
+    }
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .status.connected {
+      background: #4CAF50;
+      color: white;
+    }
+    .status.disconnected {
+      background: #f44336;
+      color: white;
+    }
+    .countdown {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff9800;
+      text-align: center;
+      padding: 15px;
+      background: #fff3e0;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+    .table-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .table-box {
+      aspect-ratio: 1/1;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      background: white;
+      position: relative;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .table-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .table-box.available {
+      border-color: #4CAF50;
+      background: #f1f8e9;
+    }
+    .table-box.occupied {
+      border-color: #f44336;
+      background: #ffebee;
+      cursor: not-allowed;
+    }
+    .table-box.held {
+      border-color: #FF9800;
+      background: #FFF3E0;
+      box-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
+    }
+    .table-box .num {
+      font-size: 22px;
+      font-weight: 800;
+      color: #333;
+    }
+    .table-box .cap {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+    .table-box .type-tag {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 9px;
+      text-transform: uppercase;
+      background: #eee;
+      padding: 2px 5px;
+      border-radius: 10px;
+    }
+    .grid-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #eee;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+    .legend-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    .legend-box.available { background: #f1f8e9; border-color: #4CAF50; }
+    .legend-box.held { background: #FFF3E0; border-color: #FF9800; }
+    .legend-box.occupied { background: #ffebee; border-color: #f44336; }
+    .legend-box.my-selection { border: 2px dashed #2196F3; background: #e3f2fd; }
+    .location-tag {
+      font-size: 10px;
+      color: #777;
+      margin-top: 2px;
+      font-style: italic;
+    }
+  </style>
 </head>
-<body class="bg-surface text-on-surface font-body antialiased">
-<!-- Top Navigation Bar -->
-<header class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] h-20 px-8 flex justify-between items-center max-w-full">
-<div class="flex items-center gap-12">
-<span class="text-2xl font-bold tracking-tight text-zinc-900">The Culinary Curator</span>
-<nav class="hidden md:flex gap-8">
-<a class="text-zinc-500 hover:text-violet-500 transition-colors" href="#">Explore</a>
-<a class="text-zinc-500 hover:text-violet-500 transition-colors" href="#">Reservations</a>
-<a class="text-zinc-500 hover:text-violet-500 transition-colors" href="#">Private Dining</a>
-</nav>
-</div>
-<div class="flex items-center gap-6">
-<div class="flex gap-4">
-<button class="p-2 text-zinc-500 hover:bg-zinc-50 transition-all rounded-full active:scale-95">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button class="p-2 text-zinc-500 hover:bg-zinc-50 transition-all rounded-full active:scale-95">
-<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
-</button>
-</div>
-<div class="w-10 h-10 rounded-full bg-zinc-200 overflow-hidden ring-2 ring-violet-100">
-<img alt="User profile avatar" data-alt="Close-up portrait of a professional man in a minimal grey studio setting with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_hSFiicwT9OhAJ2dnQo2ClG2siEH879MQb1d4sg65dzGaBCVO4m5HtXd7QszieEhtuI0G7AU-AhFIfWTVWWHx0Rm98OEv88VvfbIG6JYGbW6_eODCrvtVxoozG-Kj_1Vhv7Pr-_zwZOYhpKiveXs2gEFW2i4r1kEfSEOqOeqbbUwvQJvQkUQhEfzK9-nJd-6d8-a0H1JpPKE091wM-PWF_ylTD1jx2gZNVvLS98Mzm0Z6F9p2szeANDQe9jTk5Wkkjbfyxhq3FTvN"/>
-</div>
-</div>
-</header>
-<div class="flex min-h-screen pt-20">
-<!-- Side Navigation Bar -->
-<aside class="h-[calc(100vh-5rem)] w-64 sticky top-20 bg-zinc-50 flex flex-col py-12 pl-6 space-y-2 font-medium text-sm">
-<div class="mb-10 pr-6">
-<h3 class="text-lg font-bold text-zinc-900">Alex Mercer</h3>
-<p class="text-zinc-400 font-normal">Gold Member</p>
-</div>
-<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:translate-x-1 transition-transform hover:text-violet-500" href="#">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span>Dashboard</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 bg-white text-violet-600 rounded-l-full shadow-sm transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 1;">history</span>
-<span>Booking History</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:translate-x-1 transition-transform hover:text-violet-500" href="#">
-<span class="material-symbols-outlined" data-icon="lock">lock</span>
-<span>Password</span>
-</a>
-<div class="pt-8">
-<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:translate-x-1 transition-transform hover:text-error" href="#">
-<span class="material-symbols-outlined" data-icon="logout">logout</span>
-<span>Logout</span>
-</a>
-</div>
-</aside>
-<!-- Main Content -->
-<main class="flex-1 px-12 py-16 bg-surface">
-<!-- Header Section -->
-<div class="mb-12">
-<h1 class="text-[3.5rem] font-bold text-on-surface leading-tight tracking-tight mb-4 font-headline">Booking History</h1>
-<p class="text-body-lg text-on-surface-variant max-w-2xl">Manage your upcoming gastronomic experiences and revisit your past culinary journeys.</p>
-</div>
-<!-- Filter Tabs -->
-<div class="flex items-center gap-4 mb-12 overflow-x-auto pb-4">
-<button class="flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-on-primary font-semibold shadow-lg shadow-primary/20 transition-all active:scale-95">
-<span>Upcoming</span>
-<span class="bg-white/20 px-2 py-0.5 rounded-full text-xs">2</span>
-</button>
-<button class="flex items-center gap-2 px-6 py-3 rounded-full bg-surface-container-high text-on-surface-variant font-medium hover:bg-surface-container-highest transition-colors">
-<span>Completed</span>
-<span class="bg-zinc-200 px-2 py-0.5 rounded-full text-xs text-zinc-600">14</span>
-</button>
-<button class="flex items-center gap-2 px-6 py-3 rounded-full bg-surface-container-high text-on-surface-variant font-medium hover:bg-surface-container-highest transition-colors">
-<span>Canceled</span>
-<span class="bg-zinc-200 px-2 py-0.5 rounded-full text-xs text-zinc-600">1</span>
-</button>
-</div>
-<!-- Booking List Grid -->
-<div class="grid grid-cols-1 gap-8">
-<!-- Booking Card 1: Confirmed -->
-<div class="group bg-surface-container-lowest rounded-xl p-6 flex flex-col md:flex-row items-center gap-8 shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] hover:scale-[1.01] transition-all duration-300">
-<div class="w-full md:w-32 h-32 rounded-lg overflow-hidden flex-shrink-0">
-<img alt="Restaurant interior" class="w-full h-full object-cover" data-alt="Interior of a luxury French restaurant with white tablecloths, crystal chandeliers, and lush indoor garden walls" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuKQmCAA6FCPWRPbtWr8dPpre-YRk-O-UcCDSWSv9O2KN6mYcMRpCvUYj9yPLIRZ8rjAqV5ZcnBtny6rIrEkCIYrXPrIDttKPLL02FGS_7gQGepjsLNt0WdlUW-DLkPaxSPLDkN1DsEwgL3UpI25pIayF0ffdJQbTD0dvzjv-C7EuQNbbQIcERVwLqyUcWTYQkCCyEW9B13uiNLLRxqLYeLELH0DZgJtL9wVD382T7Rrjkp1OrTBnZR8EyKfcf7eklwnxmA7eV9un4"/>
-</div>
-<div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
-<div>
-<span class="text-xs font-bold text-primary uppercase tracking-widest block mb-1">#CR-78291</span>
-<h3 class="text-xl font-bold text-zinc-900">Le Jardin d'Or</h3>
-</div>
-<div class="flex flex-col justify-center">
-<div class="flex items-center gap-2 text-on-surface-variant text-sm mb-1">
-<span class="material-symbols-outlined text-base" data-icon="calendar_today">calendar_today</span>
-<span>Oct 24, 2024</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-sm font-semibold">
-<span class="material-symbols-outlined text-base" data-icon="schedule">schedule</span>
-<span>19:00</span>
-</div>
-</div>
-<div class="flex flex-col justify-center">
-<div class="flex items-center gap-2 text-on-surface-variant text-sm mb-1">
-<span class="material-symbols-outlined text-base" data-icon="group">group</span>
-<span>2 Guests</span>
-</div>
-<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold w-fit">
-<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                Confirmed
-                            </div>
-</div>
-<div class="flex items-center justify-end gap-3">
-<button class="px-5 py-2.5 text-sm font-semibold text-primary hover:bg-primary-fixed rounded-full transition-colors">
-                                View Details
-                            </button>
-<button class="px-5 py-2.5 text-sm font-semibold text-error/70 hover:text-error hover:bg-error-container/20 rounded-full transition-colors">
-                                Cancel
-                            </button>
-</div>
-</div>
-</div>
-<!-- Booking Card 2: Pending -->
-<div class="group bg-surface-container-lowest rounded-xl p-6 flex flex-col md:flex-row items-center gap-8 shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] hover:scale-[1.01] transition-all duration-300">
-<div class="w-full md:w-32 h-32 rounded-lg overflow-hidden flex-shrink-0">
-<img alt="Modern restaurant interior" class="w-full h-full object-cover" data-alt="Modern high-end sushi bar with dark wood textures, warm amber lighting, and minimalist Japanese decor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY1IXdl7LKc3cj51dcyOUIt6EUqU0q1yDn8COsIZZLWo0SH7ebZFswb2MxDt35adIwKEtoRAA_uWGdOVPCf-WKUbydbSoTUY1f7tVcKNctNLV7tWYijKxqdyoEksU90Xikms8akXIxm_aTL0F2rckAIym76jaWHvo9VL6DuW93YU29_KVupOuYtx1GPwc6sg04tXynoY8sHwP6PBJPO3fJo4o-0IjwUqc7WzBNn2GbzBgYVYcK3z-v_FhaKcpQIPRlxna9h5bRnj17"/>
-</div>
-<div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
-<div>
-<span class="text-xs font-bold text-primary uppercase tracking-widest block mb-1">#CR-78452</span>
-<h3 class="text-xl font-bold text-zinc-900">Umami Heights</h3>
-</div>
-<div class="flex flex-col justify-center">
-<div class="flex items-center gap-2 text-on-surface-variant text-sm mb-1">
-<span class="material-symbols-outlined text-base" data-icon="calendar_today">calendar_today</span>
-<span>Oct 28, 2024</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-sm font-semibold">
-<span class="material-symbols-outlined text-base" data-icon="schedule">schedule</span>
-<span>20:30</span>
-</div>
-</div>
-<div class="flex flex-col justify-center">
-<div class="flex items-center gap-2 text-on-surface-variant text-sm mb-1">
-<span class="material-symbols-outlined text-base" data-icon="group">group</span>
-<span>4 Guests</span>
-</div>
-<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 text-orange-700 text-xs font-bold w-fit">
-<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-                                Pending
-                            </div>
-</div>
-<div class="flex items-center justify-end gap-3">
-<button class="px-5 py-2.5 text-sm font-semibold text-primary hover:bg-primary-fixed rounded-full transition-colors">
-                                View Details
-                            </button>
-<button class="px-5 py-2.5 text-sm font-semibold text-error/70 hover:text-error hover:bg-error-container/20 rounded-full transition-colors">
-                                Cancel
-                            </button>
-</div>
-</div>
-</div>
-<!-- Empty State (Optional Visibility - for design purpose) -->
-<!-- <div class="mt-12 py-24 flex flex-col items-center justify-center text-center bg-surface-container-low rounded-xl border-2 border-dashed border-outline-variant/20">
-                    <div class="w-48 h-48 mb-6 flex items-center justify-center rounded-full bg-white/50 backdrop-blur">
-                        <span class="material-symbols-outlined text-8xl text-zinc-200" data-icon="restaurant_menu">restaurant_menu</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-zinc-900 mb-2">No bookings found</h3>
-                    <p class="text-on-surface-variant mb-8 max-w-sm">It seems you haven't made any reservations for this period yet. Ready for your next feast?</p>
-                    <button class="px-10 py-4 rounded-full bg-primary text-on-primary font-bold shadow-xl shadow-primary/30 transition-all hover:translate-y-[-2px] active:scale-95">
-                        Book a Table
-                    </button>
-                </div> -->
-</div>
-</main>
-</div>
-<!-- Footer -->
-<footer class="w-full py-20 mt-40 bg-zinc-50 border-t border-zinc-200/20 flex flex-col md:flex-row justify-between items-center px-12 gap-8">
-<div class="flex flex-col gap-4 text-center md:text-left">
-<span class="text-base font-semibold text-zinc-800">The Culinary Curator</span>
-<p class="font-label text-xs uppercase tracking-widest text-zinc-400">© 2024 The Culinary Curator. All rights reserved.</p>
-</div>
-<div class="flex gap-8">
-<a class="font-label text-xs uppercase tracking-widest text-zinc-400 hover:text-violet-500 transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
-<a class="font-label text-xs uppercase tracking-widest text-zinc-400 hover:text-violet-500 transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
-<a class="font-label text-xs uppercase tracking-widest text-zinc-400 hover:text-violet-500 transition-colors opacity-80 hover:opacity-100" href="#">Contact Us</a>
-<a class="font-label text-xs uppercase tracking-widest text-zinc-400 hover:text-violet-500 transition-colors opacity-80 hover:opacity-100" href="#">Careers</a>
-</div>
-</footer>
-</body></html>
+<body>
+  <div class="container">
+    <h1>🔌 Test Socket.IO - Zero-Latency Table Sync</h1>
+    
+    <div class="section">
+      <h3>Connection Status: <span id="status" class="status disconnected">Disconnected</span></h3>
+      <label>Access Token (Optional):</label>
+      <input type="text" id="token" placeholder="Paste access token here...">
+      
+      <label>Server URL (Through Gateway):</label>
+      <input type="text" id="serverUrl" value="http://localhost:7000">
+      
+      <button onclick="connectSocket()">Connect</button>
+      <button onclick="disconnectSocket()" class="danger">Disconnect</button>
+    </div>
+
+    <div class="section">
+      <h3>Configuration</h3>
+      <label>Restaurant ID:</label>
+      <input type="text" id="restaurantId" value="BA3FB828-C52C-4FBE-83E7-4F326A9892A2">
+      
+      <label>Booking Date:</label>
+      <input type="date" id="bookingDate">
+      
+      <label>Booking Time:</label>
+      <select id="bookingTime"></select>
+      
+      <button onclick="joinRestaurant()" class="secondary">Join Room</button>
+    </div>
+
+    <div class="section">
+      <h3>Live Table Map</h3>
+      <div style="margin-bottom: 15px;">
+        <label>Filter by Floor:</label>
+        <select id="floorFilter" onchange="checkAvailability()">
+          <option value="">-- All Floors --</option>
+          <option value="1st Floor">1st Floor</option>
+          <option value="2nd Floor">2nd Floor</option>
+          <option value="3rd Floor">3rd Floor</option>
+          <option value="Rooftop">Rooftop</option>
+        </select>
+        <button onclick="checkAvailability()" class="secondary">Refresh Map</button>
+      </div>
+      
+      <div id="countdown" class="countdown" style="display:none;">
+        Holding table for <span id="countdownTime">02:00</span>
+      </div>
+
+      <div id="tableSection">
+        <div class="grid-legend">
+          <div class="legend-item"><div class="legend-box available"></div> Available</div>
+          <div class="legend-item"><div class="legend-box held"></div> Someone holding</div>
+          <div class="legend-item"><div class="legend-box occupied"></div> Occupied (Booked)</div>
+          <div class="legend-item"><div class="legend-box my-selection"></div> Your Selection</div>
+        </div>
+        <div id="tableGrid" class="table-grid"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>📊 Event Logs</h3>
+      <button onclick="clearLog()" class="secondary">Clear Log</button>
+      <div id="log" class="log"></div>
+    </div>
+  </div>
+
+  <script>
+    let socket = null;
+    let countdownInterval = null;
+    let currentlyHeldTableId = null;
+    let isProcessing = false;
+
+    function log(message, type = 'info') {
+      const logDiv = document.getElementById('log');
+      const timestamp = new Date().toLocaleTimeString('vi-VN');
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      entry.textContent = `[${timestamp}] ${message}`;
+      logDiv.appendChild(entry);
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function clearLog() {
+      document.getElementById('log').innerHTML = '';
+    }
+
+    function updateStatus(connected) {
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = connected ? 'Connected' : 'Disconnected';
+      statusEl.className = `status ${connected ? 'connected' : 'disconnected'}`;
+    }
+
+    function connectSocket() {
+      const serverUrl = document.getElementById('serverUrl').value;
+      const token = document.getElementById('token').value.trim();
+
+      const config = { autoConnect: false };
+      if (token) config.auth = { token };
+
+      socket = io(serverUrl, config);
+
+      socket.on('connect', () => {
+        log('✅ Socket connected successfully!', 'success');
+        updateStatus(true);
+        joinRestaurant();
+        checkAvailability();
+      });
+
+      socket.on('disconnect', (reason) => {
+        log(`❌ Socket disconnected: ${reason}`, 'error');
+        updateStatus(false);
+        stopCountdown();
+      });
+
+      socket.on('tableStatusChanged', (data) => {
+        const { tableId, status, bookingDate, bookingTime } = data;
+        log(`⚡ Status Changed: Table ${tableId} -> ${status}`, 'info');
+        
+        const uiDate = document.getElementById('bookingDate').value;
+        const uiTime = document.getElementById('bookingTime').value;
+        
+        if (bookingDate === uiDate && bookingTime === uiTime) {
+          updateSingleTableInGrid(tableId, status);
+        }
+      });
+
+      socket.connect();
+    }
+
+    function disconnectSocket() {
+      if (socket) {
+        socket.disconnect();
+        socket = null;
+        updateStatus(false);
+        stopCountdown();
+      }
+    }
+
+    function joinRestaurant() {
+      if (!socket || !socket.connected) return;
+      const restaurantId = document.getElementById('restaurantId').value;
+      socket.emit('joinRestaurant', restaurantId);
+      log(`✅ Joined restaurant room: ${restaurantId}`, 'success');
+    }
+
+    function holdTable(tableId) {
+      return new Promise((resolve, reject) => {
+        if (!socket || !socket.connected) {
+          log('❌ Socket not connected!', 'error');
+          return reject(new Error('Socket not connected'));
+        }
+
+        const data = {
+          restaurantId: document.getElementById('restaurantId').value,
+          tableId: tableId,
+          bookingDate: document.getElementById('bookingDate').value,
+          bookingTime: document.getElementById('bookingTime').value
+        };
+
+        socket.emit('holdTable', data, (response) => {
+          if (response.success) {
+            log(`🔒 Table held! Expires in ${response.expiresIn}s`, 'success');
+            currentlyHeldTableId = tableId;
+            startCountdown(response.expiresIn);
+            updateSingleTableInGrid(tableId, 'held');
+            resolve(response);
+          } else {
+            log(`❌ Hold failed: ${response.error}`, 'error');
+            reject(new Error(response.error));
+          }
+        });
+      });
+    }
+
+    function releaseHold(tableId) {
+      return new Promise((resolve, reject) => {
+        if (!socket || !socket.connected) {
+          log('❌ Socket not connected!', 'error');
+          return reject(new Error('Socket not connected'));
+        }
+
+        const data = {
+          restaurantId: document.getElementById('restaurantId').value,
+          tableId: tableId,
+          bookingDate: document.getElementById('bookingDate').value,
+          bookingTime: document.getElementById('bookingTime').value
+        };
+
+        socket.emit('releaseHold', data, (response) => {
+          if (response.success) {
+            log(`🔓 Hold released for Table ${tableId}`, 'success');
+            if (tableId === currentlyHeldTableId) {
+              currentlyHeldTableId = null;
+              stopCountdown();
+            }
+            updateSingleTableInGrid(tableId, 'available');
+            resolve(response);
+          } else {
+            log(`❌ Release failed: ${response.error}`, 'error');
+            reject(new Error(response.error));
+          }
+        });
+      });
+    }
+
+    function updateSingleTableInGrid(tableId, status) {
+      const box = document.getElementById(`table-box-${tableId}`);
+      if (!box) return;
+
+      box.classList.remove('available', 'held', 'occupied');
+      box.style.border = '';
+
+      if (String(currentlyHeldTableId).toLowerCase() === String(tableId).toLowerCase() && status === 'held') {
+        box.classList.add('held');
+        box.style.border = '2px dashed #2196F3';
+      } else {
+        box.classList.add(status);
+      }
+    }
+
+    async function checkAvailability() {
+      const restaurantId = document.getElementById('restaurantId').value;
+      const date = document.getElementById('bookingDate').value;
+      const time = document.getElementById('bookingTime').value;
+      const token = document.getElementById('token').value.trim();
+
+      const serverUrl = document.getElementById('serverUrl').value.replace(/\/$/, '');
+      const location = document.getElementById('floorFilter').value;
+      
+      try {
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        let tablesUrl = `${serverUrl}/api/v1/restaurants/${restaurantId}/tables`;
+        if (location) tablesUrl += `?location=${encodeURIComponent(location)}`;
+
+        const [resAll, resAvail] = await Promise.all([
+          fetch(tablesUrl, { headers }),
+          fetch(`${serverUrl}/api/v1/booking-restaurants/${restaurantId}/availability?date=${date}&time=${time}&guests=1`)
+        ]);
+
+        const dataAll = await resAll.json();
+        const dataAvail = await resAvail.json();
+        
+        renderTableGrid(dataAll.data || [], (dataAvail.items || []).map(t => t.id));
+      } catch (err) {
+        log(`❌ Refresh Error: ${err.message}`, 'error');
+      }
+    }
+
+    function renderTableGrid(allTables, availableIds) {
+      const grid = document.getElementById('tableGrid');
+      grid.innerHTML = '';
+      
+      allTables.forEach(t => {
+        const isAvail = availableIds.some(aid => String(aid).toLowerCase() === String(t.id).toLowerCase());
+        const isMine = String(currentlyHeldTableId).toLowerCase() === String(t.id).toLowerCase();
+        
+        const box = document.createElement('div');
+        box.className = 'table-box';
+        box.id = `table-box-${t.id}`;
+        
+        if (isMine) {
+          box.classList.add('held');
+          box.style.border = '2px dashed #2196F3';
+        } else if (isAvail) {
+          box.classList.add('available');
+        } else {
+          box.classList.add('occupied');
+        }
+        
+        box.innerHTML = `
+          <span class="type-tag">${t.type}</span>
+          <span class="num">${t.tableNumber}</span>
+          <span class="cap">${t.capacity} seats</span>
+          <span class="location-tag">📍 ${t.location || 'Unknown'}</span>
+        `;
+        
+        box.onclick = async () => {
+          if (isProcessing) return;
+          
+          const dynamicIsMine = String(currentlyHeldTableId).toLowerCase() === String(t.id).toLowerCase();
+          
+          // Nếu bàn đã occupied (màu đỏ) và không phải của mình, không làm gì cả
+          if (box.classList.contains('occupied') && !dynamicIsMine) {
+            log(`🚫 Table ${t.tableNumber} is already occupied!`, 'error');
+            return;
+          }
+
+          isProcessing = true;
+          try {
+            if (dynamicIsMine) {
+              log(`🔓 Releasing hold for table: ${t.tableNumber}...`, 'info');
+              await releaseHold(t.id);
+            } else {
+              // Nếu đang giữ bàn khác, nhả bàn đó ra trước
+              if (currentlyHeldTableId && currentlyHeldTableId !== t.id) {
+                log(`🕒 Switching tables. Releasing Table ${currentlyHeldTableId}...`, 'warning');
+                await releaseHold(currentlyHeldTableId);
+              }
+              log(`🔒 Attempting to hold table: ${t.tableNumber}...`, 'info');
+              await holdTable(t.id);
+            }
+          } catch (e) {
+            log(`❌ Operation failed: ${e.message}`, 'error');
+          } finally {
+            isProcessing = false;
+          }
+        };
+        
+        grid.appendChild(box);
+      });
+    }
+
+    function startCountdown(seconds) {
+      stopCountdown();
+      const div = document.getElementById('countdown');
+      div.style.display = 'block';
+      let remaining = seconds;
+      countdownInterval = setInterval(() => {
+        remaining--;
+        const m = Math.floor(remaining / 60).toString().padStart(2, '0');
+        const s = (remaining % 60).toString().padStart(2, '0');
+        document.getElementById('countdownTime').textContent = `${m}:${s}`;
+        if (remaining <= 0) stopCountdown();
+      }, 1000);
+    }
+
+    function stopCountdown() {
+      clearInterval(countdownInterval);
+      document.getElementById('countdown').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('bookingDate').value = new Date().toISOString().split('T')[0];
+      const select = document.getElementById('bookingTime');
+      for (let h = 7; h <= 21; h += 2) {
+        const time = `${h.toString().padStart(2, '0')}:00`;
+        const opt = document.createElement('option');
+        opt.value = opt.textContent = time;
+        select.appendChild(opt);
+      }
+    });
+  </script>
+</body>
+</html>

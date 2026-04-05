@@ -133,6 +133,10 @@ const RestaurantDetailPage = () => {
             description={uiRestaurant.description || "Indulge in a premium dining experience where every dish is a masterpiece of flavors and art."} 
             amenities={amenities} 
             cuisineTypes={restaurant.cuisineTypes || []}
+            openingHours={uiRestaurant.openingHours || uiRestaurant.openingHoursJson}
+            depositEnabled={uiRestaurant.depositEnabled}
+            latitude={uiRestaurant.latitude}
+            longitude={uiRestaurant.longitude}
           />
 
           

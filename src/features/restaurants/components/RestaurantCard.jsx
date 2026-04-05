@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { Star, Navigation } from 'lucide-react';
 import { ROUTES } from '../../../config/routes.js';
 import { slugify } from '../../../shared/utils/slugify.js';
 
@@ -6,13 +7,19 @@ const RestaurantCard = ({ restaurant }) => {
   // Chuẩn hóa dữ liệu từ API
   const id = restaurant.id || restaurant._id || 'mock-id';
   const imageUrl = restaurant.images?.[0] || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop';
+  const { distanceKm } = restaurant;
   const rating = restaurant.ratingAvg ? Number(restaurant.ratingAvg).toFixed(1) : 'N/A';
   const address = restaurant.address || restaurant.location || 'Vietnam';
   const cuisine = (restaurant.cuisineTypes && restaurant.cuisineTypes[0]) || restaurant.cuisine || 'Cuisine';
   const priceDisplay = '$'.repeat(restaurant.priceRange || restaurant.priceLevel?.length || 2);
+  
+  // Định dạng khoảng cách (km)
+  const formattedDistance = distanceKm != null ? (Number(distanceKm) < 1 ? '< 1 km' : `${Number(distanceKm).toFixed(1)} km`) : null;
+
 
   // Ưu tiên slug cho URL, fallback về ID
   const urlParam = restaurant.slug || slugify(restaurant.name) || id;
+
 
   return (
     <div className="group flex flex-col bg-white rounded-xl overflow-hidden hover:shadow-[0_40px_60px_-15px_rgba(99,14,212,0.08)] transition-all duration-500 transform hover:-translate-y-2 border border-slate-100 relative">
@@ -44,6 +51,19 @@ const RestaurantCard = ({ restaurant }) => {
             <h3 className="text-2xl font-bold font-headline text-slate-900 leading-tight group-hover:text-primary transition-colors line-clamp-1">
               {restaurant.name}
             </h3>
+            <div className="flex items-center bg-yellow-50 px-2.5 py-1 rounded-lg mt-2 w-fit border border-yellow-100">
+              <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+              <span className="text-sm font-bold text-slate-800 ml-1.5">{rating}</span>
+              
+              {/* Hiển thị khoảng cách nếu có (chỉ hiện khi filter nearme được kích hoạt) */}
+              {formattedDistance && (
+                <>
+                  <div className="w-px h-3 bg-primary/20 mx-1.5" />
+                  <Navigation className="w-3.5 h-3.5 text-primary" />
+                  <span className="text-[11px] font-bold text-primary ml-1 whitespace-nowrap">{formattedDistance}</span>
+                </>
+              )}
+            </div>
             <p className="text-sm text-slate-500 mt-2 flex items-center">
               <span className="material-symbols-outlined text-sm mr-1">location_on</span>
               <span className="line-clamp-1">{address}</span>
@@ -61,9 +81,13 @@ const RestaurantCard = ({ restaurant }) => {
         </div>
 
         <div className="pt-6 mt-auto flex gap-4 relative z-20">
-          <div className="flex-1 px-4 py-3 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition-all text-slate-700 text-center">
+          <Link 
+            to={ROUTES.RESTAURANT_DETAIL(urlParam)}
+            className="flex-1 px-4 py-3 rounded-full border-2 border-slate-900/5 text-sm font-bold text-slate-700 text-center transition-all duration-300 hover:border-primary/20 hover:bg-primary/5 hover:text-primary hover:shadow-md active:scale-95"
+          >
             View Details
-          </div>
+          </Link>
+
           <button 
             onClick={(e) => {
               e.preventDefault();

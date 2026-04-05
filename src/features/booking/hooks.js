@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getMyBookings, getBookingById } from './api.js';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getMyBookings, getBookingById, getRestaurantAvailability, createBooking } from './api.js';
 
 /**
  * @file hooks.js (Booking Feature)
@@ -50,5 +50,32 @@ export const useBookingDetailQuery = (id) => {
     queryKey: ['booking', id],
     queryFn: () => getBookingById(id),
     enabled: !!id,
+  });
+};
+/**
+ * Hook fetch danh sách bàn trống (Real-time Availability) dùng React Query
+ */
+export const useRestaurantAvailability = (id, params) => {
+  return useQuery({
+    queryKey: ['booking-restaurants', 'availability', id, params],
+    queryFn: () => getRestaurantAvailability(id, params),
+    enabled: !!id && !!params?.date && !!params?.time,
+    staleTime: 1000 * 30, // 30 giây (Availability thay đổi liên tục)
+    refetchInterval: 1000 * 60, // Refetch mỗi phút
+  });
+};
+
+/**
+ * Mutation tạo mới một bản ghi đặt bàn
+ */
+export const useCreateBooking = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (data) => createBooking(data),
+    onSuccess: () => {
+      // Làm mới danh sách booking sau khi tạo thành công
+      queryClient.invalidateQueries(['my-bookings']);
+    },
   });
 };

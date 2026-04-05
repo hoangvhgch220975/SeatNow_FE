@@ -14,6 +14,8 @@ const InfoSummary = ({ user }) => {
         <h2 className="text-xl font-black text-slate-900 tracking-tight">IDENTITY SUMMARY</h2>
         <span className="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">info</span>
       </div>
+
+
       
       {/* Lưới các thẻ thông tin - Hiển thị mỗi trường 1 dòng (Full width) */}
       <div className="space-y-4">

@@ -1,0 +1,31 @@
+import React from 'react';
+
+/**
+ * @component BookingHeader
+ * @description Phần tiêu đề của quy trình đặt bàn tại nhà hàng.
+ * @param {Object} props
+ * @param {Object} props.restaurant - Dữ liệu nhà hàng bao gồm tên và các thông tin khác.
+ */
+const BookingHeader = ({ restaurant }) => {
+  if (!restaurant) return null;
+
+  return (
+    <header className="bg-white/50 backdrop-blur-xl border-b border-outline-variant/10 py-10 px-8 animate-in fade-in slide-in-from-top-4 duration-1000">
+      <div className="max-w-7xl mx-auto space-y-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-[10px] font-black tracking-widest uppercase shadow-sm">
+          <span className="material-symbols-outlined text-[12px] font-filled">verified_user</span>
+          Premium Reservation Service
+        </div>
+        <h1 className="text-5xl font-black text-on-surface tracking-tighter leading-none">
+          Secure Your <span className="text-primary italic">Perfect</span> Table
+        </h1>
+        <p className="text-on-surface-variant font-medium text-base max-w-2xl leading-relaxed">
+          Choose your preferred spot and experience the botanical excellence of <span className="text-primary font-black underline decoration-primary/20 decoration-2 underline-offset-4">{restaurant.name}</span>. 
+          Every table is handled with the utmost care for your satisfaction.
+        </p>
+      </div>
+    </header>
+  );
+};
+
+export default BookingHeader;

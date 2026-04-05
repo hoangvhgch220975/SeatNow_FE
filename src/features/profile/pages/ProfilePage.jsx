@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfileQuery } from '../hooks.js';
 
@@ -8,6 +8,9 @@ import ProfileHero from '../components/ProfileHero.jsx';
 import LoyaltyCard from '../components/LoyaltyCard.jsx';
 import InfoSummary from '../components/InfoSummary.jsx';
 import RecentOrders from '../components/RecentOrders.jsx';
+import PasswordForm from '../components/PasswordForm.jsx';
+import SettingsForm from '../components/SettingsForm.jsx';
+
 
 /**
  * @file ProfilePage.jsx
@@ -17,6 +20,7 @@ import RecentOrders from '../components/RecentOrders.jsx';
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { data: profile, isLoading, error } = useProfileQuery();
+  const [activeTab, setActiveTab] = useState('Overview');
   
   // Skeleton loading Premium - Giữ đồng bộ phong cách
   if (isLoading) {
@@ -34,7 +38,7 @@ const ProfilePage = () => {
     );
   }
 
-  // Xử lý lỗi Truy cập
+  // Xử lý lỗi Truy cập (Giữ nguyên)
   if (error) {
     return (
       <div className="min-h-screen bg-[#FDFCFE] flex justify-center pt-32 p-6 text-center">
@@ -74,29 +78,40 @@ const ProfilePage = () => {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         
         {/* Sidebar điều hướng */}
-        <ProfileSidebar user={user} />
+        <ProfileSidebar 
+          user={user} 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab} 
+        />
 
-        {/* Content Section - Lưới Bento chính */}
-        <section className="flex-1 space-y-12">
-          
-          {/* Bento Grid Layer 1: Hero & Loyalty */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-             <ProfileHero user={user} avatarUrl={avatarUrl} />
-             <LoyaltyCard points={user.loyaltyPoints} />
-          </div>
+        {/* Content Section - Render theo Tab */}
+        <section className="flex-1 space-y-12 min-h-[600px]">
+          {activeTab === 'Overview' ? (
+            <>
+              {/* Bento Grid Layer 1: Hero & Loyalty */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                 <ProfileHero user={user} avatarUrl={avatarUrl} onEdit={() => setActiveTab('Settings')} />
+                 <LoyaltyCard points={user.loyaltyPoints} />
+              </div>
 
-          {/* Bento Grid Layer 2: Information Summary & Recent Orders - Cân bằng đối xứng 100% */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-             {/* Box bên trái: Thông tin cá nhân (Real Data) */}
-             <InfoSummary user={user} />
-             
-             {/* Box bên phải: Đơn hàng gần đây (Component riêng biệt) */}
-             <RecentOrders />
-          </div>
+              {/* Bento Grid Layer 2: Information Summary & Recent Orders */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+                 <InfoSummary user={user} onEdit={() => setActiveTab('Settings')} />
+                 <RecentOrders />
+              </div>
+
+            </>
+          ) : activeTab === 'Password' ? (
+             <PasswordForm />
+          ) : (
+             <SettingsForm user={user} />
+          )}
+
         </section>
       </div>
     </div>
   );
 };
+
 
 export default ProfilePage;

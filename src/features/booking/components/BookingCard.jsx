@@ -2,7 +2,10 @@ import React from 'react';
 import { useRestaurant } from '../../restaurants/hooks.js';
 import { formatDate, formatTime } from '../../../shared/utils/formatDateTime.js';
 import BookingStatusBadge from './BookingStatusBadge.jsx';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../config/routes.js';
 import { toast } from 'react-hot-toast';
+
 
 /**
  * @file BookingCard.jsx
@@ -26,9 +29,17 @@ const BookingCard = ({ booking }) => {
   const formattedDate = formatDate(b.bookingDate || b.date);
   const formattedTime = formatTime(b.bookingTime || b.time);
 
-  // Placeholder actions
-  const handleViewDetails = () => toast("Details for " + (b.bookingCode || b.id.slice(0,8)) + ": Coming soon!", { icon: "ℹ️" });
+  const navigate = useNavigate();
+
+  // Chuyển hướng tới trang chi tiết đặt bàn
+  const handleViewDetails = () => {
+    if (b.id) {
+      navigate(ROUTES.BOOKING_DETAIL(b.id));
+    }
+  };
+  
   const handleCancel = () => toast("Cancel " + (b.bookingCode || b.id.slice(0,8)) + ": Feature coming soon!", { icon: "🚫" });
+
 
   return (
     <div className="group bg-white rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8 shadow-soft border-2 border-slate-100/80 hover:scale-[1.01] hover:border-primary/20 transition-all duration-500">
@@ -50,6 +61,7 @@ const BookingCard = ({ booking }) => {
           <h3 className="text-xl font-black text-slate-900 tracking-tight line-clamp-1">
             {displayName}
           </h3>
+          <span className="text-slate-900 font-bold tracking-tight">{Number(b.depositAmount || 0).toLocaleString('vi-VN')} VNĐ</span>
         </div>
 
         <div className="flex flex-col justify-center">

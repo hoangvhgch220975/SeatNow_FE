@@ -11,5 +11,15 @@ export const profileApi = {
    */
   getMe: async () => {
     return await axios.get('/users/me');
+  },
+
+  /**
+   * Cập nhật thông tin cá nhân hiện tại
+   * @param {Object} data - Dữ liệu cần cập nhật (name, phone, avatar...)
+   * @returns {Promise}
+   */
+  updateMe: async (data) => {
+    return await axios.put('/users/me', data);
   }
 };
+

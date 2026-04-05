@@ -13,8 +13,8 @@ export const ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   
   PROFILE: '/profile',
-  CUSTOMER_DASHBOARD: '/customer/dashboard',
   RESTAURANT_LIST: '/restaurants',
+
   RESTAURANT_DETAIL: (idOrSlug) => `/restaurants/${idOrSlug}`,
   RESTAURANT_MENU: (idOrSlug) => `/restaurants/${idOrSlug}/menu`,
   TRACK_BOOKING: '/track-booking',

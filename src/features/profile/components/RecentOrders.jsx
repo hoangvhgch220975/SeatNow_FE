@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useMyBookingsQuery } from '../../booking/hooks.js';
 import { useRestaurant } from '../../restaurants/hooks.js';
 import { formatDate, formatTime } from '../../../shared/utils/formatDateTime.js';
+import BookingStatusBadge from '../../booking/components/BookingStatusBadge.jsx';
+
 
 
 
@@ -15,8 +17,8 @@ const RecentOrders = () => {
   // Lấy dữ liệu thực tế từ Booking Service
   const { data: bookings, isLoading } = useMyBookingsQuery();
   
-  // Chỉ lấy 3 bản ghi mới nhất để đảm bảo bố cục
-  const recentBookings = bookings?.slice(0, 3) || [];
+  // Chỉ lấy 5 bản ghi mới nhất để đảm bảo bố cục
+  const recentBookings = bookings?.slice(0, 5) || [];
 
   return (
     <div className="bg-white/50 backdrop-blur-sm p-10 rounded-[3rem] border-2 border-slate-200/60 shadow-soft flex flex-col h-full">
@@ -80,23 +82,8 @@ const ActivityItem = ({ booking, status }) => {
   const formattedTime = formatTime(b.bookingTime || b.time);
   const subtitle = `${b.numGuests || 0} GUESTS • ${formattedDate} • ${formattedTime}`;
 
-  // Mapper màu sắc trạng thái chuyên nghiệp
-  const getStatusColor = (s) => {
-    const statusLower = String(s).toLowerCase();
-    switch (statusLower) {
-      case 'confirmed':
-      case 'arrived':
-      case 'upcoming':
-        return 'bg-indigo-50 text-indigo-600';
-      case 'completed':
-        return 'bg-emerald-50 text-emerald-600';
-      case 'cancelled':
-      case 'no-show':
-        return 'bg-rose-50 text-rose-600';
-      default:
-        return 'bg-slate-50 text-slate-400';
-    }
-  };
+  // BookingStatusBadge already handles the status mapping logic
+
 
   return (
     <div className="bg-white p-6 rounded-[2rem] flex items-center justify-between hover:translate-y-[-4px] transition-all duration-500 shadow-soft border-2 border-slate-100/80 cursor-default group">
@@ -109,9 +96,10 @@ const ActivityItem = ({ booking, status }) => {
           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{subtitle}</p>
         </div>
       </div>
-      <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap ${getStatusColor(status)}`}>
-        {status}
-      </span>
+      <div className="flex flex-col items-end">
+        <BookingStatusBadge status={status} />
+      </div>
+
     </div>
   );
 };

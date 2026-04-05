@@ -24,29 +24,28 @@ export const getRestaurants = async (params = {}) => {
     sort: rest.sort || 'rating',
     cuisine: rest.cuisine,
     priceRange: rest.priceRange,
-    lat: rest.lat,
-    lng: rest.lng,
-    radiusKm: rest.radiusKm
+    lat: rest.lat ? parseFloat(rest.lat) : undefined,
+    lng: rest.lng ? parseFloat(rest.lng) : undefined,
+    // Trả về mức 20km chuẩn sau khi đã debug xong
+    radiusKm: rest.radiusKm ? parseFloat(rest.radiusKm) : (rest.sort === 'distance' ? 20 : undefined)
   };
 
-  // Loại bỏ các param null/undefined/empty/location (vì đã chuyển vào q)
-  const cleanParams = Object.fromEntries(
-    Object.entries(searchParams).filter(([key, v]) => 
-      v != null && v !== '' && key !== 'page' && key !== 'location'
-    )
-  );
+  // Làm sạch tham số cực kỳ nghiêm ngặt
+  const cleanParams = {};
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '' && key !== 'page' && key !== 'location') {
+      cleanParams[key] = value;
+    }
+  });
 
   const response = await apiClient.get('/restaurants', {
     params: cleanParams
   });
 
+  // Robust extraction: Hỗ trợ linh hoạt các cấu trúc { data, total }, { rows, total }, hoặc mảng phẳng
+  const items = response.data?.rows || response.rows || response.data?.data || response.data || response || [];
+  const total = response.data?.total || response.total || response.totalCount || items.length;
 
-  /**
-   * 🏆 HỆ THỐNG ĐÃ ĐỒNG BỘ 100% (Confirmed via Console Test)
-   * Cấu trúc Backend: { data: [...], total: 8, meta: {...} }
-   */
-  const items = Array.isArray(response.data) ? response.data : (Array.isArray(response) ? response : []);
-  const total = response.total || response.totalCount || items.length;
 
   return { 
     data: items, 
@@ -77,5 +76,13 @@ export const getRestaurantById = async (id) => {
  */
 export const getRestaurantMenu = async (id) => {
   const response = await apiClient.get(`/restaurants/${id}/menu`);
+  return response?.data || response;
+};
+/**
+ * Lấy danh sách bàn ăn của nhà hàng (Sơ đồ tầng)
+ */
+export const getRestaurantTables = async (id, location) => {
+  const params = location ? { location } : {};
+  const response = await apiClient.get(`/restaurants/${id}/tables`, { params });
   return response?.data || response;
 };

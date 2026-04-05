@@ -18,6 +18,9 @@ import AIAssistantPage from '../features/ai-assistant/pages/AIAssistantPage.jsx'
 import CustomerLayout from '../shared/layout/CustomerLayout.jsx';
 import ProfilePage from '../features/profile/pages/ProfilePage.jsx';
 import BookingHistoryPage from '../features/booking/pages/BookingHistoryPage.jsx';
+import BookingDetailPage from '../features/booking/pages/BookingDetailPage.jsx';
+import CreateBookingPage from '../features/booking/pages/CreateBookingPage.jsx';
+
 
 /**
  * Cấu trúc Routing Router cấp Root của toàn App 
@@ -46,6 +49,10 @@ export const router = createBrowserRouter([
           {
             path: '/restaurants/:idOrSlug',
             element: <RestaurantDetailPage />,
+          },
+          {
+            path: '/restaurants/:idOrSlug/book',
+            element: <CreateBookingPage />,
           },
           {
             path: '/restaurants/:idOrSlug/menu',
@@ -110,6 +117,11 @@ export const router = createBrowserRouter([
             path: ROUTES.BOOKING_HISTORY,
             element: <BookingHistoryPage />,
           },
+          {
+            path: '/my-bookings/:id',
+            element: <BookingDetailPage />,
+          },
+
           // Có thể thêm các trang như Wallet, Settings ở đây sau này
         ]
       },

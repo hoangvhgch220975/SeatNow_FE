@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getRestaurants, getRestaurantById, getRestaurantMenu } from './api.js';
+import { getRestaurants, getRestaurantById, getRestaurantMenu, getRestaurantTables } from './api.js';
 
 /**
  * @file hooks.js (Restaurant Feature)
@@ -42,5 +42,16 @@ export const useRestaurantMenu = (id) => {
     queryFn: () => getRestaurantMenu(id),
     enabled: !!id,
     staleTime: 1000 * 60 * 15, // Menu ít thay đổi hơn
+  });
+};
+/**
+ * Hook fetch danh sách bàn (Sơ đồ tầng) dùng React Query
+ */
+export const useRestaurantTables = (id, location) => {
+  return useQuery({
+    queryKey: ['restaurants', 'tables', id, location],
+    queryFn: () => getRestaurantTables(id, location),
+    enabled: !!id,
+    staleTime: 1000 * 60 * 30, // Sơ đồ bàn ít khi thay đổi (Static)
   });
 };

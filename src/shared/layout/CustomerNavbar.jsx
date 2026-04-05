@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, Link, useNavigate, useLocation } from 'react-router';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/features/auth/store.js';
 import { useProfileQuery } from '@/features/profile/hooks.js';
 import { CUSTOMER_NAV, CUSTOMER_PROFILE_MENU } from '@/config/nav.customer.js';

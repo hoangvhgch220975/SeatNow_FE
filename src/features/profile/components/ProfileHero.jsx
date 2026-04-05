@@ -1,39 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import MediaLightbox from '../../../shared/ui/MediaLightbox.jsx';
 
 /**
  * @file ProfileHero.jsx
  * @description Thẻ Hero lớn trong bố cục Bento, chứa ảnh đại diện và thông tin chính.
  */
-const ProfileHero = ({ user, avatarUrl }) => {
-  const handleUpdate = () => {
-    toast("Profile Update: Coming Soon!", { 
-      icon: "🛠️",
-      style: {
-        borderRadius: '1.5rem',
-        background: '#1e293b',
-        color: '#fff',
-        padding: '16px 24px',
-        fontWeight: 'black',
-        fontSize: '12px'
-      }
-    });
-  };
+const ProfileHero = ({ user, avatarUrl, onEdit }) => {
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   return (
     <div className="lg:col-span-2 bg-white/40 backdrop-blur-sm p-10 rounded-[3rem] border-2 border-slate-200/50 shadow-soft flex flex-col md:flex-row items-center gap-8 relative overflow-hidden group">
+      {/* Media Lightbox (Review-style Viewer) */}
+      <MediaLightbox 
+        isOpen={isLightboxOpen}
+        onClose={() => setIsLightboxOpen(false)}
+        images={[avatarUrl]}
+        initialIndex={0}
+      />
+
+
+
       {/* Decorative Gradient Glow */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-20 -mt-20 blur-3xl opacity-50"></div>
       
       {/* Large Profile Avatar with Premium Frame */}
-      <div className="relative w-44 h-44 rounded-[2rem] overflow-hidden ring-8 ring-white shadow-2xl flex-shrink-0 group">
+      <div 
+        className="relative w-44 h-44 rounded-[2rem] overflow-hidden ring-8 ring-white shadow-2xl flex-shrink-0 group cursor-zoom-in"
+        onClick={() => setIsLightboxOpen(true)}
+      >
+
         <img 
           alt={user?.name} 
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
           src={avatarUrl} 
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4 text-white">
-           <span className="material-symbols-outlined text-[20px]">photo_camera</span>
+           <span className="material-symbols-outlined text-[20px]">zoom_in</span>
         </div>
       </div>
 
@@ -51,12 +54,14 @@ const ProfileHero = ({ user, avatarUrl }) => {
         
         <div className="flex flex-wrap gap-4 justify-center md:justify-start">
           <button 
-            onClick={handleUpdate}
-            className="bg-primary text-white px-6 py-2.5 rounded-full font-black text-[11px] flex items-center gap-2 hover:bg-primary-container transition-all shadow-lg shadow-primary/20 active:scale-95"
+            onClick={onEdit}
+            className="bg-primary text-white px-8 py-3 rounded-2xl font-black text-[11px] uppercase tracking-widest flex items-center gap-3 hover:bg-primary-600 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/40 active:scale-95 transition-all duration-300"
           >
-            <span className="material-symbols-outlined text-[16px]">edit</span>
+            <span className="material-symbols-outlined text-[18px]">edit_square</span>
             Edit Profile
           </button>
+
+
         </div>
       </div>
     </div>
