@@ -41,7 +41,7 @@ const OwnerProfileHero = ({ user, avatarUrl, onEdit, tier }) => {
             </h1>
             <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
                <p className="text-slate-400 font-bold uppercase tracking-[0.1em] text-xs">
-                  Executive License ID: <span className="text-violet-600 font-black">SNW-{user?.id?.slice(0, 8) || '2024-SYS'}</span>
+                  Executive License ID: <span className="text-violet-600 font-black">SNW-{user?.id?.slice(0, 8) || '2026-SYS'}</span>
                </p>
                <span className="hidden md:block w-1.5 h-1.5 bg-slate-200 rounded-full"></span>
                <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">{user?.email}</p>

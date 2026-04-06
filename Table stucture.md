@@ -171,7 +171,7 @@ FROM [SeatNow].[dbo].[Transactions]
   "preparationTime": 25,
   "tags": ["signature", "spicy", "grilled"],
   "allergens": ["garlic"],
-  "createdAt": "2024-01-15T10:00:00.000Z",
+  "createdAt": "2026-01-15T10:00:00.000Z",
   "updatedAt": "2026-01-31T10:00:00.000Z"
 }
 ```

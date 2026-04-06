@@ -44,9 +44,12 @@ const OwnerTopbar = () => {
 
       <div className="flex items-center space-x-6">
         {/* Help Button */}
-        <button className="hidden sm:block text-[10px] font-black text-violet-600 hover:bg-violet-50 px-5 py-2.5 rounded-xl transition-all uppercase tracking-[0.2em] border border-transparent hover:border-violet-100">
+        <Link 
+          to={ROUTES.OWNER_POLICIES}
+          className="hidden sm:block text-[10px] font-black text-violet-600 hover:bg-violet-50 px-5 py-2.5 rounded-xl transition-all uppercase tracking-[0.2em] border border-transparent hover:border-violet-100 flex items-center justify-center"
+        >
           Help Center
-        </button>
+        </Link>
 
         {/* Notifications */}
         <button className="p-3 text-slate-500 hover:bg-slate-100/50 rounded-2xl transition-all relative group border border-transparent hover:border-slate-100">

@@ -26,6 +26,7 @@ import CreateBookingPage from '../features/booking/pages/CreateBookingPage.jsx';
 import OwnerMainLayout from '../shared/layout/OwnerMainLayout.jsx';
 import OwnerHomePage from '../features/owner/portal/pages/OwnerHomePage.jsx';
 import OwnerRestaurantsPage from '../features/owner/portal/pages/OwnerRestaurantsPage.jsx';
+import GlobalAnalyticsPage from '../features/owner/portal/pages/GlobalAnalyticsPage.jsx';
 import CreateRestaurantPage from '../features/owner/portal/pages/CreateRestaurantPage.jsx';
 import PartnerPolicyPage from '../features/static/pages/PartnerPolicyPage.jsx';
 
@@ -151,6 +152,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.OWNER_RESTAURANTS,
             element: <OwnerRestaurantsPage />,
+          },
+          {
+            path: ROUTES.OWNER_ANALYTICS,
+            element: <GlobalAnalyticsPage />,
           },
           {
             path: ROUTES.OWNER_POLICIES,

@@ -43,7 +43,8 @@ seatnow-fe/
 │ │ │ ├─ RestaurantWorkspaceLayout.jsx // Layout khi owner vào 1 nhà hàng cụ thể
 │ │ │ ├─ AdminLayout.jsx // Layout dashboard admin
 │ │ │ ├─ Navbar.jsx // Thanh điều hướng đầu trang
-│ │ │ ├─ Footer.jsx // Chân trang
+│ │ │ ├─ OwnerFooter.jsx // Footer chuyên biệt cho Owner Portal (New)
+│ │ │ ├─ Footer.jsx // Chân trang mặc định cho Customer/Guest
 │ │ │ ├─ SidebarOwnerMain.jsx // Sidebar cho owner portal
 │ │ │ ├─ SidebarRestaurantWorkspace.jsx // Sidebar cho workspace nhà hàng
 │ │ │ ├─ SidebarAdmin.jsx // Sidebar riêng cho admin
@@ -228,14 +229,24 @@ seatnow-fe/
 │ │ │ │ ├─ pages/
 │ │ │ │ │ ├─ OwnerHomePage.jsx // Welcome page cho owner
 │ │ │ │ │ ├─ OwnerRestaurantsPage.jsx // Danh sách nhà hàng của owner
+│ │ │ │ │ ├─ GlobalAnalyticsPage.jsx // Trang thống kê toàn bộ Portfolio (New)
 │ │ │ │ │ └─ CreateRestaurantPage.jsx // Form đăng ký nhà hàng mới
 │ │ │ │ └─ components/
+│ │ │ │ ├─ AnalyticsSummary.jsx // Thẻ KPI Executive 3-Column Bento (Gross/Net Separated)
+│ │ │ │ ├─ AnalyticsCharts.jsx // Biểu đồ trục kép phân tích (Dual Axis)
+│ │ │ │ ├─ DateRangePicker.jsx // Bộ chọn ngày dạng Calendar Popup (Timeline Analysis)
+│ │ │ │ ├─ GuestAnalytics.jsx // Phân tích cơ cấu khách hàng (New)
+│ │ │ │ ├─ PortfolioActivityFeed.jsx // Lịch sử hoạt động toàn cầu (New)
+│ │ │ │ ├─ TopVenuesList.jsx // Danh sách nhà hàng tiêu biểu (New)
 │ │ │ │ ├─ DashboardHeader.jsx // Lời chào & Trạng thái hệ thống (New)
 │ │ │ │ ├─ MetricCard.jsx // Thẻ KPI đơn lẻ (New)
 │ │ │ │ ├─ MetricGrid.jsx // Lưới hiển thị KPIs (New)
 │ │ │ │ ├─ CompositionAnalysis.jsx // Phân tích cơ cấu khách Bento (New)
 │ │ │ │ ├─ PortfolioChart.jsx // Biểu đồ Recharts chuyên nghiệp (New)
 │ │ │ │ ├─ RestaurantCard.jsx // Card hiển thị trạng thái & thông tin tóm tắt
+│ │ │ │ ├─ VenueFilters.jsx // Bộ lọc tìm kiếm & trạng thái (New)
+│ │ │ │ ├─ VenueList.jsx // Lưới hiển thị danh sách nhà hàng (New)
+│ │ │ │ ├─ VenueTable.jsx // Bảng hiển thị danh sách nhà hàng (New)
 │ │ │ │ ├─ EmptyRestaurantsState.jsx // Khi owner chưa có nhà hàng
 │ │ │ │ └─ RestaurantStatusBadge.jsx // Badge màu cho trạng thái (New)
 │ │ │ │
@@ -403,7 +414,8 @@ seatnow-fe/
 │ │ │
 │ │ ├─ static/
 │ │ │ └─ pages/
-│ │ │ ├─ PolicyPage.jsx // Trang chính sách & điều khoản
+│ │ │ ├─ PolicyPage.jsx // Trang chính sách & điều khoản chung
+│ │ │ ├─ PartnerPolicyPage.jsx // Chính sách bảo mật cho Đối tác (New)
 │ │ │ └─ ContactPage.jsx // Trang liên hệ
 │ │ │
 │ │ └─ home/

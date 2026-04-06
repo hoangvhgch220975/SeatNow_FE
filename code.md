@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-<html lang="en"><head>
+<html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Aura Reserve | Portfolio Overview</title>
+<title>Global Portfolio Analytics | The Culinary Curator</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -14,53 +14,53 @@
         theme: {
           extend: {
             colors: {
-              "surface-dim": "#d9dadb",
-              "secondary": "#6e3aca",
+              "on-tertiary-fixed-variant": "#713700",
+              "surface-variant": "#e1e3e4",
+              "on-error-container": "#93000a",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-highest": "#e1e3e4",
+              "on-primary": "#ffffff",
               "on-surface": "#191c1d",
+              "surface-container-low": "#f3f4f5",
+              "error-container": "#ffdad6",
+              "secondary-fixed": "#ebddff",
+              "surface-container-high": "#e7e8e9",
+              "primary-container": "#7c3aed",
+              "on-tertiary-fixed": "#301400",
               "tertiary": "#7d3d00",
-              "primary-fixed": "#eaddff",
-              "background": "#f8f9fa",
+              "on-tertiary-container": "#ffe0cd",
+              "error": "#ba1a1a",
+              "outline-variant": "#ccc3d8",
+              "secondary": "#6e3aca",
+              "tertiary-fixed": "#ffdcc6",
               "surface-bright": "#f8f9fa",
               "on-secondary-container": "#fffbff",
-              "tertiary-fixed": "#ffdcc6",
-              "primary": "#630ed4",
-              "on-tertiary-fixed": "#301400",
-              "secondary-fixed": "#ebddff",
-              "surface-tint": "#732ee4",
               "on-primary-fixed": "#25005a",
-              "primary-fixed-dim": "#d2bbff",
-              "on-tertiary-fixed-variant": "#713700",
-              "primary-container": "#7c3aed",
-              "on-secondary-fixed": "#250059",
-              "surface-container-highest": "#e1e3e4",
-              "surface-container": "#edeeef",
-              "on-primary": "#ffffff",
-              "on-error": "#ffffff",
-              "error-container": "#ffdad6",
-              "tertiary-fixed-dim": "#ffb784",
-              "surface-variant": "#e1e3e4",
-              "on-surface-variant": "#4a4455",
-              "surface": "#f8f9fa",
-              "inverse-primary": "#d2bbff",
-              "surface-container-low": "#f3f4f5",
-              "surface-container-high": "#e7e8e9",
-              "error": "#ba1a1a",
-              "on-secondary": "#ffffff",
-              "on-primary-fixed-variant": "#5a00c6",
-              "on-tertiary": "#ffffff",
-              "outline": "#7b7487",
-              "secondary-fixed-dim": "#d3bbff",
-              "surface-container-lowest": "#ffffff",
-              "on-tertiary-container": "#ffe0cd",
-              "on-primary-container": "#ede0ff",
-              "outline-variant": "#ccc3d8",
-              "secondary-container": "#8856e5",
-              "inverse-on-surface": "#f0f1f2",
               "on-background": "#191c1d",
+              "on-primary-container": "#ede0ff",
+              "surface-tint": "#732ee4",
+              "primary-fixed-dim": "#d2bbff",
+              "on-secondary-fixed-variant": "#581db3",
+              "outline": "#7b7487",
+              "on-tertiary": "#ffffff",
+              "surface-dim": "#d9dadb",
+              "secondary-fixed-dim": "#d3bbff",
+              "secondary-container": "#8856e5",
+              "on-secondary-fixed": "#250059",
+              "background": "#f8f9fa",
+              "tertiary-fixed-dim": "#ffb784",
+              "primary": "#630ed4",
               "tertiary-container": "#a15100",
+              "inverse-on-surface": "#f0f1f2",
+              "primary-fixed": "#eaddff",
+              "on-secondary": "#ffffff",
+              "surface-container": "#edeeef",
+              "on-error": "#ffffff",
               "inverse-surface": "#2e3132",
-              "on-error-container": "#93000a",
-              "on-secondary-fixed-variant": "#581db3"
+              "surface": "#f8f9fa",
+              "on-surface-variant": "#4a4455",
+              "on-primary-fixed-variant": "#5a00c6",
+              "inverse-primary": "#d2bbff"
             },
             fontFamily: {
               "headline": ["Plus Jakarta Sans"],
@@ -73,251 +73,306 @@
       }
     </script>
 <style>
-      body { font-family: 'Plus Jakarta Sans', sans-serif; }
-      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-      .glass-card { backdrop-filter: blur(12px); background-color: rgba(255, 255, 255, 0.7); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-surface text-on-surface flex min-h-screen">
-<!-- SideNavBar (Authority Source: JSON) -->
-<aside class="hidden md:flex flex-col h-screen w-72 bg-slate-50 sticky top-0 p-6 space-y-8 rounded-r-[3rem] z-20">
-<div class="flex flex-col space-y-1">
-<h1 class="text-2xl font-extrabold text-violet-700">Aura Reserve</h1>
-<p class="text-sm font-medium text-slate-500">Portfolio Manager</p>
-</div>
-<nav class="flex-1 space-y-2">
-<!-- Active Tab: Portfolio Overview -->
-<a class="flex items-center space-x-3 px-4 py-3 bg-white text-violet-700 shadow-sm rounded-2xl font-['Plus_Jakarta_Sans'] text-sm font-medium transition-transform duration-300" href="#">
+<body class="bg-surface text-on-surface">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r-0 bg-slate-50 dark:bg-slate-900 flex flex-col py-8 px-4 z-50">
+<div class="text-xl font-bold text-purple-700 dark:text-purple-400 mb-8 flex items-center gap-2">
+<span class="material-symbols-outlined text-3xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
+            The Culinary Curator
+        </div>
+<nav class="space-y-2 flex-1">
+<!-- Portfolio Overview - Inactive -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors duration-200 font-medium text-sm" href="#">
 <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span>Portfolio Overview</span>
-</a>
-<a class="flex items-center space-x-3 px-4 py-3 text-slate-500 hover:text-violet-600 hover:translate-x-1 transition-transform duration-300 font-['Plus_Jakarta_Sans'] text-sm font-medium" href="#">
+                Portfolio Overview
+            </a>
+<!-- My Restaurants - Inactive -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors duration-200 font-medium text-sm" href="#">
 <span class="material-symbols-outlined" data-icon="storefront">storefront</span>
-<span>All Venues</span>
-</a>
-<a class="flex items-center space-x-3 px-4 py-3 text-slate-500 hover:text-violet-600 hover:translate-x-1 transition-transform duration-300 font-['Plus_Jakarta_Sans'] text-sm font-medium" href="#">
+                My Restaurants
+            </a>
+<!-- Global Analytics - Active -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-purple-700 dark:text-purple-300 font-bold border-r-4 border-purple-600 dark:border-purple-400 bg-purple-50/50 dark:bg-purple-900/20 text-sm" href="#">
 <span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-<span>Global Analytics</span>
-</a>
+                Global Analytics
+            </a>
 </nav>
-<div class="mt-auto pt-6 border-t border-slate-200">
-<button class="w-full bg-primary text-on-primary py-4 px-6 rounded-2xl font-semibold flex items-center justify-center space-x-2 shadow-lg shadow-primary/20 hover:bg-primary-container transition-colors duration-200">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-<span>Add New Venue</span>
-</button>
+<div class="mt-auto pt-8 border-t border-outline-variant/20 flex items-center gap-3 px-4">
+<img alt="Owner Profile Picture" class="w-10 h-10 rounded-full object-cover bg-surface-container-high" data-alt="professional headshot of a sophisticated restaurant owner in a tailored blazer, minimalist luxury background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZAN6zhavgqdbxl34URxSA9KmuFFLhUQripCt0AsWMbjAzLQa6YWkW_M2O1Ix0UKZ46VOKPEyBSK3g_JzqIxSCBUEDS_ptgANgvjKrFJ_5JxSoaZhlHQHCHIA97u-HAequuomchX4HvLzckpxZTMhb-Q7p2CINh6YvA4pv4EekSIFPrvE8tqLK4CqciMyiM2E-mahC5r8weQIPQKyrtLJ7MkXVrJdhjOYW583IETTqvk7x1dBstGcrgYp8IcyUDMjWrEtLpjn8gYzR"/>
+<div>
+<p class="text-sm font-bold">Owner Profile</p>
+<p class="text-xs text-on-surface-variant">Digital Maître D'</p>
+</div>
 </div>
 </aside>
-<main class="flex-1 flex flex-col min-w-0 bg-surface">
-<!-- TopNavBar (Authority Source: JSON) -->
-<header class="docked full-width top-0 sticky z-10 bg-white/70 backdrop-blur-xl shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] px-8 py-4 flex justify-between items-center w-full">
-<div class="flex items-center space-x-8">
-<span class="text-xl font-bold tracking-tight text-slate-900">Aura Reserve</span>
-<div class="hidden lg:flex items-center bg-slate-100/50 rounded-full px-4 py-2 w-96">
-<span class="material-symbols-outlined text-slate-400 mr-2" data-icon="search">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-sm w-full font-body" placeholder="Search portfolio..." type="text"/>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl flex justify-between items-center px-8 h-20">
+<div class="flex-1 max-w-xl">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2.5 pl-12 pr-4 focus:ring-2 focus:ring-purple-500/20 font-body text-sm placeholder:text-on-surface-variant/60" placeholder="Search portfolio data..." type="text"/>
 </div>
 </div>
-<div class="flex items-center space-x-4">
-<button class="p-2 text-slate-500 hover:bg-slate-100/50 rounded-full transition-colors">
+<div class="flex items-center gap-6">
+<button class="text-slate-600 dark:text-slate-400 hover:text-purple-600 transition-all">
 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
 </button>
-<button class="text-sm font-semibold text-violet-600 hover:bg-slate-100/50 px-4 py-2 rounded-full transition-colors">Help</button>
-<div class="h-10 w-10 rounded-full bg-slate-200 overflow-hidden ring-2 ring-violet-100">
-<img class="h-full w-full object-cover" data-alt="Portrait of a sophisticated male executive in his 40s, Julian Vane, professional lighting and neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvT41v7qNPr7SKyWVcf8zt7esvK4QVtLlOs2Yy1OYLu3VR9UcJbFvEK7Jx39TxSx_5kLgSXhWFdLFUHnH2wiMzghgyJEXCvfy4QbQv7e5vThyVeqI-pbh_yp3VMLTtWMRlDUBCPGxjvc6diPCyUUabzuJaW1AU0xUJhYfpCvplUBM5HUDoi590aX3GgzGq1RVqbYu4T1m-e_GLE8f4Tx2u6OYq_4Vh8EdcWxZNf0eUgimQkG3Iog1417xLByUrzqz0BepbTSroQuM_"/>
-</div>
+<button class="text-slate-600 dark:text-slate-400 hover:text-purple-600 transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<img alt="Owner Avatar" class="w-10 h-10 rounded-full border-2 border-primary-container/20" data-alt="minimalist profile icon of a restaurant group executive, clean white background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmeUpGbxB6FJ25QKleTIFViUrKnUtc52Pte6swD_IbMdzF8HooOgJt5j3KN9SLd6o1zMQKlxDMNHDReDwBy4bCRDUYNb_zuM69arPXjjP3nXzL3GxTM1G4JIt2xmNEZUOz3xr6ZxsI12ceKbDTePEmuLbjDZVZLnuw4BdyGCdldAtycA4akuu3I_2wGXo3H0h_NkjfPLgUdgsVktWphsk5PkzjNqHCcaMu-oyHMrVkU4GUA0sRQ26ohxq5bXMNzwFfbn5OZ_vVSbKr"/>
 </div>
 </header>
-<div class="p-8 max-w-7xl mx-auto w-full space-y-20">
-<!-- Header Welcome Section -->
-<section class="space-y-2">
-<h2 class="text-4xl font-extrabold text-on-surface tracking-tight font-headline">Good morning, Julian Vane</h2>
-<p class="text-lg text-on-surface-variant font-body">Your portfolio is performing <span class="text-primary font-bold">12.5% above target</span> this month. All 12 venues are currently operational with peak booking hours approaching.</p>
-</section>
-<!-- KPI Section (Asymmetric Grid) -->
-<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] space-y-4">
-<div class="h-12 w-12 bg-primary-fixed rounded-2xl flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" data-icon="payments">payments</span>
-</div>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-28 pb-20 px-8 min-h-screen">
+<!-- Header Section -->
+<header class="mb-12 flex justify-between items-end">
 <div>
-<p class="text-sm font-bold text-on-surface-variant uppercase tracking-widest">Total Revenue</p>
-<p class="text-3xl font-extrabold text-on-surface">$1,248,300</p>
+<h1 class="text-4xl font-extrabold tracking-tight font-headline text-on-surface mb-2">Global Portfolio Analytics</h1>
+<p class="text-on-surface-variant font-body text-lg">Real-time performance metrics for {{DATA:SCREEN:SCREEN_82}}</p>
 </div>
-<div class="flex items-center text-emerald-600 text-sm font-bold">
-<span class="material-symbols-outlined text-xs mr-1" data-icon="trending_up">trending_up</span>
-                        8.2% vs last month
-                    </div>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 rounded-full bg-surface-container-high text-on-surface font-semibold text-sm hover:bg-surface-variant transition-colors">
+                    Export Report
+                </button>
+<button class="px-6 py-2.5 rounded-full bg-primary text-on-primary font-semibold text-sm hover:bg-primary-container transition-all shadow-lg shadow-primary/20">
+                    Live View
+                </button>
 </div>
-<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] space-y-4">
-<div class="h-12 w-12 bg-secondary-fixed rounded-2xl flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</header>
+<!-- Section 1: Global KPIs (Bento Grid Style) -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 group hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 rounded-lg bg-purple-50 text-primary">
+<span class="material-symbols-outlined" data-weight="fill">payments</span>
+</span>
+<span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">+12.4%</span>
 </div>
-<div>
-<p class="text-sm font-bold text-on-surface-variant uppercase tracking-widest">Total Bookings</p>
-<p class="text-3xl font-extrabold text-on-surface">14,202</p>
+<h3 class="text-on-surface-variant text-sm font-medium mb-1">Total Portfolio Revenue</h3>
+<p class="text-3xl font-extrabold text-on-surface">$1.24M</p>
 </div>
-<div class="flex items-center text-emerald-600 text-sm font-bold">
-<span class="material-symbols-outlined text-xs mr-1" data-icon="trending_up">trending_up</span>
-                        14% vs last month
-                    </div>
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 group hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 rounded-lg bg-blue-50 text-blue-600">
+<span class="material-symbols-outlined" data-weight="fill">calendar_month</span>
+</span>
+<span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">+8.2%</span>
 </div>
-<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] space-y-4">
-<div class="h-12 w-12 bg-tertiary-fixed rounded-2xl flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined" data-icon="star">star</span>
+<h3 class="text-on-surface-variant text-sm font-medium mb-1">Total Bookings</h3>
+<p class="text-3xl font-extrabold text-on-surface">14.2k</p>
 </div>
-<div>
-<p class="text-sm font-bold text-on-surface-variant uppercase tracking-widest">Avg. Review Score</p>
-<p class="text-3xl font-extrabold text-on-surface">4.8</p>
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 group hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 rounded-lg bg-orange-50 text-orange-600">
+<span class="material-symbols-outlined" data-weight="fill">pie_chart</span>
+</span>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-full">Target: 85%</span>
 </div>
-<div class="flex items-center text-slate-400 text-sm font-medium">
-                        Based on 3.2k reviews
-                    </div>
+<h3 class="text-on-surface-variant text-sm font-medium mb-1">Avg. Occupancy</h3>
+<p class="text-3xl font-extrabold text-on-surface">82%</p>
 </div>
-<div class="bg-primary text-on-primary p-8 rounded-xl shadow-xl shadow-primary/20 space-y-4">
-<div class="h-12 w-12 bg-white/20 rounded-2xl flex items-center justify-center">
-<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 group hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 rounded-lg bg-emerald-50 text-emerald-600">
+<span class="material-symbols-outlined" data-weight="fill">location_on</span>
+</span>
+<span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">Full Capacity</span>
 </div>
-<div>
-<p class="text-sm font-bold text-on-primary-container uppercase tracking-widest opacity-80">Active Venues</p>
-<p class="text-3xl font-extrabold">12 / 12</p>
-</div>
-<div class="flex items-center text-on-primary text-sm font-bold">
-                        100% operational
-                    </div>
-</div>
-</section>
-<!-- Analytics Section -->
-<section class="bg-surface-container-low rounded-xl p-8 space-y-8">
-<div class="flex justify-between items-end">
-<div>
-<h3 class="text-2xl font-bold font-headline text-on-surface">Portfolio Performance</h3>
-<p class="text-on-surface-variant">Monthly revenue growth and occupancy trends</p>
-</div>
-<div class="flex space-x-2">
-<button class="px-4 py-2 rounded-full text-sm font-bold bg-white text-primary border border-outline-variant/20 shadow-sm">Revenue</button>
-<button class="px-4 py-2 rounded-full text-sm font-bold text-on-surface-variant hover:bg-white/50 transition-colors">Bookings</button>
-</div>
-</div>
-<!-- Mock Chart Area -->
-<div class="h-[400px] w-full flex items-end space-x-4 pb-8">
-<div class="flex-1 flex flex-col justify-end space-y-2 group">
-<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 60%;"></div>
-<p class="text-center text-xs font-bold text-on-surface-variant">JAN</p>
-</div>
-<div class="flex-1 flex flex-col justify-end space-y-2 group">
-<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 45%;"></div>
-<p class="text-center text-xs font-bold text-on-surface-variant">FEB</p>
-</div>
-<div class="flex-1 flex flex-col justify-end space-y-2 group">
-<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 75%;"></div>
-<p class="text-center text-xs font-bold text-on-surface-variant">MAR</p>
-</div>
-<div class="flex-1 flex flex-col justify-end space-y-2 group">
-<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 55%;"></div>
-<p class="text-center text-xs font-bold text-on-surface-variant">APR</p>
-</div>
-<div class="flex-1 flex flex-col justify-end space-y-2 group">
-<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 85%;"></div>
-<p class="text-center text-xs font-bold text-on-surface-variant">MAY</p>
-</div>
-<div class="flex-1 flex flex-col justify-end space-y-2 group">
-<div class="bg-primary-container w-full rounded-t-lg ring-4 ring-primary/10" style="height: 95%;"></div>
-<p class="text-center text-xs font-bold text-primary">JUN</p>
-</div>
+<h3 class="text-on-surface-variant text-sm font-medium mb-1">Active Venues</h3>
+<p class="text-3xl font-extrabold text-on-surface">12/12</p>
 </div>
 </section>
-<!-- Venue Management Section (Bento Grid Style) -->
-<section class="space-y-8">
-<div class="flex justify-between items-center">
-<h3 class="text-2xl font-bold font-headline text-on-surface">Managed Venues</h3>
-<button class="text-primary font-bold text-sm uppercase tracking-widest border-b-2 border-primary hover:border-b-4 transition-all pb-1">View Portfolio Map</button>
+<!-- Section 2 & 4: Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+<!-- Global Revenue Trend (Large Area Chart) -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="text-xl font-bold text-on-surface">Guest Type Breakdown</h2>
+<p class="text-sm text-on-surface-variant">Last 6 months performance growth</p>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<select class="bg-surface-container-low border-none rounded-lg text-sm font-semibold px-4 py-2 outline-none ring-0">
+<option>Monthly View</option>
+<option>Weekly View</option>
+</select>
+</div>
+<div class="h-64 relative">
+<!-- Placeholder for Chart Graphics -->
+<div class="absolute inset-0 flex items-end justify-between px-2">
+<div class="w-full h-full flex flex-col justify-end">
+<div class="relative w-full h-[70%] bg-gradient-to-t from-primary/20 to-primary/0 rounded-t-lg">
+<svg class="absolute bottom-0 w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 100 100">
+<path d="M0,80 Q25,75 50,60 T100,20 L100,100 L0,100 Z" fill="url(#grad1)"></path>
+<path d="M0,80 Q25,75 50,60 T100,20" fill="none" stroke="#630ed4" stroke-width="2"></path>
+<defs>
+<lineargradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:#7c3aed;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+</div>
+</div>
+<!-- Axis Labels -->
+<div class="flex justify-between mt-4 text-xs font-bold text-on-surface-variant/60 uppercase tracking-widest">
+<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+</div>
+</div>
+</div>
+<!-- Booking Distribution -->
+<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
+<h2 class="text-xl font-bold text-on-surface mb-2">Guest Type Breakdown</h2>
+<p class="text-sm text-on-surface-variant mb-8">Portfolio-wide demographics</p>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Couples (2 Guests)</span>
+<span class="font-bold text-primary">42%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[42%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Small Groups (4-6 Guests)</span>
+<span class="font-bold text-primary">38%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-primary/70 w-[38%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Parties (8+ Guests)</span>
+<span class="font-bold text-primary">20%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-primary/40 w-[20%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<!-- Section 3: Performance by Venue -->
+<section>
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold text-on-surface">Top-Performing Venues</h2>
+<button class="text-primary font-bold text-sm border-b-2 border-primary/20 hover:border-primary transition-all">View All Venues</button>
+</div>
+<div class="space-y-4">
 <!-- Venue Card 1 -->
-<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-<div class="h-56 relative overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Sleek modern restaurant interior with marble tables, moody lighting, and gold accents, luxury dining atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt9FoU3g2-3UJdUhVl8wx1wVOZKgQtQEWla7pZ3972LtEZW8CPcOdMHNFL9gNg2aSOxa3uQnyL-EcI_PEjDWIoHgBUM84ic3o0QLopYYYzYkN-Ehpf9HUQDl-olX8UoAjy7wPS2eAxdSpjFiFglS1qu1Bf0q8lI3kzi_yWKz-tdiSDeXzCjE1PsVIelnbJgEQkb1HuRh2oamzGNWp6nyz7B9E6o33qotrUq7l0OH_lFu8Ck45orqM44wdvOscljEtvMTbhJezruAEk"/>
-<div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center space-x-1 shadow-sm">
-<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-<span class="text-[10px] font-bold uppercase tracking-wider text-on-surface">Active</span>
+<div class="group flex items-center p-4 bg-surface-container-low rounded-xl hover:bg-surface-container-lowest hover:shadow-lg transition-all duration-300">
+<img alt="Restaurant Image" class="w-16 h-16 rounded-lg object-cover bg-white" data-alt="interior of a high-end contemporary bistro with velvet seating and warm ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-fS2AYs-tSxzBcjPAic7LcHKUXIDOc2UhPyJWq6GKD2Ye1chshScY835ArBcTDmKKbgwlRu4oQCBuY5D8r8IRBC67CGE72Faa0Llx5sDlCVV1zmb5O6gwbcC5KKtg6ZkyVJeY57GxCbGp8FX51LBveX6z1ZmI36lwO7wTA1oAvwafI1MoUP7GRjANzGPuXhogL8V1-WZmdTo31eK-Ua6G6hdh89SteObXukxMiEvQOok7UliECz2-O02OVtm5DUsEBf61lgcHE4qQ"/>
+<div class="ml-4 flex-1">
+<h4 class="font-bold text-lg text-on-surface">L'Essence Parisienne</h4>
+<div class="flex items-center gap-4 text-sm text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span> 4.9</span>
+<span>High-End Dining</span>
 </div>
 </div>
-<div class="p-8 space-y-4">
-<h4 class="text-xl font-bold font-headline text-on-surface">L'Ambroisie Luxe</h4>
-<div class="grid grid-cols-2 gap-4">
-<div>
-<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Today's Bookings</p>
-<p class="text-lg font-bold">142</p>
-</div>
-<div>
-<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Revenue</p>
-<p class="text-lg font-bold">$18,420</p>
-</div>
-</div>
-<button class="w-full py-3 rounded-full border border-outline-variant text-primary font-bold text-sm hover:bg-primary hover:text-white hover:border-primary transition-all">Manage Venue</button>
+<div class="text-right">
+<p class="font-extrabold text-on-surface">$245.8k</p>
+<p class="text-xs text-green-600 font-bold">Top Revenue</p>
 </div>
 </div>
 <!-- Venue Card 2 -->
-<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-<div class="h-56 relative overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Vibrant rooftop bar with lush plants, neon lights, and city skyline at sunset, trendy atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmECE3IfHvlX_KED6wA1_LocLyH1NMyn-734EaGOUXTfruJfFKbDOdxbXMuLtW9hqxfxRrMwQRpoHdLEq3mawgjH1Uw_TkrFBYX-UxlY7tRdVrxc3YSpsaHXOEHPeOBpf278flmSfjN8acwJiEza7467pRKAUSFr7G-pc9sLW37dn-cuCJvXmEqxFsgOMXPJTs1uqV7-aCDwauXYzcs_HnMeUDREH2OXI_BuXOWSmGxpos5H1j_7_XyNj6_0s2Y-WNo8aThFqdzFMK"/>
-<div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center space-x-1 shadow-sm">
-<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-<span class="text-[10px] font-bold uppercase tracking-wider text-on-surface">Active</span>
+<div class="group flex items-center p-4 bg-surface-container-low rounded-xl hover:bg-surface-container-lowest hover:shadow-lg transition-all duration-300">
+<img alt="Restaurant Image" class="w-16 h-16 rounded-lg object-cover bg-white" data-alt="minimalist omakase sushi counter with light wood accents and precise chef preparation area" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV9BKMIfQlgbjV39DRy22VYa-FYZysYKX3Afp0XHjaFxof07A5MkmhyQuIvbjswVeEz33Nx66ErpHTjGnDOE6DmrWG0bOcelPyBNlMrRoWHv0L7mnEU1cFMjIBFW_GI9O455qqzniPX2FV1JJS9wQ8WdmZ5N4eGH94lEord7EqVouaF34jlu9gVHqoIr3B-NDMxJoLj5MrXr4P74GlSJzxaf8udPULEajExBXhIZVOqIf7kW2V48m56Z-4DHPSgWij9JgvsEFKYTqK"/>
+<div class="ml-4 flex-1">
+<h4 class="font-bold text-lg text-on-surface">Zen Sushi Atelier</h4>
+<div class="flex items-center gap-4 text-sm text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span> 4.8</span>
+<span>Japanese Artisan</span>
 </div>
 </div>
-<div class="p-8 space-y-4">
-<h4 class="text-xl font-bold font-headline text-on-surface">Neon Horizon</h4>
-<div class="grid grid-cols-2 gap-4">
-<div>
-<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Today's Bookings</p>
-<p class="text-lg font-bold">89</p>
-</div>
-<div>
-<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Revenue</p>
-<p class="text-lg font-bold">$9,150</p>
-</div>
-</div>
-<button class="w-full py-3 rounded-full border border-outline-variant text-primary font-bold text-sm hover:bg-primary hover:text-white hover:border-primary transition-all">Manage Venue</button>
+<div class="text-right">
+<p class="font-extrabold text-on-surface">$192.4k</p>
+<p class="text-xs text-green-600 font-bold">+15% YoY</p>
 </div>
 </div>
 <!-- Venue Card 3 -->
-<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-<div class="h-56 relative overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Rustic high-end steakhouse with dark wood and warm hanging Edison bulbs, cozy intimate lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTzYHgdwq4PD1J4Spaexr4JlVQK3WhQyrHzHuFut1vkbR3KmoPvSSXpfQoM7Gzf3y_QNpsekA1n_NYzHEjRYMgShy88sTi6_LaTVxsFa0NNGPLYODp1il__c0wVW7MjjZTxyemFcv2RWDEbsZqlmI8J2C6zeuKylA4YWgrXumM94wjYGq3R8gti287u3qr48fA3Wm_fOxSpX_rOBVk7peWd1VOcDNmfcqJp-fKAUU_9196PO3Bit-sYNOOjaeowaOLYASti5PyhKlO"/>
-<div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center space-x-1 shadow-sm">
-<div class="w-2 h-2 rounded-full bg-amber-500"></div>
-<span class="text-[10px] font-bold uppercase tracking-wider text-on-surface">Pending</span>
+<div class="group flex items-center p-4 bg-surface-container-low rounded-xl hover:bg-surface-container-lowest hover:shadow-lg transition-all duration-300">
+<img alt="Restaurant Image" class="w-16 h-16 rounded-lg object-cover bg-white" data-alt="modern rustic wine cellar and tasting room with stone walls and industrial lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJlRp98iRSZszYk_fI4MkUNJDlkd0NeLJ-z4aSiHq1CGtpqr4IraYt7ujGL8fK4yoqhNsTNHH78ZwHpczyKUE6gUnSxV6oYmGHCBuDW3iiS0hJ7h-j1LZfc-GWaEDVMCrGZsxxH8CQQC5_RIU5L1_c5sXzVvE-BZV3ES1JHaly74hu8tS0QqRCYSBnCPTHkrvWh_SNUsGzljMw2Gw4TIWF1p5mUEtCWL0rKpxMmvcygDJc5G61CWjHOM1vOoyUZPAjX2a38OCJpiE-"/>
+<div class="ml-4 flex-1">
+<h4 class="font-bold text-lg text-on-surface">The Vine Vault</h4>
+<div class="flex items-center gap-4 text-sm text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span> 4.7</span>
+<span>Wine &amp; Tapas</span>
 </div>
 </div>
-<div class="p-8 space-y-4">
-<h4 class="text-xl font-bold font-headline text-on-surface">Iron &amp; Oak</h4>
-<div class="grid grid-cols-2 gap-4">
-<div>
-<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Today's Bookings</p>
-<p class="text-lg font-bold">0</p>
-</div>
-<div>
-<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Revenue</p>
-<p class="text-lg font-bold">$0</p>
-</div>
-</div>
-<button class="w-full py-3 rounded-full bg-slate-100 text-slate-500 font-bold text-sm cursor-not-allowed">Awaiting Review</button>
+<div class="text-right">
+<p class="font-extrabold text-on-surface">$158.2k</p>
+<p class="text-xs text-on-surface-variant font-bold">Steady Growth</p>
 </div>
 </div>
 </div>
 </section>
-<!-- Growth Intelligence Panel -->
+<!-- Section 5: Recent Global Activity -->
+<section>
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold text-on-surface">Recent Global Activity</h2>
+<span class="flex items-center gap-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Live Feed</span>
 </div>
-<footer class="mt-20 px-8 py-12 bg-white text-on-surface-variant border-t border-slate-100">
-<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-<p class="text-sm font-medium">© 2024 Aura Reserve. Portfolio Intelligence System.</p>
-<div class="flex space-x-6 text-sm font-bold">
-<a class="hover:text-primary transition-colors" href="#">Privacy</a>
-<a class="hover:text-primary transition-colors" href="#">Compliance</a>
-<a class="hover:text-primary transition-colors" href="#">Export Logs</a>
+<div class="bg-surface-container-lowest border border-outline-variant/10 rounded-xl overflow-hidden">
+<div class="divide-y divide-outline-variant/10">
+<!-- Activity Item 1 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container-low transition-colors">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">loyalty</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-medium"><span class="font-bold">VIP Booking:</span> Julianne Moore + 6 Guests</p>
+<p class="text-xs text-on-surface-variant">Confirmed at L'Essence Parisienne • 12 mins ago</p>
+</div>
+<div class="text-right text-xs font-bold text-primary">High Value</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container-low transition-colors">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined text-xl">celebration</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-medium"><span class="font-bold">Corporate Event:</span> TechNova Q3 Social</p>
+<p class="text-xs text-on-surface-variant">Private Room booked at The Vine Vault • 1 hr ago</p>
+</div>
+<div class="text-right text-xs font-bold text-on-surface-variant">$4,200.00</div>
+</div>
+<!-- Activity Item 3 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container-low transition-colors">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined text-xl">reviews</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-medium"><span class="font-bold">New Review:</span> "Impeccable Service..."</p>
+<p class="text-xs text-on-surface-variant">5-star rating at Zen Sushi Atelier • 3 hrs ago</p>
+</div>
+<div class="text-right text-xs font-bold text-green-600">5.0 Rating</div>
+</div>
+<!-- Activity Item 4 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container-low transition-colors">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
+<span class="material-symbols-outlined text-xl">assignment_late</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-medium"><span class="font-bold">Stock Alert:</span> Vintage Krug 2008</p>
+<p class="text-xs text-on-surface-variant">Low inventory across 3 venues • 5 hrs ago</p>
+</div>
+<div class="text-right text-xs font-bold text-orange-600">Alert</div>
 </div>
 </div>
-</footer>
+</div>
+</section>
+</div>
 </main>
 </body></html>

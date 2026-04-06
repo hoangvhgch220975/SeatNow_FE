@@ -29,6 +29,7 @@ export const ROUTES = {
   OWNER_HOME: '/owner',
   OWNER_PROFILE: '/owner/profile',
   OWNER_RESTAURANTS: '/owner/restaurants',
+  OWNER_ANALYTICS: '/owner/analytics',
   OWNER_POLICIES: '/owner/policies',
   CREATE_RESTAURANT: '/owner/restaurants/new',
   

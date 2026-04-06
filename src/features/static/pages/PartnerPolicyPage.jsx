@@ -3,6 +3,7 @@ import React from 'react';
 /**
  * @file PartnerPolicyPage.jsx
  * @description Trang Chính sách & Điều khoản dành riêng cho Đối tác (Owner).
+ * Nội dung được xây dựng dựa trên Business Flow thực tế của SeatNow.
  */
 const PartnerPolicyPage = () => {
   return (
@@ -22,7 +23,7 @@ const PartnerPolicyPage = () => {
             Partner <span className="text-violet-400">Governance</span> & Security<span className="text-emerald-400">.</span>
           </h1>
           <p className="text-slate-400 max-w-2xl mx-auto font-bold text-sm uppercase tracking-widest leading-loose">
-            Ensuring business integrity and data protection across the SeatNow Network.
+            Ensuring business integrity, financial transparency and data governance across the SeatNow Network.
           </p>
         </div>
       </section>
@@ -30,21 +31,21 @@ const PartnerPolicyPage = () => {
       {/* Content Layout */}
       <div className="max-w-5xl mx-auto space-y-20">
         
-        {/* Compliance Introduction */}
+        {/* 1. Onboarding & Business Identity */}
         <section className="bg-white p-12 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-8">
            <div className="w-16 h-16 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-600 border border-violet-100 mb-2">
               <span className="material-symbols-outlined text-3xl">verified_user</span>
            </div>
            <div className="space-y-4">
-              <h2 className="text-3xl font-black text-slate-900 tracking-tight">1. Partnership Core Principles</h2>
+              <h2 className="text-3xl font-black text-slate-900 tracking-tight">1. Onboarding & Business Identity</h2>
               <p className="text-slate-500 font-medium leading-relaxed">
-                 As a SeatNow Principal Partner, you are part of a global ecosystem dedicated to culinary excellence. 
-                 This policy outlines how we handle your business data and the operational standards expected of all registered restaurants.
+                 SeatNow enforces a strict verification process for all restaurant entities. 
+                 As a Principal Partner, your identity is vetted by our Internal Audit team to ensure operational legitimacy.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                  {[
-                    { title: 'Data Sovereignty', desc: 'You remain the primary owner of your operational restaurant metadata and menu assets.' },
-                    { title: 'Operational Integrity', desc: 'Partners must strive to fulfill at least 95% of confirmed bookings to maintain Elite status.' }
+                    { title: 'Verified Credentials', desc: 'Accounts are provisioned exclusively by SeatNow Administration. Access is granted via encrypted business credentials.' },
+                    { title: 'Principal Status', desc: 'Approved entities receive active Wallet systems and are integrated into the Global Discovery network.' }
                  ].map((item, idx) => (
                     <div key={idx} className="p-6 bg-slate-50 rounded-3xl border border-slate-100">
                        <h4 className="font-black text-slate-900 mb-2 uppercase text-[11px] tracking-widest">{item.title}</h4>
@@ -55,37 +56,36 @@ const PartnerPolicyPage = () => {
            </div>
         </section>
 
-        {/* Data Sharing Section */}
+        {/* 2. Operational Intelligence (Slot & Capacity) */}
         <section className="space-y-10 group">
            <div className="flex items-center gap-6">
               <div className="h-0.5 flex-1 bg-slate-100"></div>
-              <h2 className="text-sm font-black text-slate-400 tracking-[0.3em] uppercase">Telemetry & Security</h2>
+              <h2 className="text-sm font-black text-slate-400 tracking-[0.3em] uppercase">Service Optimization</h2>
               <div className="h-0.5 flex-1 bg-slate-100"></div>
            </div>
 
            <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
               <div className="md:col-span-4 bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-xl relative overflow-hidden">
                  <div className="absolute top-0 right-0 w-32 h-32 bg-violet-600/20 blur-3xl rounded-full"></div>
-                 <h3 className="text-2xl font-black mb-6">GDPR & Business Privacy</h3>
+                 <h3 className="text-2xl font-black mb-6">Slot Synchronization</h3>
                  <p className="text-xs text-slate-400 font-bold leading-loose mb-8">
-                    We strictly adhere to international data protection standards. Your business telemetry is encrypted and anonymized when used for system-wide analytics.
+                    To prevent overbooking, SeatNow utilizes a 2-hour default slot allocation. Our Redis Lock technology ensures real-time capacity protection.
                  </p>
-                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-                    <span className="text-[10px] font-black uppercase text-emerald-400">Level 4 Protection Active</span>
+                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10 text-center">
+                    <span className="text-[10px] font-black uppercase text-emerald-400">120-Min Availability Segments</span>
                  </div>
               </div>
 
               <div className="md:col-span-8 bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-inner space-y-6">
-                 <h3 className="text-xl font-bold text-slate-900">2. Real-time Synchronization</h3>
+                 <h3 className="text-xl font-bold text-slate-900">Operational Integrity Protocol</h3>
                  <p className="text-slate-500 font-medium leading-relaxed">
-                    By using the Owner Portal, you agree to allow SeatNow to synchronize your restaurant's booking status, table availability, and revenue data in real-time. 
-                    This ensures the most accurate experience for our mutual customers.
+                    Partners are required to maintain accurate digital menus (MongoDB) and table configurations (SQL) to provide seamless reservation services.
                  </p>
                  <ul className="space-y-4">
                     {[
-                       'Automated table availability reporting.',
-                       'Encrypted revenue metadata processing.',
-                       'Anonymized guest behavior analytics sharing.'
+                       'Real-time status updates: Confirmed, Arrived, and Completed.',
+                       'QR-Code based check-in for instant verification.',
+                       'Automatic release of table slots upon completion.'
                     ].map((text, idx) => (
                        <li key={idx} className="flex items-center gap-4 text-xs font-bold text-slate-600">
                           <span className="material-symbols-outlined text-violet-500 text-[18px]">sync_saved_locally</span>
@@ -97,29 +97,82 @@ const PartnerPolicyPage = () => {
            </div>
         </section>
 
-        {/* Operational Compliance */}
-        <section className="bg-violet-600 p-12 rounded-[3rem] text-white shadow-2xl shadow-violet-200 relative overflow-hidden">
-           <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-48 -mb-48"></div>
-           <div className="relative z-10 space-y-6 max-w-2xl px-4">
-              <h3 className="text-3xl font-black tracking-tight">3. Strategic Compliance Measures</h3>
-              <p className="text-violet-100 text-sm font-bold leading-loose">
-                 Failure to comply with operational standards (e.g., persistent double bookings or inaccurate status updates) 
-                 may result in temporary suspension from the SeatNow Global Discovery network. We prioritize customer trust above all.
-              </p>
-              <div className="flex flex-wrap gap-4 pt-4">
-                 <button className="bg-white text-violet-600 px-8 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg">
-                    Contact Compliance Officer
-                 </button>
-                 <button className="bg-violet-700 text-violet-100 px-8 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest">
-                    Operational Handbook
-                 </button>
+        {/* 3. Financial Settlement (Deposit & Wallet) */}
+        <section className="bg-slate-50 p-12 rounded-[2.5rem] border border-slate-100 space-y-10">
+           <div className="flex items-center justify-between gap-6 border-b border-slate-200 pb-8">
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">3. Financial Transparency Framework</h3>
+              <div className="hidden md:flex items-center gap-3 bg-white px-5 py-2.5 rounded-2xl border border-slate-200 shadow-sm">
+                 <span className="material-symbols-outlined text-emerald-500">payments</span>
+                 <span className="text-[10px] font-black uppercase text-slate-500">Encrypted Settlement Active</span>
               </div>
            </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-slate-600 leading-relaxed">
+              <div className="space-y-3">
+                 <h4 className="font-black text-slate-900 text-xs uppercase tracking-widest">Deposit Governance</h4>
+                 <p className="text-xs font-medium">Customer deposits are held in a secure escrow by SeatNow and settled to the Partner Wallet immediately upon attendee Arrival.</p>
+              </div>
+              <div className="space-y-3">
+                 <h4 className="font-black text-slate-900 text-xs uppercase tracking-widest">Commission Logic</h4>
+                 <p className="text-xs font-medium">Administrative commissions are deducted quarterly from the Partner Wallet. Net revenue is available for withdrawal upon Admin approval.</p>
+              </div>
+              <div className="space-y-3">
+                 <h4 className="font-black text-slate-900 text-xs uppercase tracking-widest">Cancellation Protection</h4>
+                 <p className="text-xs font-medium">Cancellations within 3 hours or "No-shows" grant full deposit retention (minus commission) to the restaurant entity.</p>
+              </div>
+           </div>
+        </section>
+
+        {/* 4. Portfolio Telemetry & AI Insights */}
+        <section className="bg-gradient-to-br from-violet-600 to-indigo-700 p-12 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
+           <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-48 -mt-48"></div>
+           <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                 <h3 className="text-3xl font-black tracking-tight">4. Portfolio Telemetry & AI</h3>
+                 <p className="text-violet-100 text-sm font-bold leading-loose">
+                    Principal Partners gain access to advanced SeatNow Analytics, providing deep visibility into guest segments (Couple, Small Group, Party) 
+                    and flexible period benchmarking (Weekly, Monthly, Quarterly).
+                 </p>
+                 <div className="flex gap-3">
+                    <div className="px-4 py-2 bg-white/10 rounded-xl border border-white/20 text-[10px] font-black tracking-widest uppercase">Gemini AI Enhanced</div>
+                    <div className="px-4 py-2 bg-white/10 rounded-xl border border-white/20 text-[10px] font-black tracking-widest uppercase">Real-time Dashboard</div>
+                 </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/10 space-y-4">
+                 <p className="text-xs font-bold text-violet-200 uppercase tracking-widest">Strategic Benefit</p>
+                 <p className="italic text-sm font-medium leading-relaxed">
+                    "Utilize SeatNow AI to predict peak hours, optimize menu performance, and manage withdrawal lifecycles through a unified intelligence interface."
+                 </p>
+              </div>
+           </div>
+        </section>
+
+        {/* 5. Support & Compliance Contact */}
+        <section className="scroll-mt-32" id="contact">
+          <div className="bg-emerald-600 p-12 rounded-[2.5rem] text-white shadow-2xl shadow-emerald-200 relative overflow-hidden">
+             {/* Decorative background circle */}
+             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
+
+            <h3 className="text-3xl font-black mb-4 relative z-10 tracking-tight">Business Integrity Support</h3>
+            <p className="mb-10 text-emerald-50/80 font-bold text-sm relative z-10 max-w-xl leading-relaxed">
+              Our Strategic Business Unit is available 24/7 to resolve disputes, manage withdrawal approvals, and assist with technical integration.
+            </p>
+            <div className="flex flex-wrap gap-8 relative z-10">
+              <div className="flex items-center gap-4 bg-white/10 px-6 py-4 rounded-2xl backdrop-blur-md border border-white/10 group hover:bg-white/20 transition-all">
+                <span className="material-symbols-outlined text-white">call</span>
+                <span className="font-black text-lg tracking-tight">(0812823285)</span>
+              </div>
+              <div className="flex items-center gap-4 bg-white/10 px-6 py-4 rounded-2xl backdrop-blur-md border border-white/10 group hover:bg-white/20 transition-all">
+                <span className="material-symbols-outlined text-white">mail</span>
+                <span className="font-black text-lg tracking-tight">hoangvhgch220975@fpt.edu.vn</span>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
 
       <div className="text-center mt-20 space-y-2">
-         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Last Update: April 2024</p>
+         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Last Update: April 2026</p>
          <p className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">© SeatNow Strategic Business Unit</p>
       </div>
     </main>

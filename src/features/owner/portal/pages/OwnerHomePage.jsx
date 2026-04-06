@@ -83,13 +83,9 @@ const OwnerHomePage = () => {
   const totalVenuesCount = stats.totalRestaurants || stats.totalVenues || restaurantsList.length;
   const inactiveVenuesCount = totalVenuesCount - activeVenuesCount;
 
-  // Tính điểm đánh giá trung bình toàn Portfolio
-  const ratedRestaurants = restaurantsList.filter(r => (r.ratingAvg || 0) > 0);
-  const avgRatingBase = ratedRestaurants.length > 0 
-    ? (ratedRestaurants.reduce((acc, curr) => acc + (curr.ratingAvg || 0), 0) / ratedRestaurants.length)
-    : 0;
-  const avgRating = avgRatingBase.toFixed(1);
-  const totalReviews = restaurantsList.reduce((acc, curr) => acc + (curr.ratingCount || 0), 0);
+  // Sử dụng dữ liệu đánh giá trung bình trọng số, giữ nguyên 2 chữ số thập phân (Vietnamese comment)
+  const avgRating = (stats.portfolioRatingAvg || 0).toFixed(2);
+  const portfolioTotalReviews = stats.portfolioTotalReviews || 0;
 
   // Chuẩn bị dữ liệu cho biểu đồ Recharts dựa trên Tab đang chọn
   const getChartSegments = () => {
@@ -176,7 +172,7 @@ const OwnerHomePage = () => {
       <MetricGrid 
         stats={stats}
         avgRating={avgRating}
-        totalReviews={totalReviews}
+        totalReviews={portfolioTotalReviews}
         activeVenuesCount={activeVenuesCount}
         totalVenuesCount={totalVenuesCount}
       />

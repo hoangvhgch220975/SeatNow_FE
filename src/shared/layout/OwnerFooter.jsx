@@ -42,7 +42,7 @@ const OwnerFooter = () => {
              <p className="text-sm font-black text-slate-900 tracking-tight uppercase">SeatNow <span className="text-violet-600">Portfolio</span> Intelligence</p>
           </div>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-11">
-             © 2024 Global Strategic Business Unit
+             © 2026 Global Strategic Business Unit
           </p>
         </div>
         

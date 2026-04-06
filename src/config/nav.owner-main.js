@@ -13,8 +13,7 @@ export const OWNER_MAIN_NAV = [
   },
   { 
     label: 'Global Analytics', 
-    path: '#', // Placeholder cho tính năng sắp ra mắt
+    path: ROUTES.OWNER_ANALYTICS, 
     icon: 'analytics',
-    isComingSoon: true
   },
 ];

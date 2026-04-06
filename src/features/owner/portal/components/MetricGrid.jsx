@@ -48,9 +48,9 @@ const MetricGrid = ({ stats, avgRating, totalReviews, activeVenuesCount, totalVe
       
       <MetricCard 
          icon="star"
-         title="Avg. Reviews"
+         title="Portfolio Satisfied"
          value={`${avgRating} ★`}
-         growth={2.4} // Giả lập mức tăng trưởng rating nếu data BE hỗ trợ sau
+         growth={`${totalReviews} reviews`} // Hiển thị tổng số lượng review thực tế đã thu thập (Vietnamese comment)
          iconColor="bg-orange-50"
          textIconColor="text-orange-500"
       />
