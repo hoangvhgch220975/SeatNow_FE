@@ -10,6 +10,8 @@ import TrackBookingPage from '../features/guest/pages/TrackBookingPage.jsx';
 import PolicyPage from '../features/static/pages/PolicyPage.jsx';
 import ContactPage from '../features/static/pages/ContactPage.jsx';
 import AuthLayout from '../shared/layout/AuthLayout.jsx';
+import AdminLayout from '../shared/layout/AdminLayout.jsx';
+import AdminDashboardPage from '../features/admin/pages/AdminDashboardPage.jsx';
 import LoginPage from '../features/auth/pages/LoginPage.jsx';
 import RegisterPage from '../features/auth/pages/RegisterPage.jsx';
 import ForgotPasswordPage from '../features/auth/pages/ForgotPasswordPage.jsx';
@@ -17,9 +19,15 @@ import OwnerJoinPage from '../features/auth/pages/OwnerJoinPage.jsx';
 import AIAssistantPage from '../features/ai-assistant/pages/AIAssistantPage.jsx';
 import CustomerLayout from '../shared/layout/CustomerLayout.jsx';
 import ProfilePage from '../features/profile/pages/ProfilePage.jsx';
+import OwnerProfilePage from '../features/profile/pages/OwnerProfilePage.jsx';
 import BookingHistoryPage from '../features/booking/pages/BookingHistoryPage.jsx';
 import BookingDetailPage from '../features/booking/pages/BookingDetailPage.jsx';
 import CreateBookingPage from '../features/booking/pages/CreateBookingPage.jsx';
+import OwnerMainLayout from '../shared/layout/OwnerMainLayout.jsx';
+import OwnerHomePage from '../features/owner/portal/pages/OwnerHomePage.jsx';
+import OwnerRestaurantsPage from '../features/owner/portal/pages/OwnerRestaurantsPage.jsx';
+import CreateRestaurantPage from '../features/owner/portal/pages/CreateRestaurantPage.jsx';
+import PartnerPolicyPage from '../features/static/pages/PartnerPolicyPage.jsx';
 
 
 /**
@@ -51,7 +59,7 @@ export const router = createBrowserRouter([
             element: <RestaurantDetailPage />,
           },
           {
-            path: '/restaurants/:idOrSlug/book',
+            path: '/restaurants/:idOrSlug/booking',
             element: <CreateBookingPage />,
           },
           {
@@ -125,8 +133,48 @@ export const router = createBrowserRouter([
           // Có thể thêm các trang như Wallet, Settings ở đây sau này
         ]
       },
-      // { element: <OwnerLayout />, children: [...] } // Layout cho Owner portal sẽ thêm sau
-      // { element: <AdminLayout />, children: [...] } // Layout cho Admin dashboard sẽ thêm sau
+      {
+        /* 
+          LAYOUT CHO OWNER (QUẢN LÝ DANH MỤC)
+          Dành cho chủ nhà hàng truy cập PORTAL tổng thể.
+        */
+        element: <OwnerMainLayout />,
+        children: [
+          {
+            path: ROUTES.OWNER_HOME,
+            element: <OwnerHomePage />,
+          },
+          {
+            path: ROUTES.OWNER_PROFILE,
+            element: <OwnerProfilePage />,
+          },
+          {
+            path: ROUTES.OWNER_RESTAURANTS,
+            element: <OwnerRestaurantsPage />,
+          },
+          {
+            path: ROUTES.OWNER_POLICIES,
+            element: <PartnerPolicyPage />,
+          },
+          {
+            path: ROUTES.CREATE_RESTAURANT,
+            element: <CreateRestaurantPage />,
+          },
+        ]
+      },
+      {
+        /* 
+          LAYOUT CHO ADMIN (QUẢN TRỊ VIÊN)
+          Dành cho Root Admin truy cập hệ thống quản trị trung tâm.
+        */
+        element: <AdminLayout />,
+        children: [
+          {
+            path: ROUTES.ADMIN_DASHBOARD,
+            element: <AdminDashboardPage />,
+          },
+        ]
+      },
     ],
   },
   {

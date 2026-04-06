@@ -133,12 +133,15 @@ seatnow-fe/
 │ │ │ ├─ api.js // API profile user
 │ │ │ ├─ hooks.js // Hook lấy/cập nhật profile
 │ │ │ ├─ pages/
-│ │ │ │ └─ ProfilePage.jsx // Trang hồ sơ cá nhân (Bento Layout)
+│ │ │ │ ├─ ProfilePage.jsx // Trang hồ sơ cá nhân (Bento Layout)
+│ │ │ │ └─ OwnerProfilePage.jsx // Trang hồ sơ riêng cho Owner
 │ │ │ └─ components/
 │ │ │ ├─ ProfileSidebar.jsx // Sidebar điều hướng (New)
 │ │ │ ├─ ProfileHero.jsx // Thẻ Hero định danh (New)
 │ │ │ ├─ LoyaltyCard.jsx // Thẻ tích điểm màu Gold (New)
 │ │ │ ├─ InfoSummary.jsx // Tổng hợp thông tin định danh (New)
+│ │ │ ├─ OwnerProfileHero.jsx // Hero chuyên biệt cho Owner
+│ │ │ ├─ OwnerInfoSummary.jsx // Info chuyên biệt cho Owner
 │ │ │ ├─ InfoCard.jsx // Thẻ thông tin con (New)
 │ │ │ ├─ RecentOrders.jsx // Danh sách đơn hàng gần nhất (Real Data) - (New)
 │ │ │ ├─ SettingsForm.jsx // Thành phần Container quản lý logic cập nhật Profile
@@ -227,9 +230,14 @@ seatnow-fe/
 │ │ │ │ │ ├─ OwnerRestaurantsPage.jsx // Danh sách nhà hàng của owner
 │ │ │ │ │ └─ CreateRestaurantPage.jsx // Form đăng ký nhà hàng mới
 │ │ │ │ └─ components/
-│ │ │ │ ├─ RestaurantCard.jsx // Card hiển thị trạng thái (pending/active/suspended)
+│ │ │ │ ├─ DashboardHeader.jsx // Lời chào & Trạng thái hệ thống (New)
+│ │ │ │ ├─ MetricCard.jsx // Thẻ KPI đơn lẻ (New)
+│ │ │ │ ├─ MetricGrid.jsx // Lưới hiển thị KPIs (New)
+│ │ │ │ ├─ CompositionAnalysis.jsx // Phân tích cơ cấu khách Bento (New)
+│ │ │ │ ├─ PortfolioChart.jsx // Biểu đồ Recharts chuyên nghiệp (New)
+│ │ │ │ ├─ RestaurantCard.jsx // Card hiển thị trạng thái & thông tin tóm tắt
 │ │ │ │ ├─ EmptyRestaurantsState.jsx // Khi owner chưa có nhà hàng
-│ │ │ │ └─ RestaurantStatusBadge.jsx // Badge màu cho pending/active/suspended
+│ │ │ │ └─ RestaurantStatusBadge.jsx // Badge màu cho trạng thái (New)
 │ │ │ │
 │ │ │ └─ workspace/ // Cấp từng nhà hàng cụ thể (sau khi đã chọn)
 │ │ │ ├─ dashboard/

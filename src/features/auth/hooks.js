@@ -7,10 +7,25 @@ import { useAuthStore } from './store.js';
 import { toast } from 'react-hot-toast';
 import { parseApiError, parseApiSuccess } from '../../shared/utils/parseApiError.js'; // Import helper xử lý lỗi/thành công API
 
+import { ROLES } from '../../config/roles.js';
+import { ROUTES } from '../../config/routes.js';
+
 /**
  * @file hooks.js
  * @description Hook quản lý logic xác thực, tích hợp React Query.
  */
+
+/**
+ * @description Trả về đường dẫn điều hướng dựa trên vai trò của người dùng.
+ * @param {Object} user 
+ * @returns {string} Path
+ */
+const getRedirectPath = (user) => {
+  const role = user?.role?.toUpperCase();
+  if (role === ROLES.ADMIN) return ROUTES.ADMIN_DASHBOARD || '/admin';
+  if (role === ROLES.OWNER) return ROUTES.OWNER_HOME;
+  return '/';
+};
 
 /**
  * @description Tìm kiếm Token và User một cách linh hoạt trong dữ liệu trả về của API.
@@ -89,7 +104,7 @@ export const useLoginMutation = () => {
       setTimeout(() => {
         const displayName = user?.fullName || user?.name || 'User';
         toast.success(response.message || `Welcome back, ${displayName}!`, { duration: 1000 });
-        navigate('/');
+        navigate(getRedirectPath(user));
       }, 1500);
     },
     onError: (error) => {
@@ -119,7 +134,7 @@ export const useGoogleLoginMutation = () => {
       setTimeout(() => {
         const displayName = user?.fullName || user?.name || 'User';
         toast.success(response.message || `Welcome, ${displayName}!`, { duration: 1000 });
-        navigate('/');
+        navigate(getRedirectPath(user));
       }, 1500);
     },
     onError: (error) => {
@@ -188,7 +203,7 @@ export const useRegisterMutation = () => {
         setTimeout(() => {
           const displayName = user?.fullName || user?.name || 'User';
           toast.success(`🎉 Welcome ${displayName}! Your account has been created successfully.`, { duration: 1000 });
-          navigate('/');
+          navigate(getRedirectPath(user));
         }, 1500);
       } else {
         setTimeout(() => {
@@ -231,7 +246,7 @@ export const useVerifyOtpMutation = () => {
         setTimeout(() => {
           const displayName = user?.fullName || user?.name || 'User';
           toast.success(`🎉 Welcome ${displayName}! Your account has been created successfully.`, { duration: 1000 });
-          navigate('/');
+          navigate(getRedirectPath(user));
         }, 1500);
       } else {
         // Nếu BE chỉ verify và chưa trả token -> thông báo và chuyển tới login

@@ -1,574 +1,323 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Socket.IO - Hold/Release Table (Zero-Latency)</title>
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 900px;
-      margin: 50px auto;
-      padding: 20px;
-      background: #f5f5f5;
-    }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #333;
-      border-bottom: 3px solid #4CAF50;
-      padding-bottom: 10px;
-    }
-    .section {
-      margin: 20px 0;
-      padding: 20px;
-      background: #f9f9f9;
-      border-radius: 5px;
-      border-left: 4px solid #4CAF50;
-    }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
-      color: #555;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    button {
-      padding: 12px 24px;
-      margin: 5px;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    button:hover {
-      background: #45a049;
-    }
-    button:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-    button.danger {
-      background: #f44336;
-    }
-    button.danger:hover {
-      background: #da190b;
-    }
-    button.secondary {
-      background: #2196F3;
-    }
-    button.secondary:hover {
-      background: #0b7dda;
-    }
-    .log {
-      background: #1e1e1e;
-      color: #d4d4d4;
-      padding: 15px;
-      border-radius: 5px;
-      max-height: 300px;
-      overflow-y: auto;
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-      margin-top: 20px;
-    }
-    .log-entry {
-      margin: 5px 0;
-      padding: 5px;
-      border-left: 3px solid transparent;
-    }
-    .log-entry.success {
-      border-left-color: #4CAF50;
-      color: #4CAF50;
-    }
-    .log-entry.error {
-      border-left-color: #f44336;
-      color: #f44336;
-    }
-    .log-entry.info {
-      border-left-color: #2196F3;
-      color: #64B5F6;
-    }
-    .log-entry.warning {
-      border-left-color: #ff9800;
-      color: #ffb74d;
-    }
-    .status {
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 3px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-left: 10px;
-    }
-    .status.connected {
-      background: #4CAF50;
-      color: white;
-    }
-    .status.disconnected {
-      background: #f44336;
-      color: white;
-    }
-    .countdown {
-      font-size: 24px;
-      font-weight: bold;
-      color: #ff9800;
-      text-align: center;
-      padding: 15px;
-      background: #fff3e0;
-      border-radius: 5px;
-      margin: 10px 0;
-    }
-    .table-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 15px;
-      margin-top: 15px;
-    }
-    .table-box {
-      aspect-ratio: 1/1;
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      background: white;
-      position: relative;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .table-box:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    .table-box.available {
-      border-color: #4CAF50;
-      background: #f1f8e9;
-    }
-    .table-box.occupied {
-      border-color: #f44336;
-      background: #ffebee;
-      cursor: not-allowed;
-    }
-    .table-box.held {
-      border-color: #FF9800;
-      background: #FFF3E0;
-      box-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
-    }
-    .table-box .num {
-      font-size: 22px;
-      font-weight: 800;
-      color: #333;
-    }
-    .table-box .cap {
-      font-size: 12px;
-      color: #666;
-      margin-top: 4px;
-    }
-    .table-box .type-tag {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      font-size: 9px;
-      text-transform: uppercase;
-      background: #eee;
-      padding: 2px 5px;
-      border-radius: 10px;
-    }
-    .grid-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 20px;
-      padding: 15px;
-      background: #fff;
-      border-radius: 8px;
-      border: 1px solid #eee;
-    }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      color: #555;
-    }
-    .legend-box {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-    }
-    .legend-box.available { background: #f1f8e9; border-color: #4CAF50; }
-    .legend-box.held { background: #FFF3E0; border-color: #FF9800; }
-    .legend-box.occupied { background: #ffebee; border-color: #f44336; }
-    .legend-box.my-selection { border: 2px dashed #2196F3; background: #e3f2fd; }
-    .location-tag {
-      font-size: 10px;
-      color: #777;
-      margin-top: 2px;
-      font-style: italic;
-    }
-  </style>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aura Reserve | Portfolio Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-dim": "#d9dadb",
+              "secondary": "#6e3aca",
+              "on-surface": "#191c1d",
+              "tertiary": "#7d3d00",
+              "primary-fixed": "#eaddff",
+              "background": "#f8f9fa",
+              "surface-bright": "#f8f9fa",
+              "on-secondary-container": "#fffbff",
+              "tertiary-fixed": "#ffdcc6",
+              "primary": "#630ed4",
+              "on-tertiary-fixed": "#301400",
+              "secondary-fixed": "#ebddff",
+              "surface-tint": "#732ee4",
+              "on-primary-fixed": "#25005a",
+              "primary-fixed-dim": "#d2bbff",
+              "on-tertiary-fixed-variant": "#713700",
+              "primary-container": "#7c3aed",
+              "on-secondary-fixed": "#250059",
+              "surface-container-highest": "#e1e3e4",
+              "surface-container": "#edeeef",
+              "on-primary": "#ffffff",
+              "on-error": "#ffffff",
+              "error-container": "#ffdad6",
+              "tertiary-fixed-dim": "#ffb784",
+              "surface-variant": "#e1e3e4",
+              "on-surface-variant": "#4a4455",
+              "surface": "#f8f9fa",
+              "inverse-primary": "#d2bbff",
+              "surface-container-low": "#f3f4f5",
+              "surface-container-high": "#e7e8e9",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "on-primary-fixed-variant": "#5a00c6",
+              "on-tertiary": "#ffffff",
+              "outline": "#7b7487",
+              "secondary-fixed-dim": "#d3bbff",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-container": "#ffe0cd",
+              "on-primary-container": "#ede0ff",
+              "outline-variant": "#ccc3d8",
+              "secondary-container": "#8856e5",
+              "inverse-on-surface": "#f0f1f2",
+              "on-background": "#191c1d",
+              "tertiary-container": "#a15100",
+              "inverse-surface": "#2e3132",
+              "on-error-container": "#93000a",
+              "on-secondary-fixed-variant": "#581db3"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Plus Jakarta Sans', sans-serif; }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      .glass-card { backdrop-filter: blur(12px); background-color: rgba(255, 255, 255, 0.7); }
+    </style>
 </head>
-<body>
-  <div class="container">
-    <h1>🔌 Test Socket.IO - Zero-Latency Table Sync</h1>
-    
-    <div class="section">
-      <h3>Connection Status: <span id="status" class="status disconnected">Disconnected</span></h3>
-      <label>Access Token (Optional):</label>
-      <input type="text" id="token" placeholder="Paste access token here...">
-      
-      <label>Server URL (Through Gateway):</label>
-      <input type="text" id="serverUrl" value="http://localhost:7000">
-      
-      <button onclick="connectSocket()">Connect</button>
-      <button onclick="disconnectSocket()" class="danger">Disconnect</button>
-    </div>
-
-    <div class="section">
-      <h3>Configuration</h3>
-      <label>Restaurant ID:</label>
-      <input type="text" id="restaurantId" value="BA3FB828-C52C-4FBE-83E7-4F326A9892A2">
-      
-      <label>Booking Date:</label>
-      <input type="date" id="bookingDate">
-      
-      <label>Booking Time:</label>
-      <select id="bookingTime"></select>
-      
-      <button onclick="joinRestaurant()" class="secondary">Join Room</button>
-    </div>
-
-    <div class="section">
-      <h3>Live Table Map</h3>
-      <div style="margin-bottom: 15px;">
-        <label>Filter by Floor:</label>
-        <select id="floorFilter" onchange="checkAvailability()">
-          <option value="">-- All Floors --</option>
-          <option value="1st Floor">1st Floor</option>
-          <option value="2nd Floor">2nd Floor</option>
-          <option value="3rd Floor">3rd Floor</option>
-          <option value="Rooftop">Rooftop</option>
-        </select>
-        <button onclick="checkAvailability()" class="secondary">Refresh Map</button>
-      </div>
-      
-      <div id="countdown" class="countdown" style="display:none;">
-        Holding table for <span id="countdownTime">02:00</span>
-      </div>
-
-      <div id="tableSection">
-        <div class="grid-legend">
-          <div class="legend-item"><div class="legend-box available"></div> Available</div>
-          <div class="legend-item"><div class="legend-box held"></div> Someone holding</div>
-          <div class="legend-item"><div class="legend-box occupied"></div> Occupied (Booked)</div>
-          <div class="legend-item"><div class="legend-box my-selection"></div> Your Selection</div>
-        </div>
-        <div id="tableGrid" class="table-grid"></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h3>📊 Event Logs</h3>
-      <button onclick="clearLog()" class="secondary">Clear Log</button>
-      <div id="log" class="log"></div>
-    </div>
-  </div>
-
-  <script>
-    let socket = null;
-    let countdownInterval = null;
-    let currentlyHeldTableId = null;
-    let isProcessing = false;
-
-    function log(message, type = 'info') {
-      const logDiv = document.getElementById('log');
-      const timestamp = new Date().toLocaleTimeString('vi-VN');
-      const entry = document.createElement('div');
-      entry.className = `log-entry ${type}`;
-      entry.textContent = `[${timestamp}] ${message}`;
-      logDiv.appendChild(entry);
-      logDiv.scrollTop = logDiv.scrollHeight;
-    }
-
-    function clearLog() {
-      document.getElementById('log').innerHTML = '';
-    }
-
-    function updateStatus(connected) {
-      const statusEl = document.getElementById('status');
-      statusEl.textContent = connected ? 'Connected' : 'Disconnected';
-      statusEl.className = `status ${connected ? 'connected' : 'disconnected'}`;
-    }
-
-    function connectSocket() {
-      const serverUrl = document.getElementById('serverUrl').value;
-      const token = document.getElementById('token').value.trim();
-
-      const config = { autoConnect: false };
-      if (token) config.auth = { token };
-
-      socket = io(serverUrl, config);
-
-      socket.on('connect', () => {
-        log('✅ Socket connected successfully!', 'success');
-        updateStatus(true);
-        joinRestaurant();
-        checkAvailability();
-      });
-
-      socket.on('disconnect', (reason) => {
-        log(`❌ Socket disconnected: ${reason}`, 'error');
-        updateStatus(false);
-        stopCountdown();
-      });
-
-      socket.on('tableStatusChanged', (data) => {
-        const { tableId, status, bookingDate, bookingTime } = data;
-        log(`⚡ Status Changed: Table ${tableId} -> ${status}`, 'info');
-        
-        const uiDate = document.getElementById('bookingDate').value;
-        const uiTime = document.getElementById('bookingTime').value;
-        
-        if (bookingDate === uiDate && bookingTime === uiTime) {
-          updateSingleTableInGrid(tableId, status);
-        }
-      });
-
-      socket.connect();
-    }
-
-    function disconnectSocket() {
-      if (socket) {
-        socket.disconnect();
-        socket = null;
-        updateStatus(false);
-        stopCountdown();
-      }
-    }
-
-    function joinRestaurant() {
-      if (!socket || !socket.connected) return;
-      const restaurantId = document.getElementById('restaurantId').value;
-      socket.emit('joinRestaurant', restaurantId);
-      log(`✅ Joined restaurant room: ${restaurantId}`, 'success');
-    }
-
-    function holdTable(tableId) {
-      return new Promise((resolve, reject) => {
-        if (!socket || !socket.connected) {
-          log('❌ Socket not connected!', 'error');
-          return reject(new Error('Socket not connected'));
-        }
-
-        const data = {
-          restaurantId: document.getElementById('restaurantId').value,
-          tableId: tableId,
-          bookingDate: document.getElementById('bookingDate').value,
-          bookingTime: document.getElementById('bookingTime').value
-        };
-
-        socket.emit('holdTable', data, (response) => {
-          if (response.success) {
-            log(`🔒 Table held! Expires in ${response.expiresIn}s`, 'success');
-            currentlyHeldTableId = tableId;
-            startCountdown(response.expiresIn);
-            updateSingleTableInGrid(tableId, 'held');
-            resolve(response);
-          } else {
-            log(`❌ Hold failed: ${response.error}`, 'error');
-            reject(new Error(response.error));
-          }
-        });
-      });
-    }
-
-    function releaseHold(tableId) {
-      return new Promise((resolve, reject) => {
-        if (!socket || !socket.connected) {
-          log('❌ Socket not connected!', 'error');
-          return reject(new Error('Socket not connected'));
-        }
-
-        const data = {
-          restaurantId: document.getElementById('restaurantId').value,
-          tableId: tableId,
-          bookingDate: document.getElementById('bookingDate').value,
-          bookingTime: document.getElementById('bookingTime').value
-        };
-
-        socket.emit('releaseHold', data, (response) => {
-          if (response.success) {
-            log(`🔓 Hold released for Table ${tableId}`, 'success');
-            if (tableId === currentlyHeldTableId) {
-              currentlyHeldTableId = null;
-              stopCountdown();
-            }
-            updateSingleTableInGrid(tableId, 'available');
-            resolve(response);
-          } else {
-            log(`❌ Release failed: ${response.error}`, 'error');
-            reject(new Error(response.error));
-          }
-        });
-      });
-    }
-
-    function updateSingleTableInGrid(tableId, status) {
-      const box = document.getElementById(`table-box-${tableId}`);
-      if (!box) return;
-
-      box.classList.remove('available', 'held', 'occupied');
-      box.style.border = '';
-
-      if (String(currentlyHeldTableId).toLowerCase() === String(tableId).toLowerCase() && status === 'held') {
-        box.classList.add('held');
-        box.style.border = '2px dashed #2196F3';
-      } else {
-        box.classList.add(status);
-      }
-    }
-
-    async function checkAvailability() {
-      const restaurantId = document.getElementById('restaurantId').value;
-      const date = document.getElementById('bookingDate').value;
-      const time = document.getElementById('bookingTime').value;
-      const token = document.getElementById('token').value.trim();
-
-      const serverUrl = document.getElementById('serverUrl').value.replace(/\/$/, '');
-      const location = document.getElementById('floorFilter').value;
-      
-      try {
-        const headers = {};
-        if (token) headers['Authorization'] = `Bearer ${token}`;
-
-        let tablesUrl = `${serverUrl}/api/v1/restaurants/${restaurantId}/tables`;
-        if (location) tablesUrl += `?location=${encodeURIComponent(location)}`;
-
-        const [resAll, resAvail] = await Promise.all([
-          fetch(tablesUrl, { headers }),
-          fetch(`${serverUrl}/api/v1/booking-restaurants/${restaurantId}/availability?date=${date}&time=${time}&guests=1`)
-        ]);
-
-        const dataAll = await resAll.json();
-        const dataAvail = await resAvail.json();
-        
-        renderTableGrid(dataAll.data || [], (dataAvail.items || []).map(t => t.id));
-      } catch (err) {
-        log(`❌ Refresh Error: ${err.message}`, 'error');
-      }
-    }
-
-    function renderTableGrid(allTables, availableIds) {
-      const grid = document.getElementById('tableGrid');
-      grid.innerHTML = '';
-      
-      allTables.forEach(t => {
-        const isAvail = availableIds.some(aid => String(aid).toLowerCase() === String(t.id).toLowerCase());
-        const isMine = String(currentlyHeldTableId).toLowerCase() === String(t.id).toLowerCase();
-        
-        const box = document.createElement('div');
-        box.className = 'table-box';
-        box.id = `table-box-${t.id}`;
-        
-        if (isMine) {
-          box.classList.add('held');
-          box.style.border = '2px dashed #2196F3';
-        } else if (isAvail) {
-          box.classList.add('available');
-        } else {
-          box.classList.add('occupied');
-        }
-        
-        box.innerHTML = `
-          <span class="type-tag">${t.type}</span>
-          <span class="num">${t.tableNumber}</span>
-          <span class="cap">${t.capacity} seats</span>
-          <span class="location-tag">📍 ${t.location || 'Unknown'}</span>
-        `;
-        
-        box.onclick = async () => {
-          if (isProcessing) return;
-          
-          const dynamicIsMine = String(currentlyHeldTableId).toLowerCase() === String(t.id).toLowerCase();
-          
-          // Nếu bàn đã occupied (màu đỏ) và không phải của mình, không làm gì cả
-          if (box.classList.contains('occupied') && !dynamicIsMine) {
-            log(`🚫 Table ${t.tableNumber} is already occupied!`, 'error');
-            return;
-          }
-
-          isProcessing = true;
-          try {
-            if (dynamicIsMine) {
-              log(`🔓 Releasing hold for table: ${t.tableNumber}...`, 'info');
-              await releaseHold(t.id);
-            } else {
-              // Nếu đang giữ bàn khác, nhả bàn đó ra trước
-              if (currentlyHeldTableId && currentlyHeldTableId !== t.id) {
-                log(`🕒 Switching tables. Releasing Table ${currentlyHeldTableId}...`, 'warning');
-                await releaseHold(currentlyHeldTableId);
-              }
-              log(`🔒 Attempting to hold table: ${t.tableNumber}...`, 'info');
-              await holdTable(t.id);
-            }
-          } catch (e) {
-            log(`❌ Operation failed: ${e.message}`, 'error');
-          } finally {
-            isProcessing = false;
-          }
-        };
-        
-        grid.appendChild(box);
-      });
-    }
-
-    function startCountdown(seconds) {
-      stopCountdown();
-      const div = document.getElementById('countdown');
-      div.style.display = 'block';
-      let remaining = seconds;
-      countdownInterval = setInterval(() => {
-        remaining--;
-        const m = Math.floor(remaining / 60).toString().padStart(2, '0');
-        const s = (remaining % 60).toString().padStart(2, '0');
-        document.getElementById('countdownTime').textContent = `${m}:${s}`;
-        if (remaining <= 0) stopCountdown();
-      }, 1000);
-    }
-
-    function stopCountdown() {
-      clearInterval(countdownInterval);
-      document.getElementById('countdown').style.display = 'none';
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('bookingDate').value = new Date().toISOString().split('T')[0];
-      const select = document.getElementById('bookingTime');
-      for (let h = 7; h <= 21; h += 2) {
-        const time = `${h.toString().padStart(2, '0')}:00`;
-        const opt = document.createElement('option');
-        opt.value = opt.textContent = time;
-        select.appendChild(opt);
-      }
-    });
-  </script>
-</body>
-</html>
+<body class="bg-surface text-on-surface flex min-h-screen">
+<!-- SideNavBar (Authority Source: JSON) -->
+<aside class="hidden md:flex flex-col h-screen w-72 bg-slate-50 sticky top-0 p-6 space-y-8 rounded-r-[3rem] z-20">
+<div class="flex flex-col space-y-1">
+<h1 class="text-2xl font-extrabold text-violet-700">Aura Reserve</h1>
+<p class="text-sm font-medium text-slate-500">Portfolio Manager</p>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Active Tab: Portfolio Overview -->
+<a class="flex items-center space-x-3 px-4 py-3 bg-white text-violet-700 shadow-sm rounded-2xl font-['Plus_Jakarta_Sans'] text-sm font-medium transition-transform duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Portfolio Overview</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-slate-500 hover:text-violet-600 hover:translate-x-1 transition-transform duration-300 font-['Plus_Jakarta_Sans'] text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span>All Venues</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-slate-500 hover:text-violet-600 hover:translate-x-1 transition-transform duration-300 font-['Plus_Jakarta_Sans'] text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Global Analytics</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-slate-200">
+<button class="w-full bg-primary text-on-primary py-4 px-6 rounded-2xl font-semibold flex items-center justify-center space-x-2 shadow-lg shadow-primary/20 hover:bg-primary-container transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span>Add New Venue</span>
+</button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 bg-surface">
+<!-- TopNavBar (Authority Source: JSON) -->
+<header class="docked full-width top-0 sticky z-10 bg-white/70 backdrop-blur-xl shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] px-8 py-4 flex justify-between items-center w-full">
+<div class="flex items-center space-x-8">
+<span class="text-xl font-bold tracking-tight text-slate-900">Aura Reserve</span>
+<div class="hidden lg:flex items-center bg-slate-100/50 rounded-full px-4 py-2 w-96">
+<span class="material-symbols-outlined text-slate-400 mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full font-body" placeholder="Search portfolio..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="p-2 text-slate-500 hover:bg-slate-100/50 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-sm font-semibold text-violet-600 hover:bg-slate-100/50 px-4 py-2 rounded-full transition-colors">Help</button>
+<div class="h-10 w-10 rounded-full bg-slate-200 overflow-hidden ring-2 ring-violet-100">
+<img class="h-full w-full object-cover" data-alt="Portrait of a sophisticated male executive in his 40s, Julian Vane, professional lighting and neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvT41v7qNPr7SKyWVcf8zt7esvK4QVtLlOs2Yy1OYLu3VR9UcJbFvEK7Jx39TxSx_5kLgSXhWFdLFUHnH2wiMzghgyJEXCvfy4QbQv7e5vThyVeqI-pbh_yp3VMLTtWMRlDUBCPGxjvc6diPCyUUabzuJaW1AU0xUJhYfpCvplUBM5HUDoi590aX3GgzGq1RVqbYu4T1m-e_GLE8f4Tx2u6OYq_4Vh8EdcWxZNf0eUgimQkG3Iog1417xLByUrzqz0BepbTSroQuM_"/>
+</div>
+</div>
+</header>
+<div class="p-8 max-w-7xl mx-auto w-full space-y-20">
+<!-- Header Welcome Section -->
+<section class="space-y-2">
+<h2 class="text-4xl font-extrabold text-on-surface tracking-tight font-headline">Good morning, Julian Vane</h2>
+<p class="text-lg text-on-surface-variant font-body">Your portfolio is performing <span class="text-primary font-bold">12.5% above target</span> this month. All 12 venues are currently operational with peak booking hours approaching.</p>
+</section>
+<!-- KPI Section (Asymmetric Grid) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] space-y-4">
+<div class="h-12 w-12 bg-primary-fixed rounded-2xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface-variant uppercase tracking-widest">Total Revenue</p>
+<p class="text-3xl font-extrabold text-on-surface">$1,248,300</p>
+</div>
+<div class="flex items-center text-emerald-600 text-sm font-bold">
+<span class="material-symbols-outlined text-xs mr-1" data-icon="trending_up">trending_up</span>
+                        8.2% vs last month
+                    </div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] space-y-4">
+<div class="h-12 w-12 bg-secondary-fixed rounded-2xl flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface-variant uppercase tracking-widest">Total Bookings</p>
+<p class="text-3xl font-extrabold text-on-surface">14,202</p>
+</div>
+<div class="flex items-center text-emerald-600 text-sm font-bold">
+<span class="material-symbols-outlined text-xs mr-1" data-icon="trending_up">trending_up</span>
+                        14% vs last month
+                    </div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] space-y-4">
+<div class="h-12 w-12 bg-tertiary-fixed rounded-2xl flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="star">star</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface-variant uppercase tracking-widest">Avg. Review Score</p>
+<p class="text-3xl font-extrabold text-on-surface">4.8</p>
+</div>
+<div class="flex items-center text-slate-400 text-sm font-medium">
+                        Based on 3.2k reviews
+                    </div>
+</div>
+<div class="bg-primary text-on-primary p-8 rounded-xl shadow-xl shadow-primary/20 space-y-4">
+<div class="h-12 w-12 bg-white/20 rounded-2xl flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-primary-container uppercase tracking-widest opacity-80">Active Venues</p>
+<p class="text-3xl font-extrabold">12 / 12</p>
+</div>
+<div class="flex items-center text-on-primary text-sm font-bold">
+                        100% operational
+                    </div>
+</div>
+</section>
+<!-- Analytics Section -->
+<section class="bg-surface-container-low rounded-xl p-8 space-y-8">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-2xl font-bold font-headline text-on-surface">Portfolio Performance</h3>
+<p class="text-on-surface-variant">Monthly revenue growth and occupancy trends</p>
+</div>
+<div class="flex space-x-2">
+<button class="px-4 py-2 rounded-full text-sm font-bold bg-white text-primary border border-outline-variant/20 shadow-sm">Revenue</button>
+<button class="px-4 py-2 rounded-full text-sm font-bold text-on-surface-variant hover:bg-white/50 transition-colors">Bookings</button>
+</div>
+</div>
+<!-- Mock Chart Area -->
+<div class="h-[400px] w-full flex items-end space-x-4 pb-8">
+<div class="flex-1 flex flex-col justify-end space-y-2 group">
+<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 60%;"></div>
+<p class="text-center text-xs font-bold text-on-surface-variant">JAN</p>
+</div>
+<div class="flex-1 flex flex-col justify-end space-y-2 group">
+<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 45%;"></div>
+<p class="text-center text-xs font-bold text-on-surface-variant">FEB</p>
+</div>
+<div class="flex-1 flex flex-col justify-end space-y-2 group">
+<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 75%;"></div>
+<p class="text-center text-xs font-bold text-on-surface-variant">MAR</p>
+</div>
+<div class="flex-1 flex flex-col justify-end space-y-2 group">
+<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 55%;"></div>
+<p class="text-center text-xs font-bold text-on-surface-variant">APR</p>
+</div>
+<div class="flex-1 flex flex-col justify-end space-y-2 group">
+<div class="bg-primary-fixed w-full rounded-t-lg transition-all duration-500 hover:bg-primary" style="height: 85%;"></div>
+<p class="text-center text-xs font-bold text-on-surface-variant">MAY</p>
+</div>
+<div class="flex-1 flex flex-col justify-end space-y-2 group">
+<div class="bg-primary-container w-full rounded-t-lg ring-4 ring-primary/10" style="height: 95%;"></div>
+<p class="text-center text-xs font-bold text-primary">JUN</p>
+</div>
+</div>
+</section>
+<!-- Venue Management Section (Bento Grid Style) -->
+<section class="space-y-8">
+<div class="flex justify-between items-center">
+<h3 class="text-2xl font-bold font-headline text-on-surface">Managed Venues</h3>
+<button class="text-primary font-bold text-sm uppercase tracking-widest border-b-2 border-primary hover:border-b-4 transition-all pb-1">View Portfolio Map</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Venue Card 1 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+<div class="h-56 relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Sleek modern restaurant interior with marble tables, moody lighting, and gold accents, luxury dining atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt9FoU3g2-3UJdUhVl8wx1wVOZKgQtQEWla7pZ3972LtEZW8CPcOdMHNFL9gNg2aSOxa3uQnyL-EcI_PEjDWIoHgBUM84ic3o0QLopYYYzYkN-Ehpf9HUQDl-olX8UoAjy7wPS2eAxdSpjFiFglS1qu1Bf0q8lI3kzi_yWKz-tdiSDeXzCjE1PsVIelnbJgEQkb1HuRh2oamzGNWp6nyz7B9E6o33qotrUq7l0OH_lFu8Ck45orqM44wdvOscljEtvMTbhJezruAEk"/>
+<div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center space-x-1 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-on-surface">Active</span>
+</div>
+</div>
+<div class="p-8 space-y-4">
+<h4 class="text-xl font-bold font-headline text-on-surface">L'Ambroisie Luxe</h4>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Today's Bookings</p>
+<p class="text-lg font-bold">142</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Revenue</p>
+<p class="text-lg font-bold">$18,420</p>
+</div>
+</div>
+<button class="w-full py-3 rounded-full border border-outline-variant text-primary font-bold text-sm hover:bg-primary hover:text-white hover:border-primary transition-all">Manage Venue</button>
+</div>
+</div>
+<!-- Venue Card 2 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+<div class="h-56 relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Vibrant rooftop bar with lush plants, neon lights, and city skyline at sunset, trendy atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmECE3IfHvlX_KED6wA1_LocLyH1NMyn-734EaGOUXTfruJfFKbDOdxbXMuLtW9hqxfxRrMwQRpoHdLEq3mawgjH1Uw_TkrFBYX-UxlY7tRdVrxc3YSpsaHXOEHPeOBpf278flmSfjN8acwJiEza7467pRKAUSFr7G-pc9sLW37dn-cuCJvXmEqxFsgOMXPJTs1uqV7-aCDwauXYzcs_HnMeUDREH2OXI_BuXOWSmGxpos5H1j_7_XyNj6_0s2Y-WNo8aThFqdzFMK"/>
+<div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center space-x-1 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-on-surface">Active</span>
+</div>
+</div>
+<div class="p-8 space-y-4">
+<h4 class="text-xl font-bold font-headline text-on-surface">Neon Horizon</h4>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Today's Bookings</p>
+<p class="text-lg font-bold">89</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Revenue</p>
+<p class="text-lg font-bold">$9,150</p>
+</div>
+</div>
+<button class="w-full py-3 rounded-full border border-outline-variant text-primary font-bold text-sm hover:bg-primary hover:text-white hover:border-primary transition-all">Manage Venue</button>
+</div>
+</div>
+<!-- Venue Card 3 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+<div class="h-56 relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Rustic high-end steakhouse with dark wood and warm hanging Edison bulbs, cozy intimate lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTzYHgdwq4PD1J4Spaexr4JlVQK3WhQyrHzHuFut1vkbR3KmoPvSSXpfQoM7Gzf3y_QNpsekA1n_NYzHEjRYMgShy88sTi6_LaTVxsFa0NNGPLYODp1il__c0wVW7MjjZTxyemFcv2RWDEbsZqlmI8J2C6zeuKylA4YWgrXumM94wjYGq3R8gti287u3qr48fA3Wm_fOxSpX_rOBVk7peWd1VOcDNmfcqJp-fKAUU_9196PO3Bit-sYNOOjaeowaOLYASti5PyhKlO"/>
+<div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center space-x-1 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-amber-500"></div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-on-surface">Pending</span>
+</div>
+</div>
+<div class="p-8 space-y-4">
+<h4 class="text-xl font-bold font-headline text-on-surface">Iron &amp; Oak</h4>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Today's Bookings</p>
+<p class="text-lg font-bold">0</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Revenue</p>
+<p class="text-lg font-bold">$0</p>
+</div>
+</div>
+<button class="w-full py-3 rounded-full bg-slate-100 text-slate-500 font-bold text-sm cursor-not-allowed">Awaiting Review</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Growth Intelligence Panel -->
+</div>
+<footer class="mt-20 px-8 py-12 bg-white text-on-surface-variant border-t border-slate-100">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+<p class="text-sm font-medium">© 2024 Aura Reserve. Portfolio Intelligence System.</p>
+<div class="flex space-x-6 text-sm font-bold">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Compliance</a>
+<a class="hover:text-primary transition-colors" href="#">Export Logs</a>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

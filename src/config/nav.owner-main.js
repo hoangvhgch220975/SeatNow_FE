@@ -1,7 +1,20 @@
 import { ROUTES } from './routes.js';
 
 export const OWNER_MAIN_NAV = [
-  { label: 'Overview', path: ROUTES.OWNER_HOME },
-  { label: 'Restaurant Assets', path: ROUTES.OWNER_RESTAURANTS },
-  { label: 'Create New Restaurant', path: ROUTES.CREATE_RESTAURANT },
+  { 
+    label: 'Portfolio Overview', 
+    path: ROUTES.OWNER_HOME, 
+    icon: 'dashboard' 
+  },
+  { 
+    label: 'All Venues', 
+    path: ROUTES.OWNER_RESTAURANTS, 
+    icon: 'storefront' 
+  },
+  { 
+    label: 'Global Analytics', 
+    path: '#', // Placeholder cho tính năng sắp ra mắt
+    icon: 'analytics',
+    isComingSoon: true
+  },
 ];

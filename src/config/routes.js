@@ -21,13 +21,15 @@ export const ROUTES = {
   POLICIES: '/policies',
   CONTACT: '/contact',
   
-  CREATE_BOOKING: (id) => `/restaurants/${id}/book`,
+  CREATE_BOOKING: (id) => `/restaurants/${id}/booking`,
   BOOKING_HISTORY: '/my-bookings',
   BOOKING_DETAIL: (id) => `/my-bookings/${id}`,
   
   // --- OWNER PORTAL ---
   OWNER_HOME: '/owner',
+  OWNER_PROFILE: '/owner/profile',
   OWNER_RESTAURANTS: '/owner/restaurants',
+  OWNER_POLICIES: '/owner/policies',
   CREATE_RESTAURANT: '/owner/restaurants/new',
   
   // --- OWNER WORKSPACE (Dynamic param :restaurantId) ---

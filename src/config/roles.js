@@ -3,6 +3,6 @@
  */
 export const ROLES = {
   CUSTOMER: 'CUSTOMER',
-  OWNER: 'OWNER',
+  OWNER: 'RESTAURANT_OWNER',
   ADMIN: 'ADMIN',
 };
