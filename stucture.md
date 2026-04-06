@@ -195,6 +195,19 @@ seatnow-fe/
 │ │ │ ├─ DepositSummary.jsx // Tóm tắt tiền cọc
 │ │ │ └─ CancelBookingDialog.jsx // Xác nhận hủy booking
 │ │ │
+│ │ ├─ payment/
+│ │ │ ├─ api.js // API calls: generate QR, check status
+│ │ │ ├─ hooks.js // React Query hooks: useStartPayment, usePaymentStatus (New)
+│ │ │ └─ components/
+│ │ │   ├─ PaymentModal.jsx // Orchestrator component
+│ │ │   ├─ shared/
+│ │ │   │ ├─ PaymentHeader.jsx (New)
+│ │ │   │ └─ PaymentFooter.jsx (New)
+│ │ │   └─ steps/
+│ │ │     ├─ PaymentMethodSelector.jsx (New)
+│ │ │     ├─ PaymentProcessing.jsx (New)
+│ │ │     └─ PaymentResult.jsx (New)
+│ │ │
 │ │ ├─ reviews/
 │ │ │ ├─ api.js // API lấy danh sách review, tóm tắt (summary), tạo review
 │ │ │ ├─ hooks.js // useRestaurantReviews, useRestaurantReviewSummary

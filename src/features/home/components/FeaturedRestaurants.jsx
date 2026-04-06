@@ -57,26 +57,34 @@ const FeaturedRestaurants = () => {
   // Kiểm tra xem tất cả các queries đã xong chưa (để tránh lọc vội vàng)
   const isSummariesLoaded = summaries.every(s => s.isSuccess || s.isError);
 
-  // 3. Lọc và Sắp xếp: Chỉ hiện những nhà hàng thực sự có đánh giá từ MongoDB
+  // 3. Lọc và Sắp xếp: Ưu tiên nhà hàng có đánh giá thật, nhưng luôn đảm bảo đủ 6 cái
   const featuredList = React.useMemo(() => {
     if (!isSummariesLoaded) return [];
 
     return rawRestaurants
       .map((res, index) => {
         const s = summaries[index].data?.data || summaries[index].data || {};
+        // Sử dụng rating từ MongoDB nếu có, nếu không lấy rating mặc định từ SQL
+        const finalRating = s.averageRating || res.rating || 0;
+        const finalCount = s.totalReviews || res.review_count || 0;
+
         return {
           ...res,
-          // Ghi đè rating thật từ MongoDB để đảm bảo tính nhất quán
-          verifiedRating: s.averageRating,
-          verifiedCount: s.totalReviews || 0
+          verifiedRating: finalRating,
+          verifiedCount: finalCount,
+          hasRealReviews: (s.totalReviews || 0) > 0 // Đánh dấu để ưu tiên sắp xếp
         };
       })
-      .filter(res => {
-        // CHỈ HIỆN nếu thực sự có ít nhất 1 review từ MongoDB
-        return res.verifiedCount > 0;
+      // Không lọc bỏ (filter), để giữ lại đủ số lượng
+      .sort((a, b) => {
+        // Ưu tiên 1: Những cái có review thật từ người dùng
+        if (a.hasRealReviews !== b.hasRealReviews) {
+          return b.hasRealReviews ? 1 : -1;
+        }
+        // Ưu tiên 2: Điểm số rating cao nhất
+        return (b.verifiedRating || 0) - (a.verifiedRating || 0);
       })
-      .sort((a, b) => (b.verifiedRating || 0) - (a.verifiedRating || 0))
-      .slice(0, 6);
+      .slice(0, 6); // Lấy đúng 6 cái hot nhất
   }, [rawRestaurants, summaries, isSummariesLoaded]);
 
   if (isError) {
