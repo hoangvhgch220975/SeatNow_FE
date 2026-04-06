@@ -62,8 +62,17 @@ const BookingLookupForm = ({ onSearch }) => {
           
           {isError && (
             <div className="md:col-span-2 mt-2 -mb-2">
-              <p className="text-red-500 text-sm font-medium text-center">
-                {error?.response?.data?.message || 'Booking not found. Please check your details.'}
+              <p className="text-red-500 text-sm font-bold text-center bg-red-50 py-3 rounded-xl border border-red-100 flex items-center justify-center gap-2">
+                <span className="material-symbols-outlined text-base">error</span>
+                {(() => {
+                  const status = error?.response?.status;
+                  const msg = error?.response?.data?.message?.toLowerCase() || '';
+                  
+                  if (status === 404) return 'Booking Code not found. Please check your ID.';
+                  if (status === 403 || msg.includes('phone')) return 'Phone number does not match this reservation.';
+                  
+                  return error?.response?.data?.message || 'Search failed. Please verify your details.';
+                })()}
               </p>
             </div>
           )}

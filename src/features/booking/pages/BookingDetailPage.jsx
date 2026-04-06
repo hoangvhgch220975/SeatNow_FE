@@ -1,21 +1,25 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react'; // Bổ sung useEffect
 import { useParams, useNavigate } from 'react-router-dom';
-import { useBookingDetailQuery } from '../hooks.js';
+import { useBookingDetailQuery, useCancelBooking } from '../hooks.js';
+import { useRestaurant } from '../../restaurants/hooks.js';
+import { getRestaurantTables } from '../../restaurants/api'; // Thêm API lấy bàn
 import { useProfileQuery } from '../../profile/hooks.js';
 import BookingStatusTimeline from '../components/BookingStatusTimeline.jsx';
 import BookingStatusBadge from '../components/BookingStatusBadge.jsx';
 
-
 import BookingQRCode from '../components/BookingQRCode.jsx';
 import BookingInfoSection from '../components/BookingInfoSection.jsx';
 import BookingFinancialSummary from '../components/BookingFinancialSummary.jsx';
+import CancelBookingDialog from '../components/CancelBookingDialog.jsx';
 import LoadingSpinner from '../../../shared/ui/LoadingSpinner.jsx';
 import ErrorState from '../../../shared/feedback/ErrorState.jsx';
 import { formatDate, formatTime } from '../../../shared/utils/formatDateTime.js';
+import toast from 'react-hot-toast';
+import { ROUTES } from '../../../config/routes.js';
 
 /**
  * @file BookingDetailPage.jsx
- * @description Trang chi tiết một đơn đặt bàn kết nối API thực tế.
+ * @description Trang chi tiết một đơn đặt bàn kết nối API thực tế cho Customer.
  * @author Antigravity AI
  */
 const BookingDetailPage = () => {
@@ -24,7 +28,47 @@ const BookingDetailPage = () => {
 
   // Gọi API lấy dữ liệu thực
   const { data: rawBooking, isLoading: isBookingLoading, isError: isBookingError, error: bookingError } = useBookingDetailQuery(id);
+  const cancelBookingMutation = useCancelBooking();
   
+  // State quản lý Bàn được làm giàu dữ liệu (Số bàn, Loại bàn) và Dialog Hủy
+  const [enrichedTable, setEnrichedTable] = useState(null);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+
+  // Lấy dữ liệu thô để xác định restaurantId và tableId
+  const bData = rawBooking?.data || rawBooking || {};
+  const bookingInfo = bData?.booking || bData;
+  const restaurantId = bookingInfo?.restaurant?.id || bookingInfo?.restaurantId || bookingInfo?.restaurant?._id;
+  const tableIdFromBooking = bookingInfo?.tableId || (bookingInfo?.table?.id || bookingInfo?.table?._id);
+  const initialTableObj = bookingInfo?.table || {};
+
+  // Cơ chế "Data Enrichment": Tìm nạp chi tiết bàn nếu object table bị trống từ API chính
+  useEffect(() => {
+    // Chỉ chạy nếu có tableId nhưng object bàn không có thông tin chi tiết (tableNumber)
+    const needsEnrichment = tableIdFromBooking && !initialTableObj?.tableNumber;
+
+    if (needsEnrichment && restaurantId) {
+      const fetchEnrichedTable = async () => {
+        try {
+          const res = await getRestaurantTables(restaurantId);
+          const tablesList = res?.data || res || [];
+          const matchedTable = tablesList.find(t => (t.id || t._id || t.Id) === tableIdFromBooking);
+          if (matchedTable) {
+            setEnrichedTable(matchedTable);
+          }
+        } catch (err) {
+          console.error("Failed to enrich table data in Detail Page:", err);
+        }
+      };
+      fetchEnrichedTable();
+    }
+  }, [tableIdFromBooking, restaurantId, initialTableObj]);
+
+  const restaurantSlug = bookingInfo?.restaurant?.slug || restaurantId; // Cố gắng lấy slug nếu có
+
+  // Tải thêm thông tin chi tiết nhà hàng để lấy ảnh (Lazy Fetching giống BookingCard)
+  const { data: fullRestaurantData } = useRestaurant(id && !bookingInfo?.restaurant?.images ? restaurantId : null);
+  const fullRes = fullRestaurantData?.data || fullRestaurantData;
+
   // Lấy thêm thông tin Profile để điền vào nếu thông tin Guest bị trống (cho user đã login)
   const { data: profile } = useProfileQuery();
 
@@ -32,13 +76,9 @@ const BookingDetailPage = () => {
   const normalizedBooking = useMemo(() => {
     if (!rawBooking) return null;
 
-
-    // Backend bóc tách các tầng: 
-    let b = rawBooking.data || rawBooking;
-    
-    // Dựa trên LOG: Dữ liệu nằm trong { booking: {...}, restaurant: {...} }
-    const bookingData = b.booking || b; 
-    const restaurantData = b.restaurant || {};
+    // Backend bóc tách các tầng
+    const bookingData = bData.booking || bData; 
+    const restaurantData = bData.restaurant || bData.Restaurant || {};
 
     const getV = (obj, ...keys) => {
       for (const key of keys) {
@@ -47,21 +87,43 @@ const BookingDetailPage = () => {
       return null;
     };
 
-    const restaurantName = getV(restaurantData, 'restaurantName', 'name', 'Name') || "Restaurant Name";
-    const restaurantAddress = getV(restaurantData, 'restaurantAddress', 'address', 'Address') || "Contact restaurant for address";
-    const restaurantImages = getV(restaurantData, 'images', 'Images') || [];
-    const restaurantImage = restaurantImages[0] || getV(restaurantData, 'image', 'Image') || "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop";
+    const restaurantName = getV(restaurantData, 'restaurantName', 'name', 'Name') || fullRes?.name || "Restaurant Name";
+    const restaurantAddress = getV(restaurantData, 'restaurantAddress', 'address', 'Address') || fullRes?.address || "Contact restaurant for address";
+    
+    // Ưu tiên ảnh từ dữ liệu nhà hàng đầy đủ
+    const imagesFromFull = fullRes?.images || fullRes?.imagesJson || [];
+    const rawImagesArr = imagesFromFull.length > 0 ? imagesFromFull : (getV(restaurantData, 'images', 'imagesJson', 'restaurantImages', 'restaurantImagesJson') || []);
+    
+    let restaurantImages = [];
+    try {
+      if (typeof rawImagesArr === 'string' && rawImagesArr.trim().startsWith('[')) {
+        restaurantImages = JSON.parse(rawImagesArr);
+      } else if (Array.isArray(rawImagesArr)) {
+        restaurantImages = rawImagesArr;
+      } else if (rawImagesArr) {
+        restaurantImages = [rawImagesArr];
+      }
+    } catch (e) {
+      restaurantImages = [];
+    }
+
+    const restaurantImage = restaurantImages[0] || getV(restaurantData, 'image', 'Image', 'coverImage') || fullRes?.image || "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop";
 
     const bid = getV(bookingData, 'id', 'Id', '_id');
     const bCode = getV(bookingData, 'bookingCode', 'BookingCode', 'code', 'Code');
+    const bStatus = (getV(bookingData, 'status', 'Status') || 'pending').toLowerCase();
 
-    // Thông tin người dùng có thể nằm trong user hoặc customer object bên trong booking
+    // Thông tin người dùng
     const userData = bookingData.user || bookingData.User || bookingData.customer || bookingData.Customer || {};
+
+    // Thông tin bàn cuối cùng (Ưu tiên enrichedTable nếu vừa mới fetch được chi tiết)
+    const finalTable = (enrichedTable && Object.keys(enrichedTable).length > 0) ? enrichedTable : (bookingData.table || {});
 
     return {
       id: bid,
       bookingCode: bCode || (bid ? String(bid).slice(0, 8).toUpperCase() : 'N/A'),
-      status: (getV(bookingData, 'status', 'Status') || 'pending').toLowerCase(),
+      status: bStatus,
+      cancellationReason: getV(bookingData, 'cancellationReason', 'CancellationReason', 'reason') || (bStatus === 'cancelled' ? 'No reason provided' : null),
       restaurant: {
         name: restaurantName,
         address: restaurantAddress,
@@ -74,11 +136,17 @@ const BookingDetailPage = () => {
       },
 
       reservation: {
-        // Sử dụng giá trị thô nếu formatDate trả về rỗng
         date: formatDate(getV(bookingData, 'bookingDate', 'BookingDate', 'date', 'Date')) || getV(bookingData, 'bookingDate', 'date'),
         time: formatTime(getV(bookingData, 'bookingTime', 'BookingTime', 'time', 'Time')) || getV(bookingData, 'bookingTime', 'time'),
+        rawDate: getV(bookingData, 'bookingDate', 'BookingDate', 'date', 'Date'),
+        rawTime: getV(bookingData, 'bookingTime', 'BookingTime', 'time', 'Time'),
         partySize: getV(bookingData, 'numGuests', 'NumGuests', 'guests', 'Guests', 'partySize') || 1,
-        tableType: getV(bookingData, 'tableType', 'TableType') || "Standard Seating"
+        
+        // Cập nhật Table Info: Ưu tiên enriched data
+        tableNumber: getV(finalTable, 'tableNumber', 'TableNumber'),
+        tableType: getV(finalTable, 'type', 'Type') || getV(bookingData, 'tableType', 'TableType') || "Standard Seating",
+        tableId: getV(bookingData, 'tableId', 'TableId') || getV(finalTable, 'id', '_id', 'Id'),
+        tableInfo: finalTable || { name: getV(bookingData, 'tableType', 'tableName') }
       },
       notes: getV(bookingData, 'specialRequests', 'notes', 'SpecialRequest') || "No special requests provided.",
       financial: {
@@ -86,7 +154,7 @@ const BookingDetailPage = () => {
         total: (getV(bookingData, 'totalPrice', 'TotalPrice') !== null) ? `${Number(getV(bookingData, 'totalPrice', 'TotalPrice')).toLocaleString('vi-VN')} VNĐ` : (getV(bookingData, 'depositAmount', 'DepositAmount') ? `${Number(getV(bookingData, 'depositAmount', 'DepositAmount')).toLocaleString('vi-VN')} VNĐ` : "0 VNĐ")
       }
     };
-  }, [rawBooking]);
+  }, [rawBooking, fullRes, profile, enrichedTable, bData]); // Thêm enrichedTable vào dependency
 
 
 
@@ -109,6 +177,35 @@ const BookingDetailPage = () => {
   if (!normalizedBooking) return null;
 
   const isConfirmed = normalizedBooking.status.toLowerCase() === 'confirmed';
+  const isPending = normalizedBooking.status.toLowerCase() === 'pending';
+  const canModifyOrCancel = isConfirmed || isPending;
+
+  // Xử lý Sự kiện Hủy Đặt bàn
+  const handleCancelConfirm = (reason) => {
+    cancelBookingMutation.mutate(
+      { id, cancellationReason: reason || 'Customer requested cancellation.' },
+      {
+        onSuccess: () => {
+          toast.success('Your reservation has been cancelled.', { icon: '✖️' });
+          setIsCancelDialogOpen(false);
+          // Query sẽ tự invaldiate và load lại trang Status thành Cancelled
+        },
+        onError: (err) => {
+          toast.error(err?.response?.data?.message || 'Failed to cancel. Please try again.');
+        }
+      }
+    );
+  };
+
+  // Xử lý Sự kiện Sửa Đặt bàn (Truyền state sang CreateBookingPage)
+  const handleModifyClick = () => {
+    // Điều hướng tới trang tạo booking với trạng thái modification (Dùng slug hoặc ID nhà hàng)
+    const finalResId = fullRes?.slug || restaurantId || 'unknown';
+    const targetUrl = ROUTES.CREATE_BOOKING(finalResId);
+    
+    navigate(targetUrl, { state: { modifyBookingItem: normalizedBooking, originalRestaurantId: restaurantId } });
+  };
+
 
   return (
     <div className="min-h-screen bg-[#FDFCFE] pt-16 pb-24 px-8 relative overflow-hidden -mt-16">
@@ -185,19 +282,38 @@ const BookingDetailPage = () => {
               </div>
             )}
             
-            {/* Secondary Actions */}
-            <div className="p-2">
-              <button className="w-full py-4 text-rose-500 text-xs font-black uppercase tracking-widest border-2 border-rose-50 hover:bg-rose-50/50 hover:border-rose-100 rounded-3xl transition-all">
-                Cancel Reservation
-              </button>
-              <p className="text-[10px] text-slate-400 font-black uppercase text-center mt-6 tracking-wider">
-                Managed via SeatNow Premium Concierge
-              </p>
-            </div>
+            {/* Secondary Actions: Hiện khi còn khả năng Hủy/Sửa */}
+            {canModifyOrCancel && (
+              <div className="p-2 space-y-3">
+                <button 
+                  onClick={handleModifyClick}
+                  className="w-full py-4 text-blue-600 text-xs font-black uppercase tracking-widest bg-blue-50/30 hover:bg-blue-50 rounded-3xl transition-all border-2 border-transparent hover:border-blue-100"
+                >
+                  Modify Reservation
+                </button>
+                <button 
+                  onClick={() => setIsCancelDialogOpen(true)}
+                  className="w-full py-4 text-rose-500 text-xs font-black uppercase tracking-widest border-2 border-rose-50 hover:bg-rose-50/50 hover:border-rose-100 rounded-3xl transition-all"
+                >
+                  Cancel Reservation
+                </button>
+                <p className="text-[10px] text-slate-400 font-black uppercase text-center mt-6 tracking-wider">
+                  Managed via SeatNow Premium Concierge
+                </p>
+              </div>
+            )}
           </div>
           
         </div>
       </main>
+
+      {/* Dialog Xác nhận Hủy */}
+      <CancelBookingDialog 
+        isOpen={isCancelDialogOpen}
+        onClose={() => setIsCancelDialogOpen(false)}
+        onConfirm={handleCancelConfirm}
+        isCanceling={cancelBookingMutation.isPending}
+      />
     </div>
   );
 };

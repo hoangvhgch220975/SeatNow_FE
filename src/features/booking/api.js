@@ -41,3 +41,35 @@ export const createBooking = async (data) => {
   const response = await axiosInstance.post('/bookings', data);
   return response?.data || response;
 };
+
+/**
+ * Hủy một bản ghi đặt bàn
+ * @param {Object} params - Gồm id của booking và lý do hủy
+ * @param {string} params.id - UUID của booking
+ * @param {string} params.cancellationReason - Lý do hủy đặt bàn
+ */
+export const cancelBooking = async ({ id, cancellationReason }) => {
+  const response = await axiosInstance.put(`/bookings/${id}/cancel`, { cancellationReason });
+  return response?.data || response;
+};
+/**
+ * Hủy một bản ghi đặt bàn (Dành cho khách vãng lai - Guest)
+ * @param {Object} params - Gồm id, số điện thoại xác thực và lý do hủy
+ */
+export const cancelBookingGuest = async ({ id, guestPhone, cancellationReason }) => {
+  const response = await axiosInstance.put(`/bookings/${id}/cancel/guest`, { guestPhone, cancellationReason });
+  return response?.data || response;
+};
+/**
+ * Chỉnh sửa đặt bàn (Modify)
+ * @param {Object} params - Gồm id của booking và các thông tin cập nhật
+ * @param {string} params.id - UUID của booking
+ * @param {string} params.bookingDate - Ngày mới
+ * @param {string} params.bookingTime - Giờ mới
+ * @param {number} params.numGuests - Số lượng khách mới
+ * @param {string} params.guestPhone - Số điện thoại xác thực (với Guest)
+ */
+export const modifyBooking = async ({ id, ...data }) => {
+  const response = await axiosInstance.put(`/bookings/${id}/modify`, data);
+  return response?.data || response;
+};

@@ -9,8 +9,8 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
   // Định nghĩa màu sắc theo loại bàn (Type) và trạng thái
   // Định nghĩa màu sắc và hiệu ứng theo loại bàn (Type) và trạng thái
   const getTableTypeStyles = (type, isSelected, isOccupied, isHeld) => {
-    // 1. Độ ưu tiên cao nhất: Bàn đã có người ngồi hoặc đã đặt thành công (Xám)
-    if (isOccupied) return 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed opacity-40 grayscale';
+    // 1. Độ ưu tiên cao nhất: Bàn đã có người ngồi hoặc đã đặt thành công (Đỏ - Rose)
+    if (isOccupied) return 'bg-rose-50 text-rose-300 border-rose-100 cursor-not-allowed opacity-60';
     
     // 2. Bàn đang được người khác giữ - Realtime Hold (Cam Vàng)
     if (isHeld) {
@@ -107,10 +107,10 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
                         </div>
                       </div>
 
-                      {/* Occupational Overlay */}
+                      {/* Occupational Overlay (Đỏ) */}
                       {isOccupied && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-slate-200/40 backdrop-blur-[1px] rounded-inherit">
-                          <span className="material-symbols-outlined text-lg text-slate-400/60">block</span>
+                        <div className="absolute inset-0 flex items-center justify-center bg-rose-50/40 backdrop-blur-[1px] rounded-inherit">
+                          <span className="material-symbols-outlined text-lg text-rose-300/60">block</span>
                         </div>
                       )}
 
@@ -175,8 +175,8 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
             <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Being Selected</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-4 h-4 rounded-md bg-slate-100 border border-slate-200 opacity-40"></div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Occupied</span>
+            <div className="w-4 h-4 rounded-md bg-rose-100 border border-rose-300 opacity-60"></div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-rose-500">Occupied</span>
           </div>
         </div>
 

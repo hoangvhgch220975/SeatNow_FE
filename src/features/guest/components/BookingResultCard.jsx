@@ -1,97 +1,190 @@
 import React, { useState, useEffect } from 'react';
-import { getRestaurantById } from '../../restaurants/api';
+import { getRestaurantById, getRestaurantTables } from '../../restaurants/api'; // Thêm getRestaurantTables
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../config/routes.js';
+import { toast } from 'react-hot-toast';
+import { formatTime } from '../../../shared/utils/formatDateTime.js'; // Import hàm formatTime chuẩn
+import { useCancelBookingByGuest } from '../../booking/hooks.js';
+import CancelBookingDialog from '../../booking/components/CancelBookingDialog.jsx';
 
 const BookingResultCard = ({ bookingData, onReset }) => {
   const [showQR, setShowQR] = useState(false);
   const [localRestaurantName, setLocalRestaurantName] = useState('Restaurant');
+  const [enrichedTable, setEnrichedTable] = useState(null); // State lưu bàn sau khi tìm nạp chi tiết
 
   if (!bookingData) return null;
 
-  // Robustly extract the booking data from potential wrappers
-  // Handles: { data: {...} }, { booking: {...} }, or just {...}
-  const actualData = bookingData?.data || bookingData?.booking || bookingData;
+  // 1. TRÍCH XUẤT DỮ LIỆU GỐC (Robust Extraction)
+  const b = bookingData?.data || bookingData;
+  const actualData = b.booking || b.data?.booking || b;
+  const restaurantFromData = b.restaurant || b.data?.restaurant || {};
 
-  // Initial attempt to get the name from the passed data
+  // Helper: Lấy giá trị linh hoạt CamelCase/PascalCase
+  const getV = (obj, ...keys) => {
+    if (!obj) return null;
+    for (const key of keys) {
+      if (obj[key] !== undefined && obj[key] !== null) return obj[key];
+    }
+    return null;
+  };
+
+  // 2. MAPPING DỮ LIỆU TỪ SCHEMA
+  const bookingId = getV(actualData, 'id', 'Id', '_id') || 'N/A';
+  const displayBookingCode = getV(actualData, 'bookingCode', 'BookingCode', 'id') || 'N/A';
+  const status = (getV(actualData, 'status', 'Status') || 'PENDING').toUpperCase();
+  const numGuests = getV(actualData, 'numGuests', 'NumGuests', 'partySize', 'guests') || 1;
+  const specialRequests = getV(actualData, 'specialRequests', 'SpecialRequests', 'notes') || "";
+  
+  // Thông tin bàn gốc từ đơn hàng
+  const tableObj = actualData.table || actualData.Table || {};
+  const restaurantId = getV(actualData, 'restaurantId', 'RestaurantId') || restaurantFromData?.id;
+  const tableIdFromBooking = getV(actualData, 'tableId', 'TableId');
+
+  // Cơ chế "Data Enrichment": Tìm nạp chi tiết bàn nếu tableObj bị trống nhưng có tableId
+  useEffect(() => {
+    const shouldEnrich = tableIdFromBooking && Object.keys(tableObj).length <= 0;
+    
+    if (shouldEnrich && restaurantId) {
+      const enrichTableData = async () => {
+        try {
+          const tablesResponse = await getRestaurantTables(restaurantId);
+          const tablesList = tablesResponse?.data || tablesResponse || [];
+          
+          // Tìm bàn khớp với tableId trong danh sách bàn của nhà hàng
+          const matched = tablesList.find(t => 
+            getV(t, 'id', 'Id', '_id') === tableIdFromBooking
+          );
+          
+          if (matched) {
+            setEnrichedTable(matched);
+          }
+        } catch (err) {
+          console.error('Error enriching table data:', err);
+        }
+      };
+      enrichTableData();
+    }
+  }, [tableIdFromBooking, restaurantId, tableObj]);
+
+  // Ưu tiên thông tin từ table gán sẵn, nếu không có thì lấy từ enrichedTable (sau khi fetch)
+  const finalTableInfo = Object.keys(tableObj).length > 0 ? tableObj : enrichedTable;
+  
+  const tableNumber = getV(finalTableInfo, 'tableNumber', 'TableNumber');
+  const tableType = getV(finalTableInfo, 'type', 'Type') || getV(actualData, 'tableType', 'TableType');
+  const tableLocation = getV(finalTableInfo, 'location', 'Location');
+  
+  // Logic hiển thị: Hiện Loại bàn (Section) ngay cả khi chưa có số cụ thể
+  const tableDisplay = tableNumber 
+    ? `Table No. ${tableNumber} (${tableType || 'Standard'})` 
+    : (tableType ? `${tableType} Section` : (tableLocation || 'Assigned by staff'));
+
+  // Thông tin tiền cọc (Bookings: depositRequired, depositAmount, depositPaid)
+  const depositAmount = getV(actualData, 'depositAmount', 'DepositAmount') || 0;
+  const isDepositPaid = getV(actualData, 'depositPaid', 'DepositPaid') === true || getV(actualData, 'depositPaid', 'DepositPaid') === 1;
+  const isDepositRequired = getV(actualData, 'depositRequired', 'DepositRequired') === true || depositAmount > 0;
+
+  // Thông tin nhà hàng
   const initialName = 
-    actualData?.restaurant?.name || 
-    actualData?.restaurantName || 
-    actualData?.name || 
-    actualData?.RestaurantName;
+    getV(restaurantFromData, 'name', 'restaurantName', 'Name') || 
+    getV(actualData, 'restaurantName', 'name');
 
   // Sync state with prop initially or when prop changes
   useEffect(() => {
     if (initialName) {
       setLocalRestaurantName(initialName);
     } else if (actualData?.restaurantId) {
-      // If name is missing but ID exists, fetch it immediately
       const fetchName = async () => {
         try {
           const res = await getRestaurantById(actualData.restaurantId);
-          console.log("Fetched Restaurant Info:", res);
-          // Handle different res structures (direct data or nested data)
-          const fetchedName = 
-            res?.name || 
-            res?.data?.name || 
-            res?.restaurantName || 
-            res?.data?.restaurantName || 
-            res?.RestaurantName ||
-            res?.data?.RestaurantName;
+          const r = res?.data || res;
+          const fetchedName = getV(r, 'name', 'restaurantName', 'Name');
           if (fetchedName) setLocalRestaurantName(fetchedName);
-        } catch (err) {
-          console.error("Error fetching restaurant name in card:", err);
-        }
+        } catch (err) {}
       };
       fetchName();
     }
   }, [initialName, actualData?.restaurantId]);
 
-  // Format date hàm nội bộ đơn giản do không load utils được sẵn tiện
+  // Format date hàm nội bộ
   const formatDate = (dateStr) => {
     if (!dateStr) return 'N/A';
     try {
-      if (!dateStr.includes('-')) return dateStr;
       const d = new Date(dateStr);
       if (isNaN(d.getTime())) return dateStr;
       return new Intl.DateTimeFormat('en-GB', {
         weekday: 'short', month: 'short', day: '2-digit', year: 'numeric'
       }).format(d);
-    } catch {
-      return dateStr;
-    }
+    } catch { return dateStr; }
   };
 
-  // Use optional chaining with fallback to standard names based on API. 
-  const bookingId = actualData?.bookingCode || actualData?.id || 'N/A';
-  const status = actualData?.status || 'confirmed';
+  const bookingDate = formatDate(getV(actualData, 'bookingDate', 'date', 'BookingDate'));
   
-  const restaurantName = localRestaurantName;
-
-  const bookingDate = formatDate(actualData?.bookingDate || actualData?.date);
-  
-  // Clean up booking time: extract only HH:mm if it's an ISO string
-  let bookingTime = actualData?.bookingTime || actualData?.time || 'N/A';
-  if (bookingTime.includes('T') && bookingTime.includes('Z')) {
-    try {
-      const t = new Date(bookingTime);
-      bookingTime = t.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
-    } catch {
-      // Keep as is if parsing fails
-    }
-  }
-
-  const guests = actualData.numGuests || actualData.partySize || actualData.guests || 1;
-  const tableInfo = actualData.table?.name || actualData.table?.location || actualData.tableName || 'Standard table';
-
-  // Logic: Only PENDING bookings can be modified or cancelled by guests
-  const isPending = status.toLowerCase() === 'pending';
-
-  // Logic: Only CONFIRMED bookings should show the QR code
-  const isConfirmed = status.toUpperCase() === 'CONFIRMED';
+  // Chuẩn hóa giờ: Sử dụng hàm formatTime đã được sửa lỗi Timezone
+  const bookingTime = formatTime(getV(actualData, 'bookingTime', 'time', 'BookingTime') || 'N/A');
 
   // QR Generate logic:
-  // Using QuickChart API instead of Google Charts (404) or qrserver (Blocked by AdBlock)
   const qrString = actualData.qrCode || actualData.bookingCode || bookingId;
   const qrImageSrc = `https://quickchart.io/qr?text=${encodeURIComponent(qrString)}&size=250&margin=1`;
+
+  const isCancelled = status?.toUpperCase() === 'CANCELLED';
+  const cancellationReason = getV(actualData, 'cancellationReason', 'CancellationReason', 'reason');
+
+  // Hooks cho Cancel / Modify
+  const navigate = useNavigate();
+  const cancelBookingMutation = useCancelBookingByGuest();
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+
+  // Xử lý Sự kiện Hủy Đặt bàn
+  const handleCancelConfirm = (reason) => {
+    const phoneToVerify = getV(actualData, 'guestPhone', 'phone', 'GuestPhone');
+    cancelBookingMutation.mutate(
+      { 
+        id: bookingId, 
+        guestPhone: phoneToVerify,
+        cancellationReason: reason || 'Customer requested cancellation.' 
+      },
+      {
+        onSuccess: () => {
+          toast.success('Your reservation has been cancelled.', { icon: '✖️' });
+          setIsCancelDialogOpen(false);
+          if (onReset) onReset(); 
+        },
+        onError: (err) => {
+          toast.error(err?.response?.data?.message || 'Failed to cancel. Please check your phone number.');
+        }
+      }
+    );
+  };
+
+  // Xử lý Sự kiện Sửa Đặt bàn (Truyền state sang CreateBookingPage)
+  const handleModify = () => {
+    const resId = getV(actualData, 'restaurantId', 'RestaurantId') || restaurantFromData?.id;
+    const normalizedBooking = {
+      id: bookingId,
+      restaurant: { id: resId, name: localRestaurantName },
+      guest: {
+        fullName: getV(actualData, 'guestName', 'GuestName') || "Guest",
+        email: getV(actualData, 'guestEmail', 'GuestEmail') || "",
+        phone: getV(actualData, 'guestPhone', 'GuestPhone', 'phone') || ""
+      },
+      reservation: {
+        rawDate: getV(actualData, 'bookingDate', 'date', 'BookingDate'),
+        rawTime: getV(actualData, 'bookingTime', 'time', 'BookingTime'),
+        partySize: numGuests,
+        tableId: getV(tableObj, 'id', 'Id', '_id') || getV(actualData, 'tableId', 'TableId'),
+        tableInfo: tableObj || { name: tableDisplay }
+      },
+      notes: specialRequests
+    };
+
+    const targetUrl = ROUTES.CREATE_BOOKING(resId || 'unknown');
+    navigate(targetUrl, { state: { modifyBookingItem: normalizedBooking, originalRestaurantId: resId } });
+  };
+
+  // 3. FLAGS & UI ALIASES (Bổ sung để fix lỗi ReferenceError)
+  const isPending = status === 'PENDING';
+  const isConfirmed = status === 'CONFIRMED';
+  const restaurantName = localRestaurantName;
 
   return (
     <>
@@ -108,7 +201,7 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                   <span className={`w-2 h-2 rounded-full mr-2 ${status.toLowerCase() === 'pending' ? 'bg-yellow-500' : status.toLowerCase() === 'cancelled' ? 'bg-red-500' : 'bg-green-500'}`}></span>
                   {status}
                 </span>
-                <span className="text-slate-500 font-medium text-sm">Booking ID: <span className="font-bold text-slate-800">#{bookingId}</span></span>
+                <span className="text-slate-500 font-medium text-sm">Booking ID: <span className="font-bold text-slate-800">#{displayBookingCode}</span></span>
               </div>
               
               <h2 className="text-3xl font-bold text-slate-900 mb-8 font-headline">{restaurantName}</h2>
@@ -130,21 +223,99 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                   </div>
                   <div>
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Guests</p>
-                    <p className="text-slate-900 font-semibold">{guests} People</p>
-                    <p className="text-slate-500 text-sm">{tableInfo}</p>
+                    <p className="text-slate-900 font-semibold">{numGuests} People</p>
+                    <p className="text-slate-500 text-sm italic">Standard reservation</p>
+                  </div>
+                </div>
+
+                {/* Section: Table Information (Tách riêng theo yêu cầu) */}
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-slate-50 flex items-center justify-center text-primary">
+                    <span className="material-symbols-outlined shrink-0">table_restaurant</span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Table Details</p>
+                    <p className="text-slate-900 font-semibold">
+                      {tableNumber ? `Table No. ${tableNumber}` : 'Assignment Pending'}
+                    </p>
+                    <p className="text-primary text-sm font-medium capitalize">
+                      {tableType ? `${tableType} Area` : 'Standard Seating'}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Section: Deposit Information (Bổ sung từ SQL Schema) */}
+                {isDepositRequired && (
+                  <div className="flex items-start gap-4">
+                    <div className={`w-12 h-12 rounded-lg ${isDepositPaid ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'} flex items-center justify-center`}>
+                      <span className="material-symbols-outlined shrink-0">{isDepositPaid ? 'payments' : 'account_balance_wallet'}</span>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Deposit Status</p>
+                      <p className={`font-semibold ${isDepositPaid ? 'text-emerald-700' : 'text-amber-700'}`}>
+                        {isDepositPaid ? 'Paid' : 'Payment Required'}
+                      </p>
+                      <p className="text-slate-500 text-sm">{Number(depositAmount).toLocaleString('vi-VN')} VNĐ</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Section: Contact Info (Bổ sung rõ ràng cho Guest) */}
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-slate-50 flex items-center justify-center text-primary">
+                    <span className="material-symbols-outlined shrink-0">contact_mail</span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Contact Details</p>
+                    <p className="text-slate-900 font-semibold truncate max-w-[170px]">
+                      Mr/Mrs: {getV(actualData, 'guestName', 'GuestName') || 'Guest'}
+                    </p>
+                    <p className="text-slate-500 text-sm italic font-medium">
+                      Phone: {getV(actualData, 'guestPhone', 'GuestPhone', 'phone') || 'N/A'}
+                    </p>
                   </div>
                 </div>
               </div>
+
+              {/* Section: Special Requests (Bổ sung từ SQL Schema) */}
+              {specialRequests && (
+                <div className="mt-8 p-6 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-slate-400 text-sm">sticky_note_2</span>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Special Requests</p>
+                  </div>
+                  <p className="text-slate-600 text-sm leading-relaxed italic">"{specialRequests}"</p>
+                </div>
+              )}
+
+              {/* Section: Cancellation Reason (Mới - Hiển thị nếu bị hủy) */}
+              {isCancelled && (
+                <div className="mt-6 p-6 bg-rose-50 border border-rose-100 rounded-2xl animate-in fade-in slide-in-from-bottom-2 duration-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-rose-500 text-sm whitespace-nowrap">error_outline</span>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-rose-500">Cancellation Reason</p>
+                  </div>
+                  <p className="text-rose-950 text-sm font-bold leading-relaxed">
+                    {cancellationReason || "This booking has been cancelled."}
+                  </p>
+                </div>
+              )}
               
               <div className="mt-12 pt-8 border-t border-slate-100 flex flex-wrap items-center gap-6">
                 {isPending ? (
                   <>
-                    <button className="group flex items-center gap-2 px-5 py-2.5 rounded-xl text-primary font-bold hover:bg-primary/5 hover:ring-1 hover:ring-primary/20 hover:shadow-sm active:scale-95 transition-all">
+                    <button 
+                      onClick={handleModify}
+                      className="group flex items-center gap-2 px-5 py-2.5 rounded-xl text-primary font-bold hover:bg-primary/5 hover:ring-1 hover:ring-primary/20 hover:shadow-sm active:scale-95 transition-all"
+                    >
                       <span className="material-symbols-outlined text-xl group-hover:rotate-12 transition-transform">edit</span>
                       Modify Request
                     </button>
                     
-                    <button className="group flex items-center gap-2 px-5 py-2.5 rounded-xl text-slate-500 font-bold hover:text-red-500 hover:bg-red-50 hover:ring-1 hover:ring-red-100 hover:shadow-sm active:scale-95 transition-all ml-auto">
+                    <button 
+                      onClick={() => setIsCancelDialogOpen(true)}
+                      className="group flex items-center gap-2 px-5 py-2.5 rounded-xl text-slate-500 font-bold hover:text-red-500 hover:bg-red-50 hover:ring-1 hover:ring-red-100 hover:shadow-sm active:scale-95 transition-all ml-auto"
+                    >
                       <span className="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">cancel</span>
                       Cancel Booking
                     </button>
@@ -238,13 +409,21 @@ const BookingResultCard = ({ bookingData, onReset }) => {
               <div className="bg-primary/5 py-3 rounded-lg border border-primary/10">
                 <p className="text-primary font-bold text-lg tracking-widest inline-flex items-center gap-2">
                   <span className="material-symbols-outlined text-sm">tag</span>
-                  {bookingId}
+                  {displayBookingCode}
                 </p>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* Dialog Xác nhận Hủy */}
+      <CancelBookingDialog 
+        isOpen={isCancelDialogOpen}
+        onClose={() => setIsCancelDialogOpen(false)}
+        onConfirm={handleCancelConfirm}
+        isCanceling={cancelBookingMutation.isPending}
+      />
     </>
   );
 };

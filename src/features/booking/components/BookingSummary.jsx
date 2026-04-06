@@ -19,30 +19,21 @@ const BookingSummary = ({
   onCancel,
   isAuthenticated,
   guestInfo,
-  onGuestInfoChange
+  onGuestInfoChange,
+  isProcessing = false,
+  isModifying = false
 }) => {
   // Tính toán số tiền cọc (Dùng cho logic nút bấm)
   const totalDeposit = calculateDepositAmount(restaurant, partySize);
 
   // Helper: Kiểm tra tính hợp lệ của thông tin khách vãng lai
-  const isFormValid = isAuthenticated || (
+  // Khi Modify: Cho phép bấm nút dù chưa nhập đầy đủ (Backend sẽ dùng data cũ)
+  const isFormValid = isAuthenticated || isModifying || (
     guestInfo?.guestName?.length >= 2 &&
     isValidPhone(guestInfo?.guestPhone) &&
     isValidEmail(guestInfo?.guestEmail)
   );
 
-  const handlePaymentPlaceholder = () => {
-    toast("Momo/VNPay Integration: Coming soon!", {
-      icon: '💳',
-      style: {
-        borderRadius: '1rem',
-        background: '#333',
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: '12px'
-      },
-    });
-  };
 
   return (
     <div className="sticky top-32 bg-surface-container-lowest rounded-[1.5rem] p-7 shadow-2xl border border-outline-variant/10">
@@ -121,23 +112,41 @@ const BookingSummary = ({
 
         {/* Nút hành động */}
         <div className="space-y-3 pt-2">
-          {totalDeposit > 0 ? (
+          {totalDeposit > 0 && !isModifying ? (
             <button 
-              onClick={handlePaymentPlaceholder}
-              disabled={!selectedTable || !selectedTimeSlot || !isFormValid || partySize > selectedTable.capacity}
-              className="w-full bg-primary text-on-primary py-4 rounded-xl font-bold text-sm hover:brightness-110 hover:shadow-xl hover:shadow-primary/20 transition-all scale-100 active:scale-95 disabled:grayscale disabled:opacity-50 group flex items-center justify-center gap-2"
+              onClick={onConfirm}
+              disabled={!selectedTable || !selectedTimeSlot || !isFormValid || partySize > selectedTable.capacity || isProcessing}
+              className="w-full bg-primary text-on-primary py-4 rounded-xl font-bold text-sm hover:brightness-110 hover:shadow-xl hover:shadow-primary/20 transition-all scale-100 active:scale-95 disabled:grayscale disabled:opacity-70 group flex items-center justify-center gap-2 overflow-hidden relative"
             >
-              <span className="material-symbols-outlined text-base">payments</span>
-              Proceed to Deposit Payment
+              {isProcessing ? (
+                <>
+                  <div className="w-5 h-5 border-[3px] border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <span className="animate-pulse">Processing Payment...</span>
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined text-base">payments</span>
+                  Proceed to Deposit Payment
+                </>
+              )}
             </button>
           ) : (
             <button 
               onClick={onConfirm}
-              disabled={!selectedTable || !selectedTimeSlot || !isFormValid || partySize > selectedTable.capacity}
-              className="w-full bg-primary text-on-primary py-4 rounded-xl font-bold text-sm hover:brightness-110 hover:shadow-xl hover:shadow-primary/20 transition-all scale-100 active:scale-95 disabled:grayscale disabled:opacity-50 group flex items-center justify-center gap-2"
+              disabled={!selectedTable || !selectedTimeSlot || !isFormValid || partySize > selectedTable.capacity || isProcessing}
+              className="w-full bg-primary text-on-primary py-4 rounded-xl font-bold text-sm hover:brightness-110 hover:shadow-xl hover:shadow-primary/20 transition-all scale-100 active:scale-95 disabled:grayscale disabled:opacity-70 group flex items-center justify-center gap-2 overflow-hidden relative"
             >
-              Confirm Reservation
-              <span className="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+               {isProcessing ? (
+                <>
+                   <div className="w-5 h-5 border-[3px] border-white/30 border-t-white rounded-full animate-spin"></div>
+                   <span className="animate-pulse">Finalizing Reservation...</span>
+                </>
+              ) : (
+                <>
+                  {isModifying ? 'Confirm Modification' : 'Confirm Reservation'}
+                  <span className="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </>
+              )}
             </button>
           )}
           

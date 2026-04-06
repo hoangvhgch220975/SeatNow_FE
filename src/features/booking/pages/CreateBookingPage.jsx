@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ROUTES } from '../../../config/routes.js';
 import { useRestaurant, useRestaurantTables } from '../../restaurants/hooks.js';
-import { useRestaurantAvailability, useCreateBooking } from '../hooks.js';
+import { useRestaurantAvailability, useCreateBooking, useCancelBooking, useCancelBookingByGuest, useModifyBooking } from '../hooks.js';
 import { useAuthStore } from '../../auth/store.js';
 import LoadingSpinner from '../../../shared/ui/LoadingSpinner';
 import ErrorState from '../../../shared/feedback/ErrorState';
@@ -39,22 +39,55 @@ const CreateBookingPage = () => {
 
   const { data: tablesData, isLoading: isLoadingTables, isError: isErrorTables } = useRestaurantTables(restaurantId);
 
+  const location = useLocation();
+  const modifyState = location.state?.modifyBookingItem;
+  const isModifying = !!modifyState;
+  const oldBookingId = modifyState?.id;
+  const modifyBookingMutation = useModifyBooking();
+  const [isReplacingLoading, setIsReplacingLoading] = useState(false);
+
   // 2. State quản lý luồng đặt bàn
   const [selectedDate, setSelectedDate] = useState(() => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    let raw = modifyState?.reservation?.rawDate;
+    if (!raw) {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+    // Nếu là chuỗi ISO full, bóc lấy phần Date
+    return raw.includes('T') ? raw.split('T')[0] : raw;
   });
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(() => {
+    let raw = modifyState?.reservation?.rawTime;
+    if (!raw) return null;
+    // Nếu là chuỗi ISO full, bóc lấy HH:mm
+    if (raw.includes('T')) {
+      const timePart = raw.split('T')[1];
+      return timePart ? timePart.substring(0, 5) : null;
+    }
+    // Nếu đã là HH:mm:ss, bóc lấy HH:mm
+    return raw.substring(0, 5);
+  });
   const [activeFloor, setActiveFloor] = useState(null); 
-  const [selectedTable, setSelectedTable] = useState(null);
-  const [partySize, setPartySize] = useState(2);
-  const [specialRequests, setSpecialRequests] = useState('');
+  const [selectedTable, setSelectedTable] = useState(() => {
+    if (modifyState?.reservation?.tableId) {
+       return { 
+         id: modifyState.reservation.tableId, 
+         ...(modifyState.reservation.tableInfo || {}) 
+       };
+    }
+    return null;
+  });
+  const [partySize, setPartySize] = useState(modifyState?.reservation?.partySize || 2);
+  const [specialRequests, setSpecialRequests] = useState(
+    modifyState?.notes && modifyState.notes !== "No special requests provided." ? modifyState.notes : ''
+  );
   
   // State cho Guest Info
   const [guestInfo, setGuestInfo] = useState({
-    guestName: '',
-    guestEmail: '',
-    guestPhone: ''
+    guestName: modifyState?.guest?.fullName !== "Verified Member" ? (modifyState?.guest?.fullName || '') : '',
+    guestEmail: modifyState?.guest?.email !== "Email in profile" ? (modifyState?.guest?.email || '') : '',
+    guestPhone: modifyState?.guest?.phone !== "Phone in profile" ? (modifyState?.guest?.phone || '') : ''
   });
 
   // Trạng thái đồng bộ tức thì (Zero-Latency) từ Socket
@@ -170,10 +203,19 @@ const CreateBookingPage = () => {
       let finalStatus = t.status; 
 
       if (!isCurrentlySelected) {
-        if (realtimeStatus) {
-          finalStatus = realtimeStatus;
-        } else if (!isAvailableByBE) {
-          finalStatus = t.status === 'available' ? 'held' : 'occupied';
+        // 1. Nếu API báo bàn này đang KHẢ DỤNG (Source of Truth quan trọng nhất cho Booking)
+        if (isAvailableByBE) {
+          // Chỉ bị ghi đè nếu Socket báo đang có người GIỮ (held) - vì socket nhanh hơn API trong 2s đầu
+          if (realtimeStatus === 'held') {
+            finalStatus = 'held';
+          } else {
+            finalStatus = 'available'; // Xóa bỏ mọi trạng thái Occupied cũ từ Socket
+          }
+        } 
+        // 2. Nếu API báo KHÔNG khả dụng
+        else {
+          // Ưu tiên Socket báo 'held' (đang giữ), nếu không thì mặc định là 'occupied' (đã đặt)
+          finalStatus = realtimeStatus === 'held' ? 'held' : 'occupied';
         }
       } else {
         finalStatus = 'available';
@@ -220,13 +262,29 @@ const CreateBookingPage = () => {
         queryClient.invalidateQueries(['booking-restaurants', 'availability', restaurantId]);
     };
 
+    // 💰 Tín hiệu Thanh toán Thành công từ Backend (Real-time Socket)
+    const handlePaymentSuccessSocket = (payload) => {
+      // payload: { bookingId, status: 'paid' }
+      if (payload.status === 'paid' || payload.status === 'success') {
+        const incomingId = payload.bookingId || payload.id;
+        
+        // Kiểm tra xem có đúng là đơn hàng đang chờ thanh toán không
+        if (incomingId === pendingBookingId || !pendingBookingId) {
+          setShowPaymentModal(false);
+          handleBookingSuccess(incomingId);
+        }
+      }
+    };
+
     bookingSocket.on('tableStatusChanged', handleTableStatusChanged);
     bookingSocket.on('availabilityChanged', handleAvailabilityChange);
+    bookingSocket.on('payment_success', handlePaymentSuccessSocket);
 
     return () => {
       bookingSocket.off('connect', onConnect);
       bookingSocket.off('tableStatusChanged', handleTableStatusChanged);
       bookingSocket.off('availabilityChanged', handleAvailabilityChange);
+      bookingSocket.off('payment_success', handlePaymentSuccessSocket);
       bookingSocket.emit('leaveRestaurant', restaurantId);
       // Chỉ ngắt kết nối khi thoát hẳn trang
       disconnectSockets(); 
@@ -256,6 +314,7 @@ const CreateBookingPage = () => {
 
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [pendingBookingId, setPendingBookingId] = useState(null);
+  const [pendingDepositAmount, setPendingDepositAmount] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Ref để ghi nhớ Ngày/Giờ đã dùng để Lock bàn
@@ -341,20 +400,35 @@ const CreateBookingPage = () => {
     setGuestInfo(prev => ({ ...prev, [field]: value }));
   };
 
+  // Ref để chống trùng lặp chuyển hướng (Tránh Socket & Broadcast cùng kích hoạt)
+  const hasRedirectedRef = React.useRef(false);
+
   /**
    * Xử lý điều hướng sau khi hoàn tất đặt bàn (Thành công)
    */
   const handleBookingSuccess = (bookingId) => {
-    toast.success('Reservation confirmed successfully!');
-    // Xóa thông tin hold sau khi đã book thành công
+    if (hasRedirectedRef.current) return; // Đã xử lý rồi -> Bỏ qua
+    hasRedirectedRef.current = true;
+
+    // 1. Hiển thị thông báo và giữ spinner
+    setIsProcessing(true);
+    toast.success('Reservation confirmed successfully! Redirecting...');
+    
+    // 2. Xóa thông tin hold ngay lập tức
     lastHoldInfo.current = { date: null, time: null, tableId: null };
     
-    // Điều hướng dựa trên vai trò: Guest về Home, Member về Profile/Booking Detail
-    if (isAuthenticated) {
-      navigate(`/profile`);
-    } else {
-      navigate('/');
-    }
+    // 3. Đợi 2 giây rồi mới chuyển hướng
+    setTimeout(() => {
+      setIsProcessing(false);
+      
+      if (isAuthenticated) {
+        // Thành viên -> Xem chi tiết đơn hàng
+        navigate(ROUTES.BOOKING_DETAIL(bookingId));
+      } else {
+        // Khách -> Về trang chủ
+        navigate(ROUTES.HOME);
+      }
+    }, 2000);
   };
 
   /**
@@ -366,53 +440,157 @@ const CreateBookingPage = () => {
       return;
     }
 
-    const totalDeposit = calculateDepositAmount(restaurant, partySize);
-
-    // Chuẩn bị dữ liệu gửi lên API (Payload)
-    const payload = {
-      restaurantId: restaurant.id,
-      tableId: selectedTable.id,
-      bookingDate: selectedDate,
-      bookingTime: selectedTimeSlot,
-      numGuests: partySize,
-      specialRequests
-    };
-
-    // Nếu là khách vãng lai (Guest), bổ sung thông tin liên lạc
-    if (!isAuthenticated) {
-      if (!guestInfo.guestName || !guestInfo.guestPhone) {
-        toast.error('Please provide your name and phone number.');
-        return;
-      }
-      payload.guestName = guestInfo.guestName;
-      payload.guestPhone = guestInfo.guestPhone;
-      payload.guestEmail = guestInfo.guestEmail;
-    }
+    // Lấy ID thật sự (Mã máy/GUID) thay vì Slug dùng ở URL
+    const realRestaurantId = restaurant?._id || restaurant?.id || restaurant?.Id;
 
     try {
       setIsProcessing(true);
-      // Bước 1: Luôn tạo Booking trước (Server sẽ quản lý trạng thái PENDING_PAYMENT nếu có cọc)
+      
+      // -- TRƯỜNG HỢP 1: MODIFY ĐẶT BÀN (Sử dụng API Modify mới) --
+      if (isModifying && oldBookingId) {
+        setIsReplacingLoading(true);
+        
+        // Xác thực số điện thoại cho khách vãng lai
+        const phoneToVerify = guestInfo.guestPhone || modifyState?.guest?.phone;
+        if (!isAuthenticated && !phoneToVerify) {
+           toast.error('Identity verification required. Please provide your phone number.');
+           setIsProcessing(false);
+           setIsReplacingLoading(false);
+           return;
+        }
+
+        const modifyPayload = {
+          id: oldBookingId,
+          bookingDate: selectedDate,
+          bookingTime: selectedTimeSlot,
+          numGuests: partySize,
+          tableId: selectedTable?.id,
+          specialRequests: specialRequests,
+          // Bổ sung đầy đủ thông tin khách để thỏa mãn backend validation
+          // Quan trọng: Luôn gửi SĐT (kể cả với Member) để Backend đối soát record chính xác
+          guestName: !isAuthenticated ? (guestInfo.guestName || modifyState?.guest?.fullName) : undefined,
+          guestPhone: guestInfo.guestPhone || modifyState?.guest?.phone || modifyState?.reservation?.guestPhone,
+          guestEmail: !isAuthenticated ? (guestInfo.guestEmail || modifyState?.guest?.email) : undefined
+        };
+
+        const modifyResult = await modifyBookingMutation.mutateAsync(modifyPayload);
+        setIsReplacingLoading(false);
+        
+        // Thành công: Chuyển thẳng về trang thành công (không cần đóng cọc do Backend tự chuyển giao dịch)
+        // Lấy ID của đơn hàng MỚI từ kết quả trả về (Backend trả về { booking: row, ... })
+        const newBookingId = modifyResult?.booking?.id || modifyResult?.id || oldBookingId;
+        handleBookingSuccess(newBookingId);
+        return;
+      }
+
+      // -- TRƯỜNG HỢP 2: TẠO MỚI ĐẶT BÀN (Luồng cũ) --
+      
+      // Nếu là khách vãng lai, yêu cầu đầy đủ thông tin để tạo mới đơn
+      if (!isAuthenticated && (!guestInfo.guestName || !guestInfo.guestPhone)) {
+        toast.error('Please provide your name and phone number to create a new reservation.');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Chuẩn bị dữ liệu gửi lên API (Payload) cho tạo mới
+      const payload = {
+        restaurantId: realRestaurantId,
+        tableId: selectedTable.id,
+        bookingDate: selectedDate,
+        bookingTime: selectedTimeSlot,
+        numGuests: partySize,
+        specialRequests: specialRequests,
+        guestName: !isAuthenticated ? guestInfo.guestName : undefined,
+        guestPhone: !isAuthenticated ? guestInfo.guestPhone : undefined,
+        guestEmail: !isAuthenticated ? guestInfo.guestEmail : undefined
+      };
+
       const result = await createBookingMutation.mutateAsync(payload);
-      const bookingId = result?.id || result?.data?.id;
+      
+      // Lấy ID cực kỳ linh hoạt để tránh lỗi "Success but Error Toast"
+      // Thử mọi trường hợp dựa trên LOG: result.booking.id, result.data.id...
+      const rawData = result?.data || result;
+      const bookingId = rawData?.booking?.id || rawData?.booking?._id || rawData?.id || result?.booking?.id || (typeof result === 'string' ? result : null);
+
+      if (!bookingId) {
+        console.error('⚠️ [API Response Debug]:', result);
+        throw new Error('Booking created in DB but Frontend could not retrieve the ID.');
+      }
+      
       setPendingBookingId(bookingId);
 
-      // Bước 2: Kiểm tra tiền cọc
-      if (totalDeposit > 0) {
-        // Có tiền cọc -> Mở Modal thanh toán
-        setShowPaymentModal(true);
+      // Bước 2: Kiểm tra tiền cọc từ kết quả Server (Nguồn sự thật chính xác nhất)
+      const isDepositNeeded = rawData?.depositRequired || result?.depositRequired || false;
+      const amountToPay = rawData?.depositAmount || result?.depositAmount || 0;
+      
+      if (isDepositNeeded && amountToPay > 0) {
+        // Có tiền cọc thực tế từ Server -> Mở Modal thanh toán
+        setPendingDepositAmount(amountToPay);
         setIsProcessing(false);
+        setShowPaymentModal(true);
       } else {
-        // Không tiền cọc -> Kết thúc thành công ngay
-        setTimeout(() => {
-          setIsProcessing(false);
-          handleBookingSuccess(bookingId);
-        }, 1500);
+        // Không cần đặt cọc (Dù FE có thể tính là có) -> Kết thúc thành công ngay
+        setIsProcessing(false);
+        handleBookingSuccess(bookingId);
       }
     } catch (error) {
+      const serverMessage = error.response?.data?.message || error.response?.data?.error || error.message;
+      console.error('❌ [Booking Flow Error Detail]:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: serverMessage
+      });
       setIsProcessing(false);
-      toast.error(error.response?.data?.message || 'Failed to create reservation.');
+      setIsReplacingLoading(false);
+      toast.error(serverMessage || 'Failed to complete reservation flow.');
     }
   };
+
+  // 💰 Trình lắng nghe Thanh toán Thành công (Thoát treo giao diện)
+  React.useEffect(() => {
+    // Kênh 1: BroadcastChannel (Nhận Loa từ Layout - Xuyên Tab nội bộ)
+    const paymentChannel = new BroadcastChannel('seatnow_payment');
+    
+    // Kênh 2: postMessage (Dành cho các popup gửi tin trực tiếp được)
+    const handlePaymentMessage = (event) => {
+      if (event.data?.type === 'PAYMENT_SUCCESS' || event.data?.status === 'SUCCESS') {
+        processSuccess(event.data?.bookingId || event.data?.id);
+      }
+    };
+
+    // Hàm xử lý "Thoát treo" và hoàn tất đơn hàng
+    const processSuccess = (bookingId) => {
+      if (hasRedirectedRef.current) return;
+      
+      setIsProcessing(false);
+      // setShowPaymentModal(false); // GỠ BỎ: Để Modal tự đóng sau khi hiện tick xanh
+      
+      const finalId = bookingId || pendingBookingId;
+      if (finalId) {
+        handleBookingSuccess(finalId);
+      } else {
+        navigate(ROUTES.HOME);
+      }
+    };
+
+    // Khi Layout "Phát Loa" ở Tab khác, Tab này sẽ nghe thấy ở đây
+    paymentChannel.onmessage = (event) => {
+      if (event.data?.status === 'SUCCESS') {
+        processSuccess(event.data?.bookingId);
+      }
+    };
+    
+    window.addEventListener('message', handlePaymentMessage);
+    
+    return () => {
+      window.removeEventListener('message', handlePaymentMessage);
+      paymentChannel.close();
+    };
+  }, [pendingBookingId, handleBookingSuccess, navigate]); 
+
+  if (isReplacingLoading) return (
+    <LoadingSpinner message="Updating your reservation..." />
+  );
 
   if (isLoadingRest || isLoadingTables) return (
     <LoadingSpinner message="Curating your dining options..." />
@@ -422,7 +600,8 @@ const CreateBookingPage = () => {
   return (
     <div className="bg-surface -mt-12 pb-24">
       {/* 1. Phần tiêu đề (Header) */}
-      <BookingHeader restaurant={restaurant} />
+      <BookingHeader restaurant={restaurant} isModifying={isModifying} />
+
 
       <main className="max-w-7xl mx-auto px-8 mt-10">
         <div className="flex flex-col lg:flex-row gap-12 items-start">
@@ -510,10 +689,12 @@ const CreateBookingPage = () => {
               onUpdatePartySize={setPartySize}
               selectedTable={selectedTable}
               onConfirm={handleConfirmBooking}
+              isProcessing={isProcessing}
               onCancel={() => navigate(ROUTES.RESTAURANT_DETAIL(idOrSlug))}
               isAuthenticated={isAuthenticated}
               guestInfo={guestInfo}
               onGuestInfoChange={handleGuestInfoChange}
+              isModifying={isModifying}
             />
           </aside>
         </div>
@@ -523,7 +704,7 @@ const CreateBookingPage = () => {
       {showPaymentModal && pendingBookingId && (
         <PaymentModal 
           bookingId={pendingBookingId}
-          amount={calculateDepositAmount(restaurant, partySize)}
+          amount={pendingDepositAmount}
           onSuccess={() => {
             setShowPaymentModal(false);
             handleBookingSuccess(pendingBookingId);
