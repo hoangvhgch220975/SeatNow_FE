@@ -4,6 +4,7 @@ import { usePortfolioDashboard } from '../hooks.js';
 import { ROUTES } from '@/config/routes.js';
 import { Link } from 'react-router';
 import { motion } from 'framer-motion';
+import { useTranslation, Trans } from 'react-i18next'; // Áp dụng hook ngôn ngữ (Vietnamese comment)
 
 // Import các sub-components đã tách
 import DashboardHeader from '../components/DashboardHeader';
@@ -19,6 +20,7 @@ import EmptyRestaurantsState from '../components/EmptyRestaurantsState';
  * Đã tái cấu trúc sạch sẽ, tách component và tích hợp Recharts cùng dữ liệu BE mới.
  */
 const OwnerHomePage = () => {
+  const { t } = useTranslation(); // Khởi tạo i18n (Vietnamese comment)
   const { user } = useAuthStore();
   const [activeTab, setActiveTab] = React.useState('revenue'); // Mặc định hiển thị Doanh thu
   const [revenuePeriod, setRevenuePeriod] = React.useState('month'); 
@@ -200,14 +202,14 @@ const OwnerHomePage = () => {
       <section className="space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
-             <h3 className="text-2xl font-black text-slate-900 tracking-tight">Venue Portfolio Operations</h3>
-             <p className="text-sm text-slate-400 font-medium tracking-tight">Operational view of all your registered restaurant entities.</p>
+             <h3 className="text-2xl font-black text-slate-900 tracking-tight">{t('owner_portal.home.venue_operations')}</h3>
+             <p className="text-sm text-slate-400 font-medium tracking-tight">{t('owner_portal.home.venue_operations_desc')}</p>
           </div>
           <Link 
             to={ROUTES.CREATE_RESTAURANT}
             className="text-violet-600 font-black text-[10px] uppercase tracking-widest bg-violet-50 px-6 py-3 rounded-xl hover:bg-violet-600 hover:text-white transition-all shadow-sm"
           >
-            Expand Portfolio +
+            {t('owner_portal.home.expand_portfolio')}
           </Link>
         </div>
 
@@ -228,10 +230,19 @@ const OwnerHomePage = () => {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6 py-10 px-8 bg-slate-50/50 rounded-[2.5rem] border border-slate-100 mt-12 mb-12">
              <div className="space-y-1">
                 <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
-                   Operational Inventory
+                   {t('owner_portal.home.operational_inventory')}
                 </div>
                 <div className="text-xs font-bold text-slate-600 italic">
-                   Showing <span className="text-violet-600 font-black not-italic">{(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, restaurantsList.length)}</span> of <span className="text-slate-900 font-black not-italic">{restaurantsList.length}</span> entities
+                   <Trans 
+                     i18nKey="owner_portal.home.showing_entities"
+                     values={{
+                       start: (currentPage - 1) * itemsPerPage + 1,
+                       end: Math.min(currentPage * itemsPerPage, restaurantsList.length),
+                       total: restaurantsList.length
+                     }}
+                   >
+                     Showing <span className="text-violet-600 font-black not-italic">{"{{start}}"} - {"{{end}}"}</span> of <span className="text-slate-900 font-black not-italic">{"{{total}}"}</span> entities
+                   </Trans>
                 </div>
              </div>
              

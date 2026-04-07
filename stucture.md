@@ -69,8 +69,9 @@ seatnow-fe/
 │ │ │ └─ useDisclosure.js // Mở/đóng modal/drawer/popover
 │ │ │
 │ │ ├─ components/
-│ │ │ └─ ScrollToTop.jsx // Tự động cuộn lên đầu trang khi điều hướng
-│ │ │ └─ Pagination.jsx // Phân trang
+│ │ │ ├─ ScrollToTop.jsx // Tự động cuộn lên đầu trang khi điều hướng
+│ │ │ ├─ PageTransition.jsx // Hiệu ứng chuyển cảnh (New)
+│ │ │ ├─ LanguageSwitcher.jsx // Nút chuyển ngôn ngữ (floating/dropdown) (New)
 │ │ │ └─ AIFloatingButton.jsx // Nút AI nổi
 │ │ │
 │ │ └─ utils/
@@ -93,6 +94,9 @@ seatnow-fe/
 │ │ └─ nav.admin.js // Menu cho admin
 │ │
 │ ├─ constants/ // Hằng số domain
+│ │ ├─ locales/ // Folder chứa file đa ngôn ngữ (New)
+│ │ │ ├─ en.json // English locale
+│ │ │ └─ vi.json // Tiếng Việt locale
 │ │ ├─ bookingStatus.js // PENDING/CONFIRMED/ARRIVED/...
 │ │ ├─ paymentStatus.js // pending/completed/failed
 │ │ ├─ tableStatus.js // available/unavailable/maintenance
@@ -435,6 +439,7 @@ seatnow-fe/
 │ │ └─ tailwind.css // Entry chính cho Tailwind + Custom CSS utilities (Glass effect, scrollbar)
 │ │
 │ │
+│ ├─ i18n.js // Cấu hình đa ngôn ngữ (New)
 │ ├─ App.jsx // Root component
 │ └─ main.jsx // Entry point
 │

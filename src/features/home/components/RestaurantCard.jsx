@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../config/routes.js';
 import { slugify } from '../../../shared/utils/slugify.js';
@@ -7,14 +8,16 @@ import { useRestaurantReviewSummary } from '../../reviews/hooks.js';
 /**
  * @file RestaurantCard.jsx
  * @description Component Card cho nhà hàng, tự động đồng bộ rating từ MongoDB để tránh dữ liệu ảo từ SQL.
+ * Tích hợp đa ngôn ngữ cho nhãn và nút bấm.
  */
 const RestaurantCard = ({ restaurant }) => {
+  const { t } = useTranslation();
   const restId = restaurant.id || restaurant._id;
   // Lấy dữ liệu thật từ MongoDB Review Service
   const { data: summaryData } = useRestaurantReviewSummary(restaurant.slug || restId);
   const summary = summaryData?.data || summaryData;
 
-  // Ưu tiên dữ liệu từ MongoDB, nếu chưa load xong mới dùng tạm SQL (nhưng che giấu nếu suspected fake)
+  // Ưu tiên dữ liệu từ MongoDB, nếu chưa load xong mới dùng tạm SQL (Vietnamese comment)
   const hasHistory = summary && typeof summary.totalReviews === 'number';
   const displayRating = hasHistory ? summary.averageRating : (restaurant.ratingAvg || 0);
   const displayCount = hasHistory ? summary.totalReviews : (restaurant.ratingCount || 0);
@@ -62,16 +65,18 @@ const RestaurantCard = ({ restaurant }) => {
         
         <div className="flex items-center gap-2 mb-6">
           <span className="px-3 py-1 rounded-full bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-            {(restaurant.cuisineTypes && restaurant.cuisineTypes[0]) || restaurant.cuisine || 'Cuisine'}
+            {(restaurant.cuisineTypes && restaurant.cuisineTypes[0]) || restaurant.cuisine || t('home.featured.cuisine_fallback')}
           </span>
           {isAvailable && (
-            <span className="text-[10px] text-slate-400 font-medium italic">({displayCount} reviews)</span>
+            <span className="text-[10px] text-slate-400 font-medium italic">
+              ({t('home.featured.reviews_count', { count: displayCount })})
+            </span>
           )}
         </div>
         
         <div className="relative z-20">
           <div className="block w-full py-3 text-center border border-slate-200 rounded-lg font-bold text-primary group-hover:bg-primary group-hover:text-white transition-all font-body text-sm tracking-wide">
-            View Details
+            {t('home.featured.view_details')}
           </div>
         </div>
       </div>

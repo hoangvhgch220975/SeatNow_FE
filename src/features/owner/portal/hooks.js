@@ -93,3 +93,31 @@ export const usePortfolioDashboard = (params = {}, revenueParams = { period: 'mo
     },
   };
 };
+
+/**
+ * @hook useOwnerActivity
+ * @description Tải danh sách hoạt động gần đây từ Notification Service.
+ * Hỗ trợ phân trang và lọc theo loại hoạt động.
+ */
+export const useOwnerActivity = (params = { limit: 10, offset: 0 }) => {
+  const query = useQuery({
+    queryKey: ['owner', 'activity', params],
+    queryFn: () => ownerPortalApi.getOwnerActivity(params),
+    // Tự động refetch sau mỗi 30 giây để cập nhật hoạt động mới không cần reload (Vietnamese comment)
+    refetchInterval: 30000,
+    staleTime: 15000,
+  });
+
+  // Trích xuất dữ liệu từ cấu trúc response của Notification Service (Vietnamese comment)
+  const raw = query.data;
+  const activityData = raw?.data || {};
+
+  return {
+    activities: activityData.items || [],
+    total: activityData.total || 0,
+    unreadCount: activityData.unreadCount || 0,
+    isLoading: query.isLoading,
+    isError: query.isError,
+    refetch: query.refetch,
+  };
+};

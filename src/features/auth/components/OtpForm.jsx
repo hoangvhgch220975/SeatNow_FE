@@ -1,30 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 
 /**
  * @file OtpForm.jsx
- * @description Form nhập mã OTP gồm 6 ô số riêng biệt.
+ * @description Form nhập mã OTP gồm 6 ô số riêng biệt. Hỗ trợ đa ngôn ngữ.
  * Hỗ trợ: auto-focus, paste mã, đếm ngược gửi lại, trạng thái loading.
- * @param {function} onSubmit - Hàm gọi khi submit, nhận (otpString)
- * @param {function} onResend - Hàm gửi lại mã OTP
- * @param {boolean} isLoading - Đang xử lý
- * @param {boolean} isResending - Đang gửi lại mã
- * @param {string} [hint] - Gợi ý SĐT/Email đã gửi tới
  */
 const OTP_LENGTH = 6;
 
 const OtpForm = ({ onSubmit, onResend, isLoading, isResending, hint }) => {
+  const { t } = useTranslation();
   const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(''));
   const [countdown, setCountdown] = useState(60);
   const inputRefs = useRef([]);
 
-  // --- Đếm ngược Resend ---
+  // --- Đếm ngược Resend (Vietnamese comment) ---
   useEffect(() => {
     if (countdown <= 0) return;
     const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => clearTimeout(timer);
   }, [countdown]);
 
-  // Reset countdown khi resend
+  // Reset countdown khi resend (Vietnamese comment)
   const handleResend = () => {
     if (countdown > 0 || isResending) return;
     setCountdown(60);
@@ -33,26 +30,26 @@ const OtpForm = ({ onSubmit, onResend, isLoading, isResending, hint }) => {
     onResend();
   };
 
-  // --- Xử lý thay đổi ô nhập ---
+  // --- Xử lý thay đổi ô nhập (Vietnamese comment) ---
   const handleChange = (index, value) => {
-    // Chỉ nhận số
+    // Chỉ nhận số (Vietnamese comment)
     const digit = value.replace(/\D/g, '').slice(-1);
     const newDigits = [...digits];
     newDigits[index] = digit;
     setDigits(newDigits);
 
-    // Tự động chuyển sang ô tiếp theo
+    // Tự động chuyển sang ô tiếp theo (Vietnamese comment)
     if (digit && index < OTP_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus();
     }
 
-    // Auto-submit khi điền đủ 6 số
+    // Auto-submit khi điền đủ 6 số (Vietnamese comment)
     if (newDigits.every((d) => d !== '') && newDigits.join('').length === OTP_LENGTH) {
       onSubmit(newDigits.join(''));
     }
   };
 
-  // --- Xử lý phím bấm (Backspace, Arrow) ---
+  // --- Xử lý phím bấm (Backspace, Arrow) (Vietnamese comment) ---
   const handleKeyDown = (index, e) => {
     if (e.key === 'Backspace') {
       if (digits[index]) {
@@ -69,7 +66,7 @@ const OtpForm = ({ onSubmit, onResend, isLoading, isResending, hint }) => {
     }
   };
 
-  // --- Xử lý Paste ---
+  // --- Xử lý Paste (Vietnamese comment) ---
   const handlePaste = (e) => {
     e.preventDefault();
     const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, OTP_LENGTH);
@@ -79,17 +76,17 @@ const OtpForm = ({ onSubmit, onResend, isLoading, isResending, hint }) => {
       newDigits[i] = char;
     });
     setDigits(newDigits);
-    // Focus vào ô cuối cùng được điền
+    // Focus vào ô cuối cùng được điền (Vietnamese comment)
     const lastFilledIndex = Math.min(pasted.length - 1, OTP_LENGTH - 1);
     inputRefs.current[lastFilledIndex]?.focus();
 
-    // Auto-submit nếu paste đủ 6 số
+    // Auto-submit nếu paste đủ 6 số (Vietnamese comment)
     if (pasted.length === OTP_LENGTH) {
       onSubmit(pasted);
     }
   };
 
-  // --- Submit thủ công ---
+  // --- Submit thủ công (Vietnamese comment) ---
   const handleSubmit = (e) => {
     e.preventDefault();
     const otp = digits.join('');
@@ -103,15 +100,16 @@ const OtpForm = ({ onSubmit, onResend, isLoading, isResending, hint }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Gợi ý gửi tới đâu */}
+      {/* Gợi ý gửi tới đâu (Vietnamese comment) */}
       {hint && (
         <p className="text-center text-slate-500 text-sm">
-          Code sent to{' '}
-          <span className="font-bold text-slate-700">{hint}</span>
+          <Trans i18nKey="auth.otp.hint_text" values={{ hint }}>
+            Code sent to <span className="font-bold text-slate-700">{{hint}}</span>
+          </Trans>
         </p>
       )}
 
-      {/* 6 ô số */}
+      {/* 6 ô số (Vietnamese comment) */}
       <div className="flex gap-2.5 justify-center" onPaste={handlePaste}>
         {digits.map((digit, index) => (
           <input
@@ -136,7 +134,7 @@ const OtpForm = ({ onSubmit, onResend, isLoading, isResending, hint }) => {
         ))}
       </div>
 
-      {/* Nút xác nhận */}
+      {/* Nút xác nhận (Vietnamese comment) */}
       <button
         type="submit"
         disabled={!isComplete || isLoading}
@@ -147,19 +145,20 @@ const OtpForm = ({ onSubmit, onResend, isLoading, isResending, hint }) => {
         {isLoading ? (
           <span className="flex items-center justify-center gap-2">
             <span className="material-symbols-outlined animate-spin text-lg">refresh</span>
-            Verifying...
+            {t('auth.otp.processing')}
           </span>
         ) : (
-          'Verify Code'
+          t('auth.otp.submit_button')
         )}
       </button>
 
-      {/* Gửi lại mã */}
+      {/* Gửi lại mã (Vietnamese comment) */}
       <div className="text-center">
         {countdown > 0 ? (
           <p className="text-slate-400 text-xs font-medium">
-            Resend code in{' '}
-            <span className="text-primary font-bold tabular-nums">{countdown}s</span>
+            <Trans i18nKey="auth.otp.resend_text" values={{ seconds: countdown }}>
+              Resend code in <span className="text-primary font-bold tabular-nums">{{seconds: countdown}}s</span>
+            </Trans>
           </p>
         ) : (
           <button
@@ -169,7 +168,7 @@ const OtpForm = ({ onSubmit, onResend, isLoading, isResending, hint }) => {
             className="text-primary text-xs font-bold hover:underline underline-offset-4
                        disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
-            {isResending ? 'Sending...' : 'Resend OTP'}
+            {isResending ? t('auth.otp.resending') : t('auth.otp.resend_button')}
           </button>
         )}
       </div>

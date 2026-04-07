@@ -1,16 +1,18 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @component BookingInfoSection
- * @description Hiển thị chi tiết nhà hàng, khách hàng và thông tin đặt bàn.
+ * @description Hiển thị chi tiết nhà hàng, khách hàng và thông tin đặt bàn. Hỗ trợ đa ngôn ngữ.
  * @param {object} booking - Dữ liệu đặt bàn từ BE hoặc MockData
  */
 const BookingInfoSection = ({ booking }) => {
+  const { t } = useTranslation();
   const { restaurant, guest, reservation } = booking;
 
   return (
     <div className="bg-white rounded-3xl overflow-hidden border-2 border-slate-100/60 shadow-soft">
-      {/* Restaurant Header Image Overlay */}
+      {/* Restaurant Header Image Overlay (Vietnamese comment) */}
       <div className="h-64 relative group overflow-hidden">
         <img 
           alt={restaurant.name} 
@@ -31,34 +33,38 @@ const BookingInfoSection = ({ booking }) => {
       </div>
 
       <div className="p-10 grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Guest Details */}
+        {/* Guest Details (Vietnamese comment) */}
         <div className="space-y-6">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary border-b border-slate-100 pb-3">Guest Information</h3>
+          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary border-b border-slate-100 pb-3">
+            {t('booking.detail.sections.guest_info')}
+          </h3>
           <div className="space-y-5">
-            <InfoItem icon="person" label="Full Name" value={`Mr/Mrs: ${guest.fullName}`} />
-            <InfoItem icon="mail" label="Email Address" value={guest.email} />
-            <InfoItem icon="call" label="Phone Number" value={`Phone: ${guest.phone}`} />
+            <InfoItem icon="person" label={t('booking.detail.labels.full_name')} value={guest.fullName} />
+            <InfoItem icon="mail" label={t('booking.detail.labels.email')} value={guest.email} />
+            <InfoItem icon="call" label={t('booking.detail.labels.phone')} value={guest.phone} />
           </div>
         </div>
 
-        {/* Reservation Details */}
+        {/* Reservation Details (Vietnamese comment) */}
         <div className="space-y-6">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary border-b border-slate-100 pb-3">Reservation Details</h3>
+          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary border-b border-slate-100 pb-3">
+            {t('booking.detail.sections.reservation_details')}
+          </h3>
           <div className="grid grid-cols-2 gap-x-6 gap-y-6">
-            <DetailItem label="Date" value={reservation.date} />
-            <DetailItem label="Time" value={reservation.time} />
-            <DetailItem label="Party Size" value={`${reservation.partySize} Guests`} />
+            <DetailItem label={t('booking.detail.labels.date')} value={reservation.date} />
+            <DetailItem label={t('booking.detail.labels.time')} value={reservation.time} />
+            <DetailItem label={t('booking.detail.labels.guests')} value={t('booking.card.guests_count', { count: reservation.partySize })} />
             
-            {/* Tách biệt thông tin bàn theo yêu cầu */}
+            {/* Tách biệt thông tin bàn theo yêu cầu (Vietnamese comment) */}
             <DetailItem 
-              label="Table Number" 
-              value={reservation.tableNumber ? `No. ${reservation.tableNumber}` : 'Assignment Pending'} 
+              label={t('booking.detail.labels.table_number')} 
+              value={reservation.tableNumber ? `No. ${reservation.tableNumber}` : t('booking.detail.fallbacks.assignment_pending')} 
             />
             <div className="col-span-2 pt-2 border-t border-slate-50">
-              <p className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-1">Seating Area / Type</p>
+              <p className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-1">{t('booking.detail.labels.seating_area')}</p>
               <div className="flex items-center gap-2 text-primary">
                 <span className="material-symbols-outlined text-base">table_restaurant</span>
-                <span className="text-sm font-black capitalize">{reservation.tableType || 'Standard Seating'}</span>
+                <span className="text-sm font-black capitalize">{reservation.tableType}</span>
               </div>
             </div>
           </div>
@@ -72,9 +78,9 @@ const BookingInfoSection = ({ booking }) => {
             <span className="material-symbols-outlined">info</span>
           </div>
           <div>
-            <h4 className="text-[11px] font-black uppercase tracking-widest text-rose-500 mb-1">Cancellation Reason</h4>
+            <h4 className="text-[11px] font-black uppercase tracking-widest text-rose-500 mb-1">{t('booking.detail.sections.cancellation_reason')}</h4>
             <p className="text-sm font-bold text-rose-900 leading-relaxed">
-              {booking.cancellationReason || "The booking was cancelled."}
+              {booking.cancellationReason || t('booking.detail.fallbacks.no_reason')}
             </p>
           </div>
         </div>

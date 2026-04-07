@@ -2,6 +2,9 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router';
 
+// Cấu hình Đa Ngôn Ngữ (i18n) - Phải import trước khi render (Vietnamese comment)
+import './lib/i18n.js';
+
 // Root CSS: import tailwind entry which includes base styles
 import './styles/tailwind.css';
 

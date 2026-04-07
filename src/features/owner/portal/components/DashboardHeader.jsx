@@ -1,16 +1,19 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation, Trans } from 'react-i18next'; // Bổ sung hooks i18n (Vietnamese comment)
 
 /**
  * @file DashboardHeader.jsx
  * @description Thành phần hiển thị lời chào cá nhân hóa và trạng thái hệ thống cho Owner Dashboard.
  */
 const DashboardHeader = ({ userName, activeVenues, inactiveVenues }) => {
-  // Chuẩn bị biến thời gian để hiển thị lời chào theo buổi
+  const { t } = useTranslation(); // Khởi tạo i18n instance (Vietnamese comment)
+
+  // Chuẩn bị biến thời gian để hiển thị lời chào theo buổi với bản dịch (Vietnamese comment)
   const hour = new Date().getHours();
-  let greeting = 'Good morning';
-  if (hour >= 12 && hour < 18) greeting = 'Good afternoon';
-  if (hour >= 18) greeting = 'Good evening';
+  let greeting = t('owner_portal.header.greeting_morning');
+  if (hour >= 12 && hour < 18) greeting = t('owner_portal.header.greeting_afternoon');
+  if (hour >= 18) greeting = t('owner_portal.header.greeting_evening');
 
   return (
     <motion.section 
@@ -22,10 +25,12 @@ const DashboardHeader = ({ userName, activeVenues, inactiveVenues }) => {
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <div className="space-y-2">
           <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-            {greeting}, <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">{userName || 'Partner'}</span>
+            {greeting}, <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">{userName || t('owner_portal.header.partner_fallback')}</span>
           </h2>
           <p className="text-lg text-slate-500 font-medium">
-            Your portfolio is showing <span className="text-emerald-600 font-bold">strong momentum</span> this period.
+            <Trans i18nKey="owner_portal.header.momentum_desc">
+              Your portfolio is showing <span className="text-emerald-600 font-bold">strong momentum</span> this period.
+            </Trans>
           </p>
         </div>
 
@@ -39,10 +44,10 @@ const DashboardHeader = ({ userName, activeVenues, inactiveVenues }) => {
            </div>
            <div className="pr-4">
              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">
-               System Connectivity
+               {t('owner_portal.header.system_connectivity')}
              </p>
              <p className="text-sm font-black text-slate-900">
-                {activeVenues} Active <span className="mx-1 text-slate-300">/</span> {inactiveVenues} Inactive
+                {activeVenues} {t('owner_portal.header.active')} <span className="mx-1 text-slate-300">/</span> {inactiveVenues} {t('owner_portal.header.inactive')}
              </p>
            </div>
         </div>

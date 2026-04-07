@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMyBookingsQuery } from '../hooks.js';
 import { useProfileQuery } from '../../profile/hooks.js';
 import BookingFilter from '../components/BookingFilter.jsx';
@@ -9,12 +10,14 @@ import Pagination from '../../../shared/ui/Pagination.jsx';
 /**
  * @file BookingHistoryPage.jsx
  * @description Trang lịch sử đặt bàn kết nối dữ liệu thực từ Backend với bộ lọc All và Phân trang.
+ * Hỗ trợ đa ngôn ngữ.
  * @author Antigravity AI
  */
 const BookingHistoryPage = () => {
+  const { t } = useTranslation();
   const { data: profile } = useProfileQuery();
   const { data: bookings = [], isLoading } = useMyBookingsQuery();
-  const [activeTab, setActiveTab] = useState('All');
+  const [activeTab, setActiveTab] = useState('all'); // Luôn dùng lowercase cho key nội bộ
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3; // Hiển thị 3 bản ghi/trang theo yêu cầu
 
@@ -29,15 +32,15 @@ const BookingHistoryPage = () => {
     return bookings.filter((b) => {
       const status = b.status?.toLowerCase() || '';
       
-      if (activeTab === 'All') return true;
-      if (activeTab === 'Upcoming') {
+      if (activeTab === 'all') return true;
+      if (activeTab === 'upcoming') {
         return ['pending', 'confirmed', 'arrived'].includes(status);
       }
-      if (activeTab === 'Completed') {
+      if (activeTab === 'completed') {
         return status === 'completed';
       }
-      if (activeTab === 'Canceled') {
-        return ['cancelled', 'no_show'].includes(status);
+      if (activeTab === 'canceled') {
+        return ['cancelled', 'no_show', 'canceled'].includes(status);
       }
       return false;
     });
@@ -50,13 +53,13 @@ const BookingHistoryPage = () => {
     return filteredBookings.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredBookings, currentPage]);
 
-  // Tính toán số lượng cho các tabs lọc
+  // Tính toán số lượng cho các tabs lọc (Vietnamese comment)
   const counts = useMemo(() => {
     return {
-      All: bookings.length,
-      Upcoming: bookings.filter(b => ['pending', 'confirmed', 'arrived'].includes(b.status?.toLowerCase())).length,
-      Completed: bookings.filter(b => b.status?.toLowerCase() === 'completed').length,
-      Canceled: bookings.filter(b => ['cancelled', 'no_show'].includes(b.status?.toLowerCase())).length,
+      all: bookings.length,
+      upcoming: bookings.filter(b => ['pending', 'confirmed', 'arrived'].includes(b.status?.toLowerCase())).length,
+      completed: bookings.filter(b => b.status?.toLowerCase() === 'completed').length,
+      canceled: bookings.filter(b => ['cancelled', 'no_show', 'canceled'].includes(b.status?.toLowerCase())).length,
     };
   }, [bookings]);
 
@@ -71,13 +74,13 @@ const BookingHistoryPage = () => {
         {/* Nội dung chính chi tiết lịch sử đặt bàn - Full Width */}
         <main className="bg-white/50 backdrop-blur-sm p-12 rounded-[3rem] border-2 border-slate-200/60 shadow-soft">
           
-          {/* Header Trang */}
+          {/* Header Trang (Vietnamese comment) */}
           <div className="mb-12">
             <h1 className="text-[3.5rem] font-black text-slate-900 leading-tight tracking-tighter mb-4 headline">
-              Booking History
+              {t('booking.history.title')}
             </h1>
             <p className="text-lg text-slate-500 font-medium max-w-2xl">
-              Manage your upcoming gastronomic experiences and revisit your past culinary journeys.
+              {t('booking.history.subtitle')}
             </p>
           </div>
 

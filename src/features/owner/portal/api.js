@@ -17,8 +17,9 @@ export const ownerPortalApi = {
 
   /**
    * Lấy danh sách nhà hàng đang sở hữu - Từ Restaurant Service
+   * Thay đổi từ /restaurants sang /portfolio/restaurants để chỉ lấy nhà hàng của chính chủ
    */
-  getMyRestaurants: (params = {}) => apiClient.get('/restaurants', { params }),
+  getMyRestaurants: (params = {}) => apiClient.get('/portfolio/restaurants', { params }),
 
   /**
    * Lấy thống kê giờ cao điểm cho Portfolio (Ngày) - Từ Booking Service
@@ -36,7 +37,17 @@ export const ownerPortalApi = {
   getBookingStats: (params = {}) => apiClient.get('/owner/revenue-stats', { params }),
 
   /**
-   * Lấy phân bổ giờ cao điểm (Peak hours)
+   * Lấy danh sách hoạt động gần đây của chủ sở hữu từ Notification Service
    */
-  getHourlyStats: (params = {}) => apiClient.get('/owner/stats/hourly', { params }),
+  getOwnerActivity: (params = {}) => apiClient.get('/owner/activity', { params }),
+
+  /**
+   * Đánh dấu một hoạt động là đã đọc theo ID
+   */
+  markActivityRead: (id) => apiClient.put(`/owner/activity/${id}/read`),
+
+  /**
+   * Đánh dấu toàn bộ hoạt động là đã đọc
+   */
+  markAllActivityRead: () => apiClient.put('/owner/activity/read-all'),
 };

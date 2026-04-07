@@ -124,6 +124,19 @@ SELECT TOP (1000) [id]
 ,[currency]
 FROM [SeatNow].[dbo].[Transactions]
 
+## Bảng Notifications:
+
+SELECT TOP (1000) [id]
+,[ownerId]
+,[restaurantId]
+,[type]
+,[title]
+,[message]
+,[metadata]
+,[isRead]
+,[createdAt]
+FROM [SeatNow].[dbo].[Notifications]
+
 ## Collections MongoDB:
 
 ## reviews:
@@ -171,7 +184,7 @@ FROM [SeatNow].[dbo].[Transactions]
   "preparationTime": 25,
   "tags": ["signature", "spicy", "grilled"],
   "allergens": ["garlic"],
-  "createdAt": "2026-01-15T10:00:00.000Z",
+  "createdAt": "2024-01-15T10:00:00.000Z",
   "updatedAt": "2026-01-31T10:00:00.000Z"
 }
 ```
@@ -218,6 +231,8 @@ Wallets CK_Wallets_Currency CHECK
 Wallets CK_Wallets_Status CHECK
 Wallets CK_Wallets_Owner CHECK
 Wallets FK_Wallets_restaurant FOREIGN KEY
+Notifications PK_Notifications PRIMARY KEY
+Notifications CK_Notifications_type CHECK
 
 ## Detail:
 
@@ -276,6 +291,7 @@ Users UQ**Users**AB6E6164CCA1F461 NONCLUSTERED email
 Users UQ**Users**B43B145FB44FBB8D NONCLUSTERED phone
 Wallets UQ_Wallets_RestaurantId NONCLUSTERED restaurantId
 Wallets UQ_Wallets_UserOnly NONCLUSTERED userId
+Notifications IX_Notifications_ownerId NONCLUSTERED ownerId
 
 ## Contraints Values:
 
@@ -289,3 +305,4 @@ Wallets UQ_Wallets_UserOnly NONCLUSTERED userId
 - **Restaurants.status**: `'pending'`, `'active'`, `'suspended'`
 - **Users.role**: `'CUSTOMER'`, `'RESTAURANT_OWNER'`, `'ADMIN'`
 - **Bookings.status**: `'PENDING'`, `'CONFIRMED'`, `'ARRIVED'`, `'COMPLETED'`, `'CANCELLED'`, `'NO_SHOW'`
+- **Notifications.type**: `'BOOKING_NEW'`, `'BOOKING_CONFIRMED'`, `'BOOKING_CANCELLED'`, `'BOOKING_NO_SHOW'`, `'TRANSACTION_DEPOSIT'`, `'TRANSACTION_TOPUP'`, `'TRANSACTION_WITHDRAW_APPROVED'`, `'REVIEW_NEW'`, `'COMMISSION_SETTLED'`, `'ADMIN_BROADCAST'`

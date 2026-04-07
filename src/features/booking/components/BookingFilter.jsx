@@ -1,15 +1,17 @@
-import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file BookingFilter.jsx
  * @description Bộ lọc tabs cho lịch sử đặt bàn (Upcoming, Completed, Canceled).
+ * Hỗ trợ đa ngôn ngữ.
  */
 const BookingFilter = ({ activeTab, setActiveTab, counts }) => {
+  const { t } = useTranslation();
   const tabs = [
-    { label: 'All', key: 'All' },
-    { label: 'Upcoming', key: 'Upcoming' },
-    { label: 'Completed', key: 'Completed' },
-    { label: 'Canceled', key: 'Canceled' }
+    { label: t('booking.history.tabs.all'), key: 'all' },
+    { label: t('booking.history.tabs.upcoming'), key: 'upcoming' },
+    { label: t('booking.history.tabs.completed'), key: 'completed' },
+    { label: t('booking.history.tabs.canceled'), key: 'canceled' }
   ];
 
 

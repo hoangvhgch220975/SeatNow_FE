@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { ROUTES } from '../../../config/routes';
 import { useAIAssistant } from '../hooks';
 import logo from '../../../assets/logos/logo.png';
+import { useTranslation } from 'react-i18next'; // Áp dụng hook ngôn ngữ (Vietnamese comment)
 
 /**
  * @file AIAssistantPage.jsx
@@ -10,6 +11,7 @@ import logo from '../../../assets/logos/logo.png';
  * Tích hợp Sidebar lịch sử hội thoại và quản lý phiên làm việc.
  */
 const AIAssistantPage = () => {
+  const { t } = useTranslation();
   const { 
     chatHistory, 
     sendMessage, 
@@ -48,24 +50,21 @@ const AIAssistantPage = () => {
     if (e.key === 'Enter') handleSend();
   };
 
-  // Nếu Auth chưa load xong dữ liệu User, hiện Skeleton hoặc mành chờ trắng
+  // Nếu Auth chưa load xong dữ liệu User, hiện Skeleton hoặc mành chờ trắng (Vietnamese comment)
   if (!isAuthReady) {
     return (
       <div className="h-[calc(100vh-80px)] bg-white flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-          <p className="text-xs font-black text-slate-400 uppercase tracking-widest animate-pulse">Initializing Identity...</p>
+          <p className="text-xs font-black text-slate-400 uppercase tracking-widest animate-pulse">{t('ai_assistant.chat.initializing')}</p>
         </div>
       </div>
     );
   }
 
   const QuickSuggestions = () => {
-    const suggestions = [
-      "I am looking for some high-quality dining recommendations.",
-      "Could you suggest a family-friendly restaurant nearby?",
-      "Which dining spots are currently trending in the city?"
-    ];
+    // Lấy các gợi ý tự động từ t() (Vietnamese comment)
+    const suggestions = t('ai_assistant.suggestions', { returnObjects: true });
 
     return (
       <div className="flex flex-wrap gap-2 mb-4">
@@ -90,16 +89,16 @@ const AIAssistantPage = () => {
       {isCustomer && (
         <aside className={`${isSidebarOpen ? 'w-80' : 'w-0'} bg-white border-r border-slate-100 flex flex-col transition-all duration-300 overflow-hidden relative z-30 shadow-2xl shadow-slate-200/20`}>
           <div className="p-6 flex flex-col h-full w-80">
-            {/* New Chat Button */}
+            {/* New Chat Button (Vietnamese comment) */}
             <button 
               onClick={() => startNewChat()}
               className="flex items-center justify-center gap-3 w-full py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-slate-800 transition-all mb-8 shadow-xl shadow-slate-900/10 group"
             >
               <span className="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform">add_circle</span>
-              New Chat
+              {t('ai_assistant.sidebar.new_chat')}
             </button>
 
-            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-4 px-2">Recent Conversations</p>
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-4 px-2">{t('ai_assistant.sidebar.recent_conversations')}</p>
             
             <div className="flex-grow overflow-y-auto space-y-2 custom-scrollbar pr-2">
               {sessions.map((session) => (
@@ -134,18 +133,18 @@ const AIAssistantPage = () => {
 
               {sessions.length === 0 && (
                 <div className="text-center py-12 px-4">
-                  <p className="text-xs font-bold text-slate-300 italic uppercase tracking-tighter">No past conversations yet</p>
+                  <p className="text-xs font-bold text-slate-300 italic uppercase tracking-tighter">{t('ai_assistant.sidebar.no_past_conversations')}</p>
                 </div>
               )}
             </div>
 
-            {/* User Footer in Sidebar */}
+            {/* User Footer in Sidebar (Vietnamese comment) */}
             <div className="mt-auto pt-6 border-t border-slate-50">
                <div className="flex items-center gap-3 p-2 bg-slate-50 rounded-2xl border border-slate-100">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-[10px] font-bold">VIP</div>
+                  <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-[10px] font-bold">{t('ai_assistant.sidebar.vip')}</div>
                   <div className="overflow-hidden">
-                    <p className="text-xs font-bold text-slate-900 truncate">SeatNow Executive</p>
-                    <p className="text-[10px] text-slate-400 font-medium">Encrypted Session</p>
+                    <p className="text-xs font-bold text-slate-900 truncate">{t('ai_assistant.sidebar.executive_name')}</p>
+                    <p className="text-[10px] text-slate-400 font-medium">{t('ai_assistant.sidebar.encrypted_session')}</p>
                   </div>
                </div>
             </div>
@@ -177,25 +176,25 @@ const AIAssistantPage = () => {
               )}
               <div>
                 <h1 className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-                  SeatNow AI Assistant
+                  {t('ai_assistant.header.title')}
                   <span className={`px-2 py-0.5 text-[10px] uppercase tracking-widest rounded-md font-black shadow-sm ${
                     isCustomer ? 'bg-indigo-600 text-white' : 'bg-primary/10 text-primary'
                   }`}>
-                    {isCustomer ? 'Executive' : 'Guest Beta'}
+                    {isCustomer ? t('ai_assistant.header.executive_badge') : t('ai_assistant.header.guest_beta_badge')}
                   </span>
                 </h1>
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                  {isCustomer ? 'Private Concierge' : 'Real-time Restaurant Concierge'}
+                  {isCustomer ? t('ai_assistant.header.private_concierge') : t('ai_assistant.header.real_time_concierge')}
                 </p>
               </div>
             </div>
             
             <div className="hidden sm:flex items-center gap-3">
                <div className="text-right">
-                 <p className="text-[10px] font-black text-slate-400 uppercase">Status</p>
+                 <p className="text-[10px] font-black text-slate-400 uppercase">{t('ai_assistant.header.status_label')}</p>
                  <p className="text-xs font-bold text-green-500 flex items-center gap-1.5">
                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                   Online
+                   {t('ai_assistant.header.status_online')}
                  </p>
                </div>
             </div>
@@ -253,14 +252,14 @@ const AIAssistantPage = () => {
                   <div className="p-5 bg-white border border-slate-100 text-slate-400 rounded-3xl rounded-tl-none shadow-sm flex items-center gap-1.5 font-bold italic text-xs">
                     <span className="w-1 h-1 bg-primary/40 rounded-full animate-bounce"></span>
                     <span className="w-1 h-1 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
-                    Searching...
+                    {t('ai_assistant.chat.searching')}
                   </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Input */}
+          {/* Input (Vietnamese comment) */}
           <div className="relative z-10">
             <QuickSuggestions />
             <div className="group relative flex items-center">
@@ -269,7 +268,7 @@ const AIAssistantPage = () => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Message AI Assistant..."
+                placeholder={t('ai_assistant.chat.placeholder')}
                 className="w-full bg-white border border-slate-200 p-5 pr-64 rounded-3xl text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/5 transition-all shadow-xl shadow-slate-200/20"
                 disabled={isLoading}
               />
@@ -282,11 +281,11 @@ const AIAssistantPage = () => {
                       setInputValue('');
                     }}
                     disabled={!inputValue.trim() || isLoading}
-                    title="Get Executive Recommendations"
+                    title={t('ai_assistant.chat.recommend_tooltip')}
                     className="px-4 py-3 bg-indigo-600/10 text-indigo-600 rounded-2xl font-bold flex items-center gap-2 hover:bg-indigo-600/20 disabled:opacity-50 transition-all border border-indigo-600/20 group"
                   >
                     <span className="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">auto_awesome</span>
-                    <span className="hidden lg:inline text-[10px] uppercase tracking-widest">Recommend</span>
+                    <span className="hidden lg:inline text-[10px] uppercase tracking-widest">{t('ai_assistant.chat.recommend_button')}</span>
                   </button>
                 )}
 
@@ -296,12 +295,12 @@ const AIAssistantPage = () => {
                   className="px-6 py-3 bg-primary text-white rounded-2xl font-bold flex items-center gap-2 hover:bg-primary/90 disabled:opacity-50 disabled:grayscale transition-all shadow-lg shadow-primary/20"
                 >
                   <span className="material-symbols-outlined text-[20px]">send</span>
-                  <span className="hidden sm:inline">Send</span>
+                  <span className="hidden sm:inline">{t('ai_assistant.chat.send_button')}</span>
                 </button>
               </div>
             </div>
             <p className="mt-4 text-center text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">
-              © 2026 SeatNow AI Concierge Service
+              {t('ai_assistant.footer')}
             </p>
           </div>
         </div>

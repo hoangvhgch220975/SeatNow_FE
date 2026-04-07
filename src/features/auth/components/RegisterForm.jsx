@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema } from '../schemas.js';
 
 /**
  * @file RegisterForm.jsx
- * @description Thành phần form đăng ký người dùng (Customer).
+ * @description Thành phần form đăng ký người dùng (Customer). Hỗ trợ đa ngôn ngữ.
  */
 const RegisterForm = ({ onSubmit, isLoading }) => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -29,10 +31,10 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
   return (
     <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {/* Full Name */}
+        {/* Full Name (Vietnamese comment) */}
         <div className="space-y-1.5">
           <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2" htmlFor="name">
-            Full Name
+            {t('auth.register.name_label')}
           </label>
           <div className="relative group">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-300 group-focus-within:text-primary transition-colors text-xl">
@@ -44,7 +46,7 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
                 errors.name ? 'focus:ring-red-500/20 bg-red-50/30' : 'focus:ring-primary/20'
               }`} 
               id="name" 
-              placeholder="John Doe" 
+              placeholder={t('auth.register.name_placeholder')} 
             />
           </div>
           {errors.name && (
@@ -52,10 +54,10 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
           )}
         </div>
 
-        {/* Phone Number */}
+        {/* Phone Number (Vietnamese comment) */}
         <div className="space-y-1.5">
           <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2" htmlFor="phone">
-            Phone Number
+            {t('auth.register.phone_label')}
           </label>
           <div className="relative group">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-300 group-focus-within:text-primary transition-colors text-xl">
@@ -67,7 +69,7 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
                 errors.phone ? 'focus:ring-red-500/20 bg-red-50/30' : 'focus:ring-primary/20'
               }`} 
               id="phone" 
-              placeholder="091..." 
+              placeholder={t('auth.register.phone_placeholder')} 
             />
           </div>
           {errors.phone && (
@@ -76,10 +78,10 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
         </div>
       </div>
 
-      {/* Email Address */}
+      {/* Email Address (Vietnamese comment) */}
       <div className="space-y-1.5">
         <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2" htmlFor="email">
-          Email Address
+          {t('auth.register.email_label')}
         </label>
         <div className="relative group">
           <span className="absolute left-5 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-300 group-focus-within:text-primary transition-colors text-xl">
@@ -91,7 +93,7 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
               errors.email ? 'focus:ring-red-500/20 bg-red-50/30' : 'focus:ring-primary/20'
             }`} 
             id="email" 
-            placeholder="example@mail.com" 
+            placeholder={t('auth.register.email_placeholder')} 
           />
         </div>
         {errors.email && (
@@ -99,12 +101,12 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
         )}
       </div>
 
-      {/* Password Grid */}
+      {/* Password Grid (Vietnamese comment) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {/* Password */}
+        {/* Password (Vietnamese comment) */}
         <div className="space-y-1.5">
           <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2" htmlFor="password">
-            Password
+            {t('auth.register.password_label')}
           </label>
           <div className="relative group">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-300 group-focus-within:text-primary transition-colors text-xl">
@@ -116,7 +118,7 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
                 errors.password ? 'focus:ring-red-500/20 bg-red-50/30' : 'focus:ring-primary/20'
               }`} 
               id="password" 
-              placeholder="••••••••" 
+              placeholder={t('auth.register.password_placeholder')} 
               type={showPassword ? "text" : "password"}
             />
             <button 
@@ -134,10 +136,10 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
           )}
         </div>
 
-        {/* Confirm Password */}
+        {/* Confirm Password (Vietnamese comment) */}
         <div className="space-y-1.5">
           <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2" htmlFor="confirmPassword">
-            Confirm
+            {t('auth.register.confirm_label')}
           </label>
           <div className="relative group">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-300 group-focus-within:text-primary transition-colors text-xl">
@@ -149,7 +151,7 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
                 errors.confirmPassword ? 'focus:ring-red-500/20 bg-red-50/30' : 'focus:ring-primary/20'
               }`} 
               id="confirmPassword" 
-              placeholder="••••••••" 
+              placeholder={t('auth.register.confirm_placeholder')} 
               type={showConfirmPassword ? "text" : "password"}
             />
             <button 
@@ -168,7 +170,7 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
         </div>
       </div>
 
-      {/* Submit Button */}
+      {/* Submit Button (Vietnamese comment) */}
       <button 
         className="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed mt-4 flex items-center justify-center gap-2"
         type="submit"
@@ -177,10 +179,10 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
         {isLoading ? (
           <>
             <span className="material-symbols-outlined animate-spin text-xl">progress_activity</span>
-            <span>Processing...</span>
+            <span>{t('auth.register.processing')}</span>
           </>
         ) : (
-          'Get Started'
+          t('auth.register.submit_button')
         )}
       </button>
     </form>
@@ -188,3 +190,4 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
 };
 
 export default RegisterForm;
+

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   BarChart, Bar, LineChart, Line, ComposedChart, Legend, Cell 
@@ -7,9 +8,11 @@ import { motion } from 'framer-motion';
 
 /**
  * @file AnalyticsCharts.jsx
- * @description Biểu đồ phân tích doanh thu và lượt đặt chuyên sâu (Dual Axis).
+ * @description Biểu đồ phân tích doanh thu và lượt đặt chuyên sâu. Hỗ trợ đa ngôn ngữ.
  */
 const AnalyticsCharts = ({ data, isLoading, period }) => {
+  const { t } = useTranslation();
+
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val || 0);
   };
@@ -23,16 +26,16 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
             <div className="flex items-center justify-between gap-6">
               <span className="flex items-center gap-2 text-xs font-bold text-white/60">
                  <span className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_10px_#8b5cf6]" />
-                 Revenue
+                 {t('common.revenue')}
               </span>
               <span className="text-sm font-black text-white">{formatCurrency(payload[0].value)}</span>
             </div>
             <div className="flex items-center justify-between gap-6">
                <span className="flex items-center gap-2 text-xs font-bold text-white/60">
                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]" />
-                 Bookings
+                 {t('common.bookings')}
               </span>
-              <span className="text-sm font-black text-white">{payload[1]?.value || 0} units</span>
+              <span className="text-sm font-black text-white">{payload[1]?.value || 0} {t('charts.units')}</span>
             </div>
           </div>
         </div>
@@ -46,7 +49,9 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
       <div className="bg-white rounded-[3rem] p-12 border border-slate-100 shadow-sm h-[500px] flex items-center justify-center">
         <div className="space-y-4 text-center">
           <div className="w-10 h-10 border-4 border-violet-100 border-t-violet-600 rounded-full animate-spin mx-auto shadow-inner"></div>
-          <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest animate-pulse">Computing Data Matrix...</p>
+          <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest animate-pulse">
+            {t('charts.computing_data')}
+          </p>
         </div>
       </div>
     );
@@ -59,24 +64,32 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
       duration={0.7}
       className="bg-white rounded-[3rem] p-12 border border-slate-100 shadow-sm mb-16 relative overflow-hidden"
     >
-      {/* Background Decorative Gradient */}
+      {/* Background Decorative Gradient (Vietnamese comment) */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-violet-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
 
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6 relative z-10">
         <div className="space-y-1">
-          <h3 className="text-2xl font-black text-slate-900 tracking-tight">Performance Statistics</h3>
-          <p className="text-sm text-slate-400 font-bold tracking-tight">Correlation between revenue and customer footfall over the selected interval.</p>
+          <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+            {t('charts.performance_statistics')}
+          </h3>
+          <p className="text-sm text-slate-400 font-bold tracking-tight">
+            {t('charts.performance_description')}
+          </p>
         </div>
         
         <div className="flex bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
            <div className="flex items-center gap-6 px-4">
               <div className="flex items-center gap-2">
                  <span className="w-2 h-2 rounded-full bg-violet-600" />
-                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Revenue</span>
+                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                   {t('common.revenue')}
+                 </span>
               </div>
               <div className="flex items-center gap-2">
                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Bookings</span>
+                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                   {t('common.bookings')}
+                 </span>
               </div>
            </div>
         </div>
@@ -99,7 +112,7 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
               tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }}
               dy={15}
             />
-            {/* Left YAxis for Revenue */}
+            {/* Left YAxis for Revenue (Vietnamese comment) */}
             <YAxis 
               yAxisId="left"
               axisLine={false} 
@@ -108,7 +121,7 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
               dx={-10}
               tickFormatter={(val) => `${(val / 1000000).toFixed(0)}M`}
             />
-            {/* Right YAxis for Bookings */}
+            {/* Right YAxis for Bookings (Vietnamese comment) */}
             <YAxis 
               yAxisId="right"
               orientation="right"

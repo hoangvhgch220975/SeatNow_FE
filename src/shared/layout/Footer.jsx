@@ -1,27 +1,29 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { ROUTES } from '../../config/routes.js';
 import logo from '../../assets/logos/logo.png';
 
 /**
  * @file Footer.jsx
- * @description Footer chung cho toàn bộ trang public/customer
+ * @description Footer chung cho toàn bộ trang public/customer. Hỗ trợ đa ngôn ngữ.
  */
 const Footer = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { label: 'Home', path: ROUTES.HOME },
-    { label: 'Restaurants', path: ROUTES.RESTAURANT_LIST },
-    { label: 'Track Booking', path: ROUTES.TRACK_BOOKING },
-    { label: 'AI Assistant', path: ROUTES.AI_CHAT },
+    { label: t('footer.customer.home'), path: ROUTES.HOME },
+    { label: t('footer.customer.restaurants'), path: ROUTES.RESTAURANT_LIST },
+    { label: t('footer.customer.track_booking'), path: ROUTES.TRACK_BOOKING },
+    { label: t('footer.customer.ai_assistant'), path: ROUTES.AI_CHAT },
   ];
 
   const legalLinks = [
-    { label: 'Privacy Policy', path: ROUTES.POLICIES },
-    { label: 'Terms of Service', path: ROUTES.POLICIES },
-    { label: 'Refund Policy', path: ROUTES.POLICIES },
-    { label: 'Contact Us', path: ROUTES.CONTACT },
+    { label: t('footer.customer.privacy_policy'), path: ROUTES.POLICIES },
+    { label: t('footer.customer.terms_of_service'), path: ROUTES.POLICIES },
+    { label: t('footer.customer.refund_policy'), path: ROUTES.POLICIES },
+    { label: t('footer.customer.contact_us'), path: ROUTES.CONTACT },
   ];
 
   return (
@@ -48,7 +50,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="text-slate-500 leading-relaxed max-w-sm text-sm font-medium">
-              The premium restaurant reservation platform. Discover, book, and enjoy the finest culinary experiences across Vietnam with ease.
+              {t('footer.customer.description')}
             </p>
             
             {/* Social Icons */}
@@ -70,7 +72,9 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-6">
-            <h4 className="text-xs font-black uppercase tracking-[.2em] text-slate-400">Quick Links</h4>
+            <h4 className="text-xs font-black uppercase tracking-[.2em] text-slate-400">
+              {t('footer.customer.quick_links')}
+            </h4>
             <ul className="space-y-4">
               {quickLinks.map((link) => (
                 <li key={link.label}>
@@ -88,7 +92,9 @@ const Footer = () => {
 
           {/* Legal Links */}
           <div className="space-y-6">
-            <h4 className="text-xs font-black uppercase tracking-[.2em] text-slate-400">Legal</h4>
+            <h4 className="text-xs font-black uppercase tracking-[.2em] text-slate-400">
+              {t('footer.customer.legal')}
+            </h4>
             <ul className="space-y-4">
               {legalLinks.map((link) => (
                 <li key={link.label}>
@@ -108,20 +114,20 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-slate-400 text-xs font-bold">
-            &copy; {currentYear} SeatNow. All rights reserved.
+            &copy; {currentYear} SeatNow. {t('footer.customer.all_rights_reserved')}
           </p>
           <div className="flex items-center gap-6 text-xs text-slate-400">
             <span className="flex items-center gap-1.5 font-bold">
               <span className="material-symbols-outlined text-[14px] text-primary">verified</span>
-              SSL Secured
+              {t('footer.customer.ssl_secured')}
             </span>
             <span className="flex items-center gap-1.5 font-bold">
               <span className="material-symbols-outlined text-[14px] text-primary">shield</span>
-              PCI Compliant
+              {t('footer.customer.pci_compliant')}
             </span>
             <span className="flex items-center gap-1.5 font-bold">
               <span className="material-symbols-outlined text-[14px] text-primary">language</span>
-              Vietnam
+              {t('footer.customer.vietnam')}
             </span>
           </div>
         </div>

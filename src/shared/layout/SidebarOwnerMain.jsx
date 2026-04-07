@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router';
 import { OWNER_MAIN_NAV } from '@/config/nav.owner-main.js';
 import { ROUTES } from '@/config/routes.js';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next'; // Áp dụng hook ngôn ngữ (Vietnamese comment)
 
 /**
  * @file SidebarOwnerMain.jsx
@@ -9,10 +10,11 @@ import toast from 'react-hot-toast';
  */
 const SidebarOwnerMain = () => {
   const location = useLocation();
+  const { t } = useTranslation(); // Khởi tạo i18n (Vietnamese comment)
 
   const handleLinkClick = (item) => {
     if (item.isComingSoon) {
-      toast.success(`${item.label} is coming soon!`, {
+      toast.success(t('owner_portal.sidebar.coming_soon_toast', { label: t(item.label) }), {
         icon: '🚀',
         style: {
           borderRadius: '1rem',
@@ -30,7 +32,7 @@ const SidebarOwnerMain = () => {
         <Link to={ROUTES.OWNER_HOME} className="text-2xl font-extrabold text-violet-700 tracking-tight">
           SeatNow
         </Link>
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Portfolio Manager</p>
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t('owner_portal.sidebar.portfolio_manager')}</p>
       </div>
 
       {/* Navigation Links */}
@@ -54,10 +56,10 @@ const SidebarOwnerMain = () => {
               }`}>
                 {item.icon}
               </span>
-              <span>{item.label}</span>
+              <span>{t(item.label)}</span>
               {item.isComingSoon && (
                 <span className="text-[10px] bg-slate-200 text-slate-500 px-1.5 py-0.5 rounded-md font-bold ml-auto">
-                  SOON
+                  {t('owner_portal.sidebar.soon')}
                 </span>
               )}
             </Link>
@@ -65,14 +67,14 @@ const SidebarOwnerMain = () => {
         })}
       </nav>
 
-      {/* Bottom Action: Create New Restaurant */}
+      {/* Bottom Action: Create New Restaurant (Vietnamese comment) */}
       <div className="mt-auto pt-6 border-t border-slate-200">
         <Link
           to={ROUTES.CREATE_RESTAURANT}
           className="w-full bg-violet-600 text-white py-4 px-6 rounded-2xl font-bold flex items-center justify-center space-x-2 shadow-lg shadow-violet-200 hover:bg-violet-700 transition-all active:scale-[0.98]"
         >
           <span className="material-symbols-outlined">add</span>
-          <span>Add New Venue</span>
+          <span>{t('owner_portal.sidebar.add_new_venue')}</span>
         </Link>
       </div>
     </aside>

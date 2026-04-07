@@ -1,8 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file RestaurantInfo.jsx
- * @description Hiển thị mô tả nhà hàng, tiện ích, giờ mở cửa hàng tuần, đặt cọc và bản đồ.
+ * @description Hiển thị mô tả nhà hàng, tiện ích, giờ mở cửa hàng tuần, đặt cọc và bản đồ. Hỗ trợ đa ngôn ngữ.
  * @param {Object} props
  * @param {string} props.description - Mô tả nhà hàng
  * @param {Array} props.amenities - Danh sách tiện ích
@@ -21,9 +22,11 @@ const RestaurantInfo = ({
   latitude,
   longitude
 }) => {
+  const { t } = useTranslation();
   
   /**
    * Bộ giải mã thông minh (Smart Parser) xử lý mọi định dạng giờ mở cửa từ Database
+   * Hỗ trợ đa ngôn ngữ cho tên các thứ trong tuần.
    */
   const getWeeklyHours = () => {
     if (!openingHours) return [];
@@ -33,17 +36,15 @@ const RestaurantInfo = ({
       try {
         hoursObj = JSON.parse(openingHours);
       } catch (e) {
-        return [{ day: 'Everyday', hours: openingHours, isToday: true }];
+        return [{ day: t('restaurants.info.everyday'), hours: openingHours, isToday: true }];
       }
     }
 
     if (typeof hoursObj !== 'object' || hoursObj === null) return [];
 
     const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const todayName = daysOrder[(new Date().getDay() + 6) % 7]; 
-    
     const weeklyData = {};
-    daysOrder.forEach(d => weeklyData[d] = 'Closed');
+    daysOrder.forEach(d => weeklyData[d] = t('restaurants.info.closed'));
 
     Object.entries(hoursObj).forEach(([key, value]) => {
       const k = key.toLowerCase();
@@ -64,7 +65,7 @@ const RestaurantInfo = ({
     const realToday = standardDayNames[new Date().getDay()];
 
     return daysOrder.map(day => ({
-      day,
+      day: t(`restaurants.info.days.${day}`),
       hours: weeklyData[day],
       isToday: day === realToday
     }));
@@ -72,31 +73,33 @@ const RestaurantInfo = ({
 
   const weeklyHours = getWeeklyHours();
 
-  // URL nhúng Google Maps động dựa trên tọa độ DB
+  // URL nhúng Google Maps động dựa trên tọa độ DB (Vietnamese comment)
   const mapEmbedUrl = (latitude && longitude) 
     ? `https://maps.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`
     : null;
 
   return (
     <div className="space-y-16">
-      {/* 1. Phần Mô tả (About) */}
+      {/* 1. Phần Mô tả (About) (Vietnamese comment) */}
       <div className="space-y-6">
         <h2 className="text-3xl font-bold tracking-tight text-on-surface">
-          About the Restaurant
+          {t('restaurants.info.about')}
         </h2>
         <p className="text-lg text-on-surface-variant leading-relaxed font-light">
           {description}
         </p>
       </div>
 
-      {/* 2. Giờ mở cửa & Chính sách đặt cọc (Operating Details) */}
+      {/* 2. Giờ mở cửa & Chính sách đặt cọc (Operating Details) (Vietnamese comment) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         <div className="p-8 bg-surface-container-low rounded-[2rem] border border-outline-variant/10 shadow-inner">
           <div className="flex items-center gap-4 mb-6 border-b border-outline-variant/10 pb-4">
             <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined text-primary text-xl">schedule</span>
             </div>
-            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Weekly Operating Hours</h4>
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">
+              {t('restaurants.info.operating_hours')}
+            </h4>
           </div>
           
           <div className="space-y-3">
@@ -112,7 +115,9 @@ const RestaurantInfo = ({
                 </div>
               ))
             ) : (
-              <p className="text-sm text-slate-400 text-center py-4 italic">Hours details not available</p>
+              <p className="text-sm text-slate-400 text-center py-4 italic">
+                {t('restaurants.info.hours_not_available')}
+              </p>
             )}
           </div>
         </div>
@@ -125,36 +130,41 @@ const RestaurantInfo = ({
                 </span>
               </div>
               <div className="space-y-1">
-                <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Deposit Policy</h4>
+                <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">
+                  {t('restaurants.info.deposit_policy')}
+                </h4>
                 <div className="flex flex-col gap-2 pt-1">
                   <p className="text-lg font-black text-on-surface leading-tight">
-                    {depositEnabled ? 'Secure Deposit Required' : 'Zero Deposit Booking'}
+                    {depositEnabled ? t('restaurants.info.deposit_required') : t('restaurants.info.deposit_free')}
                   </p>
                   <p className="text-xs text-on-surface-variant leading-relaxed">
                     {depositEnabled 
-                      ? "A small deposit is required to confirm your reservation and will be deducted from your final bill." 
-                      : "No advance payment is needed. You can pay at the restaurant after your experience."}
+                      ? t('restaurants.info.deposit_required_desc')
+                      : t('restaurants.info.deposit_free_desc')}
                   </p>
-                  {/* Tag Member Protection đã được gỡ bỏ theo yêu cầu */}
                 </div>
               </div>
             </div>
             
             <div className="p-6 bg-primary/5 rounded-[2rem] border border-primary/10 flex items-center gap-4">
                  <span className="material-symbols-outlined text-primary">info</span>
-                 <p className="text-[11px] text-primary/70 font-bold uppercase tracking-wider">Please arrive on time to ensure your table is reserved.</p>
+                 <p className="text-[11px] text-primary/70 font-bold uppercase tracking-wider">
+                   {t('restaurants.info.arrival_reminder')}
+                 </p>
             </div>
         </div>
       </div>
 
-      {/* 3. Vị trí Bản đồ (Google Maps Iframe) - Cập Nhật Sử Dụng Tọa Độ DB */}
+      {/* 3. Vị trí Bản đồ (Vietnamese comment) */}
       {mapEmbedUrl && (
         <div className="space-y-6">
           <div className="flex items-center gap-2">
             <h3 className="text-xs font-black uppercase tracking-[0.2em] text-primary/60 ml-2">
-              Restaurant Location
+              {t('restaurants.info.location_title')}
             </h3>
-            <span className="px-2 py-0.5 bg-primary/5 text-primary text-[9px] font-bold rounded-full">LIVE MAP</span>
+            <span className="px-2 py-0.5 bg-primary/5 text-primary text-[9px] font-bold rounded-full">
+              {t('restaurants.info.live_map')}
+            </span>
           </div>
           <div className="w-full h-[400px] rounded-[2.5rem] overflow-hidden border border-outline-variant/20 shadow-soft relative bg-slate-100">
             <iframe
@@ -165,19 +175,18 @@ const RestaurantInfo = ({
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Restaurant Location Map"
+              title={t('restaurants.info.location_title')}
               className="grayscale-[0.2] contrast-[1.1] hover:grayscale-0 transition-all duration-700"
             ></iframe>
-            {/* Overlay nhãn vị trí đã được gỡ bỏ để bản đồ thoáng hơn */}
           </div>
         </div>
       )}
 
-      {/* 4. Loại hình ẩm thực (Cuisine Style) */}
+      {/* 4. Loại hình ẩm thực (Vietnamese comment) */}
       {cuisineTypes && cuisineTypes.length > 0 && (
         <div className="space-y-6">
           <h3 className="text-xs font-black uppercase tracking-[0.2em] text-primary/60 ml-2">
-            Cuisine Style
+            {t('restaurants.info.cuisine_style')}
           </h3>
           <div className="flex flex-wrap gap-3">
             {cuisineTypes.map((type, idx) => (
@@ -192,10 +201,10 @@ const RestaurantInfo = ({
         </div>
       )}
 
-      {/* 5. Tiện ích (Amenities) */}
+      {/* 5. Tiện ích (Amenities) (Vietnamese comment) */}
       <div className="space-y-6">
         <h3 className="text-xs font-black uppercase tracking-[0.2em] text-primary/60 ml-2">
-            Amenities & Features
+          {t('restaurants.info.amenities_features')}
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 p-10 bg-surface-container-lowest rounded-[2.5rem] border border-outline-variant/20 shadow-soft">
           {amenities.map((item, index) => (

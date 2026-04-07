@@ -1,16 +1,19 @@
 import React from 'react';
-import RestaurantCard from './RestaurantCard';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import RestaurantCard from './RestaurantCard';
 import VenueTable from './VenueTable';
 
 /**
  * @file VenueList.jsx
  * @description Hiển thị danh sách nhà hàng với hai chế độ: Grid hoặc Table.
+ * Hỗ trợ đa ngôn ngữ và các hiệu ứng chuyển cảnh.
  */
 const VenueList = ({ restaurants, isLoading, viewMode }) => {
+  const { t } = useTranslation();
+
   if (isLoading) {
-    // Skeleton Loading (Giữ nguyên Grid cho loading để tối giản)
+    // Trạng thái đang tải (Skeleton Loading)
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -28,6 +31,7 @@ const VenueList = ({ restaurants, isLoading, viewMode }) => {
   }
 
   if (!restaurants || restaurants.length === 0) {
+    // Trạng thái không có kết quả (No Results Found)
     return (
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -37,9 +41,9 @@ const VenueList = ({ restaurants, isLoading, viewMode }) => {
         <div className="w-20 h-20 bg-white rounded-3xl shadow-sm border border-slate-100 flex items-center justify-center text-slate-300 mb-6">
            <span className="material-symbols-outlined text-4xl">search_off</span>
         </div>
-        <h3 className="text-xl font-bold text-slate-900 mb-2">No Venues Found</h3>
+        <h3 className="text-xl font-bold text-slate-900 mb-2">{t('owner_portal.venues_page.no_results_found')}</h3>
         <p className="text-slate-500 font-medium max-w-sm mx-auto text-sm leading-relaxed">
-           Try adjusting your search terms or filters. Your assets might be currently hidden under a different status.
+           {t('owner_portal.venues_page.no_results_desc')}
         </p>
       </motion.div>
     );

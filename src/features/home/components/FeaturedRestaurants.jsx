@@ -1,15 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../config/routes.js';
 import { useRestaurants } from '../hooks.js';
 import { slugify } from '../../../shared/utils/slugify.js';
 
-// Import Swiper React components & modules
+// Import Swiper React components & modules (Vietnamese comment)
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, FreeMode } from 'swiper/modules';
 import RestaurantCard from './RestaurantCard';
 
-// Import Swiper styles
+// Import Swiper styles (Vietnamese comment)
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/free-mode';
@@ -35,17 +36,18 @@ const RestaurantSkeleton = () => (
 
 /**
  * @file FeaturedRestaurants.jsx
- * @description Hiển thị các nhà hàng nổi bật bằng Swiper.js để đảm bảo độ mượt mà và tính tương tác cao.
+ * @description Hiển thị các nhà hàng nổi bật bằng Swiper.js. Hỗ trợ đa ngôn ngữ.
  */
 const FeaturedRestaurants = () => {
-  // Fetch danh sách nhà hàng (Tăng limit lên 20 để sau đó lọc lấy 6 cái có đánh giá thật tốt nhất)
+  const { t } = useTranslation();
+  
+  // Fetch danh sách nhà hàng (Vietnamese comment)
   const { data, isLoading, isError } = useRestaurants({ limit: 20, sort: 'rating' });
   
-  // 1. Chuẩn hóa dữ liệu ban đầu từ SQL
+  // 1. Chuẩn hóa dữ liệu ban đầu từ SQL (Vietnamese comment)
   const rawRestaurants = data?.data || data?.restaurants || (Array.isArray(data) ? data : []);
 
-  // 2. Fetch Review Summary hàng loạt từ MongoDB cho toàn bộ rawRestaurants
-  // Điều này đảm bảo ta có dữ liệu THẬT trước khi quyết định hiển thị
+  // 2. Fetch Review Summary hàng loạt từ MongoDB (Vietnamese comment)
   const summaries = useQueries({
     queries: rawRestaurants.map(res => ({
       queryKey: ['reviews', 'summary', res.slug || res.id || res._id],
@@ -54,17 +56,16 @@ const FeaturedRestaurants = () => {
     }))
   });
 
-  // Kiểm tra xem tất cả các queries đã xong chưa (để tránh lọc vội vàng)
+  // Kiểm tra xem tất cả các queries đã xong chưa (Vietnamese comment)
   const isSummariesLoaded = summaries.every(s => s.isSuccess || s.isError);
 
-  // 3. Lọc và Sắp xếp: Ưu tiên nhà hàng có đánh giá thật, nhưng luôn đảm bảo đủ 6 cái
+  // 3. Lọc và Sắp xếp: Ưu tiên nhà hàng có đánh giá thật (Vietnamese comment)
   const featuredList = React.useMemo(() => {
     if (!isSummariesLoaded) return [];
 
     return rawRestaurants
       .map((res, index) => {
         const s = summaries[index].data?.data || summaries[index].data || {};
-        // Sử dụng rating từ MongoDB nếu có, nếu không lấy rating mặc định từ SQL
         const finalRating = s.averageRating || res.rating || 0;
         const finalCount = s.totalReviews || res.review_count || 0;
 
@@ -72,19 +73,16 @@ const FeaturedRestaurants = () => {
           ...res,
           verifiedRating: finalRating,
           verifiedCount: finalCount,
-          hasRealReviews: (s.totalReviews || 0) > 0 // Đánh dấu để ưu tiên sắp xếp
+          hasRealReviews: (s.totalReviews || 0) > 0 
         };
       })
-      // Không lọc bỏ (filter), để giữ lại đủ số lượng
       .sort((a, b) => {
-        // Ưu tiên 1: Những cái có review thật từ người dùng
         if (a.hasRealReviews !== b.hasRealReviews) {
           return b.hasRealReviews ? 1 : -1;
         }
-        // Ưu tiên 2: Điểm số rating cao nhất
         return (b.verifiedRating || 0) - (a.verifiedRating || 0);
       })
-      .slice(0, 6); // Lấy đúng 6 cái hot nhất
+      .slice(0, 6);
   }, [rawRestaurants, summaries, isSummariesLoaded]);
 
   if (isError) {
@@ -92,8 +90,8 @@ const FeaturedRestaurants = () => {
       <section className="py-24 max-w-7xl mx-auto px-8 w-full text-center">
         <div className="bg-red-50 text-red-600 p-8 rounded-xl border border-red-100">
           <span className="material-symbols-outlined text-4xl mb-2">error</span>
-          <h3 className="text-xl font-bold">Failed to load restaurants</h3>
-          <p className="mt-2">Something went wrong while fetching the latest destinations. Please try again later.</p>
+          <h3 className="text-xl font-bold">{t('home.featured.error_title')}</h3>
+          <p className="mt-2">{t('home.featured.error_desc')}</p>
         </div>
       </section>
     );
@@ -103,18 +101,22 @@ const FeaturedRestaurants = () => {
     <section className="py-24 max-w-7xl mx-auto px-8 w-full overflow-hidden">
       <div className="flex justify-between items-end mb-12">
         <div>
-          <h2 className="text-[1.75rem] font-bold text-slate-900 headline">Featured Destinations</h2>
-          <p className="text-slate-500 mt-2">Hand-picked excellence for your next evening.</p>
+          <h2 className="text-[1.75rem] font-bold text-slate-900 headline">
+            {t('home.featured.title')}
+          </h2>
+          <p className="text-slate-500 mt-2">
+            {t('home.featured.subtitle')}
+          </p>
         </div>
         <Link 
           to={ROUTES.RESTAURANT_LIST || '/restaurants'} 
           className="text-primary font-bold border-b-2 border-primary/20 hover:border-primary transition-all pb-1 text-sm tracking-wide"
         >
-          View All Establishments
+          {t('home.featured.view_all')}
         </Link>
       </div>
 
-      {/* Swiper Carousel Container */}
+      {/* Swiper Carousel Container (Vietnamese comment) */}
       <div className="relative -mx-4 px-4 pb-24">
         {(isLoading || !isSummariesLoaded) ? (
           <div className="flex gap-8 overflow-hidden">
@@ -161,7 +163,7 @@ const FeaturedRestaurants = () => {
         ) : (
           <div className="w-full py-20 text-center bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
             <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">restaurant</span>
-            <p className="text-slate-500 text-lg">No restaurants available at the moment.</p>
+            <p className="text-slate-500 text-lg">{t('home.featured.no_data')}</p>
           </div>
         )}
       </div>

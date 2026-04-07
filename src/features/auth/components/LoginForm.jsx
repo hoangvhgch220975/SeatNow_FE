@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,9 +9,10 @@ import { loginSchema } from '../schemas.js';
 
 /**
  * @file LoginForm.jsx
- * @description Thành phần Form Đăng nhập của SeatNow.
+ * @description Thành phần Form Đăng nhập của SeatNow. Hỗ trợ đa ngôn ngữ.
  */
 const LoginForm = ({ onSubmit, isLoading, onGoogleLogin, isGooglePending }) => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -27,10 +29,10 @@ const LoginForm = ({ onSubmit, isLoading, onGoogleLogin, isGooglePending }) => {
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-      {/* Identifier Input */}
+      {/* Identifier Input (Vietnamese comment) */}
       <div className="space-y-1.5">
         <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2" htmlFor="identifier">
-          Email / Phone Number
+          {t('auth.login.identifier_label')}
         </label>
         <div className="relative group">
           <span className="absolute left-5 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-300 group-focus-within:text-primary transition-colors text-xl">
@@ -42,7 +44,7 @@ const LoginForm = ({ onSubmit, isLoading, onGoogleLogin, isGooglePending }) => {
               errors.identifier ? 'focus:ring-red-500/20 bg-red-50/30' : 'focus:ring-primary/20'
             }`} 
             id="identifier" 
-            placeholder="example@mail.com or 09..." 
+            placeholder={t('auth.login.identifier_placeholder')} 
             autoComplete="username"
           />
         </div>
@@ -51,14 +53,14 @@ const LoginForm = ({ onSubmit, isLoading, onGoogleLogin, isGooglePending }) => {
         )}
       </div>
 
-      {/* Password Input */}
+      {/* Password Input (Vietnamese comment) */}
       <div className="space-y-1.5">
         <div className="flex justify-between items-center px-2">
           <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest" htmlFor="password">
-            Password
+            {t('auth.login.password_label')}
           </label>
           <Link to={ROUTES.FORGOT_PASSWORD} className="text-primary text-[10px] font-bold uppercase tracking-wider hover:underline underline-offset-4 transition-all">
-            Forgot Password?
+            {t('auth.login.forgot_password')}
           </Link>
         </div>
         <div className="relative group">
@@ -71,7 +73,7 @@ const LoginForm = ({ onSubmit, isLoading, onGoogleLogin, isGooglePending }) => {
               errors.password ? 'focus:ring-red-500/20 bg-red-50/30' : 'focus:ring-primary/20'
             }`} 
             id="password" 
-            placeholder="••••••••" 
+            placeholder={t('auth.login.password_placeholder')} 
             type={showPassword ? "text" : "password"}
             autoComplete="current-password"
           />
@@ -88,7 +90,7 @@ const LoginForm = ({ onSubmit, isLoading, onGoogleLogin, isGooglePending }) => {
         )}
       </div>
 
-      {/* Sign In Button */}
+      {/* Sign In Button (Vietnamese comment) */}
       <div className="pt-2">
         <button 
           disabled={isLoading}
@@ -98,22 +100,24 @@ const LoginForm = ({ onSubmit, isLoading, onGoogleLogin, isGooglePending }) => {
           {isLoading ? (
             <>
               <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-              Processing...
+              {t('auth.login.processing')}
             </>
           ) : (
-            'Sign In'
+            t('auth.login.submit_button')
           )}
         </button>
       </div>
 
-      {/* Divider */}
+      {/* Divider (Vietnamese comment) */}
       <div className="relative py-1 flex items-center">
         <div className="flex-grow border-t border-slate-100"></div>
-        <span className="flex-shrink mx-4 text-slate-300 text-[10px] uppercase tracking-widest font-black italic">OR</span>
+        <span className="flex-shrink mx-4 text-slate-300 text-[10px] uppercase tracking-widest font-black italic">
+          {t('auth.login.or_divider')}
+        </span>
         <div className="flex-grow border-t border-slate-100"></div>
       </div>
 
-      {/* Google Sign In */}
+      {/* Google Sign In (Vietnamese comment) */}
       <button 
         disabled={isGooglePending || isLoading}
         className="w-full flex items-center justify-center space-x-3 bg-white border border-slate-100 text-slate-500 font-bold py-3.5 rounded-full transition-all hover:bg-slate-50 active:scale-95 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed" 
@@ -130,7 +134,7 @@ const LoginForm = ({ onSubmit, isLoading, onGoogleLogin, isGooglePending }) => {
           />
         )}
         <span className="text-xs">
-          {isGooglePending ? 'Authenticating...' : 'Sign in with Google'}
+          {isGooglePending ? t('auth.login.google_authenticating') : t('auth.login.google_button')}
         </span>
       </button>
     </form>

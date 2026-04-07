@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
  * @file MenuItemModal.jsx
- * @description Popup chi tiết món ăn - hiển thị đúng các trường từ MongoDB menuitems collection:
+ * @description Popup chi tiết món ăn - hiển thị đúng các trường từ MongoDB menuitems collection. Hỗ trợ đa ngôn ngữ.
  *   name, description, price, discountPrice, category, images[], isAvailable,
  *   preparationTime, tags[], allergens[], createdAt
  */
 const MenuItemModal = ({ item, onClose }) => {
+  const { t, i18n } = useTranslation();
   const [activeImg, setActiveImg] = useState(0);
   const [dragStartX, setDragStartX] = useState(null);
 
-  // Chuẩn hoá danh sách ảnh
+  // Chuẩn hoá danh sách ảnh (Vietnamese comment)
   const images =
     Array.isArray(item?.images) && item.images.length > 0
       ? item.images
@@ -23,7 +25,7 @@ const MenuItemModal = ({ item, onClose }) => {
 
   const hasMultiple = images.length > 1;
 
-  // ESC + phím mũi tên → điều hướng gallery
+  // ESC + phím mũi tên → điều hướng gallery (Vietnamese comment)
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === 'Escape') onClose();
@@ -34,33 +36,34 @@ const MenuItemModal = ({ item, onClose }) => {
     return () => document.removeEventListener('keydown', handleKey);
   }, [onClose, images.length]);
 
-  // Khoá scroll body khi modal mở
+  // Khoá scroll body khi modal mở (Vietnamese comment)
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
 
-  // Reset ảnh khi đổi item
+  // Reset ảnh khi đổi item (Vietnamese comment)
   useEffect(() => { setActiveImg(0); }, [item]);
 
   if (!item) return null;
 
-  // Tính giá hiển thị & giảm giá
+  // Tính giá hiển thị & giảm giá (Vietnamese comment)
   const finalPrice = item.discountPrice || item.price;
   const hasDiscount = !!item.discountPrice && item.discountPrice < item.price;
   const discountPercent = hasDiscount
     ? Math.round((1 - item.discountPrice / item.price) * 100)
     : 0;
 
-  // Format ngày tháng sang tiếng Anh
+  // Format ngày tháng theo ngôn ngữ hiện tại (Vietnamese comment)
   const formatDate = (iso) => {
     if (!iso) return null;
-    return new Date(iso).toLocaleDateString('en-US', {
+    const locale = i18n.language === 'vi' ? 'vi-VN' : 'en-US';
+    return new Date(iso).toLocaleDateString(locale, {
       day: '2-digit', month: 'short', year: 'numeric',
     });
   };
 
-  // Touch/mouse swipe
+  // Touch/mouse swipe (Vietnamese comment)
   const handleDragStart = (e) => {
     const x = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
     setDragStartX(x);
@@ -78,7 +81,7 @@ const MenuItemModal = ({ item, onClose }) => {
 
   return (
     <AnimatePresence>
-      {/* Backdrop */}
+      {/* Backdrop (Vietnamese comment) */}
       <motion.div
         key="backdrop"
         initial={{ opacity: 0 }}
@@ -88,7 +91,7 @@ const MenuItemModal = ({ item, onClose }) => {
         className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-6"
         onClick={onClose}
       >
-        {/* Modal card */}
+        {/* Modal card (Vietnamese comment) */}
         <motion.div
           key="modal"
           initial={{ opacity: 0, y: 80, scale: 0.96 }}
@@ -99,7 +102,7 @@ const MenuItemModal = ({ item, onClose }) => {
           onClick={(e) => e.stopPropagation()}
         >
 
-          {/* ───── IMAGE GALLERY ───── */}
+          {/* ───── IMAGE GALLERY ───── (Vietnamese comment) */}
           <div
             className="relative flex-shrink-0 bg-slate-100 select-none"
             onMouseDown={handleDragStart}
@@ -107,7 +110,7 @@ const MenuItemModal = ({ item, onClose }) => {
             onTouchStart={handleDragStart}
             onTouchEnd={handleDragEnd}
           >
-            {/* Main image */}
+            {/* Main image (Vietnamese comment) */}
             <div className="relative h-64 sm:h-72 overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.img
@@ -123,10 +126,10 @@ const MenuItemModal = ({ item, onClose }) => {
                 />
               </AnimatePresence>
 
-              {/* Gradient overlay */}
+              {/* Gradient overlay (Vietnamese comment) */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent pointer-events-none" />
 
-              {/* Left / Right arrows */}
+              {/* Left / Right arrows (Vietnamese comment) */}
               {hasMultiple && (
                 <>
                   <button
@@ -146,7 +149,7 @@ const MenuItemModal = ({ item, onClose }) => {
                 </>
               )}
 
-              {/* Top-left badges */}
+              {/* Top-left badges (Vietnamese comment) */}
               <div className="absolute top-4 left-4 flex flex-wrap gap-2 pointer-events-none">
                 {item.category && (
                   <span className="bg-white/90 backdrop-blur-md text-primary text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-sm">
@@ -155,38 +158,40 @@ const MenuItemModal = ({ item, onClose }) => {
                 )}
                 {hasDiscount && (
                   <span className="bg-red-500 text-white text-[10px] font-black uppercase tracking-tighter px-3 py-1.5 rounded-full shadow-lg animate-pulse">
-                    -{discountPercent}% OFF
+                    -{discountPercent}% {t('restaurants.menu.modal.off')}
                   </span>
                 )}
               </div>
 
-              {/* Availability badge */}
+              {/* Availability badge (Vietnamese comment) */}
               <div className="absolute top-4 right-14 pointer-events-none">
                 <span className={`text-[10px] font-black uppercase tracking-wide px-3 py-1.5 rounded-full shadow-sm ${
                   item.isAvailable !== false
                     ? 'bg-green-100 text-green-700'
                     : 'bg-red-100 text-red-600'
                 }`}>
-                  {item.isAvailable !== false ? '✓ Available' : '✗ Unavailable'}
+                  {item.isAvailable !== false 
+                    ? `✓ ${t('restaurants.menu.modal.available')}` 
+                    : `✗ ${t('restaurants.menu.modal.unavailable')}`}
                 </span>
               </div>
 
-              {/* Prep time — bottom left */}
+              {/* Prep time — bottom left (Vietnamese comment) */}
               {item.preparationTime && (
                 <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 pointer-events-none">
                   <span className="material-symbols-outlined text-sm">schedule</span>
-                  {item.preparationTime} min
+                  {item.preparationTime} {t('restaurants.menu.modal.min')}
                 </div>
               )}
 
-              {/* Image counter — bottom right (nếu có nhiều ảnh) */}
+              {/* Image counter — bottom right (Vietnamese comment) */}
               {hasMultiple && (
                 <div className="absolute bottom-4 right-14 bg-black/50 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full pointer-events-none">
                   {activeImg + 1} / {images.length}
                 </div>
               )}
 
-              {/* Close button */}
+              {/* Close button (Vietnamese comment) */}
               <button
                 onClick={onClose}
                 className="absolute top-3 right-3 w-9 h-9 bg-black/35 hover:bg-black/55 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-all z-10"
@@ -196,7 +201,7 @@ const MenuItemModal = ({ item, onClose }) => {
               </button>
             </div>
 
-            {/* Thumbnail strip — chỉ hiện nếu có nhiều ảnh */}
+            {/* Thumbnail strip (Vietnamese comment) */}
             {hasMultiple && (
               <div className="flex gap-2 justify-center py-3 bg-slate-50 border-b border-slate-100 overflow-x-auto px-4">
                 {images.map((img, i) => (
@@ -221,10 +226,10 @@ const MenuItemModal = ({ item, onClose }) => {
             )}
           </div>
 
-          {/* ───── SCROLLABLE INFO ───── */}
+          {/* ───── SCROLLABLE INFO ───── (Vietnamese comment) */}
           <div className="overflow-y-auto flex-1 p-7 space-y-6">
 
-            {/* Tên + Giá */}
+            {/* Tên + Giá (Vietnamese comment) */}
             <div className="flex items-start justify-between gap-4">
               <h2 className="text-2xl font-bold text-slate-900 leading-tight flex-1">{item.name}</h2>
               <div className="text-right flex-shrink-0">
@@ -239,22 +244,26 @@ const MenuItemModal = ({ item, onClose }) => {
               </div>
             </div>
 
-            {/* Mô tả món ăn */}
+            {/* Mô tả món ăn (Vietnamese comment) */}
             {item.description && (
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Description</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
+                  {t('restaurants.menu.modal.description')}
+                </p>
                 <p className="text-slate-600 leading-relaxed text-sm">{item.description}</p>
               </div>
             )}
 
-            {/* Thông tin danh mục và thời gian chuẩn bị */}
+            {/* Thông tin danh mục và thời gian chuẩn bị (Vietnamese comment) */}
             {(item.category || item.preparationTime) && (
               <div className="grid grid-cols-2 gap-3">
                 {item.category && (
                   <div className="flex items-center gap-3 bg-slate-50 rounded-2xl p-3.5">
                     <span className="material-symbols-outlined text-primary text-xl">category</span>
                     <div>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Category</p>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">
+                        {t('restaurants.menu.modal.category')}
+                      </p>
                       <p className="text-sm font-bold text-slate-700">{item.category}</p>
                     </div>
                   </div>
@@ -263,20 +272,26 @@ const MenuItemModal = ({ item, onClose }) => {
                   <div className="flex items-center gap-3 bg-slate-50 rounded-2xl p-3.5">
                     <span className="material-symbols-outlined text-primary text-xl">schedule</span>
                     <div>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Prep Time</p>
-                      <p className="text-sm font-bold text-slate-700">{item.preparationTime} min</p>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">
+                        {t('restaurants.menu.modal.prep_time')}
+                      </p>
+                      <p className="text-sm font-bold text-slate-700">
+                        {item.preparationTime} {t('restaurants.menu.modal.min')}
+                      </p>
                     </div>
                   </div>
                 )}
               </div>
             )}
 
-            {/* Cảnh báo dị ứng */}
+            {/* Cảnh báo dị ứng (Vietnamese comment) */}
             {item.allergens?.length > 0 && (
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
                 <div className="flex items-center gap-2 mb-2.5">
                   <span className="material-symbols-outlined text-base text-amber-600">warning</span>
-                  <span className="text-xs font-black text-amber-700 uppercase tracking-wider">Allergen Info</span>
+                  <span className="text-xs font-black text-amber-700 uppercase tracking-wider">
+                    {t('restaurants.menu.modal.allergen_info')}
+                  </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {item.allergens.map((allergen) => (
@@ -288,10 +303,12 @@ const MenuItemModal = ({ item, onClose }) => {
               </div>
             )}
 
-            {/* Tags của món ăn */}
+            {/* Tags của món ăn (Vietnamese comment) */}
             {item.tags?.length > 0 && (
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Tags</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
+                  {t('restaurants.menu.modal.tags')}
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {item.tags.map((tag) => (
                     <span key={tag} className="text-xs font-medium text-slate-500 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
@@ -302,14 +319,14 @@ const MenuItemModal = ({ item, onClose }) => {
               </div>
             )}
 
-            {/* Ngày thêm món vào thực đơn */}
+            {/* Ngày thêm món vào thực đơn (Vietnamese comment) */}
             {item.createdAt && (
               <p className="text-[11px] text-slate-300 text-right">
-                Added to menu: {formatDate(item.createdAt)}
+                {t('restaurants.menu.modal.added_on', { date: formatDate(item.createdAt) })}
               </p>
             )}
 
-            {/* Bottom spacer */}
+            {/* Bottom spacer (Vietnamese comment) */}
             <div className="h-1" />
           </div>
         </motion.div>

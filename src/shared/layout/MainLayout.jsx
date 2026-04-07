@@ -7,6 +7,7 @@ import CustomerNavbar from './CustomerNavbar.jsx';
 import Footer from './Footer.jsx';
 import ScrollToTop from '../components/ScrollToTop.jsx';
 import AIFloatingButton from '../components/AIFloatingButton.jsx';
+import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
 
 /**
  * @file MainLayout.jsx
@@ -104,10 +105,15 @@ const MainLayout = () => {
 
 
       {/* 
-        AI Assistant Floating Button - 
-        Chỉ hiển thị cho Guest (Vì Customer đã tích hợp AI vào Navbar).
+        AI Assistant & Language Switcher (Nút nổi) - 
+        Chỉ hiển thị cho khách (Guest) vì người dùng đã có AI & Lang tích hợp trong Navbar.
       */}
-      {!isCustomer && <AIFloatingButton />}
+      {!isCustomer && (
+        <>
+          <LanguageSwitcher variant="floating" />
+          <AIFloatingButton />
+        </>
+      )}
     </div>
   );
 };

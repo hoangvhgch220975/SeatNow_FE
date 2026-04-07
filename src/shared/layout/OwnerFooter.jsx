@@ -1,30 +1,17 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { ROUTES } from '@/config/routes.js';
 import toast from 'react-hot-toast';
 
 /**
  * @file OwnerFooter.jsx
- * @description Thành phần chân trang chuyên biệt dành cho Owner Portal.
+ * @description Thành phần chân trang chuyên biệt dành cho Owner Portal. Hỗ trợ đa ngôn ngữ.
  */
 const OwnerFooter = () => {
+  const { t } = useTranslation();
     
-  const handleSystemStatus = (e) => {
-    e.preventDefault();
-    toast.success('System Intelligence Analytics: Module Coming Soon', {
-      icon: '🚀',
-      style: {
-        borderRadius: '1.5rem',
-        background: '#0f172a',
-        color: '#fff',
-        fontSize: '11px',
-        fontWeight: '900',
-        padding: '16px 24px',
-        textTransform: 'uppercase',
-        letterSpacing: '0.1em'
-      },
-    });
-  };
+
 
   return (
     <footer className="mt-20 px-8 py-16 bg-white border-t border-slate-100 relative overflow-hidden">
@@ -39,10 +26,10 @@ const OwnerFooter = () => {
              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white">
                 <span className="material-symbols-outlined text-[18px]">insights</span>
              </div>
-             <p className="text-sm font-black text-slate-900 tracking-tight uppercase">SeatNow <span className="text-violet-600">Portfolio</span> Intelligence</p>
+             <p className="text-sm font-black text-slate-900 tracking-tight uppercase">SeatNow <span className="text-violet-600">{t('footer.owner.portfolio_intelligence')}</span></p>
           </div>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-11">
-             © 2026 Global Strategic Business Unit
+             © 2026 {t('footer.owner.strategic_unit')}
           </p>
         </div>
         
@@ -53,22 +40,24 @@ const OwnerFooter = () => {
             className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] hover:text-violet-600 transition-all flex items-center gap-2 group"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-slate-200 group-hover:bg-violet-500 transition-colors"></span>
-            Privacy Policy
+            {t('footer.owner.privacy_policy')}
           </Link>
           
-          <button 
-            onClick={handleSystemStatus}
+          <Link 
+            to={ROUTES.OWNER_ANALYTICS}
             className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] hover:text-emerald-600 transition-all flex items-center gap-2 group"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-slate-200 group-hover:bg-emerald-500 transition-colors"></span>
-            System Status
-          </button>
+            {t('footer.owner.system_status')}
+          </Link>
         </div>
 
         {/* Support Token (Fixed) */}
         <div className="hidden lg:flex items-center gap-4 bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100">
            <span className="material-symbols-outlined text-slate-400 text-[18px]">verified</span>
-           <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Compliance Level: 1.0.4-LTS</span>
+           <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
+             {t('footer.owner.compliance_level')}: 1.0.4-LTS
+           </span>
         </div>
       </div>
     </footer>

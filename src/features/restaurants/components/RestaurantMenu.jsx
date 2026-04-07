@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRestaurantMenu } from '../hooks.js';
 import MenuItemModal from './MenuItemModal.jsx';
 
 /**
- * Cấu hình ảnh placeholder chất lượng cao theo danh mục (Source: Unsplash)
+ * Cấu hình ảnh placeholder chất lượng cao theo danh mục (Source: Unsplash) (Vietnamese comment)
  */
 const CATEGORY_PLACEHOLDERS = {
   'Appetizers': 'https://images.unsplash.com/photo-1541529086526-db283c563270?q=80&w=600&auto=format&fit=crop',
@@ -19,30 +20,32 @@ const CATEGORY_PLACEHOLDERS = {
 
 /**
  * @file RestaurantMenu.jsx
- * @description Component hiển thị đầy đủ thực đơn nhà hàng, phân chia theo danh mục.
+ * @description Component hiển thị đầy đủ thực đơn nhà hàng, phân chia theo danh mục. Hỗ trợ đa ngôn ngữ.
  */
 const RestaurantMenu = ({ restaurantId }) => {
+  const { t } = useTranslation();
   const { data: menuData, isLoading, isError } = useRestaurantMenu(restaurantId);
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState(t('restaurants.menu.all_categories'));
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
 
-  // 1. Chuẩn hóa & Nhóm dữ liệu
+  // 1. Chuẩn hóa & Nhóm dữ liệu (Vietnamese comment)
   const items = menuData?.data || menuData || [];
   
   const groupedMenu = useMemo(() => {
-    const groups = { 'All': items };
+    const allKey = t('restaurants.menu.all_categories');
+    const groups = { [allKey]: items };
     items.forEach(item => {
       const cat = item.category || 'Other';
       if (!groups[cat]) groups[cat] = [];
       groups[cat].push(item);
     });
     return groups;
-  }, [items]);
+  }, [items, t]);
 
   const categories = Object.keys(groupedMenu);
 
-  // 2. Lọc theo category và search query
+  // 2. Lọc theo category và search query (Vietnamese comment)
   const filteredItems = useMemo(() => {
     let result = groupedMenu[activeCategory] || [];
     if (searchQuery.trim()) {
@@ -69,14 +72,16 @@ const RestaurantMenu = ({ restaurantId }) => {
 
   return (
     <div className="space-y-10 py-4">
-      {/* Menu Header & Search */}
+      {/* Menu Header & Search (Vietnamese comment) */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden">
-        <h2 className="text-3xl font-bold tracking-tight text-on-surface">The Menu</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-on-surface">
+          {t('restaurants.menu.title')}
+        </h2>
         <div className="relative group max-w-sm w-full">
           <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50 group-focus-within:text-primary transition-colors">search</span>
           <input 
             type="text" 
-            placeholder="Search our flavors..."
+            placeholder={t('restaurants.menu.search_placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-12 pr-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium"
@@ -84,7 +89,7 @@ const RestaurantMenu = ({ restaurantId }) => {
         </div>
       </div>
 
-      {/* Category Tabs */}
+      {/* Category Tabs (Vietnamese comment) */}
       <div className="flex overflow-x-auto pb-2 scrollbar-hide gap-2 no-scrollbar">
         {categories.map((cat) => (
           <button
@@ -102,7 +107,7 @@ const RestaurantMenu = ({ restaurantId }) => {
         ))}
       </div>
 
-      {/* Menu Items Grid */}
+      {/* Menu Items Grid (Vietnamese comment) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <AnimatePresence>
           {filteredItems.map((item, index) => (
@@ -114,22 +119,22 @@ const RestaurantMenu = ({ restaurantId }) => {
               transition={{ 
                 duration: 0.4, 
                 delay: index * 0.05,
-                ease: [0.215, 0.610, 0.355, 1.000] // Cubic bezier cho hiệu ứng mượt mà
+                ease: [0.215, 0.610, 0.355, 1.000] // Cubic bezier cho hiệu ứng mượt mà (Vietnamese comment)
               }}
               className="group relative flex flex-col bg-white rounded-[2rem] overflow-hidden border border-outline-variant/10 hover:border-primary/20 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer"
               onClick={() => setSelectedItem(item)}
             >
-              {/* Image Container */}
+              {/* Image Container (Vietnamese comment) */}
               <div className="relative h-56 overflow-hidden">
                 <img 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
                   src={(item.images && item.images[0]) || item.image || item.imageUrl || item.img || item.imgUrl || item.photo || CATEGORY_PLACEHOLDERS[item.category] || CATEGORY_PLACEHOLDERS.Default} 
-                  alt={item.name}
+                    alt={item.name}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 {item.discountPrice && (
                   <div className="absolute top-4 right-4 bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter shadow-xl">
-                    Special Offer
+                    {t('restaurants.menu.special_offer')}
                   </div>
                 )}
                 {item.category && (
@@ -139,7 +144,7 @@ const RestaurantMenu = ({ restaurantId }) => {
                 )}
               </div>
 
-              {/* Content */}
+              {/* Content (Vietnamese comment) */}
               <div className="p-6 flex-1 flex flex-col">
                 <div className="flex justify-between items-start gap-4 mb-3">
                   <h3 className="font-bold text-lg text-on-surface line-clamp-1 group-hover:text-primary transition-colors">
@@ -158,10 +163,10 @@ const RestaurantMenu = ({ restaurantId }) => {
                 </div>
                 
                 <p className="text-sm text-on-surface-variant/80 line-clamp-2 leading-relaxed italic mb-4">
-                  {item.description || "Indulge in our carefully selected ingredients prepared with passion."}
+                  {item.description || t('restaurants.menu.fallback_desc')}
                 </p>
 
-                {/* Tags */}
+                {/* Tags (Vietnamese comment) */}
                 {item.tags?.length > 0 && (
                   <div className="mt-auto flex flex-wrap gap-1.5 pt-4 border-t border-dotted border-outline-variant/30">
                     {item.tags.map(tag => (
@@ -175,15 +180,17 @@ const RestaurantMenu = ({ restaurantId }) => {
         </AnimatePresence>
       </div>
 
-      {/* Empty State within Filter */}
+      {/* Empty State (Vietnamese comment) */}
       {filteredItems.length === 0 && (
         <div className="text-center py-20 bg-slate-50 rounded-[3rem] border border-dashed border-outline-variant/50">
           <span className="material-symbols-outlined text-5xl text-on-surface-variant/30 mb-4 animate-bounce">restaurant_menu</span>
-          <p className="text-on-surface-variant font-medium">No delicacies found matching your search.</p>
+          <p className="text-on-surface-variant font-medium">
+            {t('restaurants.menu.no_results')}
+          </p>
         </div>
       )}
 
-      {/* Menu Item Detail Popup */}
+      {/* Menu Item Detail Popup (Vietnamese comment) */}
       <AnimatePresence>
         {selectedItem && (
           <MenuItemModal item={selectedItem} onClose={() => setSelectedItem(null)} />

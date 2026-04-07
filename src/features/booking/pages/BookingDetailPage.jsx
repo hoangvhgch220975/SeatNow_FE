@@ -1,8 +1,9 @@
-import React, { useMemo, useState, useEffect } from 'react'; // Bổ sung useEffect
+import React, { useMemo, useState, useEffect } from 'react';
+import { useTranslation, Trans } from 'react-i18next'; // Bổ sung useTranslation
 import { useParams, useNavigate } from 'react-router-dom';
 import { useBookingDetailQuery, useCancelBooking } from '../hooks.js';
 import { useRestaurant } from '../../restaurants/hooks.js';
-import { getRestaurantTables } from '../../restaurants/api'; // Thêm API lấy bàn
+import { getRestaurantTables } from '../../restaurants/api';
 import { useProfileQuery } from '../../profile/hooks.js';
 import BookingStatusTimeline from '../components/BookingStatusTimeline.jsx';
 import BookingStatusBadge from '../components/BookingStatusBadge.jsx';
@@ -19,31 +20,31 @@ import { ROUTES } from '../../../config/routes.js';
 
 /**
  * @file BookingDetailPage.jsx
- * @description Trang chi tiết một đơn đặt bàn kết nối API thực tế cho Customer.
+ * @description Trang chi tiết một đơn đặt bàn kết nối API thực tế cho Customer. Hỗ trợ đa ngôn ngữ.
  * @author Antigravity AI
  */
 const BookingDetailPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Gọi API lấy dữ liệu thực
+  // Gọi API lấy dữ liệu thực (Vietnamese comment)
   const { data: rawBooking, isLoading: isBookingLoading, isError: isBookingError, error: bookingError } = useBookingDetailQuery(id);
   const cancelBookingMutation = useCancelBooking();
   
-  // State quản lý Bàn được làm giàu dữ liệu (Số bàn, Loại bàn) và Dialog Hủy
+  // State quản lý Bàn được làm giàu dữ liệu (Số bàn, Loại bàn) và Dialog Hủy (Vietnamese comment)
   const [enrichedTable, setEnrichedTable] = useState(null);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
 
-  // Lấy dữ liệu thô để xác định restaurantId và tableId
+  // Lấy dữ liệu thô để xác định restaurantId và tableId (Vietnamese comment)
   const bData = rawBooking?.data || rawBooking || {};
   const bookingInfo = bData?.booking || bData;
   const restaurantId = bookingInfo?.restaurant?.id || bookingInfo?.restaurantId || bookingInfo?.restaurant?._id;
   const tableIdFromBooking = bookingInfo?.tableId || (bookingInfo?.table?.id || bookingInfo?.table?._id);
   const initialTableObj = bookingInfo?.table || {};
 
-  // Cơ chế "Data Enrichment": Tìm nạp chi tiết bàn nếu object table bị trống từ API chính
+  // Cơ chế "Data Enrichment" (Vietnamese comment)
   useEffect(() => {
-    // Chỉ chạy nếu có tableId nhưng object bàn không có thông tin chi tiết (tableNumber)
     const needsEnrichment = tableIdFromBooking && !initialTableObj?.tableNumber;
 
     if (needsEnrichment && restaurantId) {
@@ -63,20 +64,19 @@ const BookingDetailPage = () => {
     }
   }, [tableIdFromBooking, restaurantId, initialTableObj]);
 
-  const restaurantSlug = bookingInfo?.restaurant?.slug || restaurantId; // Cố gắng lấy slug nếu có
+  const restaurantSlug = bookingInfo?.restaurant?.slug || restaurantId;
 
-  // Tải thêm thông tin chi tiết nhà hàng để lấy ảnh (Lazy Fetching giống BookingCard)
+  // Tải thêm thông tin chi tiết nhà hàng (Vietnamese comment)
   const { data: fullRestaurantData } = useRestaurant(id && !bookingInfo?.restaurant?.images ? restaurantId : null);
   const fullRes = fullRestaurantData?.data || fullRestaurantData;
 
-  // Lấy thêm thông tin Profile để điền vào nếu thông tin Guest bị trống (cho user đã login)
+  // Lấy thêm thông tin Profile (Vietnamese comment)
   const { data: profile } = useProfileQuery();
 
-  // Chuẩn hóa dữ liệu từ Backend sang định dạng UI Component yêu cầu
+  // Chuẩn hóa dữ liệu từ Backend sang định dạng UI (Vietnamese comment)
   const normalizedBooking = useMemo(() => {
     if (!rawBooking) return null;
 
-    // Backend bóc tách các tầng
     const bookingData = bData.booking || bData; 
     const restaurantData = bData.restaurant || bData.Restaurant || {};
 
@@ -87,10 +87,10 @@ const BookingDetailPage = () => {
       return null;
     };
 
-    const restaurantName = getV(restaurantData, 'restaurantName', 'name', 'Name') || fullRes?.name || "Restaurant Name";
-    const restaurantAddress = getV(restaurantData, 'restaurantAddress', 'address', 'Address') || fullRes?.address || "Contact restaurant for address";
+    const restaurantName = getV(restaurantData, 'restaurantName', 'name', 'Name') || fullRes?.name || t('booking.detail.fallbacks.restaurant_name');
+    const restaurantAddress = getV(restaurantData, 'restaurantAddress', 'address', 'Address') || fullRes?.address || t('booking.detail.fallbacks.restaurant_address');
     
-    // Ưu tiên ảnh từ dữ liệu nhà hàng đầy đủ
+    // Ưu tiên ảnh từ dữ liệu nhà hàng đầy đủ (Vietnamese comment)
     const imagesFromFull = fullRes?.images || fullRes?.imagesJson || [];
     const rawImagesArr = imagesFromFull.length > 0 ? imagesFromFull : (getV(restaurantData, 'images', 'imagesJson', 'restaurantImages', 'restaurantImagesJson') || []);
     
@@ -113,26 +113,26 @@ const BookingDetailPage = () => {
     const bCode = getV(bookingData, 'bookingCode', 'BookingCode', 'code', 'Code');
     const bStatus = (getV(bookingData, 'status', 'Status') || 'pending').toLowerCase();
 
-    // Thông tin người dùng
+    // Thông tin người dùng (Vietnamese comment)
     const userData = bookingData.user || bookingData.User || bookingData.customer || bookingData.Customer || {};
 
-    // Thông tin bàn cuối cùng (Ưu tiên enrichedTable nếu vừa mới fetch được chi tiết)
+    // Thông tin bàn cuối cùng (Vietnamese comment)
     const finalTable = (enrichedTable && Object.keys(enrichedTable).length > 0) ? enrichedTable : (bookingData.table || {});
 
     return {
       id: bid,
       bookingCode: bCode || (bid ? String(bid).slice(0, 8).toUpperCase() : 'N/A'),
       status: bStatus,
-      cancellationReason: getV(bookingData, 'cancellationReason', 'CancellationReason', 'reason') || (bStatus === 'cancelled' ? 'No reason provided' : null),
+      cancellationReason: getV(bookingData, 'cancellationReason', 'CancellationReason', 'reason') || (bStatus === 'cancelled' ? t('booking.detail.fallbacks.no_reason') : null),
       restaurant: {
         name: restaurantName,
         address: restaurantAddress,
         image: restaurantImage
       },
       guest: {
-        fullName: getV(bookingData, 'guestName', 'GuestName') || getV(userData, 'fullName', 'FullName', 'name', 'Name') || profile?.fullName || profile?.name || "Verified Member",
-        email: getV(bookingData, 'guestEmail', 'GuestEmail') || getV(userData, 'email', 'Email') || profile?.email || "Email in profile",
-        phone: getV(bookingData, 'guestPhone', 'GuestPhone') || getV(userData, 'phone', 'Phone') || profile?.phone || "Phone in profile"
+        fullName: getV(bookingData, 'guestName', 'GuestName') || getV(userData, 'fullName', 'FullName', 'name', 'Name') || profile?.fullName || profile?.name || t('booking.detail.fallbacks.verified_member'),
+        email: getV(bookingData, 'guestEmail', 'GuestEmail') || getV(userData, 'email', 'Email') || profile?.email || t('booking.detail.fallbacks.email_in_profile'),
+        phone: getV(bookingData, 'guestPhone', 'GuestPhone') || getV(userData, 'phone', 'Phone') || profile?.phone || t('booking.detail.fallbacks.phone_in_profile')
       },
 
       reservation: {
@@ -142,32 +142,32 @@ const BookingDetailPage = () => {
         rawTime: getV(bookingData, 'bookingTime', 'BookingTime', 'time', 'Time'),
         partySize: getV(bookingData, 'numGuests', 'NumGuests', 'guests', 'Guests', 'partySize') || 1,
         
-        // Cập nhật Table Info: Ưu tiên enriched data
+        // Cập nhật Table Info (Vietnamese comment)
         tableNumber: getV(finalTable, 'tableNumber', 'TableNumber'),
-        tableType: getV(finalTable, 'type', 'Type') || getV(bookingData, 'tableType', 'TableType') || "Standard Seating",
+        tableType: getV(finalTable, 'type', 'Type') || getV(bookingData, 'tableType', 'TableType') || t('booking.detail.fallbacks.standard_seating'),
         tableId: getV(bookingData, 'tableId', 'TableId') || getV(finalTable, 'id', '_id', 'Id'),
         tableInfo: finalTable || { name: getV(bookingData, 'tableType', 'tableName') }
       },
-      notes: getV(bookingData, 'specialRequests', 'notes', 'SpecialRequest') || "No special requests provided.",
+      notes: getV(bookingData, 'specialRequests', 'notes', 'SpecialRequest') || t('booking.detail.fallbacks.no_special_requests'),
       financial: {
-        deposit: (getV(bookingData, 'depositAmount', 'DepositAmount') !== null) ? `${Number(getV(bookingData, 'depositAmount', 'DepositAmount')).toLocaleString('vi-VN')} VNĐ` : "0 VNĐ",
-        total: (getV(bookingData, 'totalPrice', 'TotalPrice') !== null) ? `${Number(getV(bookingData, 'totalPrice', 'TotalPrice')).toLocaleString('vi-VN')} VNĐ` : (getV(bookingData, 'depositAmount', 'DepositAmount') ? `${Number(getV(bookingData, 'depositAmount', 'DepositAmount')).toLocaleString('vi-VN')} VNĐ` : "0 VNĐ")
+        deposit: (getV(bookingData, 'depositAmount', 'DepositAmount') !== null) ? `${Number(getV(bookingData, 'depositAmount', 'DepositAmount')).toLocaleString('vi-VN')} VNĐ` : `0 VNĐ`,
+        total: (getV(bookingData, 'totalPrice', 'TotalPrice') !== null) ? `${Number(getV(bookingData, 'totalPrice', 'TotalPrice')).toLocaleString('vi-VN')} VNĐ` : (getV(bookingData, 'depositAmount', 'DepositAmount') ? `${Number(getV(bookingData, 'depositAmount', 'DepositAmount')).toLocaleString('vi-VN')} VNĐ` : `0 VNĐ`)
       }
     };
-  }, [rawBooking, fullRes, profile, enrichedTable, bData]); // Thêm enrichedTable vào dependency
+  }, [rawBooking, fullRes, profile, enrichedTable, bData, t]); 
 
 
 
 
 
-  // Xử lý trạng thái Loading
-  if (isBookingLoading) return <LoadingSpinner fullPage title="Curating your reservation details..." />;
+  // Xử lý trạng thái Loading (Vietnamese comment)
+  if (isBookingLoading) return <LoadingSpinner fullPage title={t('booking.detail.loading')} />;
 
-  // Xử lý trạng thái Lỗi
+  // Xử lý trạng thái Lỗi (Vietnamese comment)
   if (isBookingError) return (
     <div className="pt-32 px-8">
       <ErrorState 
-        message={bookingError?.message || "We couldn't retrieve this booking's details."} 
+        message={bookingError?.message || t('booking.detail.error_retrieve')} 
         onRetry={() => window.location.reload()}
       />
     </div>
@@ -180,26 +180,24 @@ const BookingDetailPage = () => {
   const isPending = normalizedBooking.status.toLowerCase() === 'pending';
   const canModifyOrCancel = isConfirmed || isPending;
 
-  // Xử lý Sự kiện Hủy Đặt bàn
+  // Xử lý Sự kiện Hủy Đặt bàn (Vietnamese comment)
   const handleCancelConfirm = (reason) => {
     cancelBookingMutation.mutate(
-      { id, cancellationReason: reason || 'Customer requested cancellation.' },
+      { id, cancellationReason: reason || t('booking.notifications.cancel_reason_default') },
       {
         onSuccess: () => {
-          toast.success('Your reservation has been cancelled.', { icon: '✖️' });
+          toast.success(t('booking.notifications.cancel_success'), { icon: '✖️' });
           setIsCancelDialogOpen(false);
-          // Query sẽ tự invaldiate và load lại trang Status thành Cancelled
         },
         onError: (err) => {
-          toast.error(err?.response?.data?.message || 'Failed to cancel. Please try again.');
+          toast.error(err?.response?.data?.message || t('booking.notifications.cancel_error'));
         }
       }
     );
   };
 
-  // Xử lý Sự kiện Sửa Đặt bàn (Truyền state sang CreateBookingPage)
+  // Xử lý Sự kiện Sửa Đặt bàn (Vietnamese comment)
   const handleModifyClick = () => {
-    // Điều hướng tới trang tạo booking với trạng thái modification (Dùng slug hoặc ID nhà hàng)
     const finalResId = fullRes?.slug || restaurantId || 'unknown';
     const targetUrl = ROUTES.CREATE_BOOKING(finalResId);
     
@@ -209,12 +207,12 @@ const BookingDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFCFE] pt-16 pb-24 px-8 relative overflow-hidden -mt-16">
-      {/* Background Decorative Elements */}
+      {/* Background Decorative Elements (Vietnamese comment) */}
       <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-violet-200/20 blur-[130px] rounded-full z-0 pointer-events-none"></div>
       
       <main className="max-w-6xl mx-auto relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         
-        {/* Header Section */}
+        {/* Header Section (Vietnamese comment) */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-8">
           <div className="space-y-4">
             <button 
@@ -222,7 +220,7 @@ const BookingDetailPage = () => {
               className="flex items-center gap-2 text-slate-400 hover:text-primary transition-colors text-xs font-black uppercase tracking-widest mb-6 group"
             >
               <span className="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
-              Back to History
+              {t('booking.detail.back_to_history')}
             </button>
             
             <div className="flex items-center gap-3">
@@ -232,73 +230,72 @@ const BookingDetailPage = () => {
 
             
             <h1 className="text-6xl font-black text-slate-900 leading-tight headline tracking-tighter">
-              Booking Details
+              {t('booking.detail.title')}
             </h1>
             <p className="text-lg text-slate-500 font-medium max-w-xl italic">
-              Your professional dining experience is curated and ready.
+              {t('booking.detail.subtitle')}
             </p>
           </div>
 
           <div className="flex gap-4 w-full md:w-auto">
             <button className="w-full md:w-auto px-10 py-5 rounded-full bg-white border-2 border-slate-100 text-slate-800 text-sm font-black hover:bg-slate-50 hover:border-primary/20 hover:text-primary transition-all shadow-soft flex items-center justify-center gap-3 group">
               <span className="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">chat_bubble</span>
-              Contact Restaurant
+              {t('booking.detail.contact_restaurant')}
             </button>
           </div>
         </div>
 
-        {/* Timeline Section */}
+        {/* Timeline Section (Vietnamese comment) */}
         <BookingStatusTimeline status={normalizedBooking.status} />
 
-        {/* Main Content Grid */}
+        {/* Main Content Grid (Vietnamese comment) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
-          {/* Left Column: Info Sections */}
+          {/* Left Column (Vietnamese comment) */}
           <div className="lg:col-span-8 space-y-10">
             <BookingInfoSection booking={normalizedBooking} />
             <BookingFinancialSummary booking={normalizedBooking} />
           </div>
 
-          {/* Right Column: QR & Sidebar Actions */}
+          {/* Right Column (Vietnamese comment) */}
           <div className="lg:col-span-4 space-y-10">
-            {/* QUAN TRỌNG: Chỉ hiển thị QR Code khi Booking đã được CONFIRMED */}
             {isConfirmed ? (
               <BookingQRCode value={normalizedBooking.bookingCode} />
             ) : normalizedBooking.status === 'pending' ? (
               <div className="bg-amber-50/50 p-10 rounded-3xl border-2 border-amber-100/50 text-center animate-in fade-in zoom-in duration-500">
                 <span className="material-symbols-outlined text-4xl text-amber-500 mb-4 animate-bounce">pending_actions</span>
-                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-700 mb-4">Pending Confirmation</h3>
+                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-700 mb-4">{t('booking.detail.pending_confirmation_title')}</h3>
                 <p className="text-amber-900/60 text-xs font-bold leading-relaxed italic">
-                  Digital check-in QR code will be generated once the restaurant confirms your reservation.
+                  {t('booking.detail.pending_confirmation_desc')}
                 </p>
               </div>
             ) : (
               <div className="bg-slate-100/50 p-10 rounded-3xl border-2 border-slate-200/50 text-center grayscale opacity-80 animate-in fade-in duration-700">
                 <span className="material-symbols-outlined text-4xl text-slate-400 mb-4">qr_code_2</span>
-                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600 mb-4">QR Access Expired</h3>
+                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600 mb-4">{t('booking.detail.qr_access_expired_title')}</h3>
                 <p className="text-slate-500 text-xs font-bold leading-relaxed italic">
-                  Check-in QR code is only available for active, confirmed reservations.
+                  {t('booking.detail.qr_access_expired_desc')}
                 </p>
               </div>
             )}
             
-            {/* Secondary Actions: Hiện khi còn khả năng Hủy/Sửa */}
+            {/* Secondary Actions (Vietnamese comment) */}
             {canModifyOrCancel && (
               <div className="p-2 space-y-3">
                 <button 
                   onClick={handleModifyClick}
                   className="w-full py-4 text-blue-600 text-xs font-black uppercase tracking-widest bg-blue-50/30 hover:bg-blue-50 rounded-3xl transition-all border-2 border-transparent hover:border-blue-100"
                 >
-                  Modify Reservation
+                  {t('booking.detail.modify_button')}
                 </button>
                 <button 
                   onClick={() => setIsCancelDialogOpen(true)}
                   className="w-full py-4 text-rose-500 text-xs font-black uppercase tracking-widest border-2 border-rose-50 hover:bg-rose-50/50 hover:border-rose-100 rounded-3xl transition-all"
                 >
-                  Cancel Reservation
+                  {t('booking.detail.cancel_button')}
                 </button>
                 <p className="text-[10px] text-slate-400 font-black uppercase text-center mt-6 tracking-wider">
-                  Managed via SeatNow Premium Concierge
+                  {t('booking.detail.managed_by')}
                 </p>
               </div>
             )}
@@ -307,7 +304,7 @@ const BookingDetailPage = () => {
         </div>
       </main>
 
-      {/* Dialog Xác nhận Hủy */}
+      {/* Dialog Xác nhận Hủy (Vietnamese comment) */}
       <CancelBookingDialog 
         isOpen={isCancelDialogOpen}
         onClose={() => setIsCancelDialogOpen(false)}

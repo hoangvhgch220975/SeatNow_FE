@@ -3,12 +3,14 @@ import { usePortfolioDashboard } from '../hooks.js';
 import VenueFilters from '../components/VenueFilters';
 import VenueList from '../components/VenueList';
 import { motion } from 'framer-motion';
+import { useTranslation, Trans } from 'react-i18next'; // Áp dụng hook ngôn ngữ (Vietnamese comment)
 
 /**
  * @file OwnerRestaurantsPage.jsx
  * @description Trang hiển thị danh sách toàn bộ nhà hàng (All Venues) với bộ lọc trạng thái và tìm kiếm.
  */
 const OwnerRestaurantsPage = () => {
+  const { t } = useTranslation(); // Lấy hàm dịch i18n (Vietnamese comment)
   const [searchTerm, setSearchTerm] = useState('');
   const [activeStatus, setActiveStatus] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
@@ -49,19 +51,21 @@ const OwnerRestaurantsPage = () => {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
-      {/* Page Header */}
+      {/* Tiêu đề trang (Page Header) */}
       <div className="mb-12 space-y-2">
         <h2 className="text-4xl font-black text-slate-900 tracking-tight">
-          All <span className="text-violet-600">Venues</span>
+          <Trans i18nKey="owner_portal.venues_page.all_venues">
+            All <span className="text-violet-600">Venues</span>
+          </Trans>
         </h2>
         <p className="text-slate-500 font-bold text-xs uppercase tracking-widest flex items-center gap-2">
-           Portfolio Asset Management
+           {t('owner_portal.venues_page.portfolio_asset_management')}
            <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-           {counts.all} Total Units
+           {t('owner_portal.venues_page.total_units', { count: counts.all })}
         </p>
       </div>
 
-      {/* Filter Section */}
+      {/* Phần bộ lọc (Filter Section) */}
       <VenueFilters 
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -72,28 +76,28 @@ const OwnerRestaurantsPage = () => {
         setViewMode={setViewMode}
       />
 
-      {/* Grid/Table List Section */}
+      {/* Danh sách hiển thị dạng Lưới/Bảng (Grid/Table List Section) */}
       <VenueList 
         restaurants={filteredVenues}
         isLoading={isLoading}
         viewMode={viewMode}
       />
 
-      {/* Optimization Note */}
+      {/* Ghi chú tối ưu hóa danh mục (Optimization Note) */}
       <div className="mt-20 p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
          <div className="flex items-center gap-6">
             <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-violet-600 shadow-sm border border-slate-100">
                <span className="material-symbols-outlined text-3xl">insights</span>
             </div>
             <div>
-               <h4 className="font-black text-slate-900 text-sm">Portfolio Insights</h4>
+               <h4 className="font-black text-slate-900 text-sm">{t('owner_portal.venues_page.portfolio_insights')}</h4>
                <p className="text-xs text-slate-400 font-bold leading-relaxed">
-                  Active venues are synced with SeatNow AI for real-time customer behavior analysis.
+                  {t('owner_portal.venues_page.portfolio_insights_desc')}
                </p>
             </div>
          </div>
          <button className="px-8 py-3.5 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-all">
-            Export Report
+            {t('owner_portal.venues_page.export_report')}
          </button>
       </div>
     </div>

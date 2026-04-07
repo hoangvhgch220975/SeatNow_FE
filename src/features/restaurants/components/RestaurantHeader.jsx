@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 
+/**
+ * @file RestaurantHeader.jsx
+ * @description Tiêu đề chính của trang danh sách nhà hàng, bao gồm thanh tìm kiếm. Hỗ trợ đa ngôn ngữ.
+ */
 const RestaurantHeader = ({ onSearch }) => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = (e) => {
@@ -12,14 +18,16 @@ const RestaurantHeader = ({ onSearch }) => {
     <header className="pt-4 pb-16 -mt-8 flex flex-col items-center text-center space-y-8">
       <div className="space-y-4 max-w-3xl">
         <h1 className="text-6xl font-extrabold tracking-tight text-on-surface font-headline leading-tight">
-          Explore <span className="text-primary italic">Extraordinary</span> Dining
+          <Trans i18nKey="restaurants.search.header_title">
+            Explore <span className="text-primary italic">Extraordinary</span> Dining
+          </Trans>
         </h1>
         <p className="text-lg text-on-surface-variant font-body">
-          Discover hand-curated gastronomic experiences designed for the discerning palate. From Michelin-starred classics to avant-garde fusion.
+          {t('restaurants.search.header_desc')}
         </p>
       </div>
       
-      {/* Elegant Search Bar */}
+      {/* Elegant Search Bar (Vietnamese comment) */}
       <form onSubmit={handleSearch} className="w-full max-w-4xl mt-8 px-4">
         <div className="relative group">
           <div className="absolute inset-0 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
@@ -29,7 +37,7 @@ const RestaurantHeader = ({ onSearch }) => {
             </div>
             <input 
               className="w-full bg-transparent border-none focus:ring-0 focus:outline-none outline-none text-on-surface text-lg placeholder:text-slate-400" 
-              placeholder="Search by restaurant, cuisine, or mood..." 
+              placeholder={t('restaurants.search.placeholder')} 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               type="text"
@@ -38,7 +46,7 @@ const RestaurantHeader = ({ onSearch }) => {
               type="submit"
               className="bg-primary text-white px-10 py-4 rounded-full font-bold text-sm tracking-widest uppercase hover:bg-primary-container transition-all active:scale-95"
             >
-              Find Restaurant
+              {t('restaurants.search.header_button')}
             </button>
           </div>
         </div>

@@ -1,10 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file RestaurantHero.jsx
- * @description Hero section cho trang chi tiết nhà hàng, hiển thị ảnh bìa lớn và thông tin cơ bản.
+ * @description Hero section cho trang chi tiết nhà hàng, hiển thị ảnh bìa lớn và thông tin cơ bản. Hỗ trợ đa ngôn ngữ.
  */
 const RestaurantHero = ({ restaurant }) => {
+  const { t } = useTranslation();
+
   return (
     <section className="relative w-full h-[320px] md:h-[380px] overflow-hidden">
       <img 
@@ -26,7 +29,9 @@ const RestaurantHero = ({ restaurant }) => {
                 <span className="text-white font-bold text-sm">
                   {restaurant.reviewCount > 0 ? (Number(restaurant.rating).toFixed(1)) : 'N/A'}
                 </span>
-                <span className="text-white/60 text-sm font-medium">({restaurant.reviewCount || 0} reviews)</span>
+                <span className="text-white/60 text-sm font-medium">
+                  ({restaurant.reviewCount || 0} {t('restaurants.card.reviews').toLowerCase()})
+                </span>
               </div>
             </div>
             <h1 className="text-white text-5xl md:text-7xl font-bold tracking-tight headline">
@@ -38,8 +43,7 @@ const RestaurantHero = ({ restaurant }) => {
             </p>
           </div>
           
-          {/* Nút Book Now đã được loại bỏ khỏi Hero để giao diện thoáng hơn, 
-              người dùng sẽ đặt bàn thông qua bảng AvailabilityPanel ở bên phải */}
+          {/* Nút Book Now đã được loại bỏ khỏi Hero (Vietnamese comment) */}
         </div>
       </div>
     </section>

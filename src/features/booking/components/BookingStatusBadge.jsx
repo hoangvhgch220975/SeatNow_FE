@@ -1,10 +1,12 @@
-import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file BookingStatusBadge.jsx
- * @description Badge hiển thị trạng thái của đơn đặt bàn với màu sắc tương ứng.
+ * @description Badge hiển thị trạng thái của đơn đặt bàn với màu sắc tương ứng. Hỗ trợ đa ngôn ngữ.
  */
 const BookingStatusBadge = ({ status }) => {
+  const { t } = useTranslation();
+
   const getStatusClasses = (s) => {
     const statusLower = String(s || '').toLowerCase();
     switch (statusLower) {
@@ -25,6 +27,9 @@ const BookingStatusBadge = ({ status }) => {
     }
   };
 
+  // Map status string to i18n key
+  const statusKey = String(status || '').toLowerCase().replace('-', '_');
+
   return (
     <div className={`inline-flex items-center gap-1.5 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest w-fit shadow-sm border ${getStatusClasses(status)}`}>
       <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${
@@ -32,7 +37,7 @@ const BookingStatusBadge = ({ status }) => {
         ['pending', 'upcoming'].includes(status?.toLowerCase()) ? 'bg-orange-500' :
         status?.toLowerCase() === 'completed' ? 'bg-blue-500' : 'bg-rose-500'
       }`}></span>
-      {status}
+      {t(`profile.status.${statusKey}`, { defaultValue: status })}
     </div>
   );
 };

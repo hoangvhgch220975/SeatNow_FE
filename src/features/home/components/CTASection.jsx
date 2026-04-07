@@ -1,8 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { ROUTES } from '../../../config/routes.js';
 
+/**
+ * @file CTASection.jsx
+ * @description Phần kêu gọi hành động cuối trang chủ. Hỗ trợ đa ngôn ngữ.
+ */
 const CTASection = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-24 max-w-7xl mx-auto px-8 w-full">
       <div className="bg-primary rounded-xl p-16 text-center text-white relative overflow-hidden shadow-2xl shadow-primary/20">
@@ -13,13 +20,17 @@ const CTASection = () => {
           </svg>
         </div>
         <div className="relative z-10">
-          <h2 className="text-[3rem] font-bold mb-6">Ready to Taste the Extraordinary?</h2>
-          <p className="text-xl text-primary-200 mb-10 max-w-2xl mx-auto">Join the elite club of diners who never settle for less than the best. Your next memory is one click away.</p>
+          <h2 className="text-[3rem] font-bold mb-6">
+            {t('home.cta.title')}
+          </h2>
+          <p className="text-xl text-primary-200 mb-10 max-w-2xl mx-auto">
+            {t('home.cta.subtitle')}
+          </p>
           <Link 
             to={ROUTES.RESTAURANT_LIST || '/restaurants'}
             className="inline-block bg-white text-primary px-12 py-5 rounded-full font-extrabold text-xl hover:scale-105 transition-transform shadow-2xl"
           >
-            Get Started
+            {t('home.cta.button')}
           </Link>
         </div>
       </div>

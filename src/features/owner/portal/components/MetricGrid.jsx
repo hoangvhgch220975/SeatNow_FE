@@ -1,11 +1,13 @@
 import React from 'react';
 import MetricCard from './MetricCard';
+import { useTranslation } from 'react-i18next'; // Áp dụng hook ngôn ngữ (Vietnamese comment)
 
 /**
  * @file MetricGrid.jsx
  * @description Lưới hiển thị các chỉ số kinh doanh chính (KPIs) cho Owner.
  */
 const MetricGrid = ({ stats, avgRating, totalReviews, activeVenuesCount, totalVenuesCount }) => {
+  const { t } = useTranslation(); // Lấy hàm dịch (Vietnamese comment)
   const revenueGrowth = stats.comparisons?.revenueGrowth || 0;
   const bookingsGrowth = stats.comparisons?.bookingsGrowth || 0;
 
@@ -30,7 +32,7 @@ const MetricGrid = ({ stats, avgRating, totalReviews, activeVenuesCount, totalVe
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <MetricCard 
          icon="payments"
-         title="Portfolio Revenue"
+         title={t('owner_portal.metrics.portfolio_revenue')}
          value={formatVND(stats.totalRevenue)}
          growth={revenueGrowth}
          iconColor="bg-emerald-50"
@@ -39,7 +41,7 @@ const MetricGrid = ({ stats, avgRating, totalReviews, activeVenuesCount, totalVe
       
       <MetricCard 
          icon="calendar_month"
-         title="Total Bookings"
+         title={t('owner_portal.metrics.total_bookings')}
          value={formatCompact(stats.totalBookings)}
          growth={bookingsGrowth}
          iconColor="bg-blue-50"
@@ -48,9 +50,9 @@ const MetricGrid = ({ stats, avgRating, totalReviews, activeVenuesCount, totalVe
       
       <MetricCard 
          icon="star"
-         title="Portfolio Satisfied"
+         title={t('owner_portal.metrics.portfolio_satisfied')}
          value={`${avgRating} ★`}
-         growth={`${totalReviews} reviews`} // Hiển thị tổng số lượng review thực tế đã thu thập (Vietnamese comment)
+         growth={t('owner_portal.metrics.reviews_suffix', { count: totalReviews })} // Hiển thị tổng số lượng review thực tế đã thu thập với i18n (Vietnamese comment)
          iconColor="bg-orange-50"
          textIconColor="text-orange-500"
       />
@@ -66,14 +68,14 @@ const MetricGrid = ({ stats, avgRating, totalReviews, activeVenuesCount, totalVe
         </div>
         
         <div className="relative z-10">
-          <p className="text-[10px] font-bold text-violet-100 uppercase tracking-[0.2em] opacity-80 mb-1">Managed Venues</p>
+          <p className="text-[10px] font-bold text-violet-100 uppercase tracking-[0.2em] opacity-80 mb-1">{t('owner_portal.metrics.managed_venues')}</p>
           <p className="text-3xl font-black uppercase tracking-tight">
             {activeVenuesCount} <span className="text-sm font-bold opacity-60">/ {totalVenuesCount}</span>
           </p>
         </div>
         
         <div className="flex items-center text-xs font-bold bg-white/10 w-fit px-3 py-1 rounded-full backdrop-blur-sm relative z-10">
-           System Operational
+           {t('owner_portal.metrics.system_operational')}
         </div>
       </div>
     </section>

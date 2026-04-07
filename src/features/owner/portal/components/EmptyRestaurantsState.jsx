@@ -2,12 +2,14 @@ import React from 'react';
 import { Link } from 'react-router';
 import { ROUTES } from '@/config/routes.js';
 import { motion } from 'framer-motion';
+import { useTranslation, Trans } from 'react-i18next'; // Áp dụng hook ngôn ngữ (Vietnamese comment)
 
 /**
  * @file EmptyRestaurantsState.jsx
  * @description Thành phần hiển thị khi Owner chưa có bất kỳ nhà hàng nào trong hệ thống.
  */
 const EmptyRestaurantsState = () => {
+  const { t } = useTranslation(); // Khởi tạo i18n (Vietnamese comment)
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.98 }}
@@ -23,9 +25,11 @@ const EmptyRestaurantsState = () => {
         </div>
         
         <div className="space-y-3">
-          <h5 className="text-3xl font-black text-slate-900 tracking-tight">Ready for your first expansion?</h5>
+          <h5 className="text-3xl font-black text-slate-900 tracking-tight">{t('owner_portal.empty_state.title')}</h5>
           <p className="text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">
-            Onboard your first restaurant and start managing its performance with SeatNow's <span className="text-violet-600 font-bold">AI-driven insights</span> and premium dashboard.
+            <Trans i18nKey="owner_portal.empty_state.description">
+              Onboard your first restaurant and start managing its performance with SeatNow's <span className="text-violet-600 font-bold">AI-driven insights</span> and premium dashboard.
+            </Trans>
           </p>
         </div>
         
@@ -34,13 +38,13 @@ const EmptyRestaurantsState = () => {
             to={ROUTES.CREATE_RESTAURANT} 
             className="group h-16 px-10 bg-slate-900 text-white rounded-2xl flex items-center gap-3 font-black text-xs uppercase tracking-widest hover:bg-violet-600 transition-all active:scale-95 shadow-xl shadow-slate-200"
           >
-            Register New Venue
+            {t('owner_portal.empty_state.register_venue')}
             <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
           </Link>
           
           <button className="h-16 px-8 rounded-2xl flex items-center gap-2 text-slate-500 font-bold text-xs uppercase tracking-widest hover:text-slate-900 transition-colors">
             <span className="material-symbols-outlined">help_outline</span>
-            View Guide
+            {t('owner_portal.empty_state.view_guide')}
           </button>
         </div>
       </div>

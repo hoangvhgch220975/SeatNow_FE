@@ -1,34 +1,38 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { CUISINES } from '../../../constants/cuisines';
 import { PRICE_RANGES } from '../../../constants/priceRanges';
 
 /**
  * @file RestaurantFilters.jsx 
- * @description Bộ lọc Sidebar chuyên sâu (5 loại: Destination, Cuisine, Price, Rating, Amenities)
+ * @description Bộ lọc Sidebar chuyên sâu (5 loại: Destination, Cuisine, Price, Rating, Amenities). Hỗ trợ đa ngôn ngữ.
  */
 const RestaurantFilters = ({ currentFilters, onChange }) => {
-  // Lấy danh sách cuisine tiêu biểu từ constants (giới hạn hiển thị 7 cái chính)
+  const { t } = useTranslation();
+
+  // Lấy danh sách cuisine tiêu biểu từ constants (Vietnamese comment)
   const mainCuisines = CUISINES.slice(0, 7);
 
-
   const handleCuisineChange = (cuisineValue) => {
-    // Toggle cuisine: nếu đã chọn thì bỏ chọn, nếu chưa thì chọn mới
+    // Toggle cuisine: nếu đã chọn thì bỏ chọn, nếu chưa thì chọn mới (Vietnamese comment)
     const newValue = currentFilters.cuisine === cuisineValue ? '' : cuisineValue;
     onChange({ cuisine: newValue });
   };
 
   return (
     <aside className="space-y-10 w-full">
-      {/* 1. Filter Section: Destinations (VN Provinces) */}
+      {/* 1. Filter Section: Destinations (VN Provinces) (Vietnamese comment) */}
       <div className="space-y-4">
-        <label className="text-xs font-bold uppercase tracking-widest text-primary">Destinations</label>
+        <label className="text-xs font-bold uppercase tracking-widest text-primary">
+          {t('restaurants.filters.location_label')}
+        </label>
         <div className="relative">
           <select 
-            value={currentFilters.location || 'All Locations'}
-            onChange={(e) => onChange({ location: e.target.value === 'All Locations' ? '' : e.target.value })}
+            value={currentFilters.location || t('restaurants.filters.all_locations')}
+            onChange={(e) => onChange({ location: e.target.value === t('restaurants.filters.all_locations') ? '' : e.target.value })}
             className="w-full bg-slate-50 border-none rounded-2xl px-4 py-3 text-slate-900 focus:ring-1 focus:ring-primary/40 appearance-none font-medium outline-none shadow-sm transition-all"
           >
-            <option>All Locations</option>
+            <option>{t('restaurants.filters.all_locations')}</option>
             <option>Ha Noi</option>
             <option>Ho Chi Minh City</option>
             <option>Da Nang</option>
@@ -44,9 +48,11 @@ const RestaurantFilters = ({ currentFilters, onChange }) => {
         </div>
       </div>
 
-      {/* 2. Filter Section: Cuisine Choice */}
+      {/* 2. Filter Section: Cuisine Choice (Vietnamese comment) */}
       <div className="space-y-4">
-        <label className="text-xs font-bold uppercase tracking-widest text-primary">Cuisine Type</label>
+        <label className="text-xs font-bold uppercase tracking-widest text-primary">
+          {t('restaurants.filters.cuisine_label')}
+        </label>
         <div className="space-y-3">
           {mainCuisines.map((item) => (
             <label key={item.value} className="flex items-center group cursor-pointer">
@@ -64,9 +70,11 @@ const RestaurantFilters = ({ currentFilters, onChange }) => {
         </div>
       </div>
 
-      {/* 3. Filter Section: Price Range */}
+      {/* 3. Filter Section: Price Range (Vietnamese comment) */}
       <div className="space-y-4">
-        <label className="text-xs font-bold uppercase tracking-widest text-primary">Price Level</label>
+        <label className="text-xs font-bold uppercase tracking-widest text-primary">
+          {t('restaurants.filters.price_label')}
+        </label>
         <div className="flex gap-2">
           {PRICE_RANGES.map((p) => (
             <button 
@@ -85,14 +93,16 @@ const RestaurantFilters = ({ currentFilters, onChange }) => {
         </div>
       </div>
 
-      {/* 4. Filter Section: Sorting */}
+      {/* 4. Filter Section: Sorting (Vietnamese comment) */}
       <div className="space-y-4">
-        <label className="text-xs font-bold uppercase tracking-widest text-primary">Sort & Ranking</label>
+        <label className="text-xs font-bold uppercase tracking-widest text-primary">
+          {t('restaurants.filters.sort_label')}
+        </label>
         <div className="space-y-2">
           {[
-            { label: 'Highest Rated', val: 'rating' },
-            { label: 'New Restaurant', val: 'newest' },
-            { label: 'Nearest Distance', val: 'distance' }
+            { label: t('restaurants.filters.sort_highest'), val: 'rating' },
+            { label: t('restaurants.filters.sort_newest'), val: 'newest' },
+            { label: t('restaurants.filters.sort_distance'), val: 'distance' }
           ].map((item) => (
             <button 
               key={item.val} 
@@ -114,8 +124,6 @@ const RestaurantFilters = ({ currentFilters, onChange }) => {
           ))}
         </div>
       </div>
-
-
     </aside>
   );
 };

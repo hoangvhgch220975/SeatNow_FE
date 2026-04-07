@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next'; // Áp dụng hook ngôn ngữ (Vietnamese comment)
 
 /**
  * @file VenueFilters.jsx
@@ -14,31 +15,33 @@ const VenueFilters = ({
   viewMode,
   setViewMode
 }) => {
+  const { t } = useTranslation(); // Khởi tạo i18n (Vietnamese comment)
+
   const statuses = [
-    { id: 'all', label: 'All Venues', icon: 'apps' },
-    { id: 'active', label: 'Active', icon: 'check_circle', color: 'text-emerald-500' },
-    { id: 'pending', label: 'Pending', icon: 'hourglass_empty', color: 'text-amber-500' },
-    { id: 'suspended', label: 'Suspended', icon: 'block', color: 'text-rose-500' },
+    { id: 'all', label: t('owner_portal.filters.status_all'), icon: 'apps' },
+    { id: 'active', label: t('owner_portal.filters.status_active'), icon: 'check_circle', color: 'text-emerald-500' },
+    { id: 'pending', label: t('owner_portal.filters.status_pending'), icon: 'hourglass_empty', color: 'text-amber-500' },
+    { id: 'suspended', label: t('owner_portal.filters.status_suspended'), icon: 'block', color: 'text-rose-500' },
   ];
 
   return (
     <div className="space-y-8 mb-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        {/* Search Bar */}
+        {/* Thanh tìm kiếm (Search Bar) */}
         <div className="relative flex-1 max-w-xl group">
           <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-violet-600 transition-colors">
             search
           </span>
           <input
             type="text"
-            placeholder="Search by venue name or address..."
+            placeholder={t('owner_portal.filters.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-white border border-slate-200 py-4 pl-14 pr-6 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-violet-500/5 focus:border-violet-500 transition-all shadow-sm"
           />
         </div>
 
-        {/* View Mode Toggle */}
+        {/* Chuyển đổi chế độ hiển thị (View Mode Toggle) */}
         <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
            <button 
              onClick={() => setViewMode('grid')}
@@ -63,7 +66,7 @@ const VenueFilters = ({
         </div>
       </div>
 
-      {/* Status Tabs */}
+      {/* Các tab trạng thái (Status Tabs) */}
       <div className="flex flex-wrap items-center gap-3">
         {statuses.map((status) => {
           const isActive = activeStatus === status.id;

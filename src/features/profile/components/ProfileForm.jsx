@@ -1,8 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file ProfileForm.jsx
- * @description Thành phần biểu mẫu hiển thị các trường thông tin cơ bản: Tên, Email, SĐT, ID...
+ * @description Thành phần biểu mẫu hiển thị các trường thông tin cơ bản: Tên, Email, SĐT, ID... Hỗ trợ đa ngôn ngữ.
  * @param {Object} props
  * @param {Function} props.register - Hàm đăng ký từ useForm (react-hook-form)
  * @param {Object} props.errors - Đối tượng chứa thông tin lỗi từ useForm
@@ -17,14 +18,18 @@ const ProfileForm = ({
   isPending, 
   onSubmit 
 }) => {
+  const { t } = useTranslation();
+
   return (
     <form onSubmit={onSubmit} className="space-y-10">
-      {/* Lưới các trường nhập liệu - Cấu trúc 2x2 Grid */}
+      {/* Lưới các trường nhập liệu - Cấu trúc 2x2 Grid (Vietnamese comment) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        {/* Họ và Tên (Full Name) */}
+        {/* Họ và Tên (Full Name) (Vietnamese comment) */}
         <div className="space-y-3">
-          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-4">Full Name</label>
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-4">
+            {t('profile.form.name_label')}
+          </label>
           <div className="relative group">
             <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors">badge</span>
             <input 
@@ -38,9 +43,11 @@ const ProfileForm = ({
           {errors.name && <p className="text-red-500 text-[10px] font-bold px-4">{errors.name.message}</p>}
         </div>
 
-        {/* Mã ID Hệ thống (System ID) - ReadOnly */}
+        {/* Mã ID Hệ thống (System ID) - ReadOnly (Vietnamese comment) */}
         <div className="space-y-3">
-          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-4">System ID</label>
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-4">
+            {t('profile.form.system_id_label')}
+          </label>
           <div className="relative group opacity-60 cursor-not-allowed">
             <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-300">fingerprint</span>
             <input 
@@ -49,12 +56,16 @@ const ProfileForm = ({
               className="w-full bg-slate-100/50 border-2 border-transparent rounded-3xl py-4 pl-14 pr-6 text-sm font-bold text-slate-400 outline-none shadow-inner cursor-not-allowed"
             />
           </div>
-          <p className="text-[9px] text-slate-300 font-bold px-4 uppercase tracking-tighter">* Digital Identity Signature (ID)</p>
+          <p className="text-[9px] text-slate-300 font-bold px-4 uppercase tracking-tighter">
+            {t('profile.form.id_hint')}
+          </p>
         </div>
 
-        {/* Địa chỉ Email (Email Address) */}
+        {/* Địa chỉ Email (Email Address) (Vietnamese comment) */}
         <div className="space-y-3">
-          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-4">Email Address</label>
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-4">
+            {t('profile.form.email_label')}
+          </label>
           <div className="relative group">
             <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors">mail</span>
             <input 
@@ -68,9 +79,11 @@ const ProfileForm = ({
           {errors.email && <p className="text-red-500 text-[10px] font-bold px-4">{errors.email.message}</p>}
         </div>
 
-        {/* Số điện thoại (Phone Number) - ReadOnly (Dùng làm định danh) */}
+        {/* Số điện thoại (Phone Number) - ReadOnly (Vietnamese comment) */}
         <div className="space-y-3">
-          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-4">Phone Number</label>
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-4">
+            {t('profile.form.phone_label')}
+          </label>
           <div className="relative group opacity-60 cursor-not-allowed">
             <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-300">phone_iphone</span>
             <input 
@@ -79,11 +92,13 @@ const ProfileForm = ({
               className="w-full bg-slate-100/50 border-2 border-transparent rounded-3xl py-4 pl-14 pr-6 text-sm font-bold text-slate-400 outline-none shadow-inner cursor-not-allowed"
             />
           </div>
-          <p className="text-[9px] text-slate-300 font-bold px-4 uppercase tracking-tighter">* Non-editable account identifier.</p>
+          <p className="text-[9px] text-slate-300 font-bold px-4 uppercase tracking-tighter">
+            {t('profile.form.phone_hint')}
+          </p>
         </div>
       </div>
 
-      {/* Khu vực nút hành động (Save Button) */}
+      {/* Khu vực nút hành động (Save Button) (Vietnamese comment) */}
       <div className="pt-6 border-t border-slate-100">
          <button 
            type="submit"
@@ -95,7 +110,7 @@ const ProfileForm = ({
            ) : (
              <span className="material-symbols-outlined text-[20px]">save</span>
            )}
-           {isPending ? 'SAVING CHANGES...' : 'SAVE PROFILE'}
+           {isPending ? t('profile.form.saving') : t('profile.form.submit_button')}
          </button>
       </div>
     </form>

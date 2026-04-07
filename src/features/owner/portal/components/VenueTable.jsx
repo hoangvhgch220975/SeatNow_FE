@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { ROUTES } from '@/config/routes.js';
 import RestaurantStatusBadge from './RestaurantStatusBadge';
@@ -7,19 +8,22 @@ import { motion } from 'framer-motion';
 /**
  * @file VenueTable.jsx
  * @description Hiển thị danh sách nhà hàng dưới dạng Bảng (Table).
+ * Hỗ trợ đa ngôn ngữ cho các tiêu đề cột.
  */
 const VenueTable = ({ restaurants }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-50/50 border-b border-slate-100">
-              <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Venue Details</th>
-              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Status</th>
-              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Satisfaction</th>
-              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Cuisine</th>
-              <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Action</th>
+              <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{t('owner_portal.venues_page.table_venue_details')}</th>
+              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{t('owner_portal.venues_page.table_status')}</th>
+              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{t('owner_portal.venues_page.table_satisfaction')}</th>
+              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{t('owner_portal.venues_page.table_cuisine')}</th>
+              <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">{t('owner_portal.venues_page.table_action')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
