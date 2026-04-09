@@ -46,7 +46,11 @@ const MetricCard = ({ icon, title, value, growth, iconColor = 'bg-violet-100', t
       
       <div>
         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-1">{title}</p>
-        <p className="text-3xl font-black text-slate-900 tracking-tight">
+        <p className={`font-black text-slate-900 tracking-tight leading-none ${
+          value?.toString().length > 15 ? 'text-lg' : 
+          value?.toString().length > 12 ? 'text-xl' : 
+          value?.toString().length > 10 ? 'text-2xl' : 'text-3xl'
+        }`}>
            {value}
         </p>
       </div>

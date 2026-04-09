@@ -14,6 +14,7 @@ const RestaurantCard = ({ restaurant }) => {
   const { t } = useTranslation();
   const { 
     id, 
+    slug,
     name, 
     images, 
     status, 
@@ -23,6 +24,9 @@ const RestaurantCard = ({ restaurant }) => {
   } = restaurant || {};
 
   const isSuspended = status?.toLowerCase() === 'suspended';
+
+  // Ưu tiên slug để URL thân thiện hơn, fallback về ID nếu cần thiết
+  const workspaceIdentifier = slug || id;
 
   return (
     <motion.div 
@@ -132,7 +136,7 @@ const RestaurantCard = ({ restaurant }) => {
             </div>
           ) : (
             <Link 
-              to={ROUTES.WORKSPACE_DASHBOARD(id)}
+              to={ROUTES.WORKSPACE_DASHBOARD(workspaceIdentifier)}
               className="w-full h-14 rounded-2xl flex items-center justify-center gap-4 bg-slate-900 text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-violet-600 hover:shadow-2xl hover:shadow-violet-200 transition-all active:scale-95 group/btn"
             >
               {t('owner_portal.card.manage_dashboard', { defaultValue: 'Manage Dashboard' })}

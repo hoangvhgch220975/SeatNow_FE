@@ -72,6 +72,7 @@ seatnow-fe/
 │ │ │ ├─ ScrollToTop.jsx // Tự động cuộn lên đầu trang khi điều hướng
 │ │ │ ├─ PageTransition.jsx // Hiệu ứng chuyển cảnh (New)
 │ │ │ ├─ LanguageSwitcher.jsx // Nút chuyển ngôn ngữ (floating/dropdown) (New)
+│ │ │ ├─ ErrorPage.jsx // Trang hiển thị lỗi cao cấp (New)
 │ │ │ └─ AIFloatingButton.jsx // Nút AI nổi
 │ │ │
 │ │ └─ utils/
@@ -261,13 +262,16 @@ seatnow-fe/
 │ │ │ │
 │ │ │ └─ workspace/ // Cấp từng nhà hàng cụ thể (sau khi đã chọn)
 │ │ │ ├─ dashboard/
-│ │ │ │ ├─ api.js // API dashboard của 1 nhà hàng
+│ │ │ │ ├─ api.js // API dashboard: KPI, revenue, hourly stats, bookings...
+│ │ │ │ ├─ hooks.js // useWorkspaceDashboard: Hook bóc tách dữ liệu dashboard
 │ │ │ │ ├─ pages/
-│ │ │ │ │ └─ RestaurantDashboardPage.jsx // Dashboard chi tiết 1 nhà hàng
+│ │ │ │ │ └─ OwnerDashboardPage.jsx // Trang Overview chính (Bento Layout)
 │ │ │ │ └─ components/
-│ │ │ │ ├─ RevenueChart.jsx
-│ │ │ │ ├─ BookingOverviewCard.jsx
-│ │ │ │ └─ WalletOverviewCard.jsx
+│ │ │ │ ├─ KPIStatCard.jsx // Thẻ chỉ số: Doanh thu, Lượt đặt, Tỉ lệ lấp đầy
+│ │ │ │ ├─ RevenueAnalysisChart.jsx // Biểu đồ doanh thu (Recharts)
+│ │ │ │ ├─ BookingVolumeChart.jsx // Biểu đồ lượng đặt chỗ theo giờ (Recharts)
+│ │ │ │ ├─ UpcomingArrivalsTable.jsx // Danh sách khách sắp đến trong ngày
+│ │ │ │ └─ LiveFloorPlan.jsx // Sơ đồ bàn trực tiếp thời gian thực
 │ │ │ │
 │ │ │ ├─ restaurant-profile/
 │ │ │ │ ├─ api.js

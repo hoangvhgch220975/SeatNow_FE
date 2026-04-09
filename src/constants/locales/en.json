@@ -40,6 +40,7 @@
     "day": "Day",
     "week": "Week",
     "month": "Month",
+    "year": "Year",
     "mom": "MoM",
     "wow": "WoW",
     "yoy": "YoY",
@@ -225,56 +226,56 @@
       "unauthorized_code": "ERROR 401: UNAUTHORIZED",
       "relogin_button": "SECURE RE-LOGIN"
     },
-    "owner": { 
-      "hero": { 
-        "verified_partner": "Verified Partner", 
-        "partner_executive": "Partner Executive", 
-        "license_id": "Executive License ID", 
-        "system_integrity": "Active System Integrity", 
-        "partner_tier": "Partner Tier" 
+    "owner": {
+      "hero": {
+        "verified_partner": "Verified Partner",
+        "partner_executive": "Partner Executive",
+        "license_id": "Executive License ID",
+        "system_integrity": "Active System Integrity",
+        "partner_tier": "Partner Tier"
       },
-      "summary": { 
-        "title": "Corporate Identity Summary", 
-        "reg_details": "Official Registration Details", 
-        "id_label": "Principal Partner ID", 
-        "email_label": "Enterprise Email", 
-        "phone_label": "Official Direct Line", 
-        "not_registered": "Not Registered", 
-        "reg_timeline": "Registration Timeline", 
-        "protocol_status": "Protocol Status", 
-        "system_active": "SYSTEM ACTIVE", 
-        "encrypted": "Encrypted" 
+      "summary": {
+        "title": "Corporate Identity Summary",
+        "reg_details": "Official Registration Details",
+        "id_label": "Principal Partner ID",
+        "email_label": "Enterprise Email",
+        "phone_label": "Official Direct Line",
+        "not_registered": "Not Registered",
+        "reg_timeline": "Registration Timeline",
+        "protocol_status": "Protocol Status",
+        "system_active": "SYSTEM ACTIVE",
+        "encrypted": "Encrypted"
       },
-      "error": { 
-        "sync_failed": "Session Synchronize Failed", 
-        "verify_failed": "We couldn't verify your business identity. Please re-authenticate your session." 
+      "error": {
+        "sync_failed": "Session Synchronize Failed",
+        "verify_failed": "We couldn't verify your business identity. Please re-authenticate your session."
       },
-      "nav": { 
-        "overview": "Business Overview", 
-        "settings": "Profile Settings", 
-        "security": "Security & Privacy", 
-        "identity_management": "Identity Management", 
-        "account_telemetry": "Account & Security Telemetry" 
+      "nav": {
+        "overview": "Business Overview",
+        "settings": "Profile Settings",
+        "security": "Security & Privacy",
+        "identity_management": "Identity Management",
+        "account_telemetry": "Account & Security Telemetry"
       },
-      "integrity": { 
-        "title": "Security Overview", 
-        "password_security": "Password Security", 
-        "metadata": "Profile Metadata", 
-        "manage": "Manage", 
-        "update": "Update", 
-        "hub_title": "Enterprise Hub", 
-        "cloud_synced": "Cloud Synced", 
-        "hub_desc": "Your business profile is integrated with SeatNow Global Network. Identity protection is active.", 
-        "verified_title": "Enterprise Identity Verified", 
-        "sync_network": "Synchronized with SeatNow Portfolio Global Network", 
-        "trust_score": "Trust Score", 
-        "security_level": "Security Level" 
+      "integrity": {
+        "title": "Security Overview",
+        "password_security": "Password Security",
+        "metadata": "Profile Metadata",
+        "manage": "Manage",
+        "update": "Update",
+        "hub_title": "Enterprise Hub",
+        "cloud_synced": "Cloud Synced",
+        "hub_desc": "Your business profile is integrated with SeatNow Global Network. Identity protection is active.",
+        "verified_title": "Enterprise Identity Verified",
+        "sync_network": "Synchronized with SeatNow Portfolio Global Network",
+        "trust_score": "Trust Score",
+        "security_level": "Security Level"
       },
-      "tiers": { 
-        "VIP": "VIP", 
-        "Elite": "Elite", 
-        "Premium": "Premium", 
-        "Standard": "Standard" 
+      "tiers": {
+        "VIP": "VIP",
+        "Elite": "Elite",
+        "Premium": "Premium",
+        "Standard": "Standard"
       }
     }
   },
@@ -900,6 +901,81 @@
       "copyright": "© SeatNow Strategic Business Unit"
     }
   },
+  "workspace": {
+    "sidebar": {
+      "back_to_portfolio": "Back to Portfolio",
+      "overview": "Overview",
+      "restaurant_profile": "Restaurant Profile",
+      "menu_management": "Menu Management",
+      "table_management": "Table Management",
+      "booking_management": "Booking Management",
+      "revenue_stats": "Revenue & Stats",
+      "wallet": "Wallet",
+      "settings": "Settings",
+      "ai_tools": "AI Tools",
+      "ask_aura": "Ask SeatNow AI",
+      "revenue_insights": "Revenue Insights"
+    },
+    "dashboard": {
+      "title": "Dashboard Overview",
+      "welcome": "Here's what's happening at <1>{{name}}</1> today.",
+      "today_bookings": "Today's Bookings",
+      "weekly_total": "Weekly Total",
+      "daily_revenue": "Daily Revenue",
+      "monthly_revenue": "Monthly Revenue",
+      "occupancy_rate": "Occupancy Rate",
+      "revenue_analysis": "Revenue Analysis",
+      "booking_volume": "Booking Volume",
+      "upcoming_arrivals": "Upcoming Arrivals",
+      "live_floor_plan": "Live Floor Plan",
+      "vs_yesterday": "+{{v}}% vs yesterday",
+      "consistent_avg": "Consistent with avg",
+      "on_track": "On track for target",
+      "peak_hours": "PEAK HOURS ({{time}})",
+      "recent_bookings": "RECENT BOOKINGS",
+      "recent_activity": "Latest Reservation Activity",
+      "guest_analysis": "Guest Analysis",
+      "demographics_capacity": "Demographics & Capacity",
+      "spatial_management": "Spatial Management",
+      "total_bookings": "Total Bookings",
+      "net_revenue": "Net Revenue",
+      "gross_revenue": "Gross Revenue",
+      "before_commission": "Before Commission",
+      "cancellation_rate": "Cancellation Rate",
+      "no_shows": "{{count}} No-shows",
+      "customer_rating": "Avg. Rating",
+      "total_reviews": "{{count}} Reviews"
+    },
+    "arrivals": {
+      "guest": "Guest",
+      "time": "Time",
+      "party": "Party",
+      "status": "Status",
+      "view_all": "View All Schedule",
+      "vip_guest": "VIP Guest",
+      "anniversary": "Anniversary",
+      "private_dining": "Private Dining",
+      "no_data": "No recent bookings"
+    },
+    "floor_plan": {
+      "live": "Live",
+      "available": "Available",
+      "occupied": "Occupied",
+      "reserved": "Reserved"
+    },
+    "roles": {
+      "owner": "Partner Executive",
+      "manager": "General Manager"
+    },
+    "analysis": {
+      "couple": "Couple (2)",
+      "small_group": "Small Group (4-6)",
+      "party": "Party (8+)",
+      "bookings": "BOOKINGS",
+      "period_summary": "PERIOD SUMMARY",
+      "total_percent": "100% TOTAL"
+    }
+  },
   "footer": {
     "customer": {
       "description": "The premium restaurant reservation platform. Discover, book, and enjoy the finest culinary experiences across Vietnam with ease.",
@@ -926,5 +1002,14 @@
       "system_status": "System Status",
       "compliance_level": "Compliance Level"
     }
-  }
+  },
+  "errors": {
+    "title": "Unexpected System Interruption",
+    "message": "We've encountered a digital anomaly. Our telemetry system has logged this event for immediate technical review.",
+    "action_home": "RETURN TO CORE",
+    "action_retry": "RE-INITIALIZE",
+    "status_code": "ERROR PROTOCOL",
+    "stack_trace": "TECHNICAL TELEMETRY (DEV ONLY)"
+  },
+  "i18next_code": "en-US"
 }

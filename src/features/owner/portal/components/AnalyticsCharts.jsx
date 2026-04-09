@@ -14,13 +14,13 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
   const { t } = useTranslation();
 
   const formatCurrency = (val) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val || 0);
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(val || 0).replace('₫', '₫');
   };
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-900/95 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-2xl space-y-3 min-w-[200px]">
+        <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif' }} className="bg-slate-900/95 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-2xl space-y-3 min-w-[200px]">
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">{label}</p>
           <div className="space-y-2">
             <div className="flex items-center justify-between gap-6">
@@ -109,7 +109,7 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
               dataKey="label" 
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }}
+              tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
               dy={15}
             />
             {/* Left YAxis for Revenue (Vietnamese comment) */}
@@ -117,9 +117,9 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
               yAxisId="left"
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }}
+              tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
               dx={-10}
-              tickFormatter={(val) => `${(val / 1000000).toFixed(0)}M`}
+              tickFormatter={(val) => `${(val / 1000000).toFixed(0)}M ₫`}
             />
             {/* Right YAxis for Bookings (Vietnamese comment) */}
             <YAxis 
@@ -127,7 +127,7 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
               orientation="right"
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#34d399', fontSize: 10, fontWeight: 900 }}
+              tick={{ fill: '#34d399', fontSize: 10, fontWeight: 900, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
               dx={10}
             />
             <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#f1f5f9', strokeWidth: 2 }} />

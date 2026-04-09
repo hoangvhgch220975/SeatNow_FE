@@ -99,7 +99,7 @@ const VenueTable = ({ restaurants }) => {
                       </button>
                     ) : (
                       <Link 
-                        to={ROUTES.WORKSPACE_DASHBOARD(venue.id)}
+                        to={ROUTES.WORKSPACE_DASHBOARD(venue.slug || venue.id)}
                         className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900 text-white hover:bg-violet-600 transition-all shadow-sm hover:shadow-lg hover:shadow-violet-200 active:scale-90"
                       >
                         <span className="material-symbols-outlined text-[20px]">arrow_forward</span>

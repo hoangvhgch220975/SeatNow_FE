@@ -37,7 +37,7 @@ const PortfolioChart = ({
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-900/95 text-white p-4 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-md min-w-[200px] space-y-3">
+        <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif' }} className="bg-slate-900/95 text-white p-4 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-md min-w-[200px] space-y-3">
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-white/10 pb-2">{label}</p>
           
           <div className="space-y-2">
@@ -49,7 +49,7 @@ const PortfolioChart = ({
                 </div>
                 <span className="text-sm font-black">
                   {activeTab === 'revenue' 
-                    ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(entry.value)
+                    ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(entry.value).replace('₫', '₫')
                     : `${entry.value} Units`}
                 </span>
               </div>
@@ -146,14 +146,14 @@ const PortfolioChart = ({
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }}
+                tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
                 dy={15}
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
                 domain={[0, 'auto']}
-                tick={{ fill: '#cbd5e1', fontSize: 9, fontWeight: 600 }}
+                tick={{ fill: '#cbd5e1', fontSize: 9, fontWeight: 600, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
                 tickFormatter={(val) => new Intl.NumberFormat('en-US', { notation: 'compact' }).format(val)}
               />
               <Tooltip content={<CustomTooltip />} />
@@ -195,13 +195,13 @@ const PortfolioChart = ({
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }}
+                tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
                 dy={15}
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#cbd5e1', fontSize: 9, fontWeight: 600 }}
+                tick={{ fill: '#cbd5e1', fontSize: 9, fontWeight: 600, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
               />
               <Tooltip cursor={{fill: '#f8fafc'}} content={<CustomTooltip />} />
               
@@ -224,7 +224,7 @@ const PortfolioChart = ({
               <div className="space-y-1">
                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Realized Net Revenue</span>
                  <span className="text-3xl font-black text-emerald-600 tracking-tight">
-                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(totalRevenue || 0)}
+                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(totalRevenue || 0).replace('₫', '₫')}
                  </span>
                  <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">After commissions & fees</p>
               </div>
@@ -238,7 +238,7 @@ const PortfolioChart = ({
               <div className="space-y-1">
                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Gross Deposits Collected</span>
                  <span className="text-3xl font-black text-slate-900 tracking-tight">
-                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(grossRevenue || 0)}
+                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(grossRevenue || 0).replace('₫', '₫')}
                  </span>
                  <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">All payments from confirmed bookings</p>
               </div>

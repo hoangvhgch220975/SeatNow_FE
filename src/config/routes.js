@@ -33,14 +33,14 @@ export const ROUTES = {
   OWNER_POLICIES: '/owner/policies',
   CREATE_RESTAURANT: '/owner/restaurants/new',
   
-  // --- OWNER WORKSPACE (Dynamic param :restaurantId) ---
-  WORKSPACE_DASHBOARD: (id) => `/owner/restaurants/${id}/dashboard`,
-  WORKSPACE_PROFILE: (id) => `/owner/restaurants/${id}/profile`,
-  WORKSPACE_MENU: (id) => `/owner/restaurants/${id}/menu`,
-  WORKSPACE_TABLES: (id) => `/owner/restaurants/${id}/tables`,
-  WORKSPACE_BOOKINGS: (id) => `/owner/restaurants/${id}/bookings`,
-  WORKSPACE_REVENUE: (id) => `/owner/restaurants/${id}/revenue`,
-  WORKSPACE_WALLET: (id) => `/owner/restaurants/${id}/wallet`,
+  // --- OWNER WORKSPACE (Dynamic param :slug or :id) ---
+  WORKSPACE_DASHBOARD: (idOrSlug) => `/owner/restaurants/${idOrSlug}/dashboard`,
+  WORKSPACE_PROFILE: (idOrSlug) => `/owner/restaurants/${idOrSlug}/profile`,
+  WORKSPACE_MENU: (idOrSlug) => `/owner/restaurants/${idOrSlug}/menu`,
+  WORKSPACE_TABLES: (idOrSlug) => `/owner/restaurants/${idOrSlug}/tables`,
+  WORKSPACE_BOOKINGS: (idOrSlug) => `/owner/restaurants/${idOrSlug}/bookings`,
+  WORKSPACE_REVENUE: (idOrSlug) => `/owner/restaurants/${idOrSlug}/revenue`,
+  WORKSPACE_WALLET: (idOrSlug) => `/owner/restaurants/${idOrSlug}/wallet`,
 
   // --- ADMIN ---
   ADMIN_DASHBOARD: '/admin',

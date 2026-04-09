@@ -40,6 +40,7 @@
     "day": "Ngày",
     "week": "Tuần",
     "month": "Tháng",
+    "year": "Năm",
     "mom": "So với tháng trước",
     "wow": "So với tuần trước",
     "yoy": "So với năm trước",
@@ -225,56 +226,56 @@
       "unauthorized_code": "LỖI 401: CHƯA XÁC THỰC",
       "relogin_button": "ĐĂNG NHẬP LẠI BẢO MẬT"
     },
-    "owner": { 
-      "hero": { 
-        "verified_partner": "Đối Tác Xác Thực", 
-        "partner_executive": "Quản trị viên Đối tác", 
-        "license_id": "Mã Giấy phép Quản trị", 
-        "system_integrity": "Tính Toàn vẹn Hệ thống Hoạt động", 
-        "partner_tier": "Hạng Đối tác" 
+    "owner": {
+      "hero": {
+        "verified_partner": "Đối Tác Xác Thực",
+        "partner_executive": "Quản trị viên Đối tác",
+        "license_id": "Mã Giấy phép Quản trị",
+        "system_integrity": "Tính Toàn vẹn Hệ thống Hoạt động",
+        "partner_tier": "Hạng Đối tác"
       },
-      "summary": { 
-        "title": "Tổng quan Danh tính Doanh nghiệp", 
-        "reg_details": "Chi tiết Đăng ký Chính thức", 
-        "id_label": "Mã Định danh Đối tác Chính", 
-        "email_label": "Email Doanh nghiệp", 
-        "phone_label": "Đường dây Nóng Chính thức", 
-        "not_registered": "Chưa Đăng ký", 
-        "reg_timeline": "Lịch sử Đăng ký", 
-        "protocol_status": "Trạng thái Giao thức", 
-        "system_active": "HỆ THỐNG ĐANG HOẠT ĐỘNG", 
-        "encrypted": "Đã mã hóa" 
+      "summary": {
+        "title": "Tổng quan Danh tính Doanh nghiệp",
+        "reg_details": "Chi tiết Đăng ký Chính thức",
+        "id_label": "Mã Định danh Đối tác Chính",
+        "email_label": "Email Doanh nghiệp",
+        "phone_label": "Đường dây Nóng Chính thức",
+        "not_registered": "Chưa Đăng ký",
+        "reg_timeline": "Lịch sử Đăng ký",
+        "protocol_status": "Trạng thái Giao thức",
+        "system_active": "HỆ THỐNG ĐANG HOẠT ĐỘNG",
+        "encrypted": "Đã mã hóa"
       },
-      "error": { 
-        "sync_failed": "Đồng bộ hóa Phiên thất bại", 
-        "verify_failed": "Chúng tôi không thể xác minh danh tính doanh nghiệp của bạn. Vui lòng đăng nhập lại phiên làm việc." 
+      "error": {
+        "sync_failed": "Đồng bộ hóa Phiên thất bại",
+        "verify_failed": "Chúng tôi không thể xác minh danh tính doanh nghiệp của bạn. Vui lòng đăng nhập lại phiên làm việc."
       },
-      "nav": { 
-        "overview": "Tổng quan Kinh doanh", 
-        "settings": "Cài đặt Hồ sơ", 
-        "security": "Bảo mật & Quyền riêng tư", 
-        "identity_management": "Quản lý Danh tính", 
-        "account_telemetry": "Phép đo Bảo mật & Tài khoản" 
+      "nav": {
+        "overview": "Tổng quan Kinh doanh",
+        "settings": "Cài đặt Hồ sơ",
+        "security": "Bảo mật & Quyền riêng tư",
+        "identity_management": "Quản lý Danh tính",
+        "account_telemetry": "Phép đo Bảo mật & Tài khoản"
       },
-      "integrity": { 
-        "title": "Tổng quan Bảo mật", 
-        "password_security": "Bảo mật Mật khẩu", 
-        "metadata": "Siêu dữ liệu Hồ sơ", 
-        "manage": "Quản lý", 
-        "update": "Cập nhật", 
-        "hub_title": "Trung tâm Doanh nghiệp", 
-        "cloud_synced": "Đã đồng bộ Đám mây", 
-        "hub_desc": "Hồ sơ doanh nghiệp của bạn được tích hợp với Mạng lưới Toàn cầu SeatNow. Bảo vệ danh tính đang hoạt động.", 
-        "verified_title": "Danh tính Doanh nghiệp đã Xác thực", 
-        "sync_network": "Đã đồng bộ với Mạng lưới Toàn cầu Danh mục SeatNow", 
-        "trust_score": "Điểm Tin cậy", 
-        "security_level": "Mức độ Bảo mật" 
+      "integrity": {
+        "title": "Tổng quan Bảo mật",
+        "password_security": "Bảo mật Mật khẩu",
+        "metadata": "Siêu dữ liệu Hồ sơ",
+        "manage": "Quản lý",
+        "update": "Cập nhật",
+        "hub_title": "Trung tâm Doanh nghiệp",
+        "cloud_synced": "Đã đồng bộ Đám mây",
+        "hub_desc": "Hồ sơ doanh nghiệp của bạn được tích hợp với Mạng lưới Toàn cầu SeatNow. Bảo vệ danh tính đang hoạt động.",
+        "verified_title": "Danh tính Doanh nghiệp đã Xác thực",
+        "sync_network": "Đã đồng bộ với Mạng lưới Toàn cầu Danh mục SeatNow",
+        "trust_score": "Điểm Tin cậy",
+        "security_level": "Mức độ Bảo mật"
       },
-      "tiers": { 
-        "VIP": "VIP", 
-        "Elite": "Elite", 
-        "Premium": "Cao cấp", 
-        "Standard": "Tiêu chuẩn" 
+      "tiers": {
+        "VIP": "VIP",
+        "Elite": "Elite",
+        "Premium": "Cao cấp",
+        "Standard": "Tiêu chuẩn"
       }
     }
   },
@@ -905,6 +906,81 @@
       "copyright": "© Đơn vị Kinh doanh Chiến lược SeatNow"
     }
   },
+  "workspace": {
+    "sidebar": {
+      "back_to_portfolio": "Quay lại Danh mục",
+      "overview": "Tổng quan",
+      "restaurant_profile": "Hồ sơ Nhà hàng",
+      "menu_management": "Quản lý Thực đơn",
+      "table_management": "Quản lý Sơ đồ bàn",
+      "booking_management": "Quản lý Đặt chỗ",
+      "revenue_stats": "Doanh thu & Thống kê",
+      "wallet": "Ví tiền",
+      "settings": "Cấu hình",
+      "ai_tools": "Công cụ AI",
+      "ask_aura": "Hỏi SeatNow AI",
+      "revenue_insights": "Phân tích Doanh thu"
+    },
+    "dashboard": {
+      "title": "Tổng quan Dashboard",
+      "welcome": "Đây là những gì đang diễn ra tại <1>{{name}}</1> hôm nay.",
+      "today_bookings": "Lượt đặt hôm nay",
+      "weekly_total": "Tổng hàng tuần",
+      "daily_revenue": "Doanh thu ngày",
+      "monthly_revenue": "Doanh thu tháng",
+      "occupancy_rate": "Tỉ lệ lấp đầy",
+      "revenue_analysis": "Phân tích Doanh thu",
+      "booking_volume": "Lượng đặt chỗ",
+      "upcoming_arrivals": "Khách sắp đến",
+      "live_floor_plan": "Sơ đồ bàn trực tiếp",
+      "vs_yesterday": "+{{v}}% so với hôm qua",
+      "consistent_avg": "Ổn định so với TB",
+      "on_track": "Đang đúng tiến độ mục tiêu",
+      "peak_hours": "GIỜ CAO ĐIỂM ({{time}})",
+      "recent_bookings": "ĐẶT BÀN GẦN ĐÂY",
+      "recent_activity": "Hoạt động Đặt bàn Mới nhất",
+      "guest_analysis": "Phân tích Khách hàng",
+      "demographics_capacity": "Nhân khẩu học & Sức chứa",
+      "spatial_management": "Quản lý Không gian",
+      "total_bookings": "Tổng số Lượt đặt",
+      "net_revenue": "Doanh thu Thực nhận",
+      "gross_revenue": "Doanh thu Gộp",
+      "before_commission": "Chưa trừ Hoa hồng",
+      "cancellation_rate": "Tỉ lệ Huỷ bàn",
+      "no_shows": "{{count}} Lượt Vắng mặt",
+      "customer_rating": "Điểm Đánh giá",
+      "total_reviews": "{{count}} Đánh giá"
+    },
+    "arrivals": {
+      "guest": "Khách hàng",
+      "time": "Thời gian",
+      "party": "Số khách",
+      "status": "Trạng thái",
+      "view_all": "Xem tất cả lịch trình",
+      "vip_guest": "Khách VIP",
+      "anniversary": "Kỷ niệm",
+      "private_dining": "Phòng riêng",
+      "no_data": "Chưa có lượt đặt nào gần đây"
+    },
+    "floor_plan": {
+      "live": "Trực tiếp",
+      "available": "Trống",
+      "occupied": "Đang có khách",
+      "reserved": "Đã đặt trước"
+    },
+    "roles": {
+      "owner": "Đối Tác Điều Hành",
+      "manager": "Quản Lý Chung"
+    },
+    "analysis": {
+      "couple": "Cặp đôi (2)",
+      "small_group": "Nhóm nhỏ (4-6)",
+      "party": "Nhóm lớn (8+)",
+      "bookings": "LƯỢT ĐẶT",
+      "period_summary": "TỔNG KẾT KỲ",
+      "total_percent": "TỔNG 100%"
+    }
+  },
   "footer": {
     "customer": {
       "description": "Nền tảng đặt bàn nhà hàng cao cấp. Khám phá, đặt chỗ và tận hưởng những trải nghiệm ẩm thực tinh túy nhất khắp Việt Nam một cách dễ dàng.",
@@ -931,5 +1007,14 @@
       "system_status": "Trạng Thái Hệ Thống",
       "compliance_level": "Mức Độ Tuân Thủ"
     }
-  }
+  },
+  "errors": {
+    "title": "Hệ Thống Bị Gián Đoạn",
+    "message": "Chúng tôi đã ghi nhận một sự cố kỹ thuật. Hệ thống đã tự động gửi báo cáo để đội ngũ chuyên gia xử lý ngay lập tức.",
+    "action_home": "TRUY CẬP TRANG CHỦ",
+    "action_retry": "KHỞI TẠO LẠI",
+    "status_code": "GIAO THỨC LỖI",
+    "stack_trace": "DỮ LIỆU KỸ THUẬT (DÀNH CHO DEV)"
+  },
+  "i18next_code": "vi-VN"
 }

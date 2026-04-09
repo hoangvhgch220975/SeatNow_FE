@@ -12,8 +12,10 @@ const AnalyticsSummary = ({ stats, isLoading }) => {
   // Hàm định dạng tiền tệ (Vietnamese comment)
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('vi-VN', { 
+      style: 'currency',
+      currency: 'VND',
       maximumFractionDigits: 0 
-    }).format(val || 0) + ' đ';
+    }).format(val || 0).replace('₫', '₫');
   };
 
   // Màn hình loading (Vietnamese comment)
@@ -71,9 +73,13 @@ const AnalyticsSummary = ({ stats, isLoading }) => {
             </div>
             
             <div className="space-y-2">
-               <h2 className="text-7xl font-black text-slate-900 tracking-tighter leading-none">
-                 {formatCurrency(stats?.totalGrossRevenue || 0)}
-               </h2>
+                <h2 className={`font-black text-slate-900 tracking-tighter leading-none ${
+                   formatCurrency(stats?.totalGrossRevenue || 0).length > 15 ? 'text-4xl' : 
+                   formatCurrency(stats?.totalGrossRevenue || 0).length > 12 ? 'text-5xl' : 
+                   formatCurrency(stats?.totalGrossRevenue || 0).length > 10 ? 'text-6xl' : 'text-7xl'
+                 }`}>
+                   {formatCurrency(stats?.totalGrossRevenue || 0)}
+                 </h2>
                <div className="flex items-center gap-3 pt-2">
                   <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-lg border border-emerald-100 uppercase tracking-widest">
                     {t('analytics.total_deposit_volume')}
@@ -137,7 +143,11 @@ const AnalyticsSummary = ({ stats, isLoading }) => {
               {t('analytics.net_revenue')}
             </h4>
             <div className="space-y-2">
-               <h2 className="text-5xl font-black tracking-tighter leading-none">{formatCurrency(stats?.totalRevenue)}</h2>
+                <h2 className={`font-black tracking-tighter leading-none ${
+                   formatCurrency(stats?.totalRevenue).length > 15 ? 'text-2xl' : 
+                   formatCurrency(stats?.totalRevenue).length > 12 ? 'text-3xl' : 
+                   formatCurrency(stats?.totalRevenue).length > 10 ? 'text-4xl' : 'text-5xl'
+                 }`}>{formatCurrency(stats?.totalRevenue)}</h2>
                <p className="text-[10px] font-black text-white/40 uppercase tracking-widest">
                  {t('analytics.after_system_commissions')}
                </p>
@@ -197,7 +207,11 @@ const AnalyticsSummary = ({ stats, isLoading }) => {
                   <span className="material-symbols-outlined text-xl">insights</span>
                </div>
             </div>
-            <h2 className="text-5xl font-black text-slate-900 tracking-tighter leading-none">{formatCurrency(avgTransaction)}</h2>
+            <h2 className={`font-black text-slate-900 tracking-tighter leading-none ${
+               formatCurrency(avgTransaction).length > 15 ? 'text-2xl' : 
+               formatCurrency(avgTransaction).length > 12 ? 'text-3xl' : 
+               formatCurrency(avgTransaction).length > 10 ? 'text-4xl' : 'text-5xl'
+             }`}>{formatCurrency(avgTransaction)}</h2>
           </div>
           <p className="text-[10px] font-bold text-slate-300 italic">
             {t('analytics.financial_efficiency')}

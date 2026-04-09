@@ -18,7 +18,7 @@ const OwnerMainLayout = () => {
   if (user?.role?.toUpperCase() !== ROLES.OWNER) return <Navigate to="/" replace />;
 
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans antialiased text-slate-900 transition-colors duration-200">
+    <div className="flex min-h-screen bg-slate-50 font-body antialiased text-slate-900 transition-colors duration-200">
       <ScrollToTop />
       
       {/* Sidebar cố định */}

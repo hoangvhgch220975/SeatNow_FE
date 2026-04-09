@@ -20,7 +20,8 @@ i18n
       en: { translation: enTranslations },
       vi: { translation: viTranslations }
     },
-    fallbackLng: 'en', // Ngôn ngữ mặc định nếu không phát hiện được (Vietnamese comment)
+    lng: 'en', // Thiết lập Tiếng Anh là ngôn ngữ mặc định (Vietnamese comment)
+    fallbackLng: 'en', // Dự phòng Tiếng Anh nếu không tìm thấy chuỗi dịch (Vietnamese comment)
     debug: false, // Tắt debug ở môi trường sản phẩm (Vietnamese comment)
 
     interpolation: {

@@ -17,7 +17,7 @@ const MetricGrid = ({ stats, avgRating, totalReviews, activeVenuesCount, totalVe
         style: 'currency', 
         currency: 'VND',
         maximumFractionDigits: 0 
-    }).format(amount || 0);
+    }).format(amount || 0).replace('₫', '₫');
   };
 
   // Rút gọn các con số lớn (VD: 1.2k)

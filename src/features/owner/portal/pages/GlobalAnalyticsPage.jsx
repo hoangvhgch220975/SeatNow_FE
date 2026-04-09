@@ -82,7 +82,7 @@ const GlobalAnalyticsPage = () => {
   }, [myRestaurants, businessSummary]);
 
   return (
-    <div className="space-y-12 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+    <div className="space-y-12 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 font-body">
       
       {/* TITLE HEADER SECTION (Vietnamese comment) */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mt-6">

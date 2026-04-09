@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import { ROUTES } from '../config/routes.js';
 import App from '../App.jsx';
+import ErrorPage from '../shared/components/ErrorPage.jsx';
 import MainLayout from '../shared/layout/MainLayout.jsx';
 import HomePage from '../features/home/pages/HomePage.jsx';
 import RestaurantListPage from '../features/restaurants/pages/RestaurantListPage.jsx';
@@ -29,6 +30,8 @@ import OwnerRestaurantsPage from '../features/owner/portal/pages/OwnerRestaurant
 import GlobalAnalyticsPage from '../features/owner/portal/pages/GlobalAnalyticsPage.jsx';
 import CreateRestaurantPage from '../features/owner/portal/pages/CreateRestaurantPage.jsx';
 import PartnerPolicyPage from '../features/static/pages/PartnerPolicyPage.jsx';
+import RestaurantWorkspaceLayout from '../shared/layout/RestaurantWorkspaceLayout.jsx';
+import RestaurantWorkspaceDashboard from '../features/owner/workspace/dashboard/pages/OwnerDashboardPage.jsx';
 
 
 /**
@@ -39,6 +42,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />, // Root Shell (chứa Outlet gốc)
+    errorElement: <ErrorPage />, // Trang xử lý lỗi toàn cục
     children: [
       {
         /* 
@@ -165,6 +169,21 @@ export const router = createBrowserRouter([
             path: ROUTES.CREATE_RESTAURANT,
             element: <CreateRestaurantPage />,
           },
+        ]
+      },
+      {
+        /* 
+          LAYOUT CHO RESTAURANT WORKSPACE (QUẢN LÝ TỪNG NHÀ HÀNG)
+          Dành cho chủ nhà hàng truy cập không gian quản lý chi tiết cho 1 cơ sở cụ thể.
+        */
+        element: <RestaurantWorkspaceLayout />,
+        children: [
+          {
+            // WORKSPACE_DASHBOARD: (idOrSlug) => `/owner/restaurants/${idOrSlug}/dashboard`
+            path: ROUTES.WORKSPACE_DASHBOARD(':idOrSlug'),
+            element: <RestaurantWorkspaceDashboard />,
+          },
+          // Các route con khác của workspace sẽ thêm tại đây (Profile, Menu, Tables, etc.)
         ]
       },
       {
