@@ -37,9 +37,12 @@
     "telemetry_system": "Hệ Thống Từ Xa",
     "active_sync": "Kết Nối Hoạt Động",
     "observation_timeline": "Dòng Thời Gian Theo Dõi",
-    "day": "NGÀY",
-    "week": "TUẦN",
-    "month": "THÁNG",
+    "day": "Ngày",
+    "week": "Tuần",
+    "month": "Tháng",
+    "mom": "So với tháng trước",
+    "wow": "So với tuần trước",
+    "yoy": "So với năm trước",
     "period_select": "Chọn Giai Đoạn",
     "unread": "Chưa Đọc",
     "mark_all_read": "Đọc Tất Cả",
@@ -100,6 +103,32 @@
       "resend_text": "Gửi lại mã sau <1>{{seconds}}s</1>",
       "resend_button": "Gửi lại OTP",
       "resending": "Đang gửi..."
+    },
+    "partner": {
+      "title": "Hợp Tác Cùng Chúng Tôi",
+      "subtitle": "Gửi yêu cầu gia nhập mạng lưới nhà hàng cao cấp của SeatNow.",
+      "fullName": "Họ và Tên",
+      "email": "Địa chỉ Email",
+      "phone": "Số Điện Thoại",
+      "license": "Giấy phép kinh doanh",
+      "uploadHint": "Tải lên ảnh JPG/PNG của giấy phép kinh doanh.",
+      "submit": "Gửi yêu cầu hợp tác",
+      "successTitle": "Đã Nhận Yêu Cầu",
+      "successDesc": "Hồ sơ hồ sơ của bạn đã được tiếp nhận. Đội ngũ của chúng tôi sẽ xem xét tài liệu và liên hệ với bạn qua email kèm theo thông tin tài khoản trong thời gian sớm nhất.",
+      "close": "Đóng"
+    },
+    "ownerJoin": {
+      "backHome": "Quay về Trang chủ",
+      "heroTitle": "Nâng tầm nhà hàng của bạn với",
+      "heroSubtitle": "Gia nhập mạng lưới quản lý nhà hàng tiên tiến nhất. Từ đặt bàn thông minh đến theo dõi doanh thu thời gian thực, chúng tôi cung cấp mọi thứ bạn cần để phát triển kinh doanh.",
+      "applyBtn": "Đăng ký Hợp tác",
+      "benefit1Title": "Tối đa doanh thu",
+      "benefit1Desc": "Tối ưu hóa hiệu suất sử dụng bàn và giảm thiểu tình trạng khách không đến với hệ thống đặt chỗ thông minh.",
+      "benefit2Title": "Phân tích Thông minh",
+      "benefit2Desc": "Nhận các báo cáo chi tiết về hành vi khách hàng, khung giờ cao điểm và hiệu quả tài chính.",
+      "benefit3Title": "Tiếp cận Toàn cầu",
+      "benefit3Desc": "Kết nối với hàng ngàn thực khách trong thành phố. Giúp nhà hàng của bạn được tìm thấy bởi đúng đối tượng.",
+      "footerSlogan": "Thành công của bạn là ưu tiên của chúng tôi."
     }
   },
   "profile": {
@@ -750,6 +779,57 @@
       "table_satisfaction": "Mức Độ Hài Lòng",
       "table_cuisine": "Phong Cách Ẩm Thực",
       "table_action": "Hành Động"
+    },
+    "create_restaurant": {
+      "title": "Thêm Cơ Sở Mới",
+      "subtitle": "Mở rộng hệ sinh thái của bạn với quy trình đăng ký tinh gọn.",
+      "steps": {
+        "identity": "Định Danh & Vị Trí",
+        "concept": "Phong Cách & Giờ Mở Cửa",
+        "media": "Hình Ảnh",
+        "policies": "Chính Sách & Xác Nhận"
+      },
+      "form": {
+        "name_label": "Tên Nhà Hàng",
+        "name_placeholder": "VD: The Grand Bistro",
+        "email_label": "Email Chính Thức",
+        "email_placeholder": "contact@yourrestaurant.com",
+        "phone_label": "Số Điện Thoại",
+        "phone_placeholder": "+84...",
+        "address_label": "Địa Chỉ Thực Tế",
+        "address_placeholder": "Tìm kiếm hoặc chọn trên bản đồ...",
+        "description_label": "Mô Tả / Câu Chuyện Thương Hiệu",
+        "description_placeholder": "Chia sẻ về triết lý ẩm thực của bạn...",
+        "cuisine_label": "Loại Hình Ẩm Thực",
+        "price_range_label": "Phân Khúc Giá",
+        "price_range_hint": "$ - $$$$",
+        "hours_label": "Giờ Mở Cửa",
+        "hours_config_type": "Cấu Hình Lịch Trình",
+        "hours_all_days": "Áp dụng cho tất cả các ngày",
+        "hours_split": "Ngày thường & Cuối tuần",
+        "hours_custom": "Tùy chỉnh chi tiết từng ngày",
+        "images_label": "Bộ Sưu Tập Hình Ảnh",
+        "images_hint": "Tải lên ảnh ngoại thất và nội thất chất lượng cao. Tối đa 5 ảnh.",
+        "deposit_enabled": "Kích Hoạt Tiền Đặt Cọc",
+        "min_amount_label": "Số Tiền Cọc Tối Thiểu",
+        "min_guests_label": "Áp dụng cho đoàn từ",
+        "policy_type_label": "Loại Hình Thu Phí",
+        "policy_type_fixed": "Cố định theo lượt đặt",
+        "policy_type_person": "Tính theo số lượng khách",
+        "submit_button": "Gửi Phê Duyệt",
+        "processing": "Đang Đồng Bộ Dữ Liệu...",
+        "success_title": "Đăng Ký Thành Công",
+        "success_desc": "Nhà hàng của bạn đã được gửi tới Ban Quản Trị để xác minh. Bạn sẽ nhận được email khi cơ sở chính thức hoạt động.",
+        "back_to_dashboard": "Quay Lại Bảng Điều Khiển",
+        "pick_location": "Chọn Trên Bản Đồ",
+        "location_selected": "Vị Trí Đã Được Đồng Bộ"
+      },
+      "map": {
+        "title": "Định Vị Vị Trí Địa Lý",
+        "search_placeholder": "Tìm kiếm địa chỉ của bạn...",
+        "confirm_selection": "Xác Nhận Vị Trí Chính Xác",
+        "instructions": "Click lên bản đồ để đặt điểm đánh dấu chính xác tại lối vào của bạn."
+      }
     }
   },
   "partner_policy": {

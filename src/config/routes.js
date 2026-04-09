@@ -8,7 +8,7 @@ export const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   REGISTER_OWNER: '/register-owner',
-  OWNER_JOIN: '/owner/join',
+  OWNER_JOIN: '/be-my-member',
   VERIFY_OTP: '/verify-otp',
   FORGOT_PASSWORD: '/forgot-password',
   

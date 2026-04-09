@@ -49,6 +49,7 @@ const MESSAGE_MAP = {
   'INTERNAL_SERVER_ERROR':            "A server error occurred. Our team has been notified.",
   'VALIDATION_ERROR':                 "Please check your input and try again.",
   'RATE_LIMIT_EXCEEDED':              "Too many requests. Please wait a moment and try again.",
+  'MISSING_REQUIRED_FIELDS':          "Please fill in all required fields, including your business license.",
 };
 
 /* ─────────────────────────────────────────────────────────
@@ -58,8 +59,13 @@ const MESSAGE_MAP = {
 export const parseApiError = (error) => {
   const defaultMessage = 'Something went wrong. Please try again later.';
 
-  // Log để debug
-  console.error('API Error:', error.response?.data || error.message || error);
+  // Log để debug (Vietnamese comment) *)
+  const errorData = error.response?.data;
+  console.group('🚀 API Error Details');
+  console.error('Core Message:', errorData?.message || error.message);
+  if (errorData?.errors) console.table(errorData.errors);
+  console.log('Full Response:', errorData);
+  console.groupEnd();
 
   if (!error.response) {
     return {

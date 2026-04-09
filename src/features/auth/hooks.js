@@ -332,3 +332,27 @@ export const useChangePasswordMutation = () => {
   });
 };
 
+// ============================================================
+// GỬI YÊU CẦU HỢP TÁC (PARTNER REQUEST)
+// ============================================================
+/**
+ * @hook useSubmitPartnerRequestMutation
+ * @description Quản lý logic gửi hồ sơ yêu cầu hợp tác dành cho chủ nhà hàng tiềm năng.
+ */
+export const useSubmitPartnerRequestMutation = () => {
+  return useMutation({
+    mutationFn: (data) => authApi.partnerRequest(data),
+    onSuccess: (response) => {
+      const msg = parseApiSuccess(response);
+      toast.success(msg || 'Request submitted successfully! Our team will contact you soon.', {
+        icon: '🚀',
+        duration: 4000
+      });
+    },
+    onError: (error) => {
+      const { message: msg } = parseApiError(error);
+      toast.error(msg || 'Submission failed. Please check your information and try again.');
+    },
+  });
+};
+

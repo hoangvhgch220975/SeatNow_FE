@@ -37,9 +37,12 @@
     "telemetry_system": "Telemetry System",
     "active_sync": "Active Sync",
     "observation_timeline": "Global Observation Timeline",
-    "day": "DAY",
-    "week": "WEEK",
-    "month": "MONTH",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "mom": "MoM",
+    "wow": "WoW",
+    "yoy": "YoY",
     "period_select": "Period Select",
     "unread": "Unread",
     "mark_all_read": "Mark All Read",
@@ -100,6 +103,32 @@
       "resend_text": "Resend code in <1>{{seconds}}s</1>",
       "resend_button": "Resend OTP",
       "resending": "Sending..."
+    },
+    "partner": {
+      "title": "Partner With Us",
+      "subtitle": "Submit your request to join SeatNow's premium restaurant network.",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "license": "Business License",
+      "uploadHint": "Upload JPG/PNG of your business license.",
+      "submit": "Submit Partnership Request",
+      "successTitle": "Request Received",
+      "successDesc": "Your application has been received. Our team will review your documents and contact you via email with your account credentials shortly.",
+      "close": "Close"
+    },
+    "ownerJoin": {
+      "backHome": "Back to Home",
+      "heroTitle": "Empower Your Restaurant with",
+      "heroSubtitle": "Join the most advanced restaurant management network. From smart table booking to real-time revenue tracking, we provide everything you need to grow your business.",
+      "applyBtn": "Apply for Partnership",
+      "benefit1Title": "Maximize Revenue",
+      "benefit1Desc": "Optimize your table turnover and reduce no-shows with our intelligent booking system.",
+      "benefit2Title": "Smart Insights",
+      "benefit2Desc": "Get detailed reports on customer behavior, peak hours, and financial performance.",
+      "benefit3Title": "Global Exposure",
+      "benefit3Desc": "Connect with thousands of diners in your city. Get discovered by the right audience.",
+      "footerSlogan": "Your success is our priority."
     }
   },
   "profile": {
@@ -745,6 +774,57 @@
       "table_satisfaction": "Satisfaction",
       "table_cuisine": "Cuisine",
       "table_action": "Action"
+    },
+    "create_restaurant": {
+      "title": "Onboard New Venue",
+      "subtitle": "Expand your portfolio with our streamlined registration process.",
+      "steps": {
+        "identity": "Identity & Location",
+        "concept": "Concept & Schedule",
+        "media": "Media Gallery",
+        "policies": "Policies & Confirm"
+      },
+      "form": {
+        "name_label": "Restaurant Name",
+        "name_placeholder": "e.g. The Grand Bistro",
+        "email_label": "Official Email",
+        "email_placeholder": "contact@yourrestaurant.com",
+        "phone_label": "Direct Contact",
+        "phone_placeholder": "+84...",
+        "address_label": "Physical Address",
+        "address_placeholder": "Search or pick on map...",
+        "description_label": "Brand Story / Description",
+        "description_placeholder": "Tell us about your culinary philosophy...",
+        "cuisine_label": "Cuisine Types",
+        "price_range_label": "Price Range",
+        "price_range_hint": "$ - $$$$",
+        "hours_label": "Operating Hours",
+        "hours_config_type": "Schedule Configuration",
+        "hours_all_days": "Same for all days",
+        "hours_split": "Weekdays & Weekends",
+        "hours_custom": "Individual Custom Days",
+        "images_label": "Venue Gallery",
+        "images_hint": "Upload high-quality interior and exterior photos. Max 5 images.",
+        "deposit_enabled": "Enable Reservation Deposits",
+        "min_amount_label": "Minimum Deposit Amount",
+        "min_guests_label": "Apply for parties of",
+        "policy_type_label": "Charge Type",
+        "policy_type_fixed": "Fixed per booking",
+        "policy_type_person": "Per person attending",
+        "submit_button": "Submit for Approval",
+        "processing": "Synchronizing Data...",
+        "success_title": "Registration Successful",
+        "success_desc": "Your venue has been submitted to the Admin for verification. You'll receive an email once it's active.",
+        "back_to_dashboard": "Return to Dashboard",
+        "pick_location": "Pick on Map",
+        "location_selected": "Location Synchronized"
+      },
+      "map": {
+        "title": "Geographic Positioning",
+        "search_placeholder": "Search for your address...",
+        "confirm_selection": "Confirm Precise Location",
+        "instructions": "Click on the map to place the marker exactly at your entrance."
+      }
     }
   },
   "partner_policy": {

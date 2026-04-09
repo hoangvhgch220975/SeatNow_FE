@@ -50,4 +50,9 @@ export const ownerPortalApi = {
    * Đánh dấu toàn bộ hoạt động là đã đọc
    */
   markAllActivityRead: () => apiClient.put('/owner/activity/read-all'),
+
+  /**
+   * Đăng ký nhà hàng mới cho chủ sở hữu
+   */
+  createRestaurant: (data) => apiClient.post('/restaurants', data),
 };

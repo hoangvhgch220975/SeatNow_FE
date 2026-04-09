@@ -1,5 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ownerPortalApi } from './api.js';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/config/routes';
+import toast from 'react-hot-toast';
 
 /**
  * @file hooks.js
@@ -120,4 +123,30 @@ export const useOwnerActivity = (params = { limit: 10, offset: 0 }) => {
     isError: query.isError,
     refetch: query.refetch,
   };
+};
+
+/**
+ * @hook useCreateRestaurant
+ * @description Mutation hook để tạo nhà hàng mới.
+ * Tự động vô hiệu hóa cache và thông báo kết quả.
+ */
+export const useCreateRestaurant = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: (data) => ownerPortalApi.createRestaurant(data),
+    onSuccess: () => {
+      // Vô hiệu hóa cache để cập nhật danh sách nhà hàng và tóm tắt (Vietnamese comment)
+      queryClient.invalidateQueries({ queryKey: ['owner', 'portfolio', 'summary'] });
+      queryClient.invalidateQueries({ queryKey: ['owner', 'restaurants'] });
+      
+      // Chuyển hướng về trang danh sách (Vietnamese comment)
+      navigate(ROUTES.OWNER_RESTAURANTS);
+    },
+    onError: (error) => {
+      console.error('Create restaurant error:', error);
+      // Lỗi sẽ được xử lý tại component để hiển thị thông báo cụ thể (Vietnamese comment)
+    }
+  });
 };

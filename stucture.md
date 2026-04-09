@@ -126,13 +126,13 @@ seatnow-fe/
 │ │ │ ├─ pages/
 │ │ │ │ ├─ LoginPage.jsx // Trang đăng nhập
 │ │ │ │ ├─ RegisterPage.jsx // Trang đăng ký tài khoản khách hàng
-│ │ │ │ ├─ ForgotPasswordPage.jsx // Trang quên mật khẩu 2 bước: nhập Phone → OTP → nhận mật khẩu mới qua Email
-│ │ │ │ ├─ OwnerJoinPage.jsx // Trang placeholder "Join with us" cho chủ nhà hàng
-│ │ │ │ └─ VerifyOtpPage.jsx // Trang xác thực OTP (đăng ký) - chưa triển khai
+│ │ │ │ ├─ ForgotPasswordPage.jsx // Trang quên mật khẩu
+│ │ │ │ └─ OwnerJoinPage.jsx // Trang "Be My Member" (/be-my-member) cho chủ nhà hàng
 │ │ │ └─ components/
-│ │ │ ├─ LoginForm.jsx // Form đăng nhập với validation Zod
-│ │ │ ├─ RegisterForm.jsx // Form đăng ký với validation Zod
-│ │ │ └─ OtpForm.jsx // Form nhập OTP (đăng ký)
+│ │ │ ├─ LoginForm.jsx // Form đăng nhập
+│ │ │ ├─ RegisterForm.jsx // Form đăng ký
+│ │ │ ├─ OtpForm.jsx // Form OTP
+│ │ │ └─ PartnerRequestModal.jsx // Modal gửi hồ sơ đối tác (New)
 │ │ │
 │ │ ├─ profile/
 │ │ │ ├─ api.js // API profile user
@@ -252,7 +252,12 @@ seatnow-fe/
 │ │ │ │ ├─ VenueList.jsx // Lưới hiển thị danh sách nhà hàng (New)
 │ │ │ │ ├─ VenueTable.jsx // Bảng hiển thị danh sách nhà hàng (New)
 │ │ │ │ ├─ EmptyRestaurantsState.jsx // Khi owner chưa có nhà hàng
-│ │ │ │ └─ RestaurantStatusBadge.jsx // Badge màu cho trạng thái (New)
+│ │ │ │ ├─ RestaurantStatusBadge.jsx // Badge màu cho trạng thái (New)
+│ │ │ │ └─ create-wizard/ // Quy trình đăng ký nhà hàng mới (New)
+│ │ │ │   ├─ CuisineSelector.jsx // Chọn loại hình ẩm thực
+│ │ │ │   ├─ MapLocationPicker.jsx // Trình chọn vị trí trên bản đồ (Modal)
+│ │ │ │   ├─ OpeningHoursForm.jsx // Quản lý giờ mở cửa linh hoạt
+│ │ │ │   └─ DepositPolicyForm.jsx // Cấu hình chính sách đặt cọc
 │ │ │ │
 │ │ │ └─ workspace/ // Cấp từng nhà hàng cụ thể (sau khi đã chọn)
 │ │ │ ├─ dashboard/
@@ -399,7 +404,7 @@ seatnow-fe/
 │ │ │
 │ │ ├─ media/
 │ │ │ ├─ api.js // Gọi upload Cloudinary
-│ │ │ ├─ hooks.js // useImageUpload, useMultipleUpload
+│ │ │ ├─ hooks.js // useImageUpload, useMultipleUpload (Updated)
 │ │ │ ├─ utils/
 │ │ │ │ └─ optimizeCloudinaryUrl.js // Tạo URL thumbnail/resize
 │ │ │ └─ components/
