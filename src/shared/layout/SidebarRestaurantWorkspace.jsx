@@ -39,13 +39,13 @@ const SidebarRestaurantWorkspace = ({ restaurantName }) => {
       label: 'restaurant_profile',
       icon: 'storefront',
       path: ROUTES.WORKSPACE_PROFILE(idOrSlug),
-      comingSoon: true,
+      comingSoon: false,
     },
     {
       label: 'menu_management',
       icon: 'restaurant_menu',
       path: ROUTES.WORKSPACE_MENU(idOrSlug),
-      comingSoon: true,
+      comingSoon: false,
     },
     {
       label: 'table_management',
@@ -74,23 +74,23 @@ const SidebarRestaurantWorkspace = ({ restaurantName }) => {
     {
       label: 'settings',
       icon: 'settings',
-      path: ROUTES.OWNER_PROFILE, // Dùng chung profile settings của owner
+      path: ROUTES.WORKSPACE_SETTINGS(idOrSlug),
       comingSoon: true,
     },
   ];
 
   const aiTools = [
     {
-      label: 'ask_aura',
+      label: 'ask_seatnow',
       icon: 'auto_awesome',
-      path: '#',
+      path: ROUTES.WORKSPACE_AI_CHAT(idOrSlug),
       comingSoon: true,
       isAI: true,
     },
     {
       label: 'revenue_insights',
       icon: 'insights',
-      path: '#',
+      path: ROUTES.WORKSPACE_AI_REVENUE(idOrSlug),
       comingSoon: true,
     },
   ];
@@ -107,7 +107,7 @@ const SidebarRestaurantWorkspace = ({ restaurantName }) => {
             {restaurantName || 'Loading...'}
           </h2>
           <p className="text-[10px] font-black tracking-widest text-slate-400 uppercase">
-            {t('common.premium')} Tier
+            {t('common.premium')}
           </p>
         </div>
       </div>
@@ -142,10 +142,10 @@ const SidebarRestaurantWorkspace = ({ restaurantName }) => {
                   <span className={`material-symbols-outlined ${item.icon === 'dashboard' ? '' : 'text-[20px]'} ${isActive && !item.comingSoon ? 'text-violet-700' : 'text-slate-400'}`}>
                     {item.icon}
                   </span>
-                  {t(`workspace.sidebar.${item.label}`)}
+                  <span className="truncate">{t(`workspace.sidebar.${item.label}`)}</span>
                   {item.comingSoon && (
-                    <span className="ml-auto text-[8px] font-black bg-slate-200 text-slate-400 px-1.5 py-0.5 rounded-full uppercase tracking-tighter">
-                      SOON
+                    <span className="ml-auto text-[8px] font-black bg-slate-200 text-slate-400 px-1.5 py-0.5 rounded-full uppercase tracking-tighter shrink-0">
+                      {t('common.soon')}
                     </span>
                   )}
                 </>

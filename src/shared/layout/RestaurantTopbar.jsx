@@ -22,15 +22,7 @@ const RestaurantTopbar = ({ restaurantName }) => {
   return (
     <header className="fixed top-0 right-0 left-72 h-20 bg-white/70 backdrop-blur-xl z-40 flex items-center justify-between px-8 shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] border-b border-white/10">
       <div className="flex items-center gap-6">
-        {/* Global Search within Restaurant Context */}
-        <div className="relative flex items-center group">
-          <span className="material-symbols-outlined absolute left-4 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
-          <input 
-            className="pl-12 pr-6 py-2.5 bg-slate-50 border-slate-100 rounded-full w-80 text-sm focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all placeholder:text-slate-400 font-medium" 
-            placeholder={t('common.search')} 
-            type="text"
-          />
-        </div>
+        {/* Placeholder for left side elements if needed in future */}
       </div>
 
       <div className="flex items-center gap-6">

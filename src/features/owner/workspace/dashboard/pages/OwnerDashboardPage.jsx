@@ -68,7 +68,8 @@ const OwnerDashboardPage = () => {
     stats, 
     revenue, 
     hourly, 
-    bookings, 
+    recentBookings, 
+    dayBookings,
     tables, 
     isLoading 
   } = useWorkspaceDashboard(idOrSlug, revenueParams, hourlyParams);
@@ -168,7 +169,7 @@ const OwnerDashboardPage = () => {
       <div className="grid grid-cols-12 gap-8 items-stretch">
         <div className="col-span-12 lg:col-span-8 h-[450px]">
           <RevenueAnalysisChart 
-            data={revenue} 
+            data={revenueParams.period === 'day' ? dayBookings : revenue} 
             isLoading={isLoading} 
             period={revenueParams.period}
             onPeriodChange={handlePeriodChange}
@@ -191,13 +192,19 @@ const OwnerDashboardPage = () => {
       <div className="grid grid-cols-12 gap-8">
         {/* Left Column: Arrivals (8/12) */}
         <div className="col-span-12 lg:col-span-8">
-          <UpcomingArrivalsTable bookings={bookings} isLoading={isLoading} />
+          <UpcomingArrivalsTable bookings={recentBookings} isLoading={isLoading} />
         </div>
         
         {/* Right Column: Analytics & Space (4/12) */}
         <div className="col-span-12 lg:col-span-4 space-y-6 flex flex-col">
           <GuestAnalysisBreakdown guestSizeCounts={stats?.guestSizeCounts} isLoading={isLoading} />
-          <LiveFloorPlan tables={tables} isLoading={isLoading} />
+          <LiveFloorPlan 
+            tables={tables} 
+            bookings={dayBookings} 
+            restaurant={restaurant} 
+            selectedDate={bookingDate} 
+            isLoading={isLoading} 
+          />
         </div>
       </div>
     </div>

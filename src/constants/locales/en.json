@@ -22,7 +22,8 @@
     "global": "Global",
     "feature_coming_soon": "Feature Coming Soon",
     "export_analysis": "Export Analysis",
-    "premium": "Premium"
+    "premium": "Premium",
+    "soon": "Soon"
   },
   "analytics": {
     "title": "Global Analytics",
@@ -112,7 +113,7 @@
       "email": "Email Address",
       "phone": "Phone Number",
       "license": "Business License",
-      "uploadHint": "Upload JPG/PNG of your business license.",
+      "uploadHint": "Upload JPG/PNG",
       "submit": "Submit Partnership Request",
       "successTitle": "Request Received",
       "successDesc": "Your application has been received. Our team will review your documents and contact you via email with your account credentials shortly.",
@@ -699,12 +700,12 @@
   "owner_portal": {
     "sidebar": {
       "portfolio_manager": "Portfolio Manager",
-      "nav_portfolio_overview": "Portfolio Overview",
-      "nav_all_venues": "All Venues",
-      "nav_global_analytics": "Global Analytics",
-      "soon": "SOON",
+      "nav_portfolio_overview": "Overview",
+      "nav_all_venues": "Venues",
+      "nav_global_analytics": "Analytics",
+      "soon": "Soon",
       "coming_soon_toast": "{{label}} is coming soon!",
-      "add_new_venue": "Add New Venue"
+      "add_new_venue": "Add Venue"
     },
     "filters": {
       "search_placeholder": "Search by venue name or address...",
@@ -903,18 +904,18 @@
   },
   "workspace": {
     "sidebar": {
-      "back_to_portfolio": "Back to Portfolio",
+      "back_to_portfolio": "Return",
       "overview": "Overview",
-      "restaurant_profile": "Restaurant Profile",
-      "menu_management": "Menu Management",
-      "table_management": "Table Management",
-      "booking_management": "Booking Management",
-      "revenue_stats": "Revenue & Stats",
+      "restaurant_profile": "Restaurant",
+      "menu_management": "Menu",
+      "table_management": "Tables",
+      "booking_management": "Bookings",
+      "revenue_stats": "Revenue",
       "wallet": "Wallet",
       "settings": "Settings",
       "ai_tools": "AI Tools",
-      "ask_aura": "Ask SeatNow AI",
-      "revenue_insights": "Revenue Insights"
+      "ask_seatnow": "AI Chat",
+      "revenue_insights": "AI Revenue"
     },
     "dashboard": {
       "title": "Dashboard Overview",
@@ -927,7 +928,7 @@
       "revenue_analysis": "Revenue Analysis",
       "booking_volume": "Booking Volume",
       "upcoming_arrivals": "Upcoming Arrivals",
-      "live_floor_plan": "Live Floor Plan",
+      "live_floor_plan": "Floor Plan",
       "vs_yesterday": "+{{v}}% vs yesterday",
       "consistent_avg": "Consistent with avg",
       "on_track": "On track for target",
@@ -944,7 +945,12 @@
       "cancellation_rate": "Cancellation Rate",
       "no_shows": "{{count}} No-shows",
       "customer_rating": "Avg. Rating",
-      "total_reviews": "{{count}} Reviews"
+      "total_reviews": "{{count}} Reviews",
+      "revenue_by_hour": "Revenue By Hour",
+      "revenue_by_day": "Revenue By Day",
+      "revenue_by_week": "Revenue By Week",
+      "revenue_by_month": "Revenue By Month",
+      "revenue_by_year": "Revenue By Year"
     },
     "arrivals": {
       "guest": "Guest",
@@ -961,11 +967,15 @@
       "live": "Live",
       "available": "Available",
       "occupied": "Occupied",
-      "reserved": "Reserved"
+      "reserved": "Reserved",
+      "area": "Area",
+      "all_areas": "All Areas",
+      "live_syncing": "Live Syncing",
+      "syncing_data": "Syncing..."
     },
     "roles": {
-      "owner": "Partner Executive",
-      "manager": "General Manager"
+      "owner": "Restaurant Owner",
+      "manager": "Manager"
     },
     "analysis": {
       "couple": "Couple (2)",
@@ -974,6 +984,100 @@
       "bookings": "BOOKINGS",
       "period_summary": "PERIOD SUMMARY",
       "total_percent": "100% TOTAL"
+    },
+    "profile": {
+      "title": "Restaurant Profile",
+      "subtitle": "Comprehensive overview of your restaurant's identity and operational policies.",
+      "basic_info": "Basic Information",
+      "contact_info": "Contact & Location",
+      "opening_hours": "Opening Hours",
+      "deposit_policy": "Deposit Policy",
+      "form": {
+        "name": "Restaurant Name",
+        "description": "Description",
+        "cuisine": "Cuisine Types",
+        "price_range": "Price Range",
+        "address": "Address",
+        "phone": "Phone Number",
+        "email": "Official Email",
+        "status": "Operational Status"
+      },
+      "hero": {
+        "verified": "Verified Restaurant",
+        "pending": "Pending Approval",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "common": {
+        "section": "Section",
+        "guests": "Guests",
+        "guest_per": "/ Guest",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "no_data": "---"
+      },
+      "deposit": {
+        "apply_from": "Apply From",
+        "pricing_model": "Pricing Model",
+        "deposit_amount": "Deposit Amount",
+        "per_person": "Per Person",
+        "fixed_amount": "Fixed Amount",
+        "no_deposit": "No Deposit Required",
+        "no_deposit_desc": "Customers can book tables without upfront payment.",
+        "opening_hours_note": "* Operational hours for public visibility."
+      }
+    }
+  },
+  "menu_mgmt": {
+    "title": "Menu Management",
+    "subtitle": "Curate your restaurant's digital offering. Adjust pricing, status, and descriptions to reflect your seasonal flavors.",
+    "add_dish": "New Dish",
+    "edit_dish": "Edit Dish",
+    "dish_name": "Dish Name",
+    "category": "Category",
+    "price": "Price",
+    "description": "Description",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "save": "Save Changes",
+    "save_creation": "Save Creation",
+    "cancel": "Cancel",
+    "confirm_delete": "Are you sure you want to delete this dish?",
+    "delete_success": "Dish deleted successfully",
+    "save_success": "Dish added successfully",
+    "update_success": "Dish updated successfully",
+    "search_placeholder": "Search menu items...",
+    "all_categories": "All",
+    "status_all": "All Status",
+    "sort_by": "Sort by",
+    "sort_options": {
+      "newest": "Newest Items",
+      "oldest": "Oldest Items",
+      "price_asc": "Price: Low to High",
+      "price_desc": "Price: High to Low",
+      "name_asc": "Name: A to Z",
+      "name_desc": "Name: Z to A"
+    },
+    "prep_time": "Prep Time",
+    "prep_time_unit": "min",
+    "prep_time_desc": "Average time to prepare this dish.",
+    "discount_price": "Discount Price",
+    "tags": "Tags",
+    "tags_hint": "Separated by commas (e.g. Spicy, Signature)",
+    "allergens": "Allergens",
+    "allergens_hint": "Allergens (e.g. Peanuts, Seafood)",
+    "upload_res": "Upload high-res photo",
+    "upload_hint": "Recommended: 1600x900px, PNG or JPG",
+    "tip_title": "Tip",
+    "tip_desc": "High-quality lighting and plating can increase orders by up to 25%.",
+    "active_status": "Active Status",
+    "active_status_desc": "Should this dish be visible to diners?",
+    "categories": {
+      "appetizers": "Appetizers",
+      "main_course": "Main Course",
+      "desserts": "Desserts",
+      "drinks": "Drinks"
     }
   },
   "footer": {

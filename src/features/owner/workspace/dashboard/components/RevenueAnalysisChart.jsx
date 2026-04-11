@@ -11,7 +11,15 @@ const RevenueAnalysisChart = ({ data, isLoading, period, onPeriodChange, restaur
 
   // 1. Ánh xạ dữ liệu từ API sang định dạng Recharts (Vietnamese comment)
   const chartData = React.useMemo(() => {
-    if (!data || !Array.isArray(data)) return [];
+    if (!data) return [];
+
+    // Unwrap dữ liệu: API /bookings trả về object { items: [...] } hoặc { data: [...] }
+    // còn API /revenue-stats trả về mảng trực tiếp (Vietnamese comment)
+    let normalizedData = data;
+    if (!Array.isArray(normalizedData)) {
+      normalizedData = data.items || data.data || data.content || data.bookings || [];
+    }
+    if (!Array.isArray(normalizedData) || normalizedData.length === 0) return [];
 
     const isEnglish = t('i18next_code') === 'en-US' || i18n.language.startsWith('en');
 
@@ -88,25 +96,80 @@ const RevenueAnalysisChart = ({ data, isLoading, period, onPeriodChange, restaur
           }
         });
       }
-
       let hoursConfig = normalizedHours[today] || '09:00-22:00';
       const [startStr, endStr] = hoursConfig.split('-');
-      const startHour = parseInt(startStr.split(':')[0]);
-      const endParts = endStr.split(':');
-      const endHourVal = parseInt(endParts[0]) + (parseInt(endParts[1] || 0) / 60);
+
+      // Smart Bucketing: Database thường gom nhóm theo số chẵn (0, 2, 4...). (Vietnamese comment)
+      let rawStart = parseInt(startStr.split(':')[0]);
+      let startHour = rawStart % 2 !== 0 ? rawStart - 1 : rawStart;
+      
+      let rawEnd = parseInt(endStr.split(':')[0]) + (parseInt(endStr.split(':')[1] || 0) / 60);
+      let endHourVal = Math.ceil(rawEnd);
+      if (endHourVal % 2 !== 0) endHourVal += 1;
 
       const hourlyData = [];
       for (let h = startHour; h <= endHourVal; h += 2) {
         const hourLabel = `${h.toString().padStart(2, '0')}:00`;
-        const match = data.find(item => {
-          const itemTime = item.timePeriod || item.time_period || item.label || '';
-          return itemTime.includes(hourLabel) || itemTime.includes(`${h}:00`);
-        });
+        
+        let netRevenue = 0;
+        let grossRevenue = 0;
+
+        if (Array.isArray(normalizedData)) {
+          normalizedData.forEach(item => {
+            // Trích xuất thời gian: hỗ trợ cả analytics (timePeriod) và booking (bookingTime) (Vietnamese comment)
+            let itemTime = item.timePeriod || item.time_period || item.label || item.hour || item.bookingTime || item.booking_time || '';
+            if (!itemTime) return;
+
+            // 1.1.1 Trích xuất giờ (dbHour) linh hoạt (Vietnamese comment)
+            let dbHour = -1;
+            const timeStr = String(itemTime);
+            
+            // Nếu là đối tượng Booking (có id và bookingTime) (Vietnamese comment)
+            const isBooking = !!(item.id && (item.bookingTime || item.booking_time));
+            if (isBooking) {
+              const status = (item.status || '').toUpperCase();
+              const isRefunded = item.depositRefunded === true || item.deposit_refunded === true;
+              
+              // KHÔNG TÍNH DOANH THU KHI:
+              // 1. Booking bị từ chối trước khi quán nhận (REJECTED)
+              // 2. Booking bị hủy hợp lệ & được hoàn tiền cọc (CANCELLED + depositRefunded = true)
+              if (status === 'REJECTED' || (status === 'CANCELLED' && isRefunded)) return;
+
+              itemTime = item.bookingTime || item.booking_time || '';
+            }
+
+            if (String(itemTime).includes(' ')) {
+              dbHour = parseInt(String(itemTime).split(' ')[1].split(':')[0], 10);
+            } else if (String(itemTime).includes('T')) {
+              dbHour = parseInt(String(itemTime).split('T')[1].split(':')[0], 10);
+            } else if (String(itemTime).includes(':')) {
+              dbHour = parseInt(String(itemTime).split(':')[0], 10);
+            } else {
+              dbHour = parseInt(String(itemTime), 10);
+            }
+
+            // 1.1.2 Kiểm tra và cộng dồn vào bucket [h, h+2) (Vietnamese comment)
+            if (dbHour >= 0 && dbHour < 24 && dbHour >= h && dbHour < h + 2) {
+              if (isBooking) {
+                // Đối với đơn hàng thô: depositAmount là số tiền cọc, totalPrice là tổng giá (Vietnamese comment)
+                const deposit = Number(item.depositAmount || item.deposit_amount || 0);
+                const gross = Number(item.grossRevenue || item.gross_revenue || item.totalPrice || item.total_price || deposit);
+                const net = Number(item.netRevenue || item.net_revenue || deposit);
+                netRevenue += net;
+                grossRevenue += gross;
+              } else {
+                // Đối với dữ liệu thống kê từ API (Vietnamese comment)
+                netRevenue += Number(item.totalRevenue || item.total_revenue || item.revenue || item.amount || 0);
+                grossRevenue += Number(item.totalGrossRevenue || item.total_gross_revenue || item.gross_revenue || item.gross_amount || 0);
+              }
+            }
+          });
+        }
 
         hourlyData.push({
           name: hourLabel,
-          netRevenue: Number(match?.totalRevenue || match?.total_revenue || 0),
-          grossRevenue: Number(match?.totalGrossRevenue || match?.total_gross_revenue || 0)
+          netRevenue: netRevenue,
+          grossRevenue: grossRevenue
         });
       }
       return hourlyData;
@@ -129,7 +192,7 @@ const RevenueAnalysisChart = ({ data, isLoading, period, onPeriodChange, restaur
         const fullDate = `${yyyy}-${mm}-${dd}`;
         const label = `${dd}-${mm}`; // Định dạng mm-dd theo yêu cầu (Vietnamese comment)
         
-        const match = data.find(item => {
+        const match = normalizedData.find(item => {
           const itemTime = item.timePeriod || item.time_period || item.label || item.date || '';
           return itemTime.includes(fullDate) || itemTime.includes(label);
         });
@@ -144,7 +207,7 @@ const RevenueAnalysisChart = ({ data, isLoading, period, onPeriodChange, restaur
     }
 
     // 1.3 Xử lý cho các chế độ khác (MONTH, YEAR) (Vietnamese comment)
-    if (data.length === 0) {
+    if (normalizedData.length === 0) {
       return [{ name: '...', netRevenue: 0, grossRevenue: 0 }];
     }
 
@@ -178,7 +241,7 @@ const RevenueAnalysisChart = ({ data, isLoading, period, onPeriodChange, restaur
       return rawName;
     };
 
-    return data.map(item => {
+    return normalizedData.map(item => {
       const label = item.timePeriod || item.time_period || item.label || item.date || '---';
       return {
         name: formatLabel(label),
@@ -205,7 +268,7 @@ const RevenueAnalysisChart = ({ data, isLoading, period, onPeriodChange, restaur
         <div className="flex items-center gap-6">
           <div>
             <h4 className="text-xl font-black text-slate-900 tracking-tight uppercase">
-              {t('workspace.dashboard.revenue_analysis')}
+              {t(`workspace.dashboard.revenue_by_${period === 'day' ? 'hour' : period}`, { defaultValue: t('workspace.dashboard.revenue_analysis') })}
             </h4>
             <div className="flex items-center gap-4 mt-1">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">

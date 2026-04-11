@@ -32,6 +32,8 @@ import CreateRestaurantPage from '../features/owner/portal/pages/CreateRestauran
 import PartnerPolicyPage from '../features/static/pages/PartnerPolicyPage.jsx';
 import RestaurantWorkspaceLayout from '../shared/layout/RestaurantWorkspaceLayout.jsx';
 import RestaurantWorkspaceDashboard from '../features/owner/workspace/dashboard/pages/OwnerDashboardPage.jsx';
+import OwnerRestaurantProfilePage from '../features/owner/workspace/restaurant-profile/pages/OwnerRestaurantProfilePage.jsx';
+import OwnerMenuPage from '../features/owner/workspace/menu/pages/OwnerMenuPage.jsx';
 
 
 /**
@@ -183,7 +185,15 @@ export const router = createBrowserRouter([
             path: ROUTES.WORKSPACE_DASHBOARD(':idOrSlug'),
             element: <RestaurantWorkspaceDashboard />,
           },
-          // Các route con khác của workspace sẽ thêm tại đây (Profile, Menu, Tables, etc.)
+          {
+            path: ROUTES.WORKSPACE_PROFILE(':idOrSlug'),
+            element: <OwnerRestaurantProfilePage />,
+          },
+          {
+            path: ROUTES.WORKSPACE_MENU(':idOrSlug'),
+            element: <OwnerMenuPage />,
+          },
+          // Các route con khác của workspace sẽ thêm tại đây (Tables, etc.)
         ]
       },
       {

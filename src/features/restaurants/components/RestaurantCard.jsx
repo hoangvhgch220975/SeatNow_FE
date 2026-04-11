@@ -93,16 +93,15 @@ const RestaurantCard = ({ restaurant }) => {
             {t('restaurants.card.view_details')}
           </Link>
 
-          <button 
+          <Link 
+            to={ROUTES.CREATE_BOOKING(urlParam)}
             onClick={(e) => {
-              e.preventDefault();
               e.stopPropagation();
-              // Logic Book Now (Vietnamese comment)
             }}
-            className="flex-1 px-4 py-3 rounded-full bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all"
+            className="flex-1 px-4 py-3 rounded-full bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all text-center flex items-center justify-center"
           >
             {t('restaurants.card.book_now')}
-          </button>
+          </Link>
         </div>
       </div>
     </div>

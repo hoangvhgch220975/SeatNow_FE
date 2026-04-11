@@ -109,25 +109,31 @@ const BookingVolumeChart = ({ data, isLoading, restaurant, selectedDate, onDateC
       const hourLabel = `${h.toString().padStart(2, '0')}:00`;
       
       let bucketCount = 0;
-      if (Array.isArray(data)) {
-        data.forEach(item => {
-          let itemTime = item.timePeriod || item.time_period || item.hour || '';
-          if (typeof itemTime === 'number') itemTime = itemTime.toString();
-          if (!itemTime) return;
-          
-          let dbHour = -1;
-          if (itemTime.includes(':')) {
-            dbHour = parseInt(itemTime.split(':')[0], 10);
-          } else {
-            dbHour = parseInt(itemTime, 10);
-          }
+        if (Array.isArray(data)) {
+          data.forEach(item => {
+            let itemTime = item.timePeriod || item.time_period || item.hour || item.label || '';
+            if (itemTime === undefined || itemTime === null || itemTime === '') return;
 
-          // Trùng khớp hoàn hảo 1:1 với bucket của DB
-          if (dbHour === h) {
-            bucketCount += Number(item.totalBookings || item.count || 0);
-          }
-        });
-      }
+            let dbHour = -1;
+            const timeStr = String(itemTime);
+            
+            // Xử lý đa dạng định dạng: "2026-04-10 19:00", "19:00", ISO, hoặc số 19 (Vietnamese comment)
+            if (timeStr.includes(' ')) {
+              dbHour = parseInt(timeStr.split(' ')[1].split(':')[0], 10);
+            } else if (timeStr.includes('T')) {
+              dbHour = parseInt(timeStr.split('T')[1].split(':')[0], 10);
+            } else if (timeStr.includes(':')) {
+              dbHour = parseInt(timeStr.split(':')[0], 10);
+            } else {
+              dbHour = parseInt(timeStr, 10);
+            }
+
+            // Kiểm tra xem dữ liệu có nằm trong dải 2 tiếng của bucket không [h, h+2) (Vietnamese comment)
+            if (dbHour >= 0 && dbHour < 24 && dbHour >= h && dbHour < h + 2) {
+              bucketCount += Number(item.totalBookings || item.count || item.total_bookings || 0);
+            }
+          });
+        }
 
       hourlyData.push({
         hour: hourLabel,

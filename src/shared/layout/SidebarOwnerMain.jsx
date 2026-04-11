@@ -2,7 +2,8 @@ import { Link, useLocation } from 'react-router';
 import { OWNER_MAIN_NAV } from '@/config/nav.owner-main.js';
 import { ROUTES } from '@/config/routes.js';
 import toast from 'react-hot-toast';
-import { useTranslation } from 'react-i18next'; // Áp dụng hook ngôn ngữ (Vietnamese comment)
+import { useTranslation } from 'react-i18next';
+import logo from '@/assets/logos/logo.png';
 
 /**
  * @file SidebarOwnerMain.jsx
@@ -14,12 +15,15 @@ const SidebarOwnerMain = () => {
 
   const handleLinkClick = (item) => {
     if (item.isComingSoon) {
-      toast.success(t('owner_portal.sidebar.coming_soon_toast', { label: t(item.label) }), {
+      toast.dismiss();
+      toast(t('owner_portal.sidebar.coming_soon_toast', { label: t(item.label) }), {
         icon: '🚀',
         style: {
           borderRadius: '1rem',
-          background: '#333',
+          background: '#1e293b',
           color: '#fff',
+          fontSize: '12px',
+          fontWeight: 'bold',
         },
       });
     }
@@ -28,11 +32,18 @@ const SidebarOwnerMain = () => {
   return (
     <aside className="hidden md:flex flex-col h-screen w-72 bg-slate-50 sticky top-0 p-6 space-y-8 rounded-r-[3rem] z-20 border-r border-slate-200/50">
       {/* Brand Logo & Title */}
-      <div className="flex flex-col space-y-1">
-        <Link to={ROUTES.OWNER_HOME} className="text-2xl font-extrabold text-violet-700 tracking-tight">
-          SeatNow
-        </Link>
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t('owner_portal.sidebar.portfolio_manager')}</p>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-violet-600 shadow-lg shadow-violet-200 p-1 flex items-center justify-center overflow-hidden border border-violet-500/20">
+          <img src={logo} alt="SeatNow Logo" className="w-full h-full object-contain" />
+        </div>
+        <div className="overflow-hidden">
+          <Link to={ROUTES.OWNER_HOME} className="text-xl font-black text-slate-900 tracking-tight block truncate">
+            SeatNow
+          </Link>
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest truncate">
+            {t('owner_portal.sidebar.portfolio_manager')}
+          </p>
+        </div>
       </div>
 
       {/* Navigation Links */}

@@ -5,13 +5,27 @@ import { useTranslation, Trans } from 'react-i18next';
  * @file RestaurantHeader.jsx
  * @description Tiêu đề chính của trang danh sách nhà hàng, bao gồm thanh tìm kiếm. Hỗ trợ đa ngôn ngữ.
  */
-const RestaurantHeader = ({ onSearch }) => {
+const RestaurantHeader = ({ onSearch, currentSearch }) => {
   const { t } = useTranslation();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(currentSearch || '');
+
+  // Sync local state when filters are cleared from elsewhere (e.g. sidebar)
+  React.useEffect(() => {
+    setSearchQuery(currentSearch || '');
+  }, [currentSearch]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     onSearch(searchQuery);
+  };
+
+  const handleChange = (e) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+    // If user clears the input, immediately reset to show all restaurants
+    if (val.trim() === '') {
+      onSearch('');
+    }
   };
 
   return (
@@ -39,7 +53,7 @@ const RestaurantHeader = ({ onSearch }) => {
               className="w-full bg-transparent border-none focus:ring-0 focus:outline-none outline-none text-on-surface text-lg placeholder:text-slate-400" 
               placeholder={t('restaurants.search.placeholder')} 
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleChange}
               type="text"
             />
             <button 

@@ -22,7 +22,8 @@
     "global": "Toàn Cầu",
     "feature_coming_soon": "Tính Năng Sắp Ra Mắt",
     "export_analysis": "Xuất Dữ Liệu",
-    "premium": "Cao Cấp"
+    "premium": "Cao cấp",
+    "soon": "Sắp ra mắt"
   },
   "analytics": {
     "title": "Phân Tích Tổng Thể",
@@ -112,7 +113,7 @@
       "email": "Địa chỉ Email",
       "phone": "Số Điện Thoại",
       "license": "Giấy phép kinh doanh",
-      "uploadHint": "Tải lên ảnh JPG/PNG của giấy phép kinh doanh.",
+      "uploadHint": "Tải lên ảnh JPG/PNG",
       "submit": "Gửi yêu cầu hợp tác",
       "successTitle": "Đã Nhận Yêu Cầu",
       "successDesc": "Hồ sơ hồ sơ của bạn đã được tiếp nhận. Đội ngũ của chúng tôi sẽ xem xét tài liệu và liên hệ với bạn qua email kèm theo thông tin tài khoản trong thời gian sớm nhất.",
@@ -703,13 +704,13 @@
   },
   "owner_portal": {
     "sidebar": {
-      "portfolio_manager": "Quản Trị Nhà Hàng",
-      "nav_portfolio_overview": "Tổng Quan",
-      "nav_all_venues": "Tất Cả Cơ Sở",
-      "nav_global_analytics": "Phân Tích Dữ Liệu",
-      "soon": "SẮP RA MẮT",
+      "portfolio_manager": "Quản lý Tổng thể",
+      "nav_portfolio_overview": "Tổng quan",
+      "nav_all_venues": "Nhà hàng",
+      "nav_global_analytics": "Phân tích",
+      "soon": "Sắp ra mắt",
       "coming_soon_toast": "{{label}} sắp ra mắt!",
-      "add_new_venue": "Thêm Cơ Sở Mới"
+      "add_new_venue": "Thêm mới"
     },
     "filters": {
       "search_placeholder": "Tìm theo Tên hoặc Địa chỉ nhà hàng...",
@@ -908,18 +909,18 @@
   },
   "workspace": {
     "sidebar": {
-      "back_to_portfolio": "Quay lại Danh mục",
+      "back_to_portfolio": "Quay lại",
       "overview": "Tổng quan",
-      "restaurant_profile": "Hồ sơ Nhà hàng",
-      "menu_management": "Quản lý Thực đơn",
-      "table_management": "Quản lý Sơ đồ bàn",
-      "booking_management": "Quản lý Đặt chỗ",
-      "revenue_stats": "Doanh thu & Thống kê",
+      "restaurant_profile": "Nhà hàng",
+      "menu_management": "Thực đơn",
+      "table_management": "Sơ đồ bàn",
+      "booking_management": "Lượt đặt",
+      "revenue_stats": "Doanh thu",
       "wallet": "Ví tiền",
-      "settings": "Cấu hình",
+      "settings": "Cài đặt",
       "ai_tools": "Công cụ AI",
-      "ask_aura": "Hỏi SeatNow AI",
-      "revenue_insights": "Phân tích Doanh thu"
+      "ask_seatnow": "Chat AI",
+      "revenue_insights": "Doanh thu AI"
     },
     "dashboard": {
       "title": "Tổng quan Dashboard",
@@ -932,7 +933,7 @@
       "revenue_analysis": "Phân tích Doanh thu",
       "booking_volume": "Lượng đặt chỗ",
       "upcoming_arrivals": "Khách sắp đến",
-      "live_floor_plan": "Sơ đồ bàn trực tiếp",
+      "live_floor_plan": "Sơ đồ bàn",
       "vs_yesterday": "+{{v}}% so với hôm qua",
       "consistent_avg": "Ổn định so với TB",
       "on_track": "Đang đúng tiến độ mục tiêu",
@@ -949,7 +950,12 @@
       "cancellation_rate": "Tỉ lệ Huỷ bàn",
       "no_shows": "{{count}} Lượt Vắng mặt",
       "customer_rating": "Điểm Đánh giá",
-      "total_reviews": "{{count}} Đánh giá"
+      "total_reviews": "{{count}} Đánh giá",
+      "revenue_by_hour": "Doanh thu theo giờ",
+      "revenue_by_day": "Doanh thu theo ngày",
+      "revenue_by_week": "Doanh thu theo tuần",
+      "revenue_by_month": "Doanh thu theo tháng",
+      "revenue_by_year": "Doanh thu theo năm"
     },
     "arrivals": {
       "guest": "Khách hàng",
@@ -966,19 +972,117 @@
       "live": "Trực tiếp",
       "available": "Trống",
       "occupied": "Đang có khách",
-      "reserved": "Đã đặt trước"
+      "reserved": "Đã đặt trước",
+      "area": "Khu vực",
+      "all_areas": "Tất cả khu vực",
+      "live_syncing": "Đồng bộ trực tiếp",
+      "syncing_data": "Đang đồng bộ..."
     },
     "roles": {
-      "owner": "Đối Tác Điều Hành",
-      "manager": "Quản Lý Chung"
+      "owner": "Chủ nhà hàng",
+      "manager": "Quản lý"
     },
     "analysis": {
       "couple": "Cặp đôi (2)",
       "small_group": "Nhóm nhỏ (4-6)",
-      "party": "Nhóm lớn (8+)",
+      "party": "Đoàn đông (8+)",
       "bookings": "LƯỢT ĐẶT",
-      "period_summary": "TỔNG KẾT KỲ",
+      "period_summary": "TỔNG KẾT GIAI ĐOẠN",
       "total_percent": "TỔNG 100%"
+    },
+    "profile": {
+      "title": "Hồ Sơ Nhà Hàng",
+      "subtitle": "Tổng quan chi tiết về thương hiệu và các chính sách vận hành của nhà hàng.",
+      "basic_info": "Thông Tin Cơ Bản",
+      "contact_info": "Liên Hệ & Vị Trí",
+      "opening_hours": "Giờ Mở Cửa",
+      "deposit_policy": "Chính Sách Đặt Cọc",
+      "form": {
+        "name": "Tên Nhà Hàng",
+        "description": "Mô tả",
+        "cuisine": "Loại Ẩm Thực",
+        "price_range": "Mức Giá",
+        "address": "Địa Chỉ",
+        "phone": "Số Điện Thoại",
+        "email": "Email Chính Thức",
+        "status": "Trạng Thái Hoạt Động"
+      },
+      "hero": {
+        "verified": "Nhà Hàng Đã Xác Thực",
+        "pending": "Chờ Phê Duyệt",
+        "active": "Đang Hoạt Động",
+        "inactive": "Tạm Ngưng"
+      },
+      "common": {
+        "section": "Phần",
+        "guests": "Khách",
+        "guest_per": "/ Khách",
+        "enabled": "Đang Bật",
+        "disabled": "Đang Tắt",
+        "no_data": "---"
+      },
+      "deposit": {
+        "apply_from": "Áp Dụng Từ",
+        "pricing_model": "Mô Hình Giá",
+        "deposit_amount": "Số Tiền Cọc",
+        "per_person": "Theo Người",
+        "fixed_amount": "Số Tiền Cố Định",
+        "no_deposit": "Không Yêu Cầu Cọc",
+        "no_deposit_desc": "Khách hàng có thể đặt bàn mà không cần thanh toán trước.",
+        "opening_hours_note": "* Khung giờ hoạt động hiển thị công khai trên hệ thống."
+      }
+    }
+  },
+  "menu_mgmt": {
+    "title": "Quản Lý Thực Đơn",
+    "subtitle": "Chọn lọc danh sách món ăn cho thực đơn của bạn. Điều chỉnh giá cả, trạng thái và mô tả để phản ánh hương vị theo mùa.",
+    "add_dish": "Món Mới",
+    "edit_dish": "Sửa Món Ăn",
+    "dish_name": "Tên Món Ăn",
+    "category": "Danh Mục",
+    "price": "Giá",
+    "description": "Mô Tả",
+    "status": "Trạng Thái",
+    "active": "Hoạt Động",
+    "inactive": "Ngưng Bán",
+    "save": "Lưu Thay Đổi",
+    "save_creation": "Lưu Món Ăn",
+    "cancel": "Hủy",
+    "confirm_delete": "Bạn có chắc chắn muốn xóa món ăn này không?",
+    "delete_success": "Đã xóa món ăn thành công",
+    "save_success": "Đã thêm món ăn thành công",
+    "update_success": "Đã cập nhật món ăn thành công",
+    "search_placeholder": "Tìm kiếm món ăn...",
+    "all_categories": "Tất Cả",
+    "status_all": "Tất Cả Trạng Thái",
+    "sort_by": "Sắp xếp theo",
+    "sort_options": {
+      "newest": "Mới Nhất",
+      "oldest": "Cũ Nhất",
+      "price_asc": "Giá: Thấp đến Cao",
+      "price_desc": "Giá: Cao đến Thấp",
+      "name_asc": "Tên: A-Z",
+      "name_desc": "Tên: Z-A"
+    },
+    "prep_time": "Thời Gian Chuẩn Bị",
+    "prep_time_unit": "phút",
+    "prep_time_desc": "Thời gian trung bình để chế biến món ăn này.",
+    "discount_price": "Giá Khuyến Mãi",
+    "tags": "Nhãn (Tags)",
+    "tags_hint": "Cách nhau bởi dấu phẩy (vd: Cay, Signature)",
+    "allergens": "Thành Phần Dị Ứng",
+    "allergens_hint": "Cách nhau bởi dấu phẩy (vd: Đậu phộng, Hải sản)",
+    "upload_res": "Tải ảnh độ phân giải cao",
+    "upload_hint": "Khuyến nghị: 1600x900px, PNG hoặc JPG",
+    "tip_title": "Gợi ý",
+    "tip_desc": "Ánh sáng tốt và cách trình bày đẹp có thể giúp đơn hàng tăng tới 25%.",
+    "active_status": "Trạng Thái Hoạt Động",
+    "active_status_desc": "Món ăn này có hiển thị cho thực khách không?",
+    "categories": {
+      "appetizers": "Khai Vị",
+      "main_course": "Món Chính",
+      "desserts": "Tráng Miệng",
+      "drinks": "Đồ Uống"
     }
   },
   "footer": {

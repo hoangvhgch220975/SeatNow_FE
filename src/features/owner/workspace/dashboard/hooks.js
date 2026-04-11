@@ -51,7 +51,7 @@ export const useWorkspaceDashboard = (id, revenueParams = { period: 'month' }, h
     enabled: !!(actualId && restaurantData),
   });
 
-  // 5. Danh sách lượt đặt gần đây
+  // 5. Danh sách lượt đặt gần đây (Dùng cho bảng Activity)
   const recentBookings = useQuery({
     queryKey: ['workspace', 'bookings', 'recent', actualId],
     queryFn: () => workspaceDashboardApi.getBookings(actualId, { 
@@ -61,11 +61,23 @@ export const useWorkspaceDashboard = (id, revenueParams = { period: 'month' }, h
     enabled: !!(actualId && restaurantData),
   });
 
-  // 6. Sơ đồ bàn (Tables) - Có thể gọi bằng Slug
+  // 6. Toàn bộ danh sách đặt bàn trong ngày (Dùng cho Sơ đồ bàn - Floor Plan)
+  const dayBookings = useQuery({
+    queryKey: ['workspace', 'bookings', 'day', actualId, hourlyParams.from],
+    queryFn: () => workspaceDashboardApi.getBookings(actualId, {
+      from: hourlyParams.from,
+      to: hourlyParams.to
+    }),
+    enabled: !!(actualId && restaurantData),
+    refetchInterval: 2000, // Tăng tốc độ làm mới lên 2 giây theo yêu cầu để phản hồi tức thì (Vietnamese comment)
+  });
+
+  // 7. Sơ đồ bàn (Tables) (Vietnamese comment)
   const floorPlan = useQuery({
-    queryKey: ['workspace', 'tables', id],
-    queryFn: () => workspaceDashboardApi.getTables(id),
-    enabled: !!id,
+    queryKey: ['workspace', 'tables', actualId],
+    queryFn: () => workspaceDashboardApi.getTables(actualId),
+    enabled: !!(actualId && restaurantData),
+    refetchInterval: 2000, // Đồng bộ làm mới cùng với bookings (Vietnamese comment)
   });
 
   return {
@@ -73,12 +85,15 @@ export const useWorkspaceDashboard = (id, revenueParams = { period: 'month' }, h
     stats: extractData(statsSummary),
     revenue: extractData(revenueStats),
     hourly: extractData(hourlyStats),
-    bookings: extractData(recentBookings),
+    recentBookings: extractData(recentBookings),
+    dayBookings: extractData(dayBookings),
     tables: extractData(floorPlan),
     isLoading: 
       restaurantDetail.isLoading || 
       statsSummary.isLoading || 
-      recentBookings.isLoading,
+      recentBookings.isLoading ||
+      dayBookings.isLoading ||
+      floorPlan.isLoading,
     isStatsLoading: revenueStats.isLoading || hourlyStats.isLoading,
     isError: restaurantDetail.isError || statsSummary.isError,
     refetch: () => {
@@ -87,6 +102,7 @@ export const useWorkspaceDashboard = (id, revenueParams = { period: 'month' }, h
       revenueStats.refetch();
       hourlyStats.refetch();
       recentBookings.refetch();
+      dayBookings.refetch();
       floorPlan.refetch();
     }
   };

@@ -129,7 +129,7 @@ const UpcomingArrivalsTable = ({ bookings, isLoading }) => {
                             </p>
                             {/* Ghi chú cụ thể thay vì cái LUNCH hardcode cũ */}
                             <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest truncate max-w-[150px]" title={specificNote}>
-                              {specificNote}
+                              {specificNote === 'NO NOTE' ? t('workspace.arrivals.no_special_requests', { defaultValue: 'No Note' }) : specificNote}
                             </p>
                           </div>
                         </div>

@@ -41,6 +41,9 @@ export const ROUTES = {
   WORKSPACE_BOOKINGS: (idOrSlug) => `/owner/restaurants/${idOrSlug}/bookings`,
   WORKSPACE_REVENUE: (idOrSlug) => `/owner/restaurants/${idOrSlug}/revenue`,
   WORKSPACE_WALLET: (idOrSlug) => `/owner/restaurants/${idOrSlug}/wallet`,
+  WORKSPACE_SETTINGS: (idOrSlug) => `/owner/restaurants/${idOrSlug}/settings`,
+  WORKSPACE_AI_CHAT: (idOrSlug) => `/owner/restaurants/${idOrSlug}/ai-chat`,
+  WORKSPACE_AI_REVENUE: (idOrSlug) => `/owner/restaurants/${idOrSlug}/ai-revenue`,
 
   // --- ADMIN ---
   ADMIN_DASHBOARD: '/admin',

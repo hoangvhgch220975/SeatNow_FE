@@ -156,7 +156,10 @@ const RestaurantListPage = () => {
 
   return (
     <main className="max-w-7xl mx-auto px-8 pb-24">
-      <RestaurantHeader onSearch={(q) => handleFilterChange({ q })} />
+      <RestaurantHeader 
+        onSearch={(q) => handleFilterChange({ q })} 
+        currentSearch={filters.q}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] w-full gap-12 mt-12 items-start">
         {/* Fixed Sidebar (280px) on large screens (Vietnamese comment) */}

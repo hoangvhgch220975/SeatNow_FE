@@ -208,14 +208,14 @@ seatnow-fe/
 │ │ │ ├─ api.js // API calls: generate QR, check status
 │ │ │ ├─ hooks.js // React Query hooks: useStartPayment, usePaymentStatus (New)
 │ │ │ └─ components/
-│ │ │   ├─ PaymentModal.jsx // Orchestrator component
-│ │ │   ├─ shared/
-│ │ │   │ ├─ PaymentHeader.jsx (New)
-│ │ │   │ └─ PaymentFooter.jsx (New)
-│ │ │   └─ steps/
-│ │ │     ├─ PaymentMethodSelector.jsx (New)
-│ │ │     ├─ PaymentProcessing.jsx (New)
-│ │ │     └─ PaymentResult.jsx (New)
+│ │ │ ├─ PaymentModal.jsx // Orchestrator component
+│ │ │ ├─ shared/
+│ │ │ │ ├─ PaymentHeader.jsx (New)
+│ │ │ │ └─ PaymentFooter.jsx (New)
+│ │ │ └─ steps/
+│ │ │ ├─ PaymentMethodSelector.jsx (New)
+│ │ │ ├─ PaymentProcessing.jsx (New)
+│ │ │ └─ PaymentResult.jsx (New)
 │ │ │
 │ │ ├─ reviews/
 │ │ │ ├─ api.js // API lấy danh sách review, tóm tắt (summary), tạo review
@@ -255,10 +255,10 @@ seatnow-fe/
 │ │ │ │ ├─ EmptyRestaurantsState.jsx // Khi owner chưa có nhà hàng
 │ │ │ │ ├─ RestaurantStatusBadge.jsx // Badge màu cho trạng thái (New)
 │ │ │ │ └─ create-wizard/ // Quy trình đăng ký nhà hàng mới (New)
-│ │ │ │   ├─ CuisineSelector.jsx // Chọn loại hình ẩm thực
-│ │ │ │   ├─ MapLocationPicker.jsx // Trình chọn vị trí trên bản đồ (Modal)
-│ │ │ │   ├─ OpeningHoursForm.jsx // Quản lý giờ mở cửa linh hoạt
-│ │ │ │   └─ DepositPolicyForm.jsx // Cấu hình chính sách đặt cọc
+│ │ │ │ ├─ CuisineSelector.jsx // Chọn loại hình ẩm thực
+│ │ │ │ ├─ MapLocationPicker.jsx // Trình chọn vị trí trên bản đồ (Modal)
+│ │ │ │ ├─ OpeningHoursForm.jsx // Quản lý giờ mở cửa linh hoạt
+│ │ │ │ └─ DepositPolicyForm.jsx // Cấu hình chính sách đặt cọc
 │ │ │ │
 │ │ │ └─ workspace/ // Cấp từng nhà hàng cụ thể (sau khi đã chọn)
 │ │ │ ├─ dashboard/
@@ -274,20 +274,30 @@ seatnow-fe/
 │ │ │ │ └─ LiveFloorPlan.jsx // Sơ đồ bàn trực tiếp thời gian thực
 │ │ │ │
 │ │ │ ├─ restaurant-profile/
-│ │ │ │ ├─ api.js
 │ │ │ │ ├─ pages/
 │ │ │ │ │ └─ OwnerRestaurantProfilePage.jsx
 │ │ │ │ └─ components/
-│ │ │ │ ├─ RestaurantProfileForm.jsx
-│ │ │ │ └─ DepositPolicyForm.jsx
+│ │ │ │ ├─ ProfileHero.jsx (View-only)
+│ │ │ │ ├─ RestaurantProfileForm.jsx (View-only)
+│ │ │ │ ├─ ContactInfoForm.jsx (View-only)
+│ │ │ │ ├─ OpeningHoursForm.jsx (View-only)
+│ │ │ │ └─ DepositPolicyForm.jsx (View-only)
 │ │ │ │
-│ │ │ ├─ menu/
-│ │ │ │ ├─ api.js
-│ │ │ │ ├─ pages/
-│ │ │ │ │ └─ OwnerMenuPage.jsx
-│ │ │ │ └─ components/
-│ │ │ │ ├─ MenuTable.jsx
-│ │ │ │ └─ MenuItemForm.jsx
+|   ├─ menu/ // Phân hệ quản lý thực đơn nhà hàng
+|   |   ├─ api.js // API: Truy vấn, tạo mới, cập nhật và xóa món ăn
+|   |   ├─ hooks.js // useMenu: Hook tập trung xử lý phân trang & bộ lọc
+|   |   ├─ pages/
+|   |   |   └─ OwnerMenuPage.jsx // Quản lý thực đơn (Chế độ lưới & bảng)
+|   |   └─ components/
+|   |       ├─ MenuHeader.jsx // Tiêu đề & nút chuyển đổi hiển thị
+|   |       ├─ MenuFilters.jsx // Tìm kiếm & Tabs danh mục i18n
+|   |       ├─ MenuGrid.jsx // Container hiển thị dạng lưới
+|   |       ├─ MenuItemCard.jsx // Card món ăn (Hỗ trợ click xem chi tiết)
+|   |       ├─ MenuItemModal.jsx // Modal tích hợp form thêm/sửa món
+|   |       ├─ MenuItemDetailModal.jsx // Popup xem chi tiết món ăn (Carousel ảnh)
+|   |       ├─ MenuTable.jsx // Danh sách dạng bảng (Hỗ trợ click dòng)
+|   |       └─ MenuItemForm.jsx // Biểu mẫu nhập liệu món ăn (i18n, reset logic)
+
 │ │ │ │
 │ │ │ ├─ tables/
 │ │ │ │ ├─ api.js

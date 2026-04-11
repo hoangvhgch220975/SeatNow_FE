@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { ROUTES } from '@/config/routes.js';
 import toast from 'react-hot-toast';
+import logo from '@/assets/logos/logo.png';
 
 /**
  * @file OwnerFooter.jsx
@@ -23,10 +24,10 @@ const OwnerFooter = () => {
         {/* Branding & Entity */}
         <div className="flex flex-col md:items-start items-center space-y-1">
           <div className="flex items-center gap-3">
-             <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white">
-                <span className="material-symbols-outlined text-[18px]">insights</span>
+             <div className="w-8 h-8 bg-violet-600 rounded-full flex items-center justify-center p-1 overflow-hidden shadow-lg shadow-violet-100">
+                <img src={logo} alt="Logo" className="w-full h-full object-contain" />
              </div>
-             <p className="text-sm font-black text-slate-900 tracking-tight uppercase">SeatNow <span className="text-violet-600">{t('footer.owner.portfolio_intelligence')}</span></p>
+             <p className="text-sm font-black text-slate-900 tracking-tight uppercase">SeatNow <span className="text-violet-600 font-bold">{t('footer.owner.portfolio_intelligence')}</span></p>
           </div>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-11">
              © 2026 {t('footer.owner.strategic_unit')}
