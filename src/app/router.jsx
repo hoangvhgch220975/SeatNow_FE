@@ -36,6 +36,8 @@ import OwnerRestaurantProfilePage from '../features/owner/workspace/restaurant-p
 import OwnerMenuPage from '../features/owner/workspace/menu/pages/OwnerMenuPage.jsx';
 import OwnerTablesPage from '../features/owner/workspace/tables/pages/OwnerTablesPage.jsx';
 import OwnerBookingsPage from '../features/owner/workspace/bookings/pages/OwnerBookingsPage.jsx';
+import OwnerRevenuePage from '../features/owner/workspace/revenue/pages/OwnerRevenuePage.jsx';
+
 
 
 /**
@@ -205,6 +207,10 @@ export const router = createBrowserRouter([
             // WORKSPACE_BOOKINGS: (idOrSlug) => `/owner/restaurants/${idOrSlug}/bookings`
             path: ROUTES.WORKSPACE_BOOKINGS(':idOrSlug'),
             element: <OwnerBookingsPage />,
+          },
+          {
+            path: ROUTES.WORKSPACE_REVENUE(':idOrSlug'),
+            element: <OwnerRevenuePage />,
           },
           // Các route con khác của workspace sẽ thêm tại đây
         ]

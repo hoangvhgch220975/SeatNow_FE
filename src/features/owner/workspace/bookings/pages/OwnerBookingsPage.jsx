@@ -196,13 +196,13 @@ const OwnerBookingsPage = () => {
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
-      {/* === HEADER === */}
-      <div className="flex items-start justify-between">
+      {/* Page Header */}
+      <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">
             {t('owner_bookings.page_title')}
-          </h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">
+          </h2>
+          <p className="text-slate-500 font-bold text-lg">
             {t('owner_bookings.page_subtitle')}
           </p>
         </div>

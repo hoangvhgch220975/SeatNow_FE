@@ -325,13 +325,18 @@ seatnow-fe/
 │ │ │ │     └─ BookingStatusActions.jsx // Nút chuyển trạng thái: Pending→Confirm, Confirmed→Arrive, Arrived→Complete
 
 │ │ │ │
-│ │ │ ├─ revenue/
-│ │ │ │ ├─ api.js
+│ │ │ ├─ revenue/ // Phân hệ quản lý doanh thu & thống kê chuyên sâu (New)
+│ │ │ │ ├─ api.js // API: tóm tắt thống kê, xu hướng doanh thu, giờ cao điểm
+│ │ │ │ ├─ hooks.js // useRevenueDashboard: Logic tính toán chu kỳ & fetch dữ liệu
 │ │ │ │ ├─ pages/
-│ │ │ │ │ └─ OwnerRestaurantRevenuePage.jsx
+│ │ │ │ │ └─ OwnerRevenuePage.jsx // Trang Dashboard Doanh thu & Phân tích (Bento Grid)
 │ │ │ │ └─ components/
-│ │ │ │ ├─ RevenueChart.jsx
-│ │ │ │ └─ RevenueFilter.jsx
+│ │ │ │     ├─ RevenueHeader.jsx // Tiêu đề & Bộ chọn chu kỳ thời gian
+│ │ │ │     ├─ RevenueKPIs.jsx // 4 Thẻ chỉ số tài chính (Net/Gross/Volume/Cancel)
+│ │ │ │     ├─ RevenueTrendChart.jsx // Biểu đồ AreaChart xu hướng doanh thu
+│ │ │ │     ├─ GuestGroupAnalysis.jsx // Biểu đồ Donut phẫu diện nhóm khách hàng
+│ │ │ │     ├─ PeakHoursChart.jsx // Biểu đồ BarChart phân bổ giờ đặt bàn
+│ │ │ │     └─ TransactionHistory.jsx // Bảng danh sách 10 giao dịch gần nhất
 │ │ │ │
 │ │ │ └─ wallet/ // Của từng nhà hàng
 │ │ │ ├─ api.js // API rút tiền, lịch sử giao dịch nhà hàng

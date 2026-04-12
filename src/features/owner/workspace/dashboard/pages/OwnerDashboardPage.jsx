@@ -18,6 +18,8 @@ import BookingVolumeChart from '../components/BookingVolumeChart';
 import UpcomingArrivalsTable from '../components/UpcomingArrivalsTable';
 import LiveFloorPlan from '../components/LiveFloorPlan';
 import GuestAnalysisBreakdown from '../components/GuestAnalysisBreakdown';
+import { ROUTES } from '@/config/routes';
+
 
 /**
  * @file OwnerDashboardPage.jsx
@@ -123,6 +125,7 @@ const OwnerDashboardPage = () => {
           icon="calendar_today"
           bgColorClass="bg-purple-50"
           iconColorClass="text-primary"
+          to={ROUTES.WORKSPACE_BOOKINGS(idOrSlug)}
         />
 
         {/* 2. Doanh thu thực nhận (Net Revenue) */}
@@ -133,6 +136,7 @@ const OwnerDashboardPage = () => {
           icon="payments"
           bgColorClass="bg-emerald-50"
           iconColorClass="text-emerald-600"
+          to={ROUTES.WORKSPACE_REVENUE(idOrSlug)}
         />
 
         {/* 3. Doanh thu gộp (Gross Revenue) */}
@@ -143,6 +147,7 @@ const OwnerDashboardPage = () => {
           icon="account_balance_wallet"
           bgColorClass="bg-blue-50"
           iconColorClass="text-blue-600"
+          to={ROUTES.WORKSPACE_REVENUE(idOrSlug)}
         />
 
         {/* 4. Hiệu suất vận hành (Cancellation Rate) */}
@@ -153,6 +158,7 @@ const OwnerDashboardPage = () => {
           icon="event_busy"
           bgColorClass="bg-rose-50"
           iconColorClass="text-rose-600"
+          to={ROUTES.WORKSPACE_REVENUE(idOrSlug)}
         />
 
         {/* 5. Đánh giá khách hàng (Rating) */}

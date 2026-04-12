@@ -1,16 +1,13 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 /**
  * @file KPIStatCard.jsx
  * @description Thành phần hiển thị chỉ số quan trọng (KPI) trên Dashboard.
  */
-const KPIStatCard = ({ title, value, trend, icon, colorClass, bgColorClass, iconColorClass, subtext }) => {
-  return (
-    <motion.div 
-      whileHover={{ y: -5 }}
-      className="bg-white p-6 rounded-[2rem] shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] border border-slate-100/50 space-y-6 transition-all duration-300 flex flex-col justify-between"
-    >
+const KPIStatCard = ({ title, value, trend, icon, colorClass, bgColorClass, iconColorClass, subtext, to }) => {
+  const content = (
+    <>
       <div className="flex items-center justify-between">
         <div className={`h-12 w-12 ${bgColorClass} rounded-2xl flex items-center justify-center ${iconColorClass} shadow-inner`}>
           <span className="material-symbols-outlined">{icon}</span>
@@ -49,6 +46,32 @@ const KPIStatCard = ({ title, value, trend, icon, colorClass, bgColorClass, icon
            className={`h-full ${iconColorClass.replace('text', 'bg')} opacity-20`}
          />
       </div>
+    </>
+  );
+
+  if (to) {
+    return (
+      <motion.div 
+        whileHover={{ y: -5, scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="transition-all duration-300"
+      >
+        <Link 
+          to={to}
+          className="bg-white p-6 rounded-[2rem] shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] border border-slate-100/50 space-y-6 flex flex-col justify-between h-full hover:border-violet-200 cursor-pointer block"
+        >
+          {content}
+        </Link>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div 
+      whileHover={{ y: -5 }}
+      className="bg-white p-6 rounded-[2rem] shadow-[0_40px_40px_-15px_rgba(99,14,212,0.04)] border border-slate-100/50 space-y-6 flex flex-col justify-between"
+    >
+      {content}
     </motion.div>
   );
 };

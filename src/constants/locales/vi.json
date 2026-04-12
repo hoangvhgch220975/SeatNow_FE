@@ -43,6 +43,7 @@
     "week": "Tuần",
     "month": "Tháng",
     "year": "Năm",
+    "quarter": "Quý",
     "mom": "So với tháng trước",
     "wow": "So với tuần trước",
     "yoy": "So với năm trước",
@@ -1771,6 +1772,46 @@
       "no_show_success": "Đã đánh dấu khách vắng mặt",
       "cancel_success": "Đã hủy đơn đặt bàn",
       "action_error": "Lỗi khi thực hiện tác vụ. Vui lòng thử lại."
+    }
+  },
+  "workspace_revenue": {
+    "title": "Doanh Thu & Phân Tích",
+    "subtitle": "Báo cáo tài chính và hiệu suất vận hành tại cơ sở",
+    "period": "Chu kỳ",
+    "export": "Xuất dữ liệu",
+    "kpi": {
+      "total_revenue": "Tổng Doanh Thu (Thực)",
+      "gross_revenue": "Doanh Thu Gộp",
+      "total_bookings": "Tổng Số Đơn",
+      "avg_revenue": "Doanh Thu TB/Đơn",
+      "cancel_rate": "Tỷ Lệ Hủy",
+      "net_explainer": "Đã trừ phí hoa hồng SeatNow",
+      "gross_explainer": "Tổng giá trị tiền đặt cọc",
+      "bookings_explainer": "Số lượng đơn đặt bàn thành công",
+      "cancel_explainer": "Tính trên tổng số đơn thực tế"
+    },
+    "charts": {
+      "revenue_trend": "Xu hướng Doanh Thu",
+      "revenue_trend_desc": "Theo dõi biến động dòng tiền theo thời gian",
+      "guest_analysis": "Phân tích Nhóm khách",
+      "guest_analysis_desc": "Cơ cấu các nhóm khách hàng tại nhà hàng",
+      "peak_hours": "Giờ Cao Điểm",
+      "peak_hours_desc": "Phân bổ thời gian đặt bàn trong ngày",
+      "no_data": "Chưa có dữ liệu thống kê trong giai đoạn này"
+    },
+    "guest_types": {
+      "couple": "Cặp đôi (1-2)",
+      "small_group": "Nhóm nhỏ (3-7)",
+      "party": "Đoàn đông (8+)"
+    },
+    "transactions": {
+      "title": "Lịch sử Giao dịch Gần đây",
+      "col_date": "Ngày đặt",
+      "col_customer": "Khách hàng",
+      "col_status": "Trạng thái",
+      "col_amount": "Số tiền",
+      "col_net": "Thực nhận",
+      "view_all": "Xem toàn bộ giao dịch"
     }
   }
 }

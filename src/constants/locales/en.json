@@ -43,6 +43,7 @@
     "week": "Week",
     "month": "Month",
     "year": "Year",
+    "quarter": "Quarter",
     "mom": "MoM",
     "wow": "WoW",
     "yoy": "YoY",
@@ -1788,6 +1789,46 @@
       "no_show_success": "Guest marked as no-show",
       "cancel_success": "Booking cancelled",
       "action_error": "Failed to perform action. Please try again."
+    }
+  },
+  "workspace_revenue": {
+    "title": "Revenue & Analytics",
+    "subtitle": "Financial reporting and operational performance at this venue",
+    "period": "Period",
+    "export": "Export Data",
+    "kpi": {
+      "total_revenue": "Total Net Revenue",
+      "gross_revenue": "Gross Revenue",
+      "total_bookings": "Total Bookings",
+      "avg_revenue": "Avg. Revenue/Booking",
+      "cancel_rate": "Cancellation Rate",
+      "net_explainer": "After SeatNow commission fees",
+      "gross_explainer": "Total deposit value collected",
+      "bookings_explainer": "Number of successful bookings",
+      "cancel_explainer": "Based on total actual bookings"
+    },
+    "charts": {
+      "revenue_trend": "Revenue Trend",
+      "revenue_trend_desc": "Track cash flow fluctuations over time",
+      "guest_analysis": "Guest Analysis",
+      "guest_analysis_desc": "Customer group structure at the restaurant",
+      "peak_hours": "Peak Hours",
+      "peak_hours_desc": "Distribution of booking times during the day",
+      "no_data": "No statistical data available for this period"
+    },
+    "guest_types": {
+      "couple": "Couple (1-2)",
+      "small_group": "Small Group (3-7)",
+      "party": "Large Party (8+)"
+    },
+    "transactions": {
+      "title": "Recent Revenue Transactions",
+      "col_date": "Booking Date",
+      "col_customer": "Customer",
+      "col_status": "Status",
+      "col_amount": "Amount",
+      "col_net": "Net Received",
+      "view_all": "View all transactions"
     }
   }
 }

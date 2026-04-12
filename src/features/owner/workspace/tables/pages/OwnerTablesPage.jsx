@@ -108,19 +108,16 @@ const OwnerTablesPage = () => {
 
   return (
     <div className="min-h-screen pb-24 bg-surface">
-      {/* Header Area: Tiêu đề và Thông tin bối cảnh (Vietnamese comment) */}
-      <div className="mb-12">
-        <div className="flex items-center gap-3 mb-2">
-           <span className="material-symbols-outlined text-violet-600 bg-violet-50 p-2 rounded-xl text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-            table_restaurant
-          </span>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight">
+      {/* Page Header */}
+      <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">
             {t('tables.title', { defaultValue: 'Table Management' })}
-          </h1>
+          </h2>
+          <p className="text-slate-500 font-bold text-lg">
+            {t('tables.floor_overview', { defaultValue: 'Restaurant Floor Overview' })}
+          </p>
         </div>
-        <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-12">
-          {t('tables.floor_overview', { defaultValue: 'Restaurant Floor Overview' })}
-        </p>
       </div>
 
       {/* 1. Thống kê nhanh (KPIs) - Refactored (Vietnamese comment) */}

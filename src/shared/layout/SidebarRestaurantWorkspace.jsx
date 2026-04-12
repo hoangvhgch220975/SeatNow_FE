@@ -64,7 +64,7 @@ const SidebarRestaurantWorkspace = ({ restaurantName }) => {
       label: 'revenue_stats',
       icon: 'analytics',
       path: ROUTES.WORKSPACE_REVENUE(idOrSlug),
-      comingSoon: true,
+      comingSoon: false,
     },
     {
       label: 'wallet',

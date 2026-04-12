@@ -9,7 +9,7 @@ import { ROUTES } from '@/config/routes';
  */
 const UpcomingArrivalsTable = ({ bookings, isLoading }) => {
   const { t } = useTranslation();
-  const { restaurantId } = useParams();
+  const { idOrSlug } = useParams();
 
   // Mapping status classes (Vietnamese comment)
   const getStatusStyles = (status) => {
@@ -48,7 +48,7 @@ const UpcomingArrivalsTable = ({ bookings, isLoading }) => {
           </p>
         </div>
         <Link 
-          to={ROUTES.WORKSPACE_BOOKINGS(restaurantId)}
+          to={ROUTES.WORKSPACE_BOOKINGS(idOrSlug)}
           className="text-primary text-[10px] font-black uppercase tracking-widest hover:underline"
         >
           {t('workspace.arrivals.view_all')}
