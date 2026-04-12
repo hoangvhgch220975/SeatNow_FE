@@ -37,6 +37,13 @@ export const useWorkspaceDashboard = (id, revenueParams = { period: 'month' }, h
     enabled: !!(actualId && restaurantData), // Chỉ gọi khi đã có data (Vietnamese comment)
   });
 
+  // 2.1 Thống kê cho ngày cụ thể (Dùng cho Guest Analysis đồng bộ với Booking Volume) (Vietnamese comment)
+  const dailyStatsSummary = useQuery({
+    queryKey: ['workspace', 'stats', 'summary', 'daily', actualId, hourlyParams],
+    queryFn: () => workspaceDashboardApi.getStatsSummary(actualId, hourlyParams),
+    enabled: !!(actualId && restaurantData),
+  });
+
   // 3. Thống kê doanh thu
   const revenueStats = useQuery({
     queryKey: ['workspace', 'stats', 'revenue', actualId, revenueParams],
@@ -83,6 +90,7 @@ export const useWorkspaceDashboard = (id, revenueParams = { period: 'month' }, h
   return {
     restaurant: restaurantData,
     stats: extractData(statsSummary),
+    dailyStats: extractData(dailyStatsSummary),
     revenue: extractData(revenueStats),
     hourly: extractData(hourlyStats),
     recentBookings: extractData(recentBookings),
@@ -91,14 +99,16 @@ export const useWorkspaceDashboard = (id, revenueParams = { period: 'month' }, h
     isLoading: 
       restaurantDetail.isLoading || 
       statsSummary.isLoading || 
+      dailyStatsSummary.isLoading ||
       recentBookings.isLoading ||
       dayBookings.isLoading ||
       floorPlan.isLoading,
     isStatsLoading: revenueStats.isLoading || hourlyStats.isLoading,
-    isError: restaurantDetail.isError || statsSummary.isError,
+    isError: restaurantDetail.isError || statsSummary.isError || dailyStatsSummary.isError,
     refetch: () => {
       restaurantDetail.refetch();
       statsSummary.refetch();
+      dailyStatsSummary.refetch();
       revenueStats.refetch();
       hourlyStats.refetch();
       recentBookings.refetch();

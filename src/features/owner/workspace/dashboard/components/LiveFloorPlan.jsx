@@ -1,12 +1,15 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ROUTES } from '@/config/routes';
 
 /**
  * @file LiveFloorPlan.jsx
  * @description Sơ đồ bàn trực tiếp (Live Floor Plan) hiển thị trạng thái các bàn.
  */
 const LiveFloorPlan = ({ tables, bookings, restaurant, isLoading }) => {
+  const { idOrSlug } = useParams();
   const { t } = useTranslation();
   const [selectedLocation, setSelectedLocation] = React.useState('all');
   const [selectedSlot, setSelectedSlot] = React.useState('now');
@@ -92,8 +95,15 @@ const LiveFloorPlan = ({ tables, bookings, restaurant, isLoading }) => {
 
   // 2. Xác định danh sách khu vực - Luôn hiện tất cả các tầng (Vietnamese comment)
   const locations = React.useMemo(() => [
-    '1st Floor', '2nd Floor', '3rd Floor', '4th Floor', '5th Floor', 'Rooftop', 'Terrace', 'Outdoor'
-  ], []);
+    { id: '1st Floor', label: t('workspace.floor_plan.floors.1st', { defaultValue: '1st Floor' }) },
+    { id: '2nd Floor', label: t('workspace.floor_plan.floors.2nd', { defaultValue: '2nd Floor' }) },
+    { id: '3rd Floor', label: t('workspace.floor_plan.floors.3rd', { defaultValue: '3rd Floor' }) },
+    { id: '4th Floor', label: t('workspace.floor_plan.floors.4th', { defaultValue: '4th Floor' }) },
+    { id: '5th Floor', label: t('workspace.floor_plan.floors.5th', { defaultValue: '5th Floor' }) },
+    { id: 'Rooftop', label: t('workspace.floor_plan.floors.rooftop', { defaultValue: 'Rooftop' }) },
+    { id: 'Terrace', label: t('workspace.floor_plan.floors.terrace', { defaultValue: 'Terrace' }) },
+    { id: 'Outdoor', label: t('workspace.floor_plan.floors.outdoor', { defaultValue: 'Outdoor' }) }
+  ], [t]);
 
   // Tự động tìm Slot khớp với thời gian thực tế (Real-time sync) (Vietnamese comment)
   React.useEffect(() => {
@@ -188,6 +198,14 @@ const LiveFloorPlan = ({ tables, bookings, restaurant, isLoading }) => {
               </p>
             </div>
           </div>
+
+          <Link 
+            to={ROUTES.WORKSPACE_TABLES(idOrSlug)}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-[10px] font-black uppercase text-slate-500 rounded-lg transition-colors border border-slate-100"
+          >
+            <span className="material-symbols-outlined text-[14px]">settings</span>
+            {t('common.manage', { defaultValue: 'Manage' })}
+          </Link>
         </div>
 
         {/* Cấu trúc bộ lọc Dropdown kép (Vietnamese comment) */}
@@ -202,7 +220,7 @@ const LiveFloorPlan = ({ tables, bookings, restaurant, isLoading }) => {
               >
                 <option value="all">{t('workspace.floor_plan.all_areas', { defaultValue: 'All Areas' })}</option>
                 {locations.map(loc => (
-                  <option key={loc} value={loc}>{loc}</option>
+                  <option key={loc.id} value={loc.id}>{loc.label}</option>
                 ))}
               </select>
               <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
@@ -240,7 +258,7 @@ const LiveFloorPlan = ({ tables, bookings, restaurant, isLoading }) => {
                 whileHover={{ scale: 1.1, zIndex: 10 }}
                 whileTap={{ scale: 0.95 }}
                 className={`aspect-square rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer shadow-sm border ${getStatusColor(currentStatus)}`}
-                title={`Table ${table.tableNumber} - ${currentStatus}`}
+                title={`${t('tables.form.table_number')}: ${table.tableNumber} - ${t(`workspace.floor_plan.${currentStatus}`)}`}
               >
                 <span className="text-[10px] font-black leading-tight">{table.tableNumber}</span>
                 <div className="flex items-center gap-0.5 mt-0.5 opacity-60">
@@ -252,7 +270,7 @@ const LiveFloorPlan = ({ tables, bookings, restaurant, isLoading }) => {
           })
         ) : (
           <div className="col-span-4 h-full flex items-center justify-center text-slate-300 text-[10px] font-black uppercase tracking-widest text-center px-4">
-            No tables in this area
+            {t('workspace.floor_plan.no_tables_area', { defaultValue: 'No tables in this area' })}
           </div>
         )}
       </div>

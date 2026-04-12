@@ -5,20 +5,19 @@ import { signInWithRedirect, getRedirectResult, signInWithPopup } from 'firebase
 import { authApi } from './api.js';
 import { useAuthStore } from './store.js';
 import { toast } from 'react-hot-toast';
-import { parseApiError, parseApiSuccess } from '../../shared/utils/parseApiError.js'; // Import helper xử lý lỗi/thành công API
+import { parseApiError, parseApiSuccess } from '../../shared/utils/parseApiError.js';
+import i18n from '../../lib/i18n.js';
 
 import { ROLES } from '../../config/roles.js';
 import { ROUTES } from '../../config/routes.js';
 
 /**
  * @file hooks.js
- * @description Hook quản lý logic xác thực, tích hợp React Query.
+ * @description Hook quản lý logic xác thực, tích hợp React Query. Hỗ trợ đa ngôn ngữ cho thông báo Toast.
  */
 
 /**
  * @description Trả về đường dẫn điều hướng dựa trên vai trò của người dùng.
- * @param {Object} user 
- * @returns {string} Path
  */
 const getRedirectPath = (user) => {
   const role = user?.role?.toUpperCase();
@@ -28,13 +27,10 @@ const getRedirectPath = (user) => {
 };
 
 /**
- * @description Tìm kiếm Token và User một cách linh hoạt trong dữ liệu trả về của API.
- * Hỗ trợ bóc tách từ lớp ngoài hoặc lớp data lồng nhau.
+ * @description Trích xuất Token và User từ API response.
  */
 const extractTokenAndUser = (response) => {
   const root = response.data || response;
-  
-  // Danh sách các trường có thể chứa token (bao gồm cả lồng nhau)
   const tokenCandidates = [
     root.accessToken, root.token, root.access_token,
     root.data?.accessToken, root.data?.token, root.data?.access_token,
@@ -43,7 +39,6 @@ const extractTokenAndUser = (response) => {
   
   let rawToken = tokenCandidates.find(t => !!t);
 
-  // NẾU TOKEN LÀ OBJECT HOẶC JSON STRING: Bóc tiếp lớp bên trong
   const unwrap = (val) => {
     if (!val) return val;
     if (typeof val === 'object') {
@@ -59,18 +54,14 @@ const extractTokenAndUser = (response) => {
   };
 
   rawToken = unwrap(rawToken);
-
-  // CHUẨN HÓA: Cắt bỏ "Bearer " nếu có
   if (typeof rawToken === 'string') {
     rawToken = rawToken.replace(/^Bearer\s+/i, '').trim();
   }
   
-  // User extraction
   const userCandidates = [
     root.user, root.data?.user, root.profile, root.data?.profile, root.userData?.user
   ];
 
-  // Refresh token extraction
   const refreshCandidates = [
     root.refreshToken, root.refresh_token, root.data?.refreshToken, root.data?.refresh_token
   ];
@@ -85,7 +76,7 @@ const extractTokenAndUser = (response) => {
 };
 
 // ============================================================
-// ĐĂNG NHẬP
+// ĐĂNG NHẬP (Vietnamese comment) *)
 // ============================================================
 export const useLoginMutation = () => {
   const navigate = useNavigate();
@@ -95,28 +86,23 @@ export const useLoginMutation = () => {
     mutationFn: (credentials) => authApi.login(credentials),
     onSuccess: (response) => {
       const { user, token, refreshToken } = extractTokenAndUser(response);
+      if (token) setAuth(user, token, refreshToken);
       
-      if (token) {
-        setAuth(user, token, refreshToken);
-      }
-      
-      // Delay 1.5s trước khi thông báo và chuyển trang
       setTimeout(() => {
         const displayName = user?.fullName || user?.name || 'User';
-        toast.success(response.message || `Welcome back, ${displayName}!`, { duration: 1000 });
+        toast.success(response.message || i18n.t('auth.toast.welcome', { name: displayName }), { duration: 1000 });
         navigate(getRedirectPath(user));
       }, 1500);
     },
     onError: (error) => {
-      // Bóc tách thông báo lỗi thông qua bộ dịch parseApiError
       const { message: msg } = parseApiError(error);
-      toast.error(msg || 'Login failed. Please try again!');
+      toast.error(msg || i18n.t('auth.toast.login_failed'));
     },
   });
 };
 
 // ============================================================
-// ĐĂNG NHẬP GOOGLE
+// ĐĂNG NHẬP GOOGLE (Vietnamese comment) *)
 // ============================================================
 export const useGoogleLoginMutation = () => {
   const navigate = useNavigate();
@@ -126,20 +112,17 @@ export const useGoogleLoginMutation = () => {
     mutationFn: (idToken) => authApi.googleSignIn(idToken),
     onSuccess: (response) => {
       const { user, token, refreshToken } = extractTokenAndUser(response);
-      
-      if (token) {
-        setAuth(user, token, refreshToken);
-      }
+      if (token) setAuth(user, token, refreshToken);
       
       setTimeout(() => {
         const displayName = user?.fullName || user?.name || 'User';
-        toast.success(response.message || `Welcome, ${displayName}!`, { duration: 1000 });
+        toast.success(response.message || i18n.t('auth.toast.welcome', { name: displayName }), { duration: 1000 });
         navigate(getRedirectPath(user));
       }, 1500);
     },
     onError: (error) => {
       const { message: msg } = parseApiError(error);
-      toast.error(msg || 'Google authentication failed with the system!');
+      toast.error(msg || i18n.t('auth.toast.google_auth_failed'));
     },
   });
 
@@ -153,22 +136,18 @@ export const useGoogleLoginMutation = () => {
         mutation.mutate(idToken, options);
       }
     } catch (error) {
-      toast.error('Could not connect to Google: ' + error.message);
+      toast.error(i18n.t('auth.toast.google_connect_error', { error: error.message }));
     }
   };
 
-  return {
-    ...mutation,
-    loginWithGoogle,
-  };
+  return { ...mutation, loginWithGoogle };
 };
 
 // ============================================================
-// LẮNG NGHE KẾT QUẢ REDIRECT GOOGLE
+// LẮNG NGHE KẾT QUẢ REDIRECT GOOGLE (Vietnamese comment) *)
 // ============================================================
 export const useHandleGoogleRedirect = () => {
   const gMutation = useGoogleLoginMutation();
-
   const handleRedirect = async () => {
     try {
       const result = await getRedirectResult(auth);
@@ -180,12 +159,11 @@ export const useHandleGoogleRedirect = () => {
       console.error('Redirect Error:', error);
     }
   };
-
   return { handleRedirect, isPending: gMutation.isPending };
 };
 
 // ============================================================
-// ĐĂNG KÝ - BƯỚC 1: GỬI FORM & KÍCH HOẠT OTP
+// ĐĂNG KÝ - BƯỚC 1: GỬI FORM & KÍCH HOẠT OTP (Vietnamese comment) *)
 // ============================================================
 export const useRegisterMutation = () => {
   const navigate = useNavigate();
@@ -194,39 +172,30 @@ export const useRegisterMutation = () => {
   return useMutation({
     mutationFn: (formData) => authApi.register(formData),
     onSuccess: (response) => {
-      // Backend trả về token + user sau khi đăng ký thành công kèm OTP
       const { user, token, refreshToken } = extractTokenAndUser(response);
-      
       if (user && token) {
         setAuth(user, token, refreshToken);
-        
         setTimeout(() => {
           const displayName = user?.fullName || user?.name || 'User';
-          toast.success(`🎉 Welcome ${displayName}! Your account has been created successfully.`, { duration: 1000 });
+          toast.success(i18n.t('auth.toast.welcome_new', { name: displayName }), { duration: 1000 });
           navigate(getRedirectPath(user));
         }, 1500);
       } else {
         setTimeout(() => {
-          toast.success('Registration successful! Please log in to continue.', { duration: 1000 });
+          toast.success(i18n.t('auth.toast.registration_success_login'), { duration: 1000 });
           navigate('/login');
         }, 1500);
       }
     },
     onError: (error) => {
-      // In lỗi ra Console để hỗ trợ debug thực tế
-      console.error('Registration API Error:', error.response?.data || error);
-
-      // Bóc tách thông báo lỗi từ Backend
       const { message: msg } = parseApiError(error);
-
-      // Hiển thị thông báo lỗi chi tiết cho người dùng
-      toast.error(msg || 'Registration failed. Please try again.');
+      toast.error(msg || i18n.t('auth.toast.registration_failed'));
     },
   });
 };
 
 // ============================================================
-// ĐĂNG KÝ - BƯỚC 2: XÁC THỰC OTP
+// ĐĂNG KÝ - BƯỚC 2: XÁC THỰC OTP (Vietnamese comment) *)
 // ============================================================
 export const useVerifyOtpMutation = () => {
   const navigate = useNavigate();
@@ -235,123 +204,102 @@ export const useVerifyOtpMutation = () => {
   return useMutation({
     mutationFn: (payload) => authApi.verifyOtp(payload),
     onSuccess: (response) => {
-      // Backend trả về token + user sau khi tạo tài khoản thành công
       const { user, token, refreshToken } = extractTokenAndUser(response);
-
       if (user && token) {
-        // Nếu BE trả về token ngay sau verify -> tự động đăng nhập
         setAuth(user, token, refreshToken);
-        
-        // Delay 1.5s trước khi thông báo và chuyển trang
         setTimeout(() => {
           const displayName = user?.fullName || user?.name || 'User';
-          toast.success(`🎉 Welcome ${displayName}! Your account has been created successfully.`, { duration: 1000 });
+          toast.success(i18n.t('auth.toast.welcome_new', { name: displayName }), { duration: 1000 });
           navigate(getRedirectPath(user));
         }, 1500);
       } else {
-        // Nếu BE chỉ verify và chưa trả token -> thông báo và chuyển tới login
         setTimeout(() => {
-          toast.success('Authentication successful! Please log in to continue.', { duration: 1000 });
+          toast.success(i18n.t('auth.toast.otp_verify_success'), { duration: 1000 });
           navigate('/login');
         }, 1500);
       }
     },
     onError: (error) => {
       const { message: msg } = parseApiError(error);
-      toast.error(msg || 'Invalid or expired OTP code. Please try again.');
+      toast.error(msg || i18n.t('auth.toast.otp_invalid'));
     },
   });
 };
 
 // ============================================================
-// GỬI LẠI OTP
+// GỬI LẠI OTP (Vietnamese comment) *)
 // ============================================================
 export const useSendOtpMutation = () => {
   return useMutation({
     mutationFn: (payload) => authApi.sendOtp(payload),
     onSuccess: () => {
-      toast.success('A new OTP code has been sent!');
+      toast.success(i18n.t('auth.toast.otp_resend_success'));
     },
     onError: (error) => {
       const { message: msg } = parseApiError(error);
-      toast.error(msg || 'Could not resend the code. Please try again later.');
+      toast.error(msg || i18n.t('auth.toast.otp_resend_error'));
     },
   });
 };
 
 // ============================================================
-// QUÊN MẬT KHẨU - BƯỚC 1: GỬI YÊU CẦU OTP
+// QUÊN MẬT KHẨU - BƯỚC 1: GỬI YÊU CẦU OTP (Vietnamese comment) *)
 // ============================================================
 export const useForgotPasswordRequestMutation = () => {
   return useMutation({
     mutationFn: (payload) => authApi.forgotPasswordRequest(payload),
     onSuccess: (response) => {
       const msg = parseApiSuccess(response);
-      toast.success(msg || 'Reset code sent! Check your registered email.');
+      toast.success(msg || i18n.t('auth.toast.forgot_request_success'));
     },
     onError: (error) => {
       const { message: msg } = parseApiError(error);
-      toast.error(msg || 'Could not find an account with this phone number.');
+      toast.error(msg || i18n.t('auth.toast.forgot_request_error'));
     },
   });
 };
 
 // ============================================================
-// QUÊN MẬT KHẨU - BƯỚC 2: XÁC THỰC OTP & ĐẶT LẠI MẬT KHẨU
+// QUÊN MẬT KHẨU - BƯỚC 2: XÁC THỰC OTP & ĐẶT LẠI MẬT KHẨU (Vietnamese comment) *)
 // ============================================================
 export const useForgotPasswordResetMutation = () => {
   const navigate = useNavigate();
-
   return useMutation({
     mutationFn: (payload) => authApi.forgotPasswordReset(payload),
     onSuccess: (response) => {
       const msg = parseApiSuccess(response);
-      toast.success(msg || 'Password reset successfully! Check your email for the new password.', {
-        duration: 5000,
-      });
+      toast.success(msg || i18n.t('auth.toast.forgot_reset_success'), { duration: 5000 });
       setTimeout(() => navigate('/login'), 2500);
     },
     onError: (error) => {
       const { message: msg } = parseApiError(error);
-      toast.error(msg || 'Invalid or expired OTP. Please try again.');
+      toast.error(msg || i18n.t('auth.toast.forgot_reset_error'));
     },
   });
 };
 
 // ============================================================
-// ĐỔI MẬT KHẨU
+// ĐỔI MẬT KHẨU (Vietnamese comment) *)
 // ============================================================
-/**
- * @hook useChangePasswordMutation
- * @description Mutation để thực hiện thay đổi mật khẩu của người dùng hiện tại thông qua Auth Service.
- */
 export const useChangePasswordMutation = () => {
   return useMutation({
     mutationFn: (data) => authApi.changePassword(data),
-    // Bạn có thể thêm onSuccess để tự động logout nếu cần thiết
   });
 };
 
 // ============================================================
-// GỬI YÊU CẦU HỢP TÁC (PARTNER REQUEST)
+// GỬI YÊU CẦU HỢP TÁC (PARTNER REQUEST) (Vietnamese comment) *)
 // ============================================================
-/**
- * @hook useSubmitPartnerRequestMutation
- * @description Quản lý logic gửi hồ sơ yêu cầu hợp tác dành cho chủ nhà hàng tiềm năng.
- */
 export const useSubmitPartnerRequestMutation = () => {
   return useMutation({
     mutationFn: (data) => authApi.partnerRequest(data),
     onSuccess: (response) => {
       const msg = parseApiSuccess(response);
-      toast.success(msg || 'Request submitted successfully! Our team will contact you soon.', {
-        icon: '🚀',
-        duration: 4000
-      });
+      toast.success(msg || i18n.t('auth.toast.partner_request_success'), { icon: '🚀', duration: 4000 });
     },
     onError: (error) => {
       const { message: msg } = parseApiError(error);
-      toast.error(msg || 'Submission failed. Please check your information and try again.');
+      toast.error(msg || i18n.t('auth.toast.partner_request_error'));
     },
   });
 };

@@ -12,7 +12,7 @@ const RestaurantPolicies = ({ policies }) => {
     <div className="p-8 border-2 border-primary/10 rounded-xl space-y-6 bg-surface-container-lowest">
       <h3 className="font-bold flex items-center gap-2 text-on-surface">
         <span className="material-symbols-outlined text-primary">info</span>
-        {t('restaurants.info.policies')}
+        {t('restaurants.policies.title')}
       </h3>
       <ul className="text-sm text-on-surface-variant space-y-3">
         {policies.map((policy, index) => (

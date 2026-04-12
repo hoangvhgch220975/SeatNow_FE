@@ -50,7 +50,7 @@ const OwnerRestaurantProfilePage = () => {
           className="flex items-center gap-2 px-6 py-3.5 bg-white border border-slate-200 text-slate-900 rounded-2xl font-black text-xs uppercase tracking-widest shadow-sm hover:shadow-md hover:border-violet-200 hover:text-violet-600 transition-all active:scale-95 group"
         >
           <span className="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">edit_note</span>
-          Edit Restaurant Profile
+          {t('workspace.profile.hero.edit_profile')}
         </Link>
       </div>
 

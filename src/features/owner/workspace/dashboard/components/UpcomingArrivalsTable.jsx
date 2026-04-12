@@ -82,6 +82,9 @@ const UpcomingArrivalsTable = ({ bookings, isLoading }) => {
                 <th className="pb-4 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] text-center">
                   {t('workspace.arrivals.party')}
                 </th>
+                <th className="pb-4 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] text-center">
+                  {t('workspace.arrivals.table', { defaultValue: 'TABLE' })}
+                </th>
                 <th className="pb-4 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">
                   {t('workspace.arrivals.status')}
                 </th>
@@ -120,8 +123,21 @@ const UpcomingArrivalsTable = ({ bookings, isLoading }) => {
                       {/* CỘT 1: GUEST & NOTE */}
                       <td className="py-5">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 font-black text-xs border border-slate-200/50 group-hover:bg-white group-hover:text-primary transition-all">
-                            {getInitials(displayName)}
+                          <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 font-black text-[10px] border border-slate-200/50 group-hover:bg-white group-hover:text-primary transition-all overflow-hidden">
+                            {booking.customerAvatar ? (
+                              <img 
+                                src={booking.customerAvatar} 
+                                alt={displayName} 
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.style.display = 'none';
+                                  e.target.parentElement.innerHTML = getInitials(displayName);
+                                }}
+                              />
+                            ) : (
+                              getInitials(displayName)
+                            )}
                           </div>
                           <div>
                             <p className="text-sm font-black text-slate-900 tracking-tight">
@@ -145,6 +161,9 @@ const UpcomingArrivalsTable = ({ bookings, isLoading }) => {
                       {/* CỘT 4: PARTY (Số khách đi kèm) */}
                       <td className="py-5 text-center text-sm font-black text-slate-700 tabular-nums">
                         {booking.numGuests || booking.num_guests || 0}
+                      </td>
+                      <td className="py-5 text-center text-sm font-black text-slate-800">
+                        {booking.tableNumber || '—'}
                       </td>
                       {/* CỘT 5: STATUS */}
                       <td className="py-5 text-right">

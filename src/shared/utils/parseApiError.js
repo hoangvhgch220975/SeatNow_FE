@@ -1,89 +1,94 @@
+import i18n from '../../lib/i18n.js';
+
 /**
  * @file parseApiError.js
- * @description Chuẩn hoá Error và Success response từ API thành thông báo thân thiện với người dùng.
+ * @description Chuẩn hoá Error và Success response từ API thành thông báo đa ngôn ngữ thân thiện.
  */
 
 /* ─────────────────────────────────────────────────────────
    TỪ ĐIỂN THÔNG BÁO — Error & Success Codes
-   Bao gồm tất cả các mã BE trả về (SNAKE_UPPER_CASE).
-───────────────────────────────────────────────────────── */
+   Ánh xạ các mã từ Backend sang các key i18n trong file json.
+   Các key nằm trong mục "api.messages".
+ ───────────────────────────────────────────────────────── */
 const MESSAGE_MAP = {
   // ── Auth ──
-  'USER_NOT_FOUND':                   "We couldn't find an account with that phone number or email.",
-  'INVALID_PASSWORD':                 "The password you entered is incorrect. Please try again.",
-  'INVALID_CREDENTIALS':              "Invalid email/phone or password. Please try again.",
-  'EMAIL_ALREADY_EXISTS':             "This email address is already in use by another account.",
-  'PHONE_ALREADY_EXISTS':             "This phone number is already in use by another account.",
-  'ACCOUNT_SUSPENDED':                "Your account has been suspended. Please contact support.",
-  'ACCOUNT_NOT_FOUND':                "Account does not exist. Please check your phone number.",
+  'USER_NOT_FOUND':                   "api.messages.USER_NOT_FOUND",
+  'INVALID_PASSWORD':                 "api.messages.INVALID_PASSWORD",
+  'INVALID_CREDENTIALS':              "api.messages.INVALID_CREDENTIALS",
+  'EMAIL_ALREADY_EXISTS':             "api.messages.EMAIL_ALREADY_EXISTS",
+  'PHONE_ALREADY_EXISTS':             "api.messages.PHONE_ALREADY_EXISTS",
+  'ACCOUNT_SUSPENDED':                "api.messages.ACCOUNT_SUSPENDED",
+  'ACCOUNT_NOT_FOUND':                "api.messages.ACCOUNT_NOT_FOUND",
 
   // ── OTP ──
-  'OTP_INVALID':                      "The code you entered is incorrect. Please check and try again.",
-  'OTP_INCORRECT':                    "The code you entered is incorrect. Please check and try again.",
-  'OTP_EXPIRED':                      "This code has expired. Please request a new one.",
-  'OTP_SENT':                         "A verification code has been sent to your email.",
-  'OTP_VERIFIED':                     "Code verified successfully.",
+  'OTP_INVALID':                      "api.messages.OTP_INVALID",
+  'OTP_INCORRECT':                    "api.messages.OTP_INCORRECT",
+  'OTP_EXPIRED':                      "api.messages.OTP_EXPIRED",
+  'OTP_SENT':                         "api.messages.OTP_SENT",
+  'OTP_VERIFIED':                     "api.messages.OTP_VERIFIED",
 
   // ── Forgot Password ──
-  'OTP_SENT_TO_EMAIL':                "Reset code sent! Please check your registered email.",
-  'NEW_PASSWORD_SENT_TO_EMAIL':       "Done! A new password has been sent to your registered email. You can now sign in.",
-  'RESET_OTP_SENT':                   "Reset code sent! Please check your registered email.",
-  'PASSWORD_RESET_SUCCESS':           "Password reset successfully. Please check your email for the new password.",
-  'INVALID_RESET_OTP':                "Invalid or expired reset code. Please try again.",
+  'OTP_SENT_TO_EMAIL':                "api.messages.OTP_SENT_TO_EMAIL",
+  'NEW_PASSWORD_SENT_TO_EMAIL':       "api.messages.NEW_PASSWORD_SENT_TO_EMAIL",
+  'RESET_OTP_SENT':                   "api.messages.RESET_OTP_SENT",
+  'PASSWORD_RESET_SUCCESS':           "api.messages.PASSWORD_RESET_SUCCESS",
+  'INVALID_RESET_OTP':                "api.messages.INVALID_RESET_OTP",
 
   // ── Change Password ──
-  'PASSWORD_CHANGED_SUCCESSFULLY':    "Your password has been updated. Please sign in with your new password.",
-  'OLD_PASSWORD_INCORRECT':           "Current password is incorrect. Please try again.",
-  'PASSWORDS_DO_NOT_MATCH':           "Passwords do not match. Please check and try again.",
+  'PASSWORD_CHANGED_SUCCESSFULLY':    "api.messages.PASSWORD_CHANGED_SUCCESSFULLY",
+  'OLD_PASSWORD_INCORRECT':           "api.messages.OLD_PASSWORD_INCORRECT",
+  'PASSWORDS_DO_NOT_MATCH':           "api.messages.PASSWORDS_DO_NOT_MATCH",
 
   // ── Registration ──
-  'REGISTRATION_SUCCESS':             "Account created successfully! Welcome to SeatNow.",
-  'REGISTRATION_PENDING_OTP':         "Account created! Please verify the OTP sent to your email.",
+  'REGISTRATION_SUCCESS':             "api.messages.REGISTRATION_SUCCESS",
+  'REGISTRATION_PENDING_OTP':         "api.messages.REGISTRATION_PENDING_OTP",
+
+  // ── Participation/Partner ──
+  'SUBMISSION_SUCCESS':               "api.messages.SUBMISSION_SUCCESS",
 
   // ── Permission ──
-  'UNAUTHORIZED':                     "Your session has expired. Please sign in again.",
-  'FORBIDDEN':                        "You don't have permission to perform this action.",
-  'TOKEN_EXPIRED':                    "Your session has expired. Please sign in again.",
+  'UNAUTHORIZED':                     "api.messages.UNAUTHORIZED",
+  'FORBIDDEN':                        "api.messages.FORBIDDEN",
+  'TOKEN_EXPIRED':                    "api.messages.TOKEN_EXPIRED",
 
   // ── System ──
-  'INTERNAL_SERVER_ERROR':            "A server error occurred. Our team has been notified.",
-  'VALIDATION_ERROR':                 "Please check your input and try again.",
-  'RATE_LIMIT_EXCEEDED':              "Too many requests. Please wait a moment and try again.",
-  'MISSING_REQUIRED_FIELDS':          "Please fill in all required fields, including your business license.",
+  'INTERNAL_SERVER_ERROR':            "api.messages.INTERNAL_SERVER_ERROR",
+  'VALIDATION_ERROR':                 "api.messages.VALIDATION_ERROR",
+  'RATE_LIMIT_EXCEEDED':              "api.messages.RATE_LIMIT_EXCEEDED",
+  'MISSING_REQUIRED_FIELDS':          "api.messages.MISSING_REQUIRED_FIELDS",
 };
 
-/* ─────────────────────────────────────────────────────────
-   PARSE API ERROR
-   Dùng trong onError callback của useMutation / useQuery.
-───────────────────────────────────────────────────────── */
+/**
+ * @description Trả về thông báo lỗi đã được dịch.
+ */
 export const parseApiError = (error) => {
-  const defaultMessage = 'Something went wrong. Please try again later.';
+  const defaultKey = 'api.messages.DEFAULT_ERROR';
 
-  // Log để debug (Vietnamese comment) *)
   const errorData = error.response?.data;
   console.group('🚀 API Error Details');
   console.error('Core Message:', errorData?.message || error.message);
   if (errorData?.errors) console.table(errorData.errors);
-  console.log('Full Response:', errorData);
   console.groupEnd();
 
   if (!error.response) {
     return {
-      message: error.message || defaultMessage,
+      message: error.message || i18n.t(defaultKey),
       status: null,
       errors: null,
     };
   }
 
   const { data, status } = error.response;
+  const rawMessage = data?.message || '';
 
-  // Lấy raw message từ BE
-  const rawMessage = data?.message || defaultMessage;
+  // Tìm key i18n tương ứng, nếu không có thì dùng rawMessage
+  const i18nKey = MESSAGE_MAP[rawMessage];
+  let friendlyMessage = i18nKey ? i18n.t(i18nKey) : rawMessage;
 
-  // Map sang thông báo thân thiện, fallback về rawMessage nếu chưa có mapping
-  let friendlyMessage = MESSAGE_MAP[rawMessage] || rawMessage;
+  // Nếu friendlyMessage rỗng thì dùng mặc định
+  if (!friendlyMessage) friendlyMessage = i18n.t(defaultKey);
 
-  // Nếu có validation errors → gộp vào
+  // Gộp các chi tiết lỗi validation nếu có (Vietnamese comment)
   if (data?.errors && typeof data.errors === 'object') {
     const errorDetails = Object.values(data.errors).flat().join(', ');
     if (errorDetails) friendlyMessage = `${friendlyMessage}: ${errorDetails}`;
@@ -96,11 +101,11 @@ export const parseApiError = (error) => {
   };
 };
 
-/* ─────────────────────────────────────────────────────────
-   PARSE API SUCCESS
-   Dùng trong onSuccess callback — map các code thành text đẹp.
-───────────────────────────────────────────────────────── */
+/**
+ * @description Trả về thông báo thành công đã được dịch.
+ */
 export const parseApiSuccess = (response) => {
   const raw = response?.data?.message || response?.message || '';
-  return MESSAGE_MAP[raw] || raw;
+  const i18nKey = MESSAGE_MAP[raw];
+  return i18nKey ? i18n.t(i18nKey) : raw;
 };

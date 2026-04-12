@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file TimeSlotPicker.jsx
@@ -11,6 +12,9 @@ const TimeSlotPicker = ({
   onSelectSlot,
   openingHours // Nhận từ CreateBookingPage
 }) => {
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language || 'vi';
+
   // 1. Quản lý tháng đang xem (View Date)
   const [viewDate, setViewDate] = useState(new Date(selectedDate || new Date()));
 
@@ -53,13 +57,18 @@ const TimeSlotPicker = ({
       });
     }
     
-    return { days, monthName: viewDate.toLocaleString('en-US', { month: 'long' }), year };
-  }, [viewDate]);
+    return { 
+      days, 
+      monthName: viewDate.toLocaleString(currentLang === 'vi' ? 'vi-VN' : 'en-US', { month: 'long' }), 
+      year 
+    };
+  }, [viewDate, currentLang]);
 
   const timeSlots = useMemo(() => {
     if (!selectedDate || !openingHours) return [];
     
     const date = new Date(selectedDate);
+    // Luôn dùng en-US cho logic để khớp với keys trong database
     const dayName = date.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
     const isWeekend = [0, 6].includes(date.getDay()); // 0: Sun, 6: Sat
 
@@ -143,6 +152,10 @@ const TimeSlotPicker = ({
     setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + offset, 1));
   };
 
+  const dayLabels = currentLang === 'vi' 
+    ? ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'] 
+    : ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
   return (
     <div className="flex flex-col xl:flex-row gap-10">
       
@@ -150,7 +163,7 @@ const TimeSlotPicker = ({
       <div className="flex-1 space-y-4">
         <div className="flex items-center justify-between px-2">
           <label className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60">
-            Select Date
+            {t('booking.time_picker.select_date')}
           </label>
           <div className="flex gap-2">
             <button 
@@ -174,7 +187,7 @@ const TimeSlotPicker = ({
         {/* Lưới lịch */}
         <div className="bg-slate-50/50 p-4 rounded-[1.5rem] border border-slate-100">
           <div className="grid grid-cols-7 gap-1 mb-2">
-            {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+            {dayLabels.map((d, i) => (
               <div key={`${d}-${i}`} className="text-center text-[9px] font-black text-slate-400 py-2">{d}</div>
             ))}
           </div>
@@ -210,7 +223,7 @@ const TimeSlotPicker = ({
       {/* CỘT PHẢI: KHUNG GIỜ (Time Slots) */}
       <div className="w-full xl:w-[320px] space-y-4">
         <label className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60 px-2 block">
-          Preferred Time Slot
+          {t('booking.time_picker.preferred_slot')}
         </label>
         
         <div className="bg-slate-50/50 p-6 rounded-[1.5rem] border border-slate-100 min-h-[300px]">
@@ -241,7 +254,7 @@ const TimeSlotPicker = ({
             <div className="h-full flex flex-col items-center justify-center py-12 text-center space-y-3 opacity-60">
               <span className="material-symbols-outlined text-3xl text-slate-300">event_busy</span>
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                Restaurant Closed or No Slots available
+                {t('booking.time_picker.closed_no_slots')}
               </p>
             </div>
           )}

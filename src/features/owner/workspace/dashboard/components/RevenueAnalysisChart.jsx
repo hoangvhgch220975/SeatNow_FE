@@ -324,15 +324,19 @@ const RevenueAnalysisChart = ({ data, isLoading, period, onPeriodChange, restaur
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fontSize: 10, fontWeight: 900, fill: '#94a3b8', fontFamily: '"Plus Jakarta Sans", sans-serif' }}
+                tick={{ fontSize: 11, fontWeight: 800, fill: '#64748b', fontFamily: '"Plus Jakarta Sans", sans-serif' }}
                 dy={15}
               />
               <YAxis 
                 width={80}
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fontSize: 10, fontWeight: 900, fill: '#94a3b8', fontFamily: '"Plus Jakarta Sans", sans-serif' }}
-                tickFormatter={(val) => val >= 1000000 ? `${(val / 1000000).toFixed(1)}M` : val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}
+                tick={{ fontSize: 10, fontWeight: 800, fill: '#475569', fontFamily: '"Plus Jakarta Sans", sans-serif' }}
+                tickFormatter={(val) => 
+                  val >= 1000000 ? `${(val / 1000000).toFixed(1)}M ₫` : 
+                  val >= 1000 ? `${(val / 1000).toFixed(0)}K ₫` : 
+                  `${val} ₫`
+                }
               />
               <Tooltip 
                 contentStyle={{ 

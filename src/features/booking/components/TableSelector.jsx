@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file TableSelector.jsx
@@ -6,6 +7,8 @@ import React from 'react';
  * Phân biệt trạng thái bằng màu sắc và hiệu ứng hover.
  */
 const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
+  const { t } = useTranslation();
+
   // Định nghĩa màu sắc theo loại bàn (Type) và trạng thái
   // Định nghĩa màu sắc và hiệu ứng theo loại bàn (Type) và trạng thái
   const getTableTypeStyles = (type, isSelected, isOccupied, isHeld) => {
@@ -21,7 +24,7 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
     if (isSelected) {
         return 'bg-primary text-white shadow-[0_20px_50px_rgba(99,14,212,0.4)] ring-4 ring-primary/30 scale-110 z-30 rounded-xl';
     }
-
+    
     // 4. Bàn rảnh (Available) - Hiển thị theo loại bàn
     const isVIP = type?.toLowerCase() === 'vip';
     const isOutdoor = type?.toLowerCase() === 'outdoor';
@@ -43,10 +46,10 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
   
   const getMarkers = () => {
     switch(areaCategory) {
-      case 'ROOFTOP': return { label: 'Skyline Overlook', icon: 'location_city' };
-      case 'OUTDOOR': return { label: 'Garden Fountain', icon: 'park' };
-      case 'TERRACE': return { label: 'Main Street View', icon: 'streetview' };
-      default: return { label: 'Executive Stage', icon: 'theater_comedy' };
+      case 'ROOFTOP': return { label: t('booking.table_status.markers.rooftop'), icon: 'location_city' };
+      case 'OUTDOOR': return { label: t('booking.table_status.markers.outdoor'), icon: 'park' };
+      case 'TERRACE': return { label: t('booking.table_status.markers.terrace'), icon: 'streetview' };
+      default: return { label: t('booking.table_status.markers.default'), icon: 'theater_comedy' };
     }
   };
 
@@ -82,7 +85,7 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
                 const isOccupied = table.status === 'occupied';
                 const isHeld = table.status === 'held';
                 const styleClass = getTableTypeStyles(table.type, isSelected, isOccupied, isHeld);
-                const isOutdoor = table.type === 'outdoor';
+                const isOutdoorUser = table.type === 'outdoor';
 
                 return (
                   <div key={table.id} className="relative group/table preserve-3d">
@@ -95,7 +98,7 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
                         ${!isOccupied && !isHeld && !isSelected ? 'hover:shadow-xl hover:-translate-y-2' : ''}
                       `}
                     >
-                      <div className={`flex flex-col items-center justify-center ${isOutdoor && !isSelected ? '-rotate-45' : ''}`}>
+                      <div className={`flex flex-col items-center justify-center ${isOutdoorUser && !isSelected ? '-rotate-45' : ''}`}>
                         {/* Tên bàn - To và Đậm */}
                         <span className="text-sm font-black tracking-tight leading-none mb-1">
                           {table.tableNumber || table.number}
@@ -103,7 +106,7 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
                         
                         {/* Sức chứa - Badge nhỏ gọn */}
                         <div className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${isSelected ? 'bg-white/20' : 'bg-slate-500/5 text-slate-500'}`}>
-                          {table.capacity} Guests
+                          {table.capacity} {t('booking.table_status.guests')}
                         </div>
                       </div>
 
@@ -142,8 +145,8 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
                 <span className="material-symbols-outlined text-4xl text-slate-200">grid_off</span>
               </div>
               <div className="text-center">
-                <h4 className="text-base font-black text-slate-400 uppercase tracking-widest mb-1">Area is currently clear</h4>
-                <p className="text-[11px] font-medium text-slate-300">Try exploring our other signature wings.</p>
+                <h4 className="text-base font-black text-slate-400 uppercase tracking-widest mb-1">{t('booking.table_status.empty_title')}</h4>
+                <p className="text-[11px] font-medium text-slate-300">{t('booking.table_status.empty_desc')}</p>
               </div>
             </div>
           )}
@@ -151,7 +154,7 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
           {/* Visual Cues - Entrance Marker (Flat) */}
           <div className="mt-20 flex justify-center">
               <div className="px-14 py-4 bg-slate-900 text-white rounded-2xl shadow-xl flex items-center gap-3">
-                  <span className="text-[10px] font-black uppercase tracking-[0.6em] ml-2">Main Entrance</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.6em] ml-2">{t('booking.table_status.main_entrance')}</span>
                   <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
               </div>
           </div>
@@ -164,19 +167,19 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
         <div className="flex items-center gap-8 pr-12 border-r border-outline-variant/10">
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-md bg-slate-50 border border-slate-200"></div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Available</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">{t('booking.table_status.available')}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-md bg-primary ring-2 ring-primary/20 shadow-lg shadow-primary/10"></div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Selected</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">{t('booking.table_status.selected')}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-md bg-amber-100 border border-amber-400 animate-pulse ring-2 ring-amber-400/20"></div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Being Selected</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">{t('booking.table_status.being_selected')}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-md bg-rose-100 border border-rose-300 opacity-60"></div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-rose-500">Occupied</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-rose-500">{t('booking.table_status.occupied')}</span>
           </div>
         </div>
 
@@ -184,15 +187,15 @@ const TableSelector = ({ tables, selectedTableId, onSelectTable }) => {
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-md bg-slate-50 border border-slate-200"></div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Standard</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{t('booking.table_status.standard')}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-md bg-amber-100 border border-amber-200"></div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">VIP Table</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{t('booking.table_status.vip_table')}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-md bg-emerald-100 border border-emerald-200"></div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Outdoor Seating</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{t('booking.table_status.outdoor_seating')}</span>
           </div>
         </div>
       </div>

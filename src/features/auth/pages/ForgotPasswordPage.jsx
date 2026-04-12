@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import { Link } from 'react-router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ROUTES } from '../../../config/routes.js';
@@ -11,9 +12,9 @@ import {
 /**
  * @file ForgotPasswordPage.jsx
  * @description Trang Quên mật khẩu - 2 bước:
- *   Bước 1: POST /auth/forgot-password/request   { phone }
+ *   Bước 1: POST /auth/forgot-password/request { phone }
  *   Bước 2: POST /auth/forgot-password/verify-and-reset { phone, otp }
- *   → Hệ thống tự sinh mật khẩu mới (8 ký tự) và gửi về Email đăng ký.
+ *   → Hệ thống tự sinh mật khẩu mới và gửi về Email. Hỗ trợ đa ngôn ngữ.
  */
 
 const slideVariants = {
@@ -23,6 +24,7 @@ const slideVariants = {
 };
 
 const ForgotPasswordPage = () => {
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1);
   const [phone, setPhone] = useState('');
@@ -33,14 +35,17 @@ const ForgotPasswordPage = () => {
   const requestMutation = useForgotPasswordRequestMutation();
   const resetMutation = useForgotPasswordResetMutation();
 
-  /* ── Bước 1: Gửi OTP ── */
+  /* ── Bước 1: Gửi OTP (Vietnamese comment) ── */
   const handleRequestOtp = (e) => {
     e?.preventDefault();
     setPhoneError('');
     const cleaned = phone.replace(/\s/g, '');
-    if (!cleaned) { setPhoneError('Please enter your phone number.'); return; }
+    if (!cleaned) { 
+      setPhoneError(t('auth.validation.phone_required')); 
+      return; 
+    }
     if (!/^(0|\+84)[0-9]{9}$/.test(cleaned)) {
-      setPhoneError('Invalid format. Example: 0901234567');
+      setPhoneError(t('auth.validation.phone_invalid'));
       return;
     }
     requestMutation.mutate({ phone: cleaned }, {
@@ -48,12 +53,12 @@ const ForgotPasswordPage = () => {
     });
   };
 
-  /* ── Bước 2: Xác thực OTP ── */
+  /* ── Bước 2: Xác thực OTP (Vietnamese comment) ── */
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     setOtpError('');
     if (!otp.trim() || !/^\d{6}$/.test(otp.trim())) {
-      setOtpError('OTP must be exactly 6 digits.');
+      setOtpError(t('auth.validation.otp_invalid'));
       return;
     }
     resetMutation.mutate({ phone: phone.replace(/\s/g, ''), otp: otp.trim() });
@@ -70,7 +75,7 @@ const ForgotPasswordPage = () => {
   return (
     <div className="w-full max-w-[500px] mx-auto bg-white/80 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-white/40 shadow-2xl">
 
-      {/* Brand */}
+      {/* Brand (Nhãn hiệu) */}
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center mb-5">
           <div className="bg-primary p-2 rounded-xl flex items-center justify-center transform rotate-12 shadow-lg shadow-primary/20 mr-4">
@@ -78,15 +83,15 @@ const ForgotPasswordPage = () => {
           </div>
           <h1 className="text-3xl font-black text-primary tracking-tighter">SeatNow</h1>
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-1">Forgot Password</h2>
+        <h2 className="text-2xl font-bold text-slate-900 mb-1">{t('auth.forgot_password.title')}</h2>
         <p className="text-slate-400 text-sm font-medium">
           {step === 1
-            ? "Enter your registered phone number to receive a reset code."
-            : `We sent a 6-digit code to the email linked with ${phone}.`}
+            ? t('auth.forgot_password.step1_desc')
+            : t('auth.forgot_password.step2_desc', { phone })}
         </p>
       </div>
 
-      {/* Step indicator */}
+      {/* Step indicator (Chỉ báo bước) */}
       <div className="flex items-center gap-3 mb-8">
         {[1, 2].map((s) => (
           <React.Fragment key={s}>
@@ -102,7 +107,7 @@ const ForgotPasswordPage = () => {
         ))}
       </div>
 
-      {/* Forms */}
+      {/* Forms (Các biểu mẫu) */}
       <div className="overflow-hidden">
         <AnimatePresence mode="wait" custom={direction}>
 
@@ -116,10 +121,10 @@ const ForgotPasswordPage = () => {
               className="space-y-5"
               onSubmit={handleRequestOtp}
             >
-              {/* Phone input */}
+              {/* Phone input (Nhập số điện thoại) */}
               <div className="space-y-1.5">
                 <label htmlFor="phone" className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2">
-                  Phone Number
+                  {t('auth.forgot_password.phone_label')}
                 </label>
                 <div className="relative group">
                   <span className="absolute left-5 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-300 group-focus-within:text-primary transition-colors text-xl">
@@ -146,9 +151,9 @@ const ForgotPasswordPage = () => {
                 className="w-full bg-primary text-white font-bold py-4 rounded-full transition-all hover:bg-primary/90 active:scale-95 shadow-xl shadow-primary/20 text-sm flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {requestMutation.isPending ? (
-                  <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending...</>
+                  <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {t('auth.forgot_password.sending')}</>
                 ) : (
-                  <><span className="material-symbols-outlined text-base">send</span> Send Reset Code</>
+                  <><span className="material-symbols-outlined text-base">send</span> {t('auth.forgot_password.send_code')}</>
                 )}
               </button>
             </motion.form>
@@ -163,10 +168,10 @@ const ForgotPasswordPage = () => {
               className="space-y-5"
               onSubmit={handleVerifyOtp}
             >
-              {/* OTP input */}
+              {/* OTP input (Nhập mã OTP) */}
               <div className="space-y-1.5">
                 <label htmlFor="otp" className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2">
-                  One-Time Password (OTP)
+                  {t('auth.forgot_password.otp_label')}
                 </label>
                 <input
                   id="otp"
@@ -184,11 +189,11 @@ const ForgotPasswordPage = () => {
                 {otpError && <p className="text-red-500 text-[10px] font-bold px-2">{otpError}</p>}
               </div>
 
-              {/* Info note — hệ thống tự sinh mật khẩu */}
+              {/* Info note (Ghi chú hệ thống) */}
               <div className="flex items-start gap-2.5 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3">
                 <span className="material-symbols-outlined text-blue-400 text-base mt-0.5 flex-shrink-0">info</span>
                 <p className="text-blue-600 text-xs font-medium leading-relaxed">
-                  Once verified, a new 8-character password will be automatically generated and sent to your registered email.
+                  {t('auth.forgot_password.info_note')}
                 </p>
               </div>
 
@@ -198,26 +203,26 @@ const ForgotPasswordPage = () => {
                 className="w-full bg-primary text-white font-bold py-4 rounded-full transition-all hover:bg-primary/90 active:scale-95 shadow-xl shadow-primary/20 text-sm flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {resetMutation.isPending ? (
-                  <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Resetting Password...</>
+                  <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {t('auth.forgot_password.resetting_btn')}</>
                 ) : (
-                  <><span className="material-symbols-outlined text-base">lock_reset</span> Reset My Password</>
+                  <><span className="material-symbols-outlined text-base">lock_reset</span> {t('auth.forgot_password.reset_btn')}</>
                 )}
               </button>
 
-              {/* Back + Resend */}
+              {/* Back + Resend (Quay lại & Gửi lại) */}
               <div className="flex items-center justify-between pt-1">
                 <button type="button" onClick={goBack}
                   className="flex items-center gap-1 text-slate-400 hover:text-slate-600 text-[11px] font-bold uppercase tracking-wider transition-colors"
                 >
                   <span className="material-symbols-outlined text-sm">arrow_back</span>
-                  Change Number
+                  {t('auth.forgot_password.change_number')}
                 </button>
                 <button type="button"
                   disabled={requestMutation.isPending}
                   onClick={() => requestMutation.mutate({ phone: phone.replace(/\s/g, '') })}
                   className="text-primary hover:underline underline-offset-4 text-[11px] font-bold uppercase tracking-wider disabled:opacity-50 transition-all"
                 >
-                  {requestMutation.isPending ? 'Sending...' : 'Resend OTP'}
+                  {requestMutation.isPending ? t('auth.otp.resending') : t('auth.forgot_password.resend_otp') || t('auth.otp.resend_button')}
                 </button>
               </div>
             </motion.form>
@@ -225,14 +230,14 @@ const ForgotPasswordPage = () => {
         </AnimatePresence>
       </div>
 
-      {/* Back to login */}
+      {/* Back to login (Quay lại đăng nhập) */}
       <div className="mt-8 text-center">
         <Link
           to={ROUTES.LOGIN}
           className="inline-flex items-center gap-1.5 text-slate-400 hover:text-primary text-[10px] font-bold uppercase tracking-wider transition-colors"
         >
           <span className="material-symbols-outlined text-sm">arrow_back</span>
-          Back to Sign In
+          {t('auth.forgot_password.back_to_login')}
         </Link>
       </div>
     </div>

@@ -51,14 +51,15 @@ const SidebarRestaurantWorkspace = ({ restaurantName }) => {
       label: 'table_management',
       icon: 'table_restaurant',
       path: ROUTES.WORKSPACE_TABLES(idOrSlug),
-      comingSoon: true,
+      comingSoon: false,
     },
     {
       label: 'booking_management',
       icon: 'event_available',
       path: ROUTES.WORKSPACE_BOOKINGS(idOrSlug),
-      comingSoon: true,
+      comingSoon: false,
     },
+
     {
       label: 'revenue_stats',
       icon: 'analytics',

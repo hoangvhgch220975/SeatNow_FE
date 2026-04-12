@@ -15,7 +15,7 @@ const OwnerFooter = () => {
 
 
   return (
-    <footer className="mt-20 px-8 py-16 bg-white border-t border-slate-100 relative overflow-hidden">
+    <footer className="mt-4 px-8 py-10 bg-white border-t border-slate-100 relative overflow-hidden">
       {/* Decorative accent */}
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-600/5 rounded-full blur-[100px] pointer-events-none"></div>
 

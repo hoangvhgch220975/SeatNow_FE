@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useChangePasswordMutation } from '../../auth/hooks.js';
-import { changePasswordSchema } from '../../auth/schemas.js';
+import { getChangePasswordSchema } from '../../auth/schemas.js';
 
 /**
  * @file PasswordForm.jsx
@@ -20,7 +20,7 @@ const PasswordForm = () => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(changePasswordSchema),
+    resolver: zodResolver(getChangePasswordSchema(t)),
     defaultValues: {
       oldPassword: '',
       newPassword: '',

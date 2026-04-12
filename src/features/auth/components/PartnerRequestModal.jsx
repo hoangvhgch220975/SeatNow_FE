@@ -199,7 +199,7 @@ const PartnerRequestModal = ({ isOpen, onClose }) => {
                 )}
                 
                 <span className="text-xs font-bold text-slate-600">
-                  {isUploading ? 'Uploading...' : t('auth.partner.uploadHint')}
+                  {isUploading ? t('auth.partner.uploading') : t('auth.partner.uploadHint')}
                 </span>
               </label>
             </div>

@@ -17,7 +17,7 @@ import PortfolioActivityFeed from '../components/PortfolioActivityFeed';
  * @description Trang quản lý phân tích danh mục (Portfolio Analytics). Hỗ trợ đa ngôn ngữ.
  */
 const GlobalAnalyticsPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // 1. State quản lý thời gian (Vietnamese comment)
   const [dateRange, setDateRange] = useState({
@@ -82,10 +82,10 @@ const GlobalAnalyticsPage = () => {
   }, [myRestaurants, businessSummary]);
 
   return (
-    <div className="space-y-12 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 font-body">
+    <div className="space-y-10 pb-2 animate-in fade-in slide-in-from-bottom-4 duration-1000 font-body">
       
       {/* TITLE HEADER SECTION (Vietnamese comment) */}
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mt-6">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mt-2">
         <div className="space-y-1">
            <h1 className="text-[42px] font-black text-slate-900 tracking-tight leading-none">
              {t('common.global')} <span className="text-violet-600">{t('common.analytics')}</span>
@@ -141,7 +141,7 @@ const GlobalAnalyticsPage = () => {
              <div className="flex items-center gap-5">
                 <div className="flex flex-col items-center">
                    <span className="text-sm font-black text-slate-900 tracking-tight">
-                      {format(dateRange.start, 'MMM dd, yyyy')}
+                      {dateRange.start.toLocaleDateString(i18n.language.startsWith('vi') ? 'vi-VN' : 'en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                    </span>
                 </div>
                 
@@ -153,7 +153,7 @@ const GlobalAnalyticsPage = () => {
 
                 <div className="flex flex-col items-center">
                    <span className="text-sm font-black text-slate-900 tracking-tight">
-                      {format(dateRange.end, 'MMM dd, yyyy')}
+                      {dateRange.end.toLocaleDateString(i18n.language.startsWith('vi') ? 'vi-VN' : 'en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                    </span>
                 </div>
              </div>

@@ -181,7 +181,7 @@ const BookingVolumeChart = ({ data, isLoading, restaurant, selectedDate, onDateC
                 dataKey="hour" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fontSize: 9, fontWeight: 800, fill: '#94a3b8', fontFamily: '"Plus Jakarta Sans", sans-serif' }}
+                tick={{ fontSize: 11, fontWeight: 800, fill: '#64748b', fontFamily: '"Plus Jakarta Sans", sans-serif' }}
                 dy={10}
               />
               <YAxis hide />

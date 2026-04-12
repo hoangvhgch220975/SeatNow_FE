@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ROUTES } from '../../../config/routes.js';
 import googleLogo from '../../../assets/logos/logo-google.png';
-import { loginSchema } from '../schemas.js';
+import { getLoginSchema } from '../schemas.js';
 
 /**
  * @file LoginForm.jsx
@@ -20,7 +20,7 @@ const LoginForm = ({ onSubmit, isLoading, onGoogleLogin, isGooglePending }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(getLoginSchema(t)),
     defaultValues: {
       identifier: '',
       password: '',

@@ -86,7 +86,7 @@ const CreateRestaurantPage = () => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
     if (formData.imagesJson.length + files.length > 5) {
-      toast.error('Maximum 5 images allowed');
+      toast.error(t('owner_portal.create_restaurant.form.max_images_error'));
       return;
     }
 
@@ -97,9 +97,9 @@ const CreateRestaurantPage = () => {
         ...prev,
         imagesJson: [...prev.imagesJson, ...urls]
       }));
-      toast.success('Images uploaded successfully');
+      toast.success(t('owner_portal.create_restaurant.form.images_upload_success'));
     } catch (err) {
-      toast.error('Failed to upload some images');
+      toast.error(t('owner_portal.create_restaurant.form.images_upload_error'));
     }
   };
 
@@ -112,16 +112,16 @@ const CreateRestaurantPage = () => {
 
   const validateStep = () => {
     if (currentStep === 1) {
-      if (!formData.name) return 'Restaurant name is required';
-      if (!formData.email) return 'Email is required';
-      if (!formData.phone) return 'Phone is required';
-      if (!formData.address) return 'Address and Map position are required';
+      if (!formData.name) return t('owner_portal.create_restaurant.form.name_required');
+      if (!formData.email) return t('owner_portal.create_restaurant.form.email_required');
+      if (!formData.phone) return t('owner_portal.create_restaurant.form.phone_required');
+      if (!formData.address) return t('owner_portal.create_restaurant.form.address_required');
     }
     if (currentStep === 2) {
-      if (formData.cuisineTypeJson.length === 0) return 'Please select at least one cuisine type';
+      if (formData.cuisineTypeJson.length === 0) return t('owner_portal.create_restaurant.form.cuisine_required');
     }
     if (currentStep === 3) {
-      if (formData.imagesJson.length === 0) return 'Please upload at least one image';
+      if (formData.imagesJson.length === 0) return t('owner_portal.create_restaurant.form.image_required');
     }
     return null;
   };
@@ -176,7 +176,7 @@ const CreateRestaurantPage = () => {
         toast.success(t('owner_portal.create_restaurant.form.success_title'));
       },
       onError: (err) => {
-        toast.error(err?.response?.data?.message || 'Failed to create restaurant');
+        toast.error(err?.response?.data?.message || t('owner_portal.create_restaurant.form.create_failed'));
       }
     });
   };
@@ -315,7 +315,7 @@ const CreateRestaurantPage = () => {
           htmlFor="image-upload"
           className="px-6 py-2.5 bg-white border border-outline-variant rounded-xl text-xs font-black shadow-sm hover:shadow-md transition-all cursor-pointer active:scale-95"
         >
-          {isImageUploading ? 'UPLOADING...' : 'SELECT PHOTOS'}
+          {isImageUploading ? t('owner_portal.create_restaurant.form.uploading') : t('owner_portal.create_restaurant.form.select_photos')}
         </label>
       </div>
 
@@ -353,9 +353,9 @@ const CreateRestaurantPage = () => {
       <div className="p-6 bg-orange-50/50 border border-orange-200/50 rounded-3xl flex items-start gap-4">
         <AlertCircle className="text-orange-600 shrink-0" size={24} />
         <div className="space-y-1">
-          <p className="text-sm font-black text-orange-950 uppercase tracking-tight">Final Verification Step</p>
+          <p className="text-sm font-black text-orange-950 uppercase tracking-tight">{t('owner_portal.create_restaurant.form.final_step_title')}</p>
           <p className="text-xs text-orange-900/70 font-medium leading-relaxed">
-            By submitting, you confirm that all provided information is accurate. SeatNow Administration will review your application within 24-48 hours. Once approved, your venue will go LIVE on the global network.
+            {t('owner_portal.create_restaurant.form.final_step_desc')}
           </p>
         </div>
       </div>
@@ -472,7 +472,7 @@ const CreateRestaurantPage = () => {
             }`}
           >
             <ArrowLeft size={16} />
-            Back
+            {t('owner_portal.create_restaurant.form.back')}
           </button>
 
           {currentStep < 4 ? (
@@ -480,7 +480,7 @@ const CreateRestaurantPage = () => {
               onClick={nextStep}
               className="group flex items-center gap-2 px-10 py-4 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary-container active:scale-95 transition-all shadow-xl shadow-primary/20"
             >
-              Continue
+              {t('owner_portal.create_restaurant.form.continue')}
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
           ) : (

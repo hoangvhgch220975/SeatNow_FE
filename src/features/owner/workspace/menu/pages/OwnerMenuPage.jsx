@@ -11,6 +11,7 @@ import Pagination from '@/shared/ui/Pagination';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
+import ConfirmDialog from '@/shared/ui/ConfirmDialog';
 
 /**
  * Trang Quản lý Thực đơn của Chủ nhà hàng
@@ -46,6 +47,15 @@ const OwnerMenuPage = () => {
     onOpen: onOpenDetail, 
     onClose: onCloseDetail 
   } = useDisclosure();
+
+  // Điều khiển Dialog xác nhận xóa (Vietnamese comment)
+  const { 
+    isOpen: isDeleteOpen, 
+    onOpen: onOpenDelete, 
+    onClose: onCloseDelete 
+  } = useDisclosure();
+  const [itemIdToDelete, setItemIdToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Logic Debounce: Cập nhật bộ lọc tìm kiếm sau 500ms không hoạt động
   useEffect(() => {
@@ -123,13 +133,24 @@ const OwnerMenuPage = () => {
     onOpenDetail();
   };
 
-  const handleDeleteClick = async (itemId) => {
-    if (window.confirm(t('common.confirm_delete'))) {
-      try {
-        await deleteItem(itemId);
-      } catch (error) {
-        // Lỗi đã được xử lý trong toast của hook tùy chỉnh
-      }
+  const handleDeleteClick = (itemId) => {
+    // Lưu ID và mở dialog xác nhận (Vietnamese comment)
+    setItemIdToDelete(itemId);
+    onOpenDelete();
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!itemIdToDelete) return;
+    
+    setIsDeleting(true);
+    try {
+      await deleteItem(itemIdToDelete);
+      onCloseDelete();
+      setItemIdToDelete(null);
+    } catch (error) {
+      // Lỗi đã được xử lý trong toast của hook tùy chỉnh (Vietnamese comment)
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -223,6 +244,18 @@ const OwnerMenuPage = () => {
         isOpen={isDetailOpen}
         onClose={onCloseDetail}
         item={viewingItem}
+      />
+
+      {/* Dialog xác nhận xóa món ăn (Vietnamese comment) */}
+      <ConfirmDialog
+        isOpen={isDeleteOpen}
+        onClose={onCloseDelete}
+        onConfirm={handleConfirmDelete}
+        isLoading={isDeleting}
+        title={t('common.delete')}
+        message={t('menu_mgmt.confirm_delete')}
+        confirmText={t('common.delete')}
+        type="danger"
       />
     </div>
   );

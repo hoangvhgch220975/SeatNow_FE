@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file VenuePerformanceTable.jsx
  * @description Bảng so sánh hiệu suất giữa các nhà hàng trong Portfolio.
  */
 const VenuePerformanceTable = ({ restaurants, isLoading }) => {
+  const { t } = useTranslation();
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('vi-VN', { 
       style: 'currency', 
@@ -37,11 +39,11 @@ const VenuePerformanceTable = ({ restaurants, isLoading }) => {
     >
       <div className="p-10 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
         <div className="space-y-1">
-          <h3 className="text-xl font-black text-slate-900 tracking-tight">Portfolio Asset Ranking</h3>
-          <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Comparative Performance Analysis</p>
+          <h3 className="text-xl font-black text-slate-900 tracking-tight">{t('analytics.asset_ranking')}</h3>
+          <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{t('analytics.comparative_analysis')}</p>
         </div>
         <button className="bg-white border border-slate-200 px-6 py-3 rounded-2xl text-[10px] font-black text-slate-500 uppercase tracking-widest hover:border-violet-300 hover:text-violet-600 transition-all shadow-sm">
-           Export Analysis
+           {t('analytics.export_analysis')}
         </button>
       </div>
 
@@ -49,11 +51,11 @@ const VenuePerformanceTable = ({ restaurants, isLoading }) => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-white border-b border-slate-50">
-              <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Venue Entity</th>
-              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Revenue</th>
-              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Successful Bookings</th>
-              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Efficiency</th>
-              <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Momentum</th>
+              <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('analytics.table_venue_entity')}</th>
+              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('analytics.table_total_revenue')}</th>
+              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('analytics.table_successful_bookings')}</th>
+              <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('analytics.table_efficiency')}</th>
+              <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">{t('analytics.table_momentum')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
@@ -71,9 +73,9 @@ const VenuePerformanceTable = ({ restaurants, isLoading }) => {
                     <div>
                        <h5 className="font-bold text-slate-800 text-sm group-hover:text-violet-600 transition-colors">{venue.name}</h5>
                        <div className="flex items-center gap-2">
-                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Rank #{idx+1}</span>
-                         <span className="w-1 h-1 rounded-full bg-slate-300" />
-                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Portfolio Pillar</span>
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('analytics.rank_prefix')}{idx+1}</span>
+                          <span className="w-1 h-1 rounded-full bg-slate-300" />
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('analytics.portfolio_pillar')}</span>
                        </div>
                     </div>
                   </div>
@@ -84,13 +86,13 @@ const VenuePerformanceTable = ({ restaurants, isLoading }) => {
                 <td className="px-6 py-6">
                   <div className="flex items-center gap-3">
                     <span className="text-sm font-black text-slate-700">{venue.bookings}</span>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Units</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('analytics.units')}</span>
                   </div>
                 </td>
                 <td className="px-6 py-6">
                    <div className="flex flex-col gap-1.5">
                       <div className="flex items-center justify-between w-28">
-                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Success Rate</span>
+                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('analytics.success_rate')}</span>
                          <span className="text-xs font-black text-emerald-500">{(venue.ratingAvg * 20).toFixed(0)}%</span>
                       </div>
                       <div className="w-28 h-1 bg-slate-100 rounded-full overflow-hidden">

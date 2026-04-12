@@ -66,6 +66,7 @@ const OwnerDashboardPage = () => {
   const { 
     restaurant, 
     stats, 
+    dailyStats,
     revenue, 
     hourly, 
     recentBookings, 
@@ -117,8 +118,8 @@ const OwnerDashboardPage = () => {
         {/* 1. Lượt đặt bàn (Total Bookings) */}
         <KPIStatCard 
           title={t('workspace.dashboard.total_bookings', { defaultValue: 'Total Bookings' })}
-          value={stats?.totalBookings || 0}
-          trend={stats?.comparisons?.bookingsGrowth ? `${stats.comparisons.bookingsGrowth > 0 ? '+' : ''}${stats.comparisons.bookingsGrowth}%` : undefined}
+          value={dailyStats?.totalBookings || 0}
+          trend={dailyStats?.comparisons?.bookingsGrowth ? `${dailyStats.comparisons.bookingsGrowth > 0 ? '+' : ''}${dailyStats.comparisons.bookingsGrowth}%` : undefined}
           icon="calendar_today"
           bgColorClass="bg-purple-50"
           iconColorClass="text-primary"
@@ -127,8 +128,8 @@ const OwnerDashboardPage = () => {
         {/* 2. Doanh thu thực nhận (Net Revenue) */}
         <KPIStatCard 
           title={t('workspace.dashboard.net_revenue', { defaultValue: 'Net Revenue' })}
-          value={formatCurrency(stats?.totalRevenue)}
-          trend={stats?.comparisons?.revenueGrowth ? `${stats.comparisons.revenueGrowth > 0 ? '+' : ''}${stats.comparisons.revenueGrowth}%` : undefined}
+          value={formatCurrency(dailyStats?.totalRevenue)}
+          trend={dailyStats?.comparisons?.revenueGrowth ? `${dailyStats.comparisons.revenueGrowth > 0 ? '+' : ''}${dailyStats.comparisons.revenueGrowth}%` : undefined}
           icon="payments"
           bgColorClass="bg-emerald-50"
           iconColorClass="text-emerald-600"
@@ -137,7 +138,7 @@ const OwnerDashboardPage = () => {
         {/* 3. Doanh thu gộp (Gross Revenue) */}
         <KPIStatCard 
           title={t('workspace.dashboard.gross_revenue', { defaultValue: 'Gross Revenue' })}
-          value={formatCurrency(stats?.totalGrossRevenue)}
+          value={formatCurrency(dailyStats?.totalGrossRevenue)}
           subtext={t('workspace.dashboard.before_commission', { defaultValue: 'Before Commission' })}
           icon="account_balance_wallet"
           bgColorClass="bg-blue-50"
@@ -147,8 +148,8 @@ const OwnerDashboardPage = () => {
         {/* 4. Hiệu suất vận hành (Cancellation Rate) */}
         <KPIStatCard 
           title={t('workspace.dashboard.cancellation_rate', { defaultValue: 'Cancellation Rate' })}
-          value={`${((stats?.cancellationRate || 0) * 100).toFixed(1)}%`}
-          subtext={t('workspace.dashboard.no_shows', { defaultValue: '{{count}} No-shows', count: stats?.totalNoShow || 0 })}
+          value={`${((dailyStats?.cancellationRate || 0) * 100).toFixed(1)}%`}
+          subtext={t('workspace.dashboard.no_shows', { defaultValue: '{{count}} No-shows', count: dailyStats?.totalNoShow || 0 })}
           icon="event_busy"
           bgColorClass="bg-rose-50"
           iconColorClass="text-rose-600"
@@ -197,7 +198,7 @@ const OwnerDashboardPage = () => {
         
         {/* Right Column: Analytics & Space (4/12) */}
         <div className="col-span-12 lg:col-span-4 space-y-6 flex flex-col">
-          <GuestAnalysisBreakdown guestSizeCounts={stats?.guestSizeCounts} isLoading={isLoading} />
+          <GuestAnalysisBreakdown guestSizeCounts={dailyStats?.guestSizeCounts} isLoading={isLoading} />
           <LiveFloorPlan 
             tables={tables} 
             bookings={dayBookings} 

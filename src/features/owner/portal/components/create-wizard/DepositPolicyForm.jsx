@@ -46,7 +46,7 @@ const DepositPolicyForm = ({ data = {}, onChange }) => {
               {t('owner_portal.create_restaurant.form.deposit_enabled')}
             </h4>
             <p className="text-xs text-on-surface-variant/60 font-medium tracking-tight">
-              Protects against late cancellations and no-shows.
+              {t('owner_portal.create_restaurant.form.deposit_protection_desc')}
             </p>
           </div>
         </div>
@@ -94,7 +94,7 @@ const DepositPolicyForm = ({ data = {}, onChange }) => {
                 onChange={(e) => handleChange('minGuests', parseInt(e.target.value) || 1)}
                 className="w-20 h-12 px-4 bg-surface-container-low border border-outline-variant outline-none rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary font-bold text-lg text-center"
               />
-              <span className="text-sm font-bold text-on-surface-variant/60 uppercase tracking-tighter">guests +</span>
+              <span className="text-sm font-bold text-on-surface-variant/60 uppercase tracking-tighter">{t('owner_portal.create_restaurant.form.guests_plus')}</span>
             </div>
           </div>
 
@@ -130,8 +130,8 @@ const DepositPolicyForm = ({ data = {}, onChange }) => {
             </div>
             <p className="text-[10px] text-on-surface-variant/50 font-medium italic">
               {data.type === 'fixed' 
-                ? 'Total amount charged once per booking regardless of party size.' 
-                : 'Amount is multiplied by the number of guests in the reservation.'}
+                ? t('owner_portal.create_restaurant.form.policy_fixed_desc') 
+                : t('owner_portal.create_restaurant.form.policy_person_desc')}
             </p>
           </div>
         </div>

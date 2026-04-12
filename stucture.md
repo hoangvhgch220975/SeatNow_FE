@@ -267,11 +267,13 @@ seatnow-fe/
 │ │ │ │ ├─ pages/
 │ │ │ │ │ └─ OwnerDashboardPage.jsx // Trang Overview chính (Bento Layout)
 │ │ │ │ └─ components/
-│ │ │ │ ├─ KPIStatCard.jsx // Thẻ chỉ số: Doanh thu, Lượt đặt, Tỉ lệ lấp đầy
-│ │ │ │ ├─ RevenueAnalysisChart.jsx // Biểu đồ doanh thu (Recharts)
-│ │ │ │ ├─ BookingVolumeChart.jsx // Biểu đồ lượng đặt chỗ theo giờ (Recharts)
-│ │ │ │ ├─ UpcomingArrivalsTable.jsx // Danh sách khách sắp đến trong ngày
-│ │ │ │ └─ LiveFloorPlan.jsx // Sơ đồ bàn trực tiếp thời gian thực
+│ │ │ │     ├─ KPIStatCard.jsx // Thẻ chỉ số: Doanh thu, Lượt đặt, Tỉ lệ lấp đầy
+│ │ │ │     ├─ RevenueAnalysisChart.jsx // Biểu đồ doanh thu (Recharts)
+│ │ │ │     ├─ BookingVolumeChart.jsx // Biểu đồ lượng đặt chỗ theo giờ (Recharts)
+│ │ │ │     ├─ UpcomingArrivalsTable.jsx // Danh sách khách sắp đến trong ngày (link sang /bookings)
+│ │ │ │     ├─ GuestAnalysisBreakdown.jsx // Phân tích cơ cấu nhóm khách (Couple/SmallGroup/Party)
+│ │ │ │     └─ LiveFloorPlan.jsx // Sơ đồ bàn trực tiếp thời gian thực
+
 │ │ │ │
 │ │ │ ├─ restaurant-profile/
 │ │ │ │ ├─ pages/
@@ -299,22 +301,29 @@ seatnow-fe/
 |   |       └─ MenuItemForm.jsx // Biểu mẫu nhập liệu món ăn (i18n, reset logic)
 
 │ │ │ │
-│ │ │ ├─ tables/
-│ │ │ │ ├─ api.js
+│ │ │ ├─ tables/ // Phân hệ quản lý sơ đồ bàn (Modular Architecture)
+│ │ │ │ ├─ api.js // API: Lấy danh sách, thống kê, CRUD bàn
+│ │ │ │ ├─ hooks.js // useTables, useTableStats: Hooks React Query
 │ │ │ │ ├─ pages/
-│ │ │ │ │ └─ OwnerTablesPage.jsx
+│ │ │ │ │ └─ OwnerTablesPage.jsx // Trang quản lý chính (Orchestrator)
 │ │ │ │ └─ components/
-│ │ │ │ ├─ TableList.jsx
-│ │ │ │ └─ TableForm.jsx
+│ │ │ │     ├─ TableStats.jsx // Chân trang thống kê (KPIs)
+│ │ │ │     ├─ TableFilters.jsx // Bộ lọc tầng & tìm kiếm
+│ │ │ │     ├─ TableGrid.jsx // Chế độ hiển thị lưới (Grid) & TableCard
+│ │ │ │     ├─ TableList.jsx // Chế độ hiển thị danh sách (List View)
+│ │ │ │     └─ TableForm.jsx // Biểu mẫu nhập liệu Modal (Add/Edit)
 │ │ │ │
-│ │ │ ├─ bookings/
-│ │ │ │ ├─ api.js
+│ │ │ ├─ bookings/ // Phân hệ quản lý đặt bàn cho từng nhà hàng (New)
+│ │ │ │ ├─ api.js // API: getBookings, getStatsSummary, confirm/arrive/complete/noShow/cancel
 │ │ │ │ ├─ pages/
-│ │ │ │ │ ├─ OwnerRestaurantBookingsPage.jsx
-│ │ │ │ │ └─ OwnerBookingDetailPage.jsx
+│ │ │ │ │ ├─ OwnerBookingsPage.jsx // Trang quản lý booking chính (Orchestrator)
+│ │ │ │ │ └─ OwnerBookingDetailPage.jsx // (Placeholder - chưa triển khai)
 │ │ │ │ └─ components/
-│ │ │ │ ├─ BookingTable.jsx
-│ │ │ │ └─ BookingStatusActions.jsx
+│ │ │ │     ├─ BookingStats.jsx // 3 thẻ KPI (Tổng/Hoàn thành/Hủy+NoShow) theo ngày chọn
+│ │ │ │     ├─ BookingFilters.jsx // Date picker + 7 tabs lọc trạng thái (i18n)
+│ │ │ │     ├─ BookingTable.jsx // Bảng 10 dòng/trang: tên khách, mã code, giờ, số khách, bàn, cọc, status, actions
+│ │ │ │     └─ BookingStatusActions.jsx // Nút chuyển trạng thái: Pending→Confirm, Confirmed→Arrive, Arrived→Complete
+
 │ │ │ │
 │ │ │ ├─ revenue/
 │ │ │ │ ├─ api.js

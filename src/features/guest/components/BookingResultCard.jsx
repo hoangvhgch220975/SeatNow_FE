@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getRestaurantById, getRestaurantTables } from '../../restaurants/api'; // Thêm getRestaurantTables
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../config/routes.js';
@@ -8,6 +9,7 @@ import { useCancelBookingByGuest } from '../../booking/hooks.js';
 import CancelBookingDialog from '../../booking/components/CancelBookingDialog.jsx';
 
 const BookingResultCard = ({ bookingData, onReset }) => {
+  const { t, i18n } = useTranslation();
   const [showQR, setShowQR] = useState(false);
   const [localRestaurantName, setLocalRestaurantName] = useState('Restaurant');
   const [enrichedTable, setEnrichedTable] = useState(null); // State lưu bàn sau khi tìm nạp chi tiết
@@ -75,8 +77,8 @@ const BookingResultCard = ({ bookingData, onReset }) => {
   
   // Logic hiển thị: Hiện Loại bàn (Section) ngay cả khi chưa có số cụ thể
   const tableDisplay = tableNumber 
-    ? `Table No. ${tableNumber} (${tableType || 'Standard'})` 
-    : (tableType ? `${tableType} Section` : (tableLocation || 'Assigned by staff'));
+    ? t('booking.lookup.result.table_no', { number: tableNumber }) + ` (${tableType || 'Standard'})` 
+    : (tableType ? t('booking.lookup.result.table_area', { type: tableType }) : (tableLocation || t('booking.lookup.result.table_pending')));
 
   // Thông tin tiền cọc (Bookings: depositRequired, depositAmount, depositPaid)
   const depositAmount = getV(actualData, 'depositAmount', 'DepositAmount') || 0;
@@ -111,7 +113,11 @@ const BookingResultCard = ({ bookingData, onReset }) => {
     try {
       const d = new Date(dateStr);
       if (isNaN(d.getTime())) return dateStr;
-      return new Intl.DateTimeFormat('en-GB', {
+      
+      // Determine locale based on i18n
+      const currentLocale = i18n.language === 'vi' ? 'vi-VN' : 'en-GB';
+      
+      return new Intl.DateTimeFormat(currentLocale, {
         weekday: 'short', month: 'short', day: '2-digit', year: 'numeric'
       }).format(d);
     } catch { return dateStr; }
@@ -145,12 +151,12 @@ const BookingResultCard = ({ bookingData, onReset }) => {
       },
       {
         onSuccess: () => {
-          toast.success('Your reservation has been cancelled.', { icon: '✖️' });
+          toast.success(t('booking.actions.cancel.success'), { icon: '✖️' });
           setIsCancelDialogOpen(false);
           if (onReset) onReset(); 
         },
         onError: (err) => {
-          toast.error(err?.response?.data?.message || 'Failed to cancel. Please check your phone number.');
+          toast.error(err?.response?.data?.message || t('booking.actions.cancel.error'));
         }
       }
     );
@@ -182,7 +188,6 @@ const BookingResultCard = ({ bookingData, onReset }) => {
   };
 
   // 3. FLAGS & UI ALIASES (Bổ sung để fix lỗi ReferenceError)
-  const isPending = status === 'PENDING';
   const isConfirmed = status === 'CONFIRMED';
   const restaurantName = localRestaurantName;
 
@@ -199,9 +204,11 @@ const BookingResultCard = ({ bookingData, onReset }) => {
               <div className="flex items-center justify-between mb-8">
                 <span className={`inline-flex items-center px-4 py-1.5 rounded-full font-bold text-xs tracking-wider uppercase ${status.toLowerCase() === 'pending' ? 'bg-yellow-50 text-yellow-600' : status.toLowerCase() === 'cancelled' ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>
                   <span className={`w-2 h-2 rounded-full mr-2 ${status.toLowerCase() === 'pending' ? 'bg-yellow-500' : status.toLowerCase() === 'cancelled' ? 'bg-red-500' : 'bg-green-500'}`}></span>
-                  {status}
+                  {t(`booking.lookup.status.${status.toLowerCase()}`)}
                 </span>
-                <span className="text-slate-500 font-medium text-sm">Booking ID: <span className="font-bold text-slate-800">#{displayBookingCode}</span></span>
+                <span className="text-slate-500 font-medium text-sm">
+                  {t('booking.lookup.result.booking_id')}: <span className="font-bold text-slate-800">#{displayBookingCode}</span>
+                </span>
               </div>
               
               <h2 className="text-3xl font-bold text-slate-900 mb-8 font-headline">{restaurantName}</h2>
@@ -212,7 +219,9 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                     <span className="material-symbols-outlined shrink-0">calendar_today</span>
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Date & Time</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                      {t('booking.lookup.result.date_time')}
+                    </p>
                     <p className="text-slate-900 font-semibold">{bookingDate}</p>
                     <p className="text-slate-500 text-sm">{bookingTime}</p>
                   </div>
@@ -222,9 +231,11 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                     <span className="material-symbols-outlined shrink-0">group</span>
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Guests</p>
-                    <p className="text-slate-900 font-semibold">{numGuests} People</p>
-                    <p className="text-slate-500 text-sm italic">Standard reservation</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                      {t('booking.lookup.result.guests')}
+                    </p>
+                    <p className="text-slate-900 font-semibold">{numGuests} {t('booking.lookup.result.guests_suffix')}</p>
+                    <p className="text-slate-500 text-sm italic">{t('booking.lookup.result.guests_standard')}</p>
                   </div>
                 </div>
 
@@ -234,12 +245,14 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                     <span className="material-symbols-outlined shrink-0">table_restaurant</span>
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Table Details</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                      {t('booking.lookup.result.table_details')}
+                    </p>
                     <p className="text-slate-900 font-semibold">
-                      {tableNumber ? `Table No. ${tableNumber}` : 'Assignment Pending'}
+                      {tableNumber ? t('booking.lookup.result.table_no', { number: tableNumber }) : t('booking.lookup.result.table_pending')}
                     </p>
                     <p className="text-primary text-sm font-medium capitalize">
-                      {tableType ? `${tableType} Area` : 'Standard Seating'}
+                      {tableType ? t('booking.lookup.result.table_area', { type: tableType }) : t('booking.lookup.result.table_standard_seating')}
                     </p>
                   </div>
                 </div>
@@ -251,11 +264,15 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                       <span className="material-symbols-outlined shrink-0">{isDepositPaid ? 'payments' : 'account_balance_wallet'}</span>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Deposit Status</p>
-                      <p className={`font-semibold ${isDepositPaid ? 'text-emerald-700' : 'text-amber-700'}`}>
-                        {isDepositPaid ? 'Paid' : 'Payment Required'}
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                        {t('booking.lookup.result.deposit_status')}
                       </p>
-                      <p className="text-slate-500 text-sm">{Number(depositAmount).toLocaleString('vi-VN')} VNĐ</p>
+                      <p className={`font-semibold ${isDepositPaid ? 'text-emerald-700' : 'text-amber-700'}`}>
+                        {isDepositPaid ? t('booking.lookup.result.deposit_paid') : t('booking.lookup.result.deposit_unpaid')}
+                      </p>
+                      <p className="text-slate-500 text-sm shadow-[#630ED4]/10">
+                        {Number(depositAmount).toLocaleString(i18n.language === 'vi' ? 'vi-VN' : 'en-US')} VNĐ
+                      </p>
                     </div>
                   </div>
                 )}
@@ -266,12 +283,14 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                     <span className="material-symbols-outlined shrink-0">contact_mail</span>
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Contact Details</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                      {t('booking.lookup.result.contact_details')}
+                    </p>
                     <p className="text-slate-900 font-semibold truncate max-w-[170px]">
-                      Mr/Mrs: {getV(actualData, 'guestName', 'GuestName') || 'Guest'}
+                      {t('booking.lookup.result.mr_mrs')}: {getV(actualData, 'guestName', 'GuestName') || 'Guest'}
                     </p>
                     <p className="text-slate-500 text-sm italic font-medium">
-                      Phone: {getV(actualData, 'guestPhone', 'GuestPhone', 'phone') || 'N/A'}
+                      {t('booking.lookup.result.phone')}: {getV(actualData, 'guestPhone', 'GuestPhone', 'phone') || 'N/A'}
                     </p>
                   </div>
                 </div>
@@ -282,7 +301,9 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                 <div className="mt-8 p-6 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="material-symbols-outlined text-slate-400 text-sm">sticky_note_2</span>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Special Requests</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                      {t('booking.lookup.result.special_requests')}
+                    </p>
                   </div>
                   <p className="text-slate-600 text-sm leading-relaxed italic">"{specialRequests}"</p>
                 </div>
@@ -293,23 +314,25 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                 <div className="mt-6 p-6 bg-rose-50 border border-rose-100 rounded-2xl animate-in fade-in slide-in-from-bottom-2 duration-500">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="material-symbols-outlined text-rose-500 text-sm whitespace-nowrap">error_outline</span>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-rose-500">Cancellation Reason</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-rose-500">
+                      {t('booking.lookup.result.cancellation_reason')}
+                    </p>
                   </div>
                   <p className="text-rose-950 text-sm font-bold leading-relaxed">
-                    {cancellationReason || "This booking has been cancelled."}
+                    {cancellationReason || t('booking.lookup.result.cancelled_notice')}
                   </p>
                 </div>
               )}
               
               <div className="mt-12 pt-8 border-t border-slate-100 flex flex-wrap items-center gap-6">
-                {isPending ? (
+                {status.toLowerCase() === 'pending' ? (
                   <>
                     <button 
                       onClick={handleModify}
                       className="group flex items-center gap-2 px-5 py-2.5 rounded-xl text-primary font-bold hover:bg-primary/5 hover:ring-1 hover:ring-primary/20 hover:shadow-sm active:scale-95 transition-all"
                     >
                       <span className="material-symbols-outlined text-xl group-hover:rotate-12 transition-transform">edit</span>
-                      Modify Request
+                      {t('booking.lookup.result.modify_btn')}
                     </button>
                     
                     <button 
@@ -317,18 +340,18 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                       className="group flex items-center gap-2 px-5 py-2.5 rounded-xl text-slate-500 font-bold hover:text-red-500 hover:bg-red-50 hover:ring-1 hover:ring-red-100 hover:shadow-sm active:scale-95 transition-all ml-auto"
                     >
                       <span className="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">cancel</span>
-                      Cancel Booking
+                      {t('booking.lookup.result.cancel_btn')}
                     </button>
                   </>
                 ) : (
                   <div className="flex w-full items-center justify-between opacity-40 grayscale pointer-events-none cursor-not-allowed">
                      <div className="flex items-center gap-2 text-slate-500 font-bold">
                         <span className="material-symbols-outlined text-xl">edit</span>
-                        Modify Request
+                        {t('booking.lookup.result.modify_btn')}
                       </div>
                       <div className="flex items-center gap-2 text-slate-500 font-bold ml-auto">
                         <span className="material-symbols-outlined text-xl">cancel</span>
-                        Cancel Booking
+                        {t('booking.lookup.result.cancel_btn')}
                       </div>
                   </div>
                 )}
@@ -341,7 +364,7 @@ const BookingResultCard = ({ bookingData, onReset }) => {
               <button 
                 onClick={onReset}
                 className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-700 transition-colors"
-                title="Search another booking"
+                title={t('common.search')}
               >
                  <span className="material-symbols-outlined text-sm">close</span>
               </button>
@@ -352,14 +375,14 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                     <span className="material-symbols-outlined text-4xl">qr_code_scanner</span>
                   </div>
                   <p className="text-xs text-slate-500 leading-relaxed font-medium mb-6">
-                    Ready to dine? Get your code.
+                    {t('booking.lookup.result.qr_ready')}
                   </p>
                   
                   <button 
                     onClick={() => setShowQR(true)}
                     className="px-6 py-3 bg-primary text-white rounded-full font-bold text-sm tracking-wide shadow-lg shadow-primary/20 hover:bg-primary-600 active:scale-95 transition-all w-full"
                   >
-                    See Check-in QR
+                    {t('booking.lookup.result.qr_see_btn')}
                   </button>
                 </>
               ) : (
@@ -368,10 +391,10 @@ const BookingResultCard = ({ bookingData, onReset }) => {
                     <span className="material-symbols-outlined text-4xl">lock</span>
                   </div>
                   <p className="text-xs text-slate-500 leading-relaxed font-bold uppercase tracking-wider">
-                    {status === 'ARRIVED' ? 'Checked In' : 'QR Not Available'}
+                    {status === 'ARRIVED' ? t('booking.lookup.result.qr_checked_in') : t('booking.lookup.result.qr_not_available')}
                   </p>
                   <p className="text-[10px] text-slate-400 mt-2 px-4 italic">
-                    {status === 'PENDING' ? 'Waiting for restaurant confirmation' : 'This booking is no longer active for check-in.'}
+                    {status === 'PENDING' ? t('booking.detail.pending_confirmation_desc') : t('booking.detail.qr_access_expired_desc')}
                   </p>
                 </div>
               )}
@@ -395,8 +418,12 @@ const BookingResultCard = ({ bookingData, onReset }) => {
             </button>
             
             <div className="text-center">
-              <h3 className="text-xl font-bold text-slate-900 mb-2 headline">Your Check-in Code</h3>
-              <p className="text-slate-500 text-sm mb-8">Present this code to the staff upon arrival for the fastest check-in.</p>
+              <h3 className="text-xl font-bold text-slate-900 mb-2 headline">
+                {t('booking.lookup.result.qr_title')}
+              </h3>
+              <p className="text-slate-500 text-sm mb-8">
+                {t('booking.lookup.result.qr_desc')}
+              </p>
               
               <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 inline-block mb-6 shadow-inner">
                 <img 

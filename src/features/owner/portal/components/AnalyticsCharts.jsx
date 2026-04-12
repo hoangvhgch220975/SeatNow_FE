@@ -117,9 +117,13 @@ const AnalyticsCharts = ({ data, isLoading, period }) => {
               yAxisId="left"
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
+              tick={{ fill: '#64748b', fontSize: 11, fontWeight: 900, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
               dx={-10}
-              tickFormatter={(val) => `${(val / 1000000).toFixed(0)}M ₫`}
+              tickFormatter={(val) => {
+                if (val >= 1000000) return `${(val / 1000000).toFixed(1).replace('.0', '')}M ₫`;
+                if (val >= 1000) return `${(val / 1000).toFixed(0)}K ₫`;
+                return `${val} ₫`;
+              }}
             />
             {/* Right YAxis for Bookings (Vietnamese comment) */}
             <YAxis 

@@ -4,6 +4,7 @@
     "analytics": "Phân Tích",
     "venues": "Cơ Sở",
     "bookings": "Đặt Chỗ",
+    "revenue": "Doanh Thu",
     "profile": "Hồ Sơ",
     "logout": "Đăng Xuất",
     "login": "Đăng Nhập",
@@ -56,15 +57,117 @@
     "this_month": "Tháng Này",
     "last_7_days": "7 Ngày Qua",
     "total_completed_bookings": "Tổng Chỗ Đã Đặt Thành Công",
+    "day": "Ngày",
+    "week": "Tuần",
+    "month": "Tháng",
+    "telemetry_system": "Hệ thống Viễn thông",
+    "active_sync": "Đang đồng bộ",
+    "observation_timeline": "Dòng thời gian Quan sát",
+    "period_select": "Điều khiển Lịch",
+    "top_performers": "Đơn vị Xuất sắc",
+    "recent_activity": "Hoạt động Gần đây",
     "gross_revenue": "Tổng Doanh Thu Danh Mục",
     "total_deposit_volume": "Tổng Giá Trị Đặt Cọc",
     "cancellations_recorded": "Số Ca Hủy Chỗ",
     "after_system_commissions": "Sau khi trừ chi phí hệ thống",
     "financial_sync": "Dữ liệu tài chính được đồng bộ hóa thời gian thực trên toàn hệ thống",
     "financial_efficiency": "Chỉ số hiệu quả tài chính trên mỗi lượt đặt chỗ",
-    "based_on_reviews": "Dựa trên {{count}} đánh giá được ghi nhận"
+    "based_on_reviews": "Dựa trên {{count}} đánh giá được ghi nhận",
+    "asset_ranking": "Xếp hạng Tài sản Danh mục",
+    "comparative_analysis": "Phân tích Hiệu suất So sánh",
+    "export_analysis": "Xuất Phân tích",
+    "table_venue_entity": "Cơ sở Kinh doanh",
+    "table_total_revenue": "Tổng Doanh thu",
+    "table_successful_bookings": "Lượt Đặt bàn Thành công",
+    "table_efficiency": "Hiệu suất",
+    "table_momentum": "Đà Tăng trưởng",
+    "rank_prefix": "Hạng #",
+    "portfolio_pillar": "Trụ cột Danh mục",
+    "units": "Đơn vị",
+    "success_rate": "Tỷ lệ Thành công"
+  },
+  "time": {
+    "seconds_ago": "{{count}} giây trước",
+    "minutes_ago": "{{count}} phút trước",
+    "hours_ago": "{{count}} giờ trước",
+    "days_ago": "{{count}} ngày trước"
+  },
+  "activity": {
+    "unread": "{{count}} Chưa đọc",
+    "mark_all_read": "Đánh dấu tất cả đã đọc",
+    "no_activity": "Không có hoạt động gần đây",
+    "updating": "Đang cập nhật...",
+    "refresh_feed": "Làm mới bảng tin",
+    "feed_updated": "Cập nhật bảng tin thành công",
+    "detail_coming_soon": "Chi tiết hoạt động sẽ sớm ra mắt",
+    "types": {
+      "new_booking": "Đặt bàn mới",
+      "confirmed": "Đã xác nhận",
+      "cancelled": "Đã hủy",
+      "no_show": "Khách không đến",
+      "deposit": "Đã cọc tiền",
+      "topup": "Nạp tiền ví",
+      "withdrawal": "Rút tiền",
+      "review": "Đánh giá mới",
+      "commission": "Đã quyết toán hoa hồng",
+      "broadcast": "Thông báo hệ thống"
+    }
+  },
+  "api": {
+    "messages": {
+      "USER_NOT_FOUND": "Chúng tôi không tìm thấy tài khoản nào với số điện thoại hoặc email đó.",
+      "INVALID_PASSWORD": "Mật khẩu bạn nhập không chính xác. Vui lòng thử lại.",
+      "INVALID_CREDENTIALS": "Email/số điện thoại hoặc mật khẩu không đúng. Vui lòng kiểm tra lại.",
+      "EMAIL_ALREADY_EXISTS": "Địa chỉ email này đã được sử dụng bởi một tài khoản khác.",
+      "PHONE_ALREADY_EXISTS": "Số điện thoại này đã được sử dụng bởi một tài khoản khác.",
+      "ACCOUNT_SUSPENDED": "Tài khoản của bạn đã bị tạm khóa. Vui lòng liên hệ hỗ trợ.",
+      "ACCOUNT_NOT_FOUND": "Tài khoản không tồn tại. Vui lòng kiểm tra lại số điện thoại.",
+      "OTP_INVALID": "Mã xác thực không chính xác. Vui lòng kiểm tra và thử lại.",
+      "OTP_INCORRECT": "Mã xác thực không chính xác. Vui lòng kiểm tra và thử lại.",
+      "OTP_EXPIRED": "Mã này đã hết hạn. Vui lòng yêu cầu mã mới.",
+      "OTP_SENT": "Mã xác thực đã được gửi tới email của bạn.",
+      "OTP_VERIFIED": "Xác minh mã thành công.",
+      "OTP_SENT_TO_EMAIL": "Mã khôi phục đã được gửi! Vui lòng kiểm tra email đã đăng ký.",
+      "NEW_PASSWORD_SENT_TO_EMAIL": "Hoàn tất! Mật khẩu mới đã được gửi tới email của bạn. Bạn có thể đăng nhập ngay bây giờ.",
+      "RESET_OTP_SENT": "Mã khôi phục đã được gửi! Vui lòng kiểm tra email đã đăng ký.",
+      "PASSWORD_RESET_SUCCESS": "Đặt lại mật khẩu thành công. Vui lòng kiểm tra email để nhận mật khẩu mới.",
+      "INVALID_RESET_OTP": "Mã khôi phục không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.",
+      "PASSWORD_CHANGED_SUCCESSFULLY": "Mật khẩu của bạn đã được cập nhật. Vui lòng đăng nhập bằng mật khẩu mới.",
+      "OLD_PASSWORD_INCORRECT": "Mật khẩu hiện tại không chính xác. Vui lòng thử lại.",
+      "PASSWORDS_DO_NOT_MATCH": "Mật khẩu không khớp. Vui lòng kiểm tra và thử lại.",
+      "REGISTRATION_SUCCESS": "Tạo tài khoản thành công! Chào mừng bạn đến với SeatNow.",
+      "REGISTRATION_PENDING_OTP": "Đã tạo tài khoản! Vui lòng xác thực mã OTP đã được gửi tới email của bạn.",
+      "UNAUTHORIZED": "Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.",
+      "FORBIDDEN": "Bạn không có quyền thực hiện hành động này.",
+      "TOKEN_EXPIRED": "Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.",
+      "INTERNAL_SERVER_ERROR": "Đã xảy ra lỗi máy chủ. Đội ngũ của chúng tôi đã được thông báo.",
+      "VALIDATION_ERROR": "Vui lòng kiểm tra lại thông tin nhập và thử lại.",
+      "RATE_LIMIT_EXCEEDED": "Quá nhiều yêu cầu. Vui lòng đợi một lát và thử lại.",
+      "MISSING_REQUIRED_FIELDS": "Vui lòng điền đầy đủ các trường bắt buộc, bao gồm cả giấy phép kinh doanh.",
+      "DEFAULT_ERROR": "Đã có lỗi xảy ra. Vui lòng thử lại sau.",
+      "SUBMISSION_SUCCESS": "Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ với bạn sớm."
+    }
   },
   "auth": {
+    "toast": {
+      "welcome": "Chào mừng trở lại, {{name}}!",
+      "welcome_new": "🎉 Chào mừng {{name}}! Tài khoản của bạn đã được tạo thành công.",
+      "login_failed": "Đăng nhập thất bại. Vui lòng thử lại!",
+      "google_auth_failed": "Xác thực Google với hệ thống thất bại!",
+      "google_connect_error": "Không thể kết nối với Google: {{error}}",
+      "registration_success_login": "Đăng ký thành công! Vui lòng đăng nhập để tiếp tục.",
+      "registration_failed": "Đăng ký thất bại. Vui lòng thử lại sau.",
+      "otp_verify_success": "Xác thực thành công! Vui lòng đăng nhập để tiếp tục.",
+      "otp_invalid": "Mã OTP không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.",
+      "otp_resend_success": "Mã OTP mới đã được gửi đi!",
+      "otp_resend_error": "Không thể gửi lại mã. Vui lòng thử lại sau.",
+      "forgot_request_success": "Mã khôi phục đã được gửi! Hãy kiểm tra email đã đăng ký của bạn.",
+      "forgot_request_error": "Không tìm thấy tài khoản nào khớp với số điện thoại này.",
+      "forgot_reset_success": "Đặt lại mật khẩu thành công! Kiểm tra email để nhận mật khẩu mới.",
+      "forgot_reset_error": "Mã OTP không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.",
+      "partner_request_success": "Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ với bạn sớm.",
+      "partner_request_error": "Gửi yêu cầu thất bại. Vui lòng kiểm tra lại thông tin và thử lại."
+    },
     "welcome": "Chào mừng trở lại",
     "email": "Địa Chỉ Email",
     "password": "Mật Khẩu",
@@ -82,7 +185,11 @@
       "processing": "Đang xử lý...",
       "or_divider": "HOẶC",
       "google_button": "Đăng nhập với Google",
-      "google_authenticating": "Đang xác thực..."
+      "google_authenticating": "Đang xác thực...",
+      "welcome_back": "Chào Mừng Trở Lại",
+      "subtitle": "Vui lòng nhập thông tin để đăng nhập",
+      "no_account_text": "Chưa có tài khoản?",
+      "signup_link": "Đăng Ký"
     },
     "register": {
       "name_label": "Họ Và Tên",
@@ -96,7 +203,11 @@
       "confirm_label": "Xác Nhận Mật Mã",
       "confirm_placeholder": "••••••••",
       "submit_button": "Bắt Đầu Ngay",
-      "processing": "Đang xử lý..."
+      "processing": "Đang xử lý...",
+      "create_account": "Tạo Tài Khoản",
+      "subtitle": "Gia nhập để khám phá và đặt những chỗ ngồi tốt nhất",
+      "already_account": "Đã có tài khoản?",
+      "signin_link": "Đăng Nhập"
     },
     "otp": {
       "hint_text": "Mã đã được gửi tới <1>{{hint}}</1>",
@@ -104,7 +215,39 @@
       "processing": "Đang xác minh...",
       "resend_text": "Gửi lại mã sau <1>{{seconds}}s</1>",
       "resend_button": "Gửi lại OTP",
-      "resending": "Đang gửi..."
+      "resending": "Đang gửi...",
+      "verify_email_title": "Xác Minh Email",
+      "verify_email_hint": "Nhập mã 6 chữ số đã được gửi tới",
+      "disclaimer": "Không nhận được mã? Vui lòng kiểm tra hộp thư rác hoặc đợi 60 giây để gửi lại.",
+      "uploading": "Đang tải lên..."
+    },
+    "forgot_password": {
+      "title": "Quên Mật Khẩu",
+      "step1_desc": "Nhập số điện thoại đã đăng ký để nhận mã khôi phục.",
+      "step2_desc": "Chúng tôi đã gửi mã 6 chữ số tới email liên kết với số {{phone}}.",
+      "phone_label": "Số Điện Thoại",
+      "otp_label": "Mã Xác Thực (OTP)",
+      "info_note": "Sau khi xác minh, một mật khẩu mới gồm 8 ký tự sẽ được hệ thống tạo tự động và gửi về email đã đăng ký của bạn.",
+      "reset_btn": "Khôi Phục Mật Khẩu",
+      "resetting_btn": "Đang khôi phục...",
+      "change_number": "Thay Đổi Số",
+      "back_to_login": "Quay lại Đăng Nhập",
+      "send_code": "Gửi Mã Khôi Phục",
+      "sending": "Đang gửi...",
+      "resend_otp": "Gửi lại OTP"
+    },
+    "validation": {
+      "identifier_required": "Vui lòng nhập Email hoặc Số điện thoại",
+      "password_min": "Mật khẩu phải có ít nhất 8 ký tự",
+      "name_min": "Họ tên phải có ít nhất 2 ký tự",
+      "email_invalid": "Địa chỉ email không hợp lệ",
+      "phone_invalid": "Số điện thoại không hợp lệ (VD: 0912345678 hoặc +84912345678)",
+      "password_mismatch": "Mật khẩu không khớp",
+      "otp_invalid": "Mã OTP phải có đúng 6 chữ số.",
+      "phone_required": "Vui lòng nhập số điện thoại của bạn.",
+      "current_password_required": "Vui lòng nhập mật khẩu hiện tại",
+      "new_password_min": "Mật khẩu mới phải có ít nhất 8 ký tự",
+      "confirm_password_required": "Vui lòng xác nhận mật khẩu mới"
     },
     "partner": {
       "title": "Hợp Tác Cùng Chúng Tôi",
@@ -115,6 +258,7 @@
       "license": "Giấy phép kinh doanh",
       "uploadHint": "Tải lên ảnh JPG/PNG",
       "submit": "Gửi yêu cầu hợp tác",
+      "uploading": "Đang tải lên...",
       "successTitle": "Đã Nhận Yêu Cầu",
       "successDesc": "Hồ sơ hồ sơ của bạn đã được tiếp nhận. Đội ngũ của chúng tôi sẽ xem xét tài liệu và liên hệ với bạn qua email kèm theo thông tin tài khoản trong thời gian sớm nhất.",
       "close": "Đóng"
@@ -309,8 +453,8 @@
   "guest": {
     "breakdown": "Phân Tích Nhóm Khách",
     "demographics": "Cơ cấu nhân khẩu học toàn danh mục",
-    "couples": "Cặp đôi (2 Khách)",
-    "small_groups": "Nhóm nhỏ (4-6 Khách)",
+    "couples": "Cặp đôi/Cá nhân (1-2 Khách)",
+    "small_groups": "Nhóm nhỏ (3-7 Khách)",
     "parties": "Đoàn đông (8+ Khách)",
     "footer_note": "* Dữ liệu được trích xuất từ siêu dữ liệu đặt chỗ toàn cầu trên {{count}} cơ sở đang quản lý."
   },
@@ -369,7 +513,7 @@
           "desc": "Không cần chờ đợi xác nhận. Bàn của bạn được giữ chỗ chỉ trong vài giây."
         },
         "curated": {
-          "title": "Lựa Choice Tinh Hoa",
+          "title": "Lựa Chọn Tinh Hoa",
           "desc": "Chỉ những cơ sở cao cấp, được đánh giá tốt nhất mới vượt qua quy trình kiểm duyệt."
         },
         "smart": {
@@ -467,6 +611,7 @@
       "visibility": "Tầm Nhìn Toàn Cảnh"
     },
     "policies": {
+      "title": "Chính Sách Nhà Hàng",
       "grace_period": "Thời Gian Chờ: Thời gian giữ bàn tiêu chuẩn là <strong>15 phút</strong>.",
       "cancellation": "Hủy Đặt Chỗ: Vui lòng thông báo trước <strong>3 giờ</strong>.",
       "dress_code": "Trang Phục: Khuyến khích trang phục <strong>Lịch sự / Sang trọng</strong>.",
@@ -588,6 +733,51 @@
       "under_construction_desc": "Module quản lý toàn cầu đang được hiệu chuẩn. Các công cụ phân tích nâng cao và kiểm duyệt sẽ có sẵn trong đợt triển khai tiếp theo."
     }
   },
+  "tables": {
+    "title": "Quản Lý Bàn",
+    "floor_overview": "Tổng Quan Mặt Bằng",
+    "all_floors": "Tất Cả Tầng",
+    "add_table": "Thêm Bàn Mới",
+    "stats": {
+      "total": "Tổng Số Bàn",
+      "available": "Bàn Trống",
+      "occupied": "Đang Có Khách",
+      "unavailable": "Đã Có Khách",
+      "maintenance": "Bảo Trì"
+    },
+    "types": {
+      "standard": "Tiêu Chuẩn",
+      "vip": "Phòng VIP",
+      "outdoor": "Ngoài Trời"
+    },
+    "form": {
+      "table_number": "Số Bàn",
+      "capacity": "Sức Chứa (Khách)",
+      "location": "Vị Trí / Tầng",
+      "type": "Loại Bàn",
+      "status": "Trạng Thái",
+      "guests": "Khách",
+      "required": "Trường bắt buộc",
+      "min_guest": "Tối thiểu 1 khách",
+      "update_record": "Cập Nhật Bản Ghi",
+      "establish_table": "Thiết Lập Bàn",
+      "edit_title": "Hiệu chỉnh Bàn: {{tableNumber}}",
+      "create_success": "Đã thêm bàn mới thành công",
+      "update_success": "Đã cập nhật thông tin bàn",
+      "delete_success": "Đã xóa bàn khỏi hệ thống",
+      "delete_confirm": "Bạn có chắc chắn muốn xóa bàn này?",
+      "delete_confirm_title": "Xác Nhận Thu Hồi",
+      "delete_confirm_msg": "Hành động này sẽ loại bỏ vĩnh viễn hồ sơ bàn này khỏi danh mục kỹ thuật số của nhà hàng. Các lượt check-in kỹ thuật số cho bàn này sẽ bị hủy bỏ.",
+      "delete_confirm_btn": "Xác Nhận Xóa"
+    },
+    "view": {
+      "grid": "Xem Lưới",
+      "list": "Xem Danh Sách",
+      "no_tables_area": "Không tìm thấy bàn nào ở khu vực này",
+      "actions": "Hành Động",
+      "no_records": "Không tìm thấy kết quả"
+    }
+  },
   "booking": {
     "history": {
       "title": "Lịch Sử Đặt Chỗ",
@@ -667,6 +857,75 @@
       "cancel_reason_default": "Khách hàng yêu cầu hủy.",
       "cancel_success": "Đặt chỗ của bạn đã được hủy thành công.",
       "cancel_error": "Hủy thất bại. Vui lòng thử lại."
+    },
+    "lookup": {
+      "title": "Tra cứu Đặt chỗ",
+      "subtitle": "Nhập mã xác nhận của bạn để xem chi tiết đặt chỗ, thay đổi thời gian hoặc yêu cầu hỗ trợ đặc biệt từ nhà hàng.",
+      "manage_all": "Bạn muốn quản lý tất cả đặt chỗ tại một nơi?",
+      "sign_in": "Đăng nhập để quản lý tất cả đặt chỗ",
+      "form": {
+        "id_label": "Mã đặt chỗ (Booking ID)",
+        "id_placeholder": "VD: BK-8829",
+        "phone_label": "Số điện thoại",
+        "phone_placeholder": "Nhập số điện thoại liên hệ",
+        "searching": "Đang tra cứu...",
+        "find_button": "Tìm thông tin đặt chỗ"
+      },
+      "error": {
+        "not_found": "Không tìm thấy mã đặt chỗ. Vui lòng kiểm tra lại.",
+        "phone_mismatch": "Số điện thoại không khớp với mã đặt chỗ này.",
+        "generic": "Tra cứu thất bại. Vui lòng kiểm tra lại thông tin."
+      },
+      "result": {
+        "booking_id": "Mã đặt chỗ",
+        "date_time": "Ngày & Giờ",
+        "guests": "Số lượng khách",
+        "guests_suffix": "Người",
+        "guests_standard": "Đặt chỗ tiêu chuẩn",
+        "table_details": "Chi tiết bàn",
+        "table_no": "Bàn số {{number}}",
+        "table_pending": "Đang chờ sắp xếp",
+        "table_area": "Khu vực {{type}}",
+        "table_standard_seating": "Chỗ ngồi tiêu chuẩn",
+        "deposit_status": "Trạng thái tiền cọc",
+        "deposit_paid": "Đã thanh toán",
+        "deposit_unpaid": "Chờ thanh toán",
+        "contact_details": "Thông tin liên hệ",
+        "mr_mrs": "Ông/Bà",
+        "phone": "SĐT",
+        "special_requests": "Yêu cầu đặc biệt",
+        "cancellation_reason": "Lý do hủy",
+        "cancelled_notice": "Đặt chỗ này đã bị hủy.",
+        "modify_btn": "Yêu cầu sửa",
+        "cancel_btn": "Hủy đặt chỗ",
+        "qr_title": "Mã Check-in của bạn",
+        "qr_desc": "Đưa mã này cho nhân viên khi đến nơi để hoàn tất check-in nhanh nhất.",
+        "qr_ready": "Sẵn sàng nhập tiệc? Nhận mã ngay.",
+        "qr_see_btn": "Xem mã QR",
+        "qr_not_available": "QR không khả dụng",
+        "qr_checked_in": "Đã Check-in"
+      },
+      "status": {
+        "pending": "ĐANG CHỜ",
+        "confirmed": "ĐÃ XÁC NHẬN",
+        "cancelled": "ĐÃ HỦY",
+        "arrived": "ĐÃ ĐẾN",
+        "no_show": "VẮNG MẶT",
+        "completed": "HOÀN THÀNH"
+      }
+    },
+    "actions": {
+      "cancel": {
+        "title": "Hủy Đặt Chỗ",
+        "desc": "Rất tiếc khi thấy bạn muốn hủy đặt chỗ. Nếu bạn đã chắc chắn, vui lòng cho chúng tôi biết lý do để cải thiện dịch vụ.",
+        "reason_label": "Lý do hủy (Không bắt buộc)",
+        "reason_placeholder": "VD: Thay đổi kế hoạch, trùng lịch...",
+        "keep_btn": "Giữ Đặt Chỗ",
+        "confirm_btn": "Xác Nhận Hủy",
+        "processing": "Đang xử lý...",
+        "success": "Đặt chỗ của bạn đã được hủy thành công.",
+        "error": "Hủy thất bại. Vui lòng kiểm tra lại số điện thoại."
+      }
     }
   },
   "ai_assistant": {
@@ -761,11 +1020,47 @@
       "system_operational": "Hệ Thống Đang Chạy"
     },
     "home": {
+      "syncing": "Đang đồng bộ Bảng điều khiển Danh mục...",
+      "sync_failed": "Đồng bộ thất bại",
+      "sync_failed_desc": "Chúng tôi không thể đồng bộ hóa dữ liệu đo lường danh mục của bạn. Vui lòng kiểm tra kết nối.",
+      "retry_connection": "Thử kết nối lại",
       "venue_operations": "Hoạt Động Kinh Doanh",
       "venue_operations_desc": "Theo dõi hoạt động của tất cả các nhà hàng đã đăng ký.",
       "expand_portfolio": "Mở rộng Khai thác +",
       "operational_inventory": "Kiểm kê Hoạt động",
-      "showing_entities": "Đang hiển thị <1>{{start}} - {{end}}</1> trên <2>{{total}}</2> cơ sở"
+      "showing_entities": "Đang hiển thị <1>{{start}} - {{end}}</1> trên <3>{{total}}</3>  cơ sở",
+      "analysis_timeline": "Dòng thời gian phân tích: {{first}} — {{last}}",
+      "real_time_activity": "Hoạt động thời gian thực: Hôm nay, {{date}}",
+      "today_performance": "Hiệu suất hôm nay",
+      "trend": "Xu hướng {{period}} này"
+    },
+    "overview": {
+      "guest_composition_title": "PHÂN TÍCH CƠ CẤU KHÁCH",
+      "dominant_peak": "Nhóm chủ đạo",
+      "bookings_recorded": "{{count}} Lượt đặt được ghi nhận",
+      "couples_duos_desc": "Các cặp đôi thực hiện đặt chỗ năng động.",
+      "small_groups_desc": "{{count}} Nhóm khách quy mô nhỏ (3-7 người)",
+      "large_parties_desc": "{{count}} Nhóm khách quy mô lớn (8+ người)",
+      "portfolio_analytics_title": "Phân Tích Danh Mục",
+      "metric_revenue": "Doanh Thu",
+      "metric_bookings": "Lượt Đặt",
+      "composition_couples": "Cặp đôi",
+      "composition_small": "Nhóm nhỏ",
+      "composition_large": "Đoàn lớn",
+      "realized_net_revenue": "Doanh Thu Thực Nhận",
+      "after_commissions": "Sau khi trừ hoa hồng & phí",
+      "gross_deposits": "Tổng Tiền Cọc Đã Thu",
+      "gross_deposits_desc": "Tất cả các khoản thanh toán từ lượt đặt đã xác nhận",
+      "chart_confirmed": "Đã xác nhận",
+      "chart_cancelled": "Đã hủy",
+      "units": "lượt",
+      "valid_bookings": "Lượt Đặt Danh Mục Hợp Lệ",
+      "peak_hour": "Giờ Hoạt Động Cao Điểm",
+      "busy": "CAO ĐIỂM",
+      "active_window": "Mật độ khách đến cao nhất",
+      "success_rate": "Tỷ Lệ Thành Công Danh Mục",
+      "intent_desc": "Tỷ lệ giữa lượt hoàn thành so với lượt hủy",
+      "success": "Thành công"
     },
     "venues_page": {
       "all_venues": "Tất cả <1>Cơ sở</1>",
@@ -810,6 +1105,13 @@
         "hours_all_days": "Áp dụng cho tất cả các ngày",
         "hours_split": "Ngày thường & Cuối tuần",
         "hours_custom": "Tùy chỉnh chi tiết từng ngày",
+        "open_time": "Giờ Mở Cửa",
+        "close_time": "Giờ Đóng Cửa",
+        "weekdays_range": "Ngày Thường (Thứ 2 - Thứ 6)",
+        "weekends_range": "Cuối Tuần (Thứ 7 - Chủ Nhật)",
+        "start_time": "Bắt đầu",
+        "end_time": "Kết thúc",
+        "hours_tip": "Sự nhất quán trong giờ hoạt động giúp xây dựng niềm tin với khách hàng. Vui lòng đảm bảo các giờ này khớp với hoạt động thực tế của bạn.",
         "images_label": "Bộ Sưu Tập Hình Ảnh",
         "images_hint": "Tải lên ảnh ngoại thất và nội thất chất lượng cao. Tối đa 5 ảnh.",
         "deposit_enabled": "Kích Hoạt Tiền Đặt Cọc",
@@ -824,7 +1126,27 @@
         "success_desc": "Nhà hàng của bạn đã được gửi tới Ban Quản Trị để xác minh. Bạn sẽ nhận được email khi cơ sở chính thức hoạt động.",
         "back_to_dashboard": "Quay Lại Bảng Điều Khiển",
         "pick_location": "Chọn Trên Bản Đồ",
-        "location_selected": "Vị Trí Đã Được Đồng Bộ"
+        "location_selected": "Vị Trí Đã Được Đồng Bộ",
+        "max_images_error": "Chỉ cho phép tối đa 5 hình ảnh",
+        "images_upload_success": "Tải ảnh lên thành công",
+        "images_upload_error": "Tải một số ảnh thất bại",
+        "name_required": "Vui lòng nhập tên nhà hàng",
+        "email_required": "Vui lòng nhập email",
+        "phone_required": "Vui lòng nhập số điện thoại",
+        "address_required": "Vui lòng chọn vị trí trên bản đồ và nhập địa chỉ",
+        "cuisine_required": "Vui lòng chọn ít nhất một loại hình ẩm thực",
+        "image_required": "Vui lòng tải lên ít nhất một hình ảnh",
+        "create_failed": "Đăng ký nhà hàng thất bại",
+        "uploading": "ĐANG TẢI...",
+        "select_photos": "CHỌN ẢNH",
+        "final_step_title": "Bước Xác Minh Cuối Cùng",
+        "final_step_desc": "Bằng cách gửi đi, bạn xác nhận rằng tất cả thông tin cung cấp là chính xác. Ban quản trị SeatNow sẽ xem xét hồ sơ của bạn trong vòng 24-48 giờ. Sau khi được phê duyệt, cơ sở của bạn sẽ hiển thị trên mạng lưới toàn cầu.",
+        "back": "Quay lại",
+        "continue": "Tiếp tục",
+        "deposit_protection_desc": "Bảo vệ nhà hàng khỏi việc hủy đặt chỗ muộn hoặc khách không đến.",
+        "guests_plus": "khách +",
+        "policy_fixed_desc": "Tổng số tiền được tính một lần cho mỗi lần đặt chỗ, không phân biệt số lượng khách.",
+        "policy_person_desc": "Số tiền được nhân với số lượng khách trong lượt đặt chỗ."
       },
       "map": {
         "title": "Định Vị Vị Trí Địa Lý",
@@ -975,6 +1297,17 @@
       "reserved": "Đã đặt trước",
       "area": "Khu vực",
       "all_areas": "Tất cả khu vực",
+      "no_tables_area": "Không tìm thấy bàn nào ở khu vực này",
+      "floors": {
+        "1st": "Tầng 1",
+        "2nd": "Tầng 2",
+        "3rd": "Tầng 3",
+        "4th": "Tầng 4",
+        "5th": "Tầng 5",
+        "rooftop": "Sân thượng (Rooftop)",
+        "terrace": "Ban công (Terrace)",
+        "outdoor": "Ngoài trời"
+      },
       "live_syncing": "Đồng bộ trực tiếp",
       "syncing_data": "Đang đồng bộ..."
     },
@@ -983,8 +1316,8 @@
       "manager": "Quản lý"
     },
     "analysis": {
-      "couple": "Cặp đôi (2)",
-      "small_group": "Nhóm nhỏ (4-6)",
+      "couple": "Cặp đôi/Cá nhân (1-2)",
+      "small_group": "Nhóm nhỏ (3-7)",
       "party": "Đoàn đông (8+)",
       "bookings": "LƯỢT ĐẶT",
       "period_summary": "TỔNG KẾT GIAI ĐOẠN",
@@ -1000,6 +1333,7 @@
       "form": {
         "name": "Tên Nhà Hàng",
         "description": "Mô tả",
+        "no_description": "Không có mô tả cho nhà hàng này.",
         "cuisine": "Loại Ẩm Thực",
         "price_range": "Mức Giá",
         "address": "Địa Chỉ",
@@ -1009,17 +1343,21 @@
       },
       "hero": {
         "verified": "Nhà Hàng Đã Xác Thực",
+        "verified_note": "Nhà hàng đã được xác thực doanh nghiệp.",
         "pending": "Chờ Phê Duyệt",
         "active": "Đang Hoạt Động",
-        "inactive": "Tạm Ngưng"
+        "inactive": "Tạm Ngưng",
+        "edit_profile": "Chỉnh sửa Hồ sơ Nhà hàng"
       },
       "common": {
         "section": "Phần",
         "guests": "Khách",
         "guest_per": "/ Khách",
+        "per_reservation": "/ Lượt đặt",
         "enabled": "Đang Bật",
         "disabled": "Đang Tắt",
-        "no_data": "---"
+        "no_data": "---",
+        "live_map": "Bản đồ trực tiếp"
       },
       "deposit": {
         "apply_from": "Áp Dụng Từ",
@@ -1029,7 +1367,8 @@
         "fixed_amount": "Số Tiền Cố Định",
         "no_deposit": "Không Yêu Cầu Cọc",
         "no_deposit_desc": "Khách hàng có thể đặt bàn mà không cần thanh toán trước.",
-        "opening_hours_note": "* Khung giờ hoạt động hiển thị công khai trên hệ thống."
+        "opening_hours_note": "* Khung giờ hoạt động hiển thị công khai trên hệ thống.",
+        "important_note": "Ghi chú quan trọng"
       }
     }
   },
@@ -1120,5 +1459,318 @@
     "status_code": "GIAO THỨC LỖI",
     "stack_trace": "DỮ LIỆU KỸ THUẬT (DÀNH CHO DEV)"
   },
-  "i18next_code": "vi-VN"
+  "public_policy": {
+    "hero": {
+      "tag": "Pháp lý & Quy định",
+      "title": "Chính sách & Điều khoản",
+      "desc": "Cam kết mang lại những trải nghiệm ẩm thực minh bạch và cao cấp nhất cho khách hàng của chúng tôi."
+    },
+    "sections": {
+      "toc": {
+        "title": "Mục lục nội dung",
+        "items": {
+          "terms": "Điều khoản dịch vụ",
+          "privacy": "Chính sách bảo mật",
+          "booking": "Chính sách đặt chỗ",
+          "deposit": "Chính sách tiền cọc",
+          "refund": "Hủy bàn & Hoàn tiền",
+          "liability": "Trách nhiệm pháp lý",
+          "support": "Liên hệ hỗ trợ"
+        }
+      },
+      "terms": {
+        "title": "1. Điều khoản dịch vụ",
+        "intro": "Chào mừng bạn đến với <1>SeatNow</1>. Bằng cách truy cập và sử dụng dịch vụ của chúng tôi, bạn đồng ý tuân thủ các quy định sau đây.",
+        "p1": "Dịch vụ của chúng tôi cung cấp nền tảng kết nối người dùng với các nhà hàng cao cấp. Mặc dù chúng tôi không trực tiếp sở hữu các địa điểm ẩm thực, chúng tôi cam kết đảm bảo tính xác thực của thông tin được cung cấp trên hệ thống.",
+        "list": [
+          "Người dùng phải từ 18 tuổi trở lên hoặc có sự giám sát của người giám hộ hợp pháp khi sử dụng dịch vụ.",
+          "Thông tin cá nhân cung cấp khi đăng ký phải chính xác và được cập nhật thường xuyên."
+        ]
+      },
+      "privacy": {
+        "title": "2. Chính sách bảo mật",
+        "security_title": "Cam kết bảo mật dữ liệu",
+        "security_desc": "Chúng tôi sử dụng công nghệ mã hóa SSL 256-bit để bảo vệ thông tin cá nhân và dữ liệu thanh toán của bạn. Mọi thông tin thu thập chỉ nhằm mục đích xác nhận đặt chỗ và nâng cao chất lượng dịch vụ.",
+        "p1": "Chúng tôi cam kết không chia sẻ dữ liệu của bạn cho bất kỳ bên thứ ba nào ngoại trừ nhà hàng nơi bạn thực hiện đặt chỗ. Dữ liệu bao gồm tên, số điện thoại, email và các yêu cầu ẩm thực đặc biệt."
+      },
+      "booking": {
+        "title": "3. Chính sách đặt chỗ",
+        "advance": {
+          "title": "Đặt chỗ trước",
+          "desc": "Chúng tôi khuyến khích đặt chỗ trước ít nhất 24 giờ đối với các nhà hàng Fine Dining và 48 giờ đối với các ngày lễ lớn."
+        },
+        "guests": {
+          "title": "Số lượng khách",
+          "desc": "Đối với các nhóm trên 10 người, vui lòng liên hệ bộ phận chăm sóc khách hàng để được sắp xếp phòng riêng."
+        }
+      },
+      "deposit": {
+        "title": "4. Chính sách tiền cọc",
+        "desc": "Để đảm bảo quyền lợi của cả nhà hàng và khách hàng, một số địa điểm yêu cầu mức tiền cọc tối thiểu.",
+        "quote": "Số tiền cọc sẽ được trừ trực tiếp vào hóa đơn cuối cùng của bạn tại nhà hàng. Trong trường hợp khách không đến (No-show), số tiền này sẽ không được hoàn lại."
+      },
+      "refund": {
+        "title": "5. Hủy bàn & Hoàn tiền",
+        "items": [
+          {
+            "step": "01",
+            "title": "Nhà hàng đối tác hủy bàn",
+            "desc": "Hoàn trả 100% tiền cọc cho khách hàng."
+          },
+          {
+            "step": "02",
+            "title": "Khách hàng hủy trước 3 giờ",
+            "desc": "Hoàn trả 100% tiền cọc cho khách hàng."
+          },
+          {
+            "step": "03",
+            "title": "Khách hàng hủy sau 3 giờ",
+            "desc": "Không hỗ trợ hoàn tiền cọc đối với các trường hợp hủy quá sát giờ nhận bàn hoặc vắng mặt (No-show)."
+          }
+        ]
+      },
+      "liability": {
+        "title": "6. Trách nhiệm pháp lý",
+        "p1": "<0>SeatNow</0> không chịu trách nhiệm cho các khiếu nại liên quan đến chất lượng món ăn, dịch vụ trực tiếp tại nhà hàng hoặc các sự cố nằm ngoài tầm kiểm soát của nền tảng.",
+        "p2": "Tuy nhiên, chúng tôi cam kết đóng vai trò trung gian để giải quyết mọi tranh chấp giữa khách hàng và nhà hàng một cách công bằng nhất."
+      },
+      "support": {
+        "title": "7. Liên hệ hỗ trợ",
+        "hero_title": "Bạn cần trợ giúp ngay?",
+        "hero_desc": "Đội ngũ hỗ trợ khách hàng của chúng tôi luôn túc trực 24/7 để giải đáp mọi thắc mắc liên quan đến các điều khoản này."
+      }
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Liên hệ với Ban Quản lý",
+      "subtitle": "Cho dù bạn đang tìm kiếm một bàn ăn cụ thể cho bữa tối của mình hay cần hỗ trợ tìm kiếm trong bộ sưu tập các đối tác nhà hàng cao cấp của chúng tôi, đội ngũ tận tâm của chúng tôi luôn sẵn sàng để điều phối trải nghiệm ẩm thực hoàn hảo của bạn."
+    },
+    "form": {
+      "title": "Gửi yêu cầu hỗ trợ",
+      "labels": {
+        "full_name": "Họ và tên",
+        "email": "Địa chỉ Email",
+        "phone": "Số điện thoại",
+        "subject": "Chủ đề",
+        "message": "Tin nhắn"
+      },
+      "placeholders": {
+        "full_name": "Nguyễn Văn A",
+        "email": "nguyenvana@example.com",
+        "phone": "091...",
+        "message": "Ban Quản lý có thể hỗ trợ gì cho bạn hôm nay?"
+      },
+      "subjects": {
+        "general": "Yêu cầu chung",
+        "group": "Đặt bàn theo nhóm",
+        "corporate": "Sự kiện doanh nghiệp",
+        "partnership": "Đề xuất hợp tác"
+      },
+      "submit": "Gửi tin nhắn",
+      "sending": "Đang gửi..."
+    },
+    "messages": {
+      "required_fields": "Vui lòng điền đầy đủ các trường bắt buộc: Tên, Email và Tin nhắn!",
+      "invalid_phone": "Định dạng số điện thoại không hợp lệ! Vui lòng sử dụng số điện thoại Việt Nam hợp lệ (VD: 0912345678).",
+      "sending": "Đang gửi yêu cầu của bạn...",
+      "success": "Yêu cầu của bạn đã được gửi thành công!",
+      "error": "Gửi email thất bại. Vui lòng thử lại sau."
+    },
+    "info": {
+      "hotline": "Đường dây nóng",
+      "email": "Email",
+      "address": "Địa chỉ",
+      "address_value": "Số 2 Phạm Văn Bạch, Cầu Giấy, Hà Nội",
+      "hours": "Giờ hỗ trợ",
+      "hours_mon_fri": "Thứ 2 - Thứ 6: 8:00 - 18:00",
+      "hours_sat": "Thứ 7: 8:00 - 12:00",
+      "hq": "TRỤ SỞ CHÍNH LOCAL: HÀ NỘI"
+    },
+    "faq": {
+      "badge": "Yêu cầu phổ biến",
+      "title": "Các câu hỏi thường gặp",
+      "view_all": "Xem trung tâm trợ giúp đầy đủ",
+      "q1": "Làm thế nào để thay đổi đặt chỗ?",
+      "a1": "Bạn có thể điều chỉnh chi tiết đặt chỗ của mình trước tối đa 24 giờ thông qua bảng điều khiển \"Tra cứu đặt chỗ\" hoặc bằng cách liên hệ với ban quản lý.",
+      "q2": "Có phí đặt bàn không?",
+      "a2": "SeatNow cung cấp dịch vụ điều phối miễn phí cho các đặt chỗ tiêu chuẩn. Các sự kiện thưởng thức độc quyền có thể yêu cầu đặt cọc.",
+      "q3": "Đặt bàn theo nhóm?",
+      "a3": "Đối với các nhóm từ 8 người trở lên, vui lòng sử dụng biểu mẫu yêu cầu bên trên để đảm bảo chỗ ngồi liền mạch và các lựa chọn thực đơn tùy chỉnh."
+    }
+  },
+  "booking": {
+    "create": {
+      "perfect_table": "Giữ Chỗ Ngay <1>Vị Trí</1> Hoàn Hảo",
+      "dining_slot": "Cập Nhật <1>Giờ Ăn</1> Của Bạn",
+      "premium_service": "Dịch Vụ Đặt Chỗ Cao Cấp",
+      "modify_reservation": "Chỉnh Sửa Đặt Bàn",
+      "subtitle": "Chọn vị trí yêu thích và trải nghiệm sự tuyệt vời tại <1>{{name}}</1>. Mỗi bàn đều được chúng tôi chăm sóc tận tâm để đảm bảo sự hài lòng của bạn.",
+      "select_date_time": "Chọn Ngày & Giờ",
+      "experience_way": "Trải Nghiệm Theo Cách Của Bạn",
+      "syncing_availability": "Đang đồng bộ tình trạng bàn...",
+      "special_requests": "Yêu Cầu Đặc Biệt",
+      "special_requests_placeholder": "Hãy cho chúng tôi biết về dị ứng, ngày kỷ niệm hoặc sở thích chỗ ngồi cụ thể...",
+      "loading_rest": "Đang chuẩn bị các lựa chọn tốt nhất...",
+      "loading_modifying": "Đang cập nhật đặt bàn của bạn...",
+      "error_not_found": "Không tìm thấy thông tin nhà hàng.",
+      "toast": {
+        "select_date_time": "Vui lòng chọn Ngày và Khung giờ trước.",
+        "table_held": "Bàn {{number}} đã được giữ cho bạn.",
+        "table_busy": "Bàn này hiện đã có người chọn!",
+        "redirecting": "Xác nhận đặt bàn thành công! Đang chuyển hướng...",
+        "identity_required": "Yêu cầu xác minh danh tính. Vui lòng cung cấp số điện thoại của bạn.",
+        "guest_info_required": "Vui lòng cung cấp tên và số điện thoại để tạo đơn đặt bàn mới.",
+        "id_retrieve_error": "Đã tạo đặt bàn nhưng không thể lấy được ID từ hệ thống."
+      }
+    },
+    "summary": {
+      "title": "Tóm Tắt Đặt Bàn",
+      "secure_process": "Quy Trình Đặt Chỗ Bảo Mật",
+      "date_time": "Ngày & Giờ",
+      "not_selected": "Chưa Chọn",
+      "party_size": "Số Lượng Khách",
+      "table_type": "Loại Bàn",
+      "no_selection": "Chưa Chọn Bàn",
+      "proceed_to_deposit": "Tiến Hành Đặt Cọc",
+      "confirm_reservation": "Xác Nhận Đặt Bàn",
+      "confirm_modification": "Xác Nhận Thay Đổi",
+      "cancel_change_table": "Hủy & Đổi Bàn",
+      "processing_payment": "Đang xử lý thanh toán...",
+      "finalizing_reservation": "Đang hoàn tất đặt bàn...",
+      "ssl_encrypted": "Giao dịch được bảo mật SSL 256-bit"
+    },
+    "form": {
+      "guest_details": "Thông Tin Khách Hàng",
+      "name_placeholder": "Họ và Tên",
+      "name_error": "Tên phải có ít nhất 2 ký tự",
+      "email_placeholder": "Địa chỉ Email",
+      "email_error": "Định dạng email không hợp lệ",
+      "phone_placeholder": "Số Điện Thoại",
+      "phone_error": "Số điện thoại Việt Nam không hợp lệ"
+    },
+    "time_picker": {
+      "select_date": "Chọn Ngày",
+      "preferred_slot": "Khung Giờ Yêu Thích",
+      "closed_no_slots": "Nhà hàng đóng cửa hoặc không còn chỗ trống"
+    },
+    "table_status": {
+      "available": "Còn trống",
+      "occupied": "Đã đặt",
+      "held": "Đang giữ",
+      "being_selected": "Đang được chọn",
+      "selected": "Đang chọn",
+      "vip": "VIP",
+      "vip_table": "Bàn VIP",
+      "outdoor": "Ngoài trời",
+      "outdoor_seating": "Chỗ ngồi ngoài trời",
+      "standard": "Tiêu chuẩn",
+      "guests": "Khách",
+      "main_entrance": "Lối vào chính",
+      "empty_title": "Khu vực này hiện đang trống",
+      "empty_desc": "Hãy thử khám phá các khu vực đặc trưng khác của chúng tôi.",
+      "markers": {
+        "rooftop": "Tầm nhìn Skyline",
+        "outdoor": "Đài phun nước vườn",
+        "terrace": "Tầm nhìn phố chính",
+        "default": "Sân khấu trung tâm"
+      },
+      "select_area": "Chọn Khu vực / Tầng"
+    },
+    "deposit": {
+      "reservation_deposit": "Tiền đặt cọc",
+      "total_amount": "Tổng cộng",
+      "free": "MIỄN PHÍ (0 VND)"
+    }
+  },
+  "charts": {
+    "units": "Lượt",
+    "computing_data": "Đang tính toán dữ liệu vận hành...",
+    "performance_statistics": "Thống kê Hiệu suất",
+    "performance_description": "Phân tích chuyên sâu về doanh thu danh mục và mức độ cam kết trong giai đoạn được chọn."
+  },
+  "guest": {
+    "breakdown": "Cơ cấu Quy mô Khách",
+    "demographics": "Nhân khẩu học Khách hàng Danh mục",
+    "couples": "Cặp đôi (2 người)",
+    "small_groups": "Nhóm nhỏ (3-7 người)",
+    "parties": "Đoàn lớn (8+ người)",
+    "footer_note": "Dữ liệu được tổng hợp từ {{count}} cơ sở đang hoạt động"
+  },
+  "i18next_code": "vi-VN",
+  "owner_bookings": {
+    "page_title": "Quản lý Đặt bàn",
+    "page_subtitle": "Quản lý và theo dõi toàn bộ lượt đặt bàn của nhà hàng",
+    "stats": {
+      "total_bookings": "Tổng Đặt bàn",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy & Không đến",
+      "for_date": "Ngày {{date}}",
+      "all_time": "Tất cả thời gian"
+    },
+    "filters": {
+      "date_label": "Chọn ngày",
+      "status_all": "Tất cả",
+      "status_pending": "Chờ xác nhận",
+      "status_confirmed": "Đã xác nhận",
+      "status_arrived": "Đã đến",
+      "status_completed": "Hoàn thành",
+      "status_cancelled": "Đã hủy",
+      "status_no_show": "Không đến",
+      "clear_filter": "Xóa bộ lọc"
+    },
+    "table": {
+      "col_guest": "Khách",
+      "col_code": "Mã đặt bàn",
+      "col_time": "Thời gian",
+      "col_guests": "Số khách",
+      "col_table": "Bàn",
+      "col_deposit": "Cọc",
+      "col_status": "Trạng thái",
+      "col_actions": "Hành động",
+      "guest_fallback": "Khách vãng lai",
+      "no_table": "N/A",
+      "deposit_paid": "Đã cọc",
+      "deposit_unpaid": "Chưa cọc",
+      "no_data": "Không có đặt bàn nào",
+      "no_data_desc": "Không tìm thấy đặt bàn nào cho ngày và bộ lọc đã chọn."
+    },
+    "pagination": {
+      "showing": "Hiển thị {{from}}-{{to}} / {{total}}",
+      "prev": "Trước",
+      "next": "Tiếp"
+    },
+    "actions": {
+      "confirm": "Xác nhận",
+      "check_in": "Check-in",
+      "complete": "Hoàn thành",
+      "no_show": "Không đến",
+      "cancel": "Hủy",
+      "confirming": "Đang xác nhận...",
+      "processing": "Đang xử lý..."
+    },
+    "cancel_modal": {
+      "title": "Xác nhận Hủy Đặt bàn",
+      "label": "Lý do hủy (Bắt buộc)",
+      "placeholder": "Nhập lý do hủy tại đây...",
+      "confirm_btn": "Hủy Đặt bàn",
+      "cancel_btn": "Quay lại"
+    },
+    "toast": {
+      "confirm_success": "Đã xác nhận đặt bàn thành công!",
+      "confirm_error": "Xác nhận đặt bàn thất bại. Vui lòng thử lại.",
+      "arrive_success": "Đã check-in khách thành công!",
+      "arrive_error": "Check-in thất bại. Vui lòng thử lại.",
+      "complete_success": "Đã hoàn thành đặt bàn!",
+      "complete_error": "Hoàn thành đặt bàn thất bại. Vui lòng thử lại.",
+      "no_show_success": "Đã đánh dấu khách không đến.",
+      "load_error": "Không thể tải danh sách đặt bàn",
+      "confirm_success": "Đã xác nhận đơn đặt bàn",
+      "arrive_success": "Đã check-in khách thành công",
+      "complete_success": "Đơn đặt bàn đã hoàn thành",
+      "no_show_success": "Đã đánh dấu khách vắng mặt",
+      "cancel_success": "Đã hủy đơn đặt bàn",
+      "action_error": "Lỗi khi thực hiện tác vụ. Vui lòng thử lại."
+    }
+  }
 }

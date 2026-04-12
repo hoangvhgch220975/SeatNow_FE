@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { formatCurrency } from '../../../shared/utils/formatCurrency';
 
 /**
@@ -38,18 +39,19 @@ export const calculateDepositAmount = (restaurant, partySize) => {
  * @description Hiển thị tóm tắt chi phí đặt cọc và tổng tiền.
  */
 const DepositSummary = ({ restaurant, partySize }) => {
+  const { t } = useTranslation();
   const totalDeposit = calculateDepositAmount(restaurant, partySize);
 
   return (
     <div className="pt-8 border-t border-dashed border-outline-variant/30 space-y-4">
       <div className="flex justify-between items-center">
-        <span className="text-on-surface-variant font-bold text-[10px] uppercase tracking-[0.2em]">Reservation Deposit</span>
+        <span className="text-on-surface-variant font-bold text-[10px] uppercase tracking-[0.2em]">{t('booking.deposit.reservation_deposit')}</span>
         <span className="text-emerald-500 font-black tracking-widest text-xs">
-          {totalDeposit > 0 ? formatCurrency(totalDeposit) : 'FREE (0 VND)'}
+          {totalDeposit > 0 ? formatCurrency(totalDeposit) : t('booking.deposit.free')}
         </span>
       </div>
       <div className="flex justify-between items-center">
-        <span className="font-black text-on-surface text-sm uppercase">Total Amount</span>
+        <span className="font-black text-on-surface text-sm uppercase">{t('booking.deposit.total_amount')}</span>
         <span className="font-black text-3xl text-primary">
           {formatCurrency(totalDeposit)}
         </span>

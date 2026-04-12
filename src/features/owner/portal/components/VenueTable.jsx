@@ -87,14 +87,14 @@ const VenueTable = ({ restaurants }) => {
                   {/* Cuisine */}
                   <td className="px-6 py-6">
                     <span className="px-3 py-1 bg-slate-100 rounded-lg text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                      {venue.cuisineTypes?.[0] || 'Premium'}
+                      {venue.cuisineTypes?.[0] || t('common.premium')}
                     </span>
                   </td>
 
                   {/* Action */}
                   <td className="px-8 py-6 text-right">
                     {isSuspended ? (
-                      <button className="p-2 text-slate-300 cursor-not-allowed" title="Suspended">
+                      <button className="p-2 text-slate-300 cursor-not-allowed" title={t('owner_portal.filters.status_suspended')}>
                         <span className="material-symbols-outlined">lock</span>
                       </button>
                     ) : (

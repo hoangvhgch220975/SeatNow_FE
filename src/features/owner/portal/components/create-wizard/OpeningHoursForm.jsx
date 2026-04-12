@@ -135,13 +135,13 @@ const OpeningHoursForm = ({ value = {}, onChange }) => {
         {mode === 'all' && (
           <div className="flex gap-4 p-5 bg-primary/5 rounded-2xl border border-primary/10">
             <TimeInput 
-              label="Opening Time" 
+              label={t('owner_portal.create_restaurant.form.open_time')} 
               value={hours.start} 
               lang={currentLang}
               onChange={(v) => setHours(prev => ({ ...prev, start: v }))} 
             />
             <TimeInput 
-              label="Closing Time" 
+              label={t('owner_portal.create_restaurant.form.close_time')} 
               value={hours.end} 
               lang={currentLang}
               onChange={(v) => setHours(prev => ({ ...prev, end: v }))} 
@@ -152,16 +152,16 @@ const OpeningHoursForm = ({ value = {}, onChange }) => {
         {mode === 'split' && (
           <div className="space-y-4">
             <div className="p-5 bg-blue-50/50 rounded-2xl border border-blue-100/50">
-              <p className="text-[10px] font-bold text-blue-600 uppercase mb-4 tracking-tighter">Weekdays (Mon - Fri)</p>
+              <p className="text-[10px] font-bold text-blue-600 uppercase mb-4 tracking-tighter">{t('owner_portal.create_restaurant.form.weekdays_range')}</p>
               <div className="flex gap-4">
                 <TimeInput 
-                  label="Start" 
+                  label={t('owner_portal.create_restaurant.form.start_time')} 
                   value={hours.weekdayStart} 
                   lang={currentLang}
                   onChange={(v) => setHours(prev => ({ ...prev, weekdayStart: v }))} 
                 />
                 <TimeInput 
-                  label="End" 
+                  label={t('owner_portal.create_restaurant.form.end_time')} 
                   value={hours.weekdayEnd} 
                   lang={currentLang}
                   onChange={(v) => setHours(prev => ({ ...prev, weekdayEnd: v }))} 
@@ -169,16 +169,16 @@ const OpeningHoursForm = ({ value = {}, onChange }) => {
               </div>
             </div>
             <div className="p-5 bg-orange-50/50 rounded-2xl border border-orange-100/50">
-              <p className="text-[10px] font-bold text-orange-600 uppercase mb-4 tracking-tighter">Weekends (Sat - Sun)</p>
+              <p className="text-[10px] font-bold text-orange-600 uppercase mb-4 tracking-tighter">{t('owner_portal.create_restaurant.form.weekends_range')}</p>
               <div className="flex gap-4">
                 <TimeInput 
-                  label="Start" 
+                  label={t('owner_portal.create_restaurant.form.start_time')} 
                   value={hours.weekendStart} 
                   lang={currentLang}
                   onChange={(v) => setHours(prev => ({ ...prev, weekendStart: v }))} 
                 />
                 <TimeInput 
-                  label="End" 
+                  label={t('owner_portal.create_restaurant.form.end_time')} 
                   value={hours.weekendEnd} 
                   lang={currentLang}
                   onChange={(v) => setHours(prev => ({ ...prev, weekendEnd: v }))} 
@@ -197,13 +197,13 @@ const OpeningHoursForm = ({ value = {}, onChange }) => {
                   <span className="text-xs font-black text-on-surface uppercase tracking-widest">{day}</span>
                   <div className="flex gap-3">
                     <TimeInput 
-                      label="Start" 
+                      label={t('owner_portal.create_restaurant.form.start_time')} 
                       value={start} 
                       lang={currentLang}
                       onChange={(v) => handleDayChange(day, 'start', v)} 
                     />
                     <TimeInput 
-                      label="End" 
+                      label={t('owner_portal.create_restaurant.form.end_time')} 
                       value={end} 
                       lang={currentLang}
                       onChange={(v) => handleDayChange(day, 'end', v)} 
@@ -219,7 +219,7 @@ const OpeningHoursForm = ({ value = {}, onChange }) => {
       <div className="flex items-start gap-3 p-4 bg-surface-container-high/50 rounded-xl border border-outline-variant/20 italic">
         <AlertCircle className="text-primary shrink-0" size={16} />
         <p className="text-[10px] text-on-surface-variant/70 leading-relaxed font-medium">
-          Professional Tip: Consistency in operating hours builds trust with guests. Please ensure these hours match your real-world operations.
+          {t('owner_portal.create_restaurant.form.hours_tip')}
         </p>
       </div>
     </div>

@@ -20,7 +20,7 @@ import EmptyRestaurantsState from '../components/EmptyRestaurantsState';
  * Đã tái cấu trúc sạch sẽ, tách component và tích hợp Recharts cùng dữ liệu BE mới.
  */
 const OwnerHomePage = () => {
-  const { t } = useTranslation(); // Khởi tạo i18n (Vietnamese comment)
+  const { t, i18n } = useTranslation(); // Khởi tạo i18n (Vietnamese comment)
   const { user } = useAuthStore();
   const [activeTab, setActiveTab] = React.useState('revenue'); // Mặc định hiển thị Doanh thu
   const [revenuePeriod, setRevenuePeriod] = React.useState('month'); 
@@ -127,11 +127,19 @@ const OwnerHomePage = () => {
 
   // Xây dựng nhãn hiển thị khoảng thời gian cho biểu đồ
   const getDisplayRangeLabel = () => {
-    if (chartData.length === 0) return currentPeriod === 'day' ? 'Today Performance' : `This ${currentPeriod} Trend`;
+    if (chartData.length === 0) {
+      return currentPeriod === 'day' 
+        ? t('owner_portal.home.today_performance') 
+        : t('owner_portal.home.trend', { period: t(`analytics.${currentPeriod}`) });
+    }
     const first = chartData[0].label;
     const last = chartData[chartData.length - 1].label;
-    if (currentPeriod === 'day') return `Real-time Activity: Today, ${new Date().toLocaleDateString('vi-VN')}`;
-    return `Analysis Timeline: ${first} — ${last}`;
+    if (currentPeriod === 'day') {
+      return t('owner_portal.home.real_time_activity', { 
+        date: new Date().toLocaleDateString(i18n.language.startsWith('vi') ? 'vi-VN' : 'en-US') 
+      });
+    }
+    return t('owner_portal.home.analysis_timeline', { first, last });
   };
 
   // --- TRẠNG THÁI LOADING/ERROR ---
@@ -139,7 +147,7 @@ const OwnerHomePage = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
         <div className="w-12 h-12 border-4 border-violet-100 border-t-violet-600 rounded-full animate-spin shadow-inner"></div>
-        <p className="text-slate-400 font-black animate-pulse uppercase tracking-widest text-[10px]">Synchronizing Portfolio Dashboard...</p>
+        <p className="text-slate-400 font-black animate-pulse uppercase tracking-widest text-[10px]">{t('owner_portal.home.syncing')}</p>
       </div>
     );
   }
@@ -151,18 +159,18 @@ const OwnerHomePage = () => {
            <span className="material-symbols-outlined text-4xl">cloud_off</span>
         </div>
         <div className="space-y-2">
-          <h3 className="text-2xl font-black text-slate-900">Synchronizing Failed</h3>
-          <p className="text-slate-500 max-w-sm mx-auto font-medium">We couldn't synchronize your portfolio telemetry. Please check your connection.</p>
+          <h3 className="text-2xl font-black text-slate-900">{t('owner_portal.home.sync_failed')}</h3>
+          <p className="text-slate-500 max-w-sm mx-auto font-medium">{t('owner_portal.home.sync_failed_desc')}</p>
         </div>
         <button onClick={() => window.location.reload()} className="bg-slate-900 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-rose-600 transition-colors shadow-xl shadow-rose-200/50">
-           Retry Connection
+           {t('owner_portal.home.retry_connection')}
         </button>
       </div>
     );
   }
 
   return (
-    <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-1000 pb-20">
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
       {/* 1. Dashboard Header Section */}
       <DashboardHeader 
         userName={user?.fullName || user?.name}
@@ -227,7 +235,7 @@ const OwnerHomePage = () => {
 
         {/* BỘ PHÂN TRANG (Cùng theme với App) */}
         {restaurantsList.length > itemsPerPage && (
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 py-10 px-8 bg-slate-50/50 rounded-[2.5rem] border border-slate-100 mt-12 mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 py-6 px-8 bg-slate-50/50 rounded-[2.5rem] border border-slate-100 mt-6">
              <div className="space-y-1">
                 <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
                    {t('owner_portal.home.operational_inventory')}

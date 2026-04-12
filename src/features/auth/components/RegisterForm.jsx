@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { registerSchema } from '../schemas.js';
+import { getRegisterSchema } from '../schemas.js';
 
 /**
  * @file RegisterForm.jsx
@@ -18,7 +18,7 @@ const RegisterForm = ({ onSubmit, isLoading }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(getRegisterSchema(t)),
     defaultValues: {
       name: '',
       email: '',

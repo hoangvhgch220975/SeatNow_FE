@@ -69,7 +69,7 @@ const ContactInfoForm = ({ restaurant, isLoading }) => {
               {t('workspace.profile.hero.verified')}
             </p>
             <p className="text-[10px] text-emerald-600 font-bold">
-              Business verified restaurant.
+              {t('workspace.profile.hero.verified_note')}
             </p>
           </div>
         </div>
@@ -91,7 +91,7 @@ const ContactInfoForm = ({ restaurant, isLoading }) => {
             <div className="absolute top-3 right-3 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full border border-slate-100 shadow-sm pointer-events-none">
               <span className="text-[9px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Live Map
+                {t('workspace.profile.common.live_map')}
               </span>
             </div>
           </div>

@@ -34,6 +34,8 @@ import RestaurantWorkspaceLayout from '../shared/layout/RestaurantWorkspaceLayou
 import RestaurantWorkspaceDashboard from '../features/owner/workspace/dashboard/pages/OwnerDashboardPage.jsx';
 import OwnerRestaurantProfilePage from '../features/owner/workspace/restaurant-profile/pages/OwnerRestaurantProfilePage.jsx';
 import OwnerMenuPage from '../features/owner/workspace/menu/pages/OwnerMenuPage.jsx';
+import OwnerTablesPage from '../features/owner/workspace/tables/pages/OwnerTablesPage.jsx';
+import OwnerBookingsPage from '../features/owner/workspace/bookings/pages/OwnerBookingsPage.jsx';
 
 
 /**
@@ -93,7 +95,6 @@ export const router = createBrowserRouter([
             path: ROUTES.OWNER_JOIN,
             element: <OwnerJoinPage />,
           },
-          // Đã di chuyển CustomerDashboard xuống CustomerLayout bên dưới
         ],
       },
       {
@@ -185,15 +186,27 @@ export const router = createBrowserRouter([
             path: ROUTES.WORKSPACE_DASHBOARD(':idOrSlug'),
             element: <RestaurantWorkspaceDashboard />,
           },
+          // WORKSPACE_PROFILE: (idOrSlug) => `/owner/restaurants/${idOrSlug}/profile`
           {
             path: ROUTES.WORKSPACE_PROFILE(':idOrSlug'),
             element: <OwnerRestaurantProfilePage />,
           },
+          // WORKSPACE_MENU: (idOrSlug) => `/owner/restaurants/${idOrSlug}/menu`
           {
             path: ROUTES.WORKSPACE_MENU(':idOrSlug'),
             element: <OwnerMenuPage />,
           },
-          // Các route con khác của workspace sẽ thêm tại đây (Tables, etc.)
+          // WORKSPACE_TABLES: (idOrSlug) => `/owner/restaurants/${idOrSlug}/tables`
+          {
+            path: ROUTES.WORKSPACE_TABLES(':idOrSlug'),
+            element: <OwnerTablesPage />,
+          },
+          {
+            // WORKSPACE_BOOKINGS: (idOrSlug) => `/owner/restaurants/${idOrSlug}/bookings`
+            path: ROUTES.WORKSPACE_BOOKINGS(':idOrSlug'),
+            element: <OwnerBookingsPage />,
+          },
+          // Các route con khác của workspace sẽ thêm tại đây
         ]
       },
       {

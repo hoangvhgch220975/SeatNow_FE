@@ -4,6 +4,7 @@ import {
   BarChart, Bar, Cell
 } from 'recharts';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file PortfolioChart.jsx
@@ -23,6 +24,7 @@ const PortfolioChart = ({
   totalRevenue,
   busyHour
 }) => {
+  const { t } = useTranslation();
   // Chuẩn bị dữ liệu cho Recharts
   const chartData = data.map(item => ({
     name: item.label,
@@ -50,7 +52,7 @@ const PortfolioChart = ({
                 <span className="text-sm font-black">
                   {activeTab === 'revenue' 
                     ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(entry.value).replace('₫', '₫')
-                    : `${entry.value} Units`}
+                    : `${entry.value} ${t('owner_portal.overview.units')}`}
                 </span>
               </div>
             ))}
@@ -68,7 +70,7 @@ const PortfolioChart = ({
         <div className="space-y-1">
           <div className="flex items-center gap-3">
             <div className={`h-8 w-1.5 rounded-full ${activeTab === 'revenue' ? 'bg-emerald-500' : 'bg-violet-500'}`}></div>
-            <h3 className="text-3xl font-black text-slate-900 tracking-tight italic">Portfolio Analytics</h3>
+            <h3 className="text-3xl font-black text-slate-900 tracking-tight italic">{t('owner_portal.overview.portfolio_analytics_title')}</h3>
           </div>
           <p className="text-slate-500 font-bold ml-4 uppercase tracking-[0.3em] text-[10px] bg-slate-50 w-fit px-3 py-1 rounded-lg border border-slate-200/50">
             {displayRange}
@@ -87,7 +89,7 @@ const PortfolioChart = ({
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">payments</span>
-              Revenue
+              {t('owner_portal.overview.metric_revenue')}
             </button>
             <button 
               onClick={() => setActiveTab('bookings')}
@@ -98,7 +100,7 @@ const PortfolioChart = ({
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">event_available</span>
-              Bookings
+              {t('owner_portal.overview.metric_bookings')}
             </button>
           </div>
 
@@ -116,7 +118,7 @@ const PortfolioChart = ({
                     : 'text-slate-400 hover:bg-white hover:text-slate-600'
                 }`}
               >
-                {p}
+                {t(`analytics.${p}`)}
               </button>
             ))}
           </div>
@@ -146,21 +148,22 @@ const PortfolioChart = ({
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
+                tick={{ fill: '#64748b', fontSize: 11, fontWeight: 800, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
                 dy={15}
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
                 domain={[0, 'auto']}
-                tick={{ fill: '#cbd5e1', fontSize: 9, fontWeight: 600, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
+                width={50}
+                tick={{ fill: '#475569', fontSize: 10, fontWeight: 800, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
                 tickFormatter={(val) => new Intl.NumberFormat('en-US', { notation: 'compact' }).format(val)}
               />
               <Tooltip content={<CustomTooltip />} />
               
               {/* Layer đơn Hợp lệ (Confirmed) */}
               <Area 
-                name={activeTab === 'revenue' ? "Net Revenue" : "Confirmed"}
+                name={activeTab === 'revenue' ? t('owner_portal.overview.realized_net_revenue') : t('owner_portal.overview.chart_confirmed')}
                 type="monotone" 
                 dataKey="value" 
                 stroke={color} 
@@ -174,7 +177,7 @@ const PortfolioChart = ({
               {/* Layer đơn Hủy (Cancelled) - Chỉ hiện khi ở tab Bookings */}
               {activeTab === 'bookings' && (
                 <Area 
-                  name="Cancelled"
+                  name={t('owner_portal.overview.chart_cancelled')}
                   type="monotone" 
                   dataKey="cancelled" 
                   stroke="#f43f5e" 
@@ -195,20 +198,21 @@ const PortfolioChart = ({
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
+                tick={{ fill: '#64748b', fontSize: 11, fontWeight: 800, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
                 dy={15}
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#cbd5e1', fontSize: 9, fontWeight: 600, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
+                width={50}
+                tick={{ fill: '#475569', fontSize: 10, fontWeight: 800, fontFamily: '"Plus Jakarta Sans", sans-serif' }}
               />
               <Tooltip cursor={{fill: '#f8fafc'}} content={<CustomTooltip />} />
               
               {/* Stacked Bar for Bookings (Valid + Cancelled) */}
-              <Bar name="Confirmed" dataKey="value" radius={[10, 10, 0, 0]} animationDuration={1200} barSize={20} fill="#818cf8" />
+              <Bar name={t('owner_portal.overview.chart_confirmed')} dataKey="value" radius={[10, 10, 0, 0]} animationDuration={1200} barSize={20} fill="#818cf8" />
               {activeTab === 'bookings' && (
-                <Bar name="Cancelled" dataKey="cancelled" radius={[10, 10, 0, 0]} animationDuration={1200} barSize={20} fill="#fda4af" />
+                <Bar name={t('owner_portal.overview.chart_cancelled')} dataKey="cancelled" radius={[10, 10, 0, 0]} animationDuration={1200} barSize={20} fill="#fda4af" />
               )}
             </BarChart>
           )}
@@ -222,11 +226,11 @@ const PortfolioChart = ({
             {/* Thẻ Doanh thu thực nhận (Net Revenue) - Bên TRÁI */}
             <div className="p-8 rounded-[2rem] bg-slate-50 border border-white flex justify-between items-center group hover:bg-white hover:shadow-xl hover:shadow-emerald-100/20 transition-all duration-500">
               <div className="space-y-1">
-                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Realized Net Revenue</span>
+                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">{t('owner_portal.overview.realized_net_revenue')}</span>
                  <span className="text-3xl font-black text-emerald-600 tracking-tight">
                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(totalRevenue || 0).replace('₫', '₫')}
                  </span>
-                 <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">After commissions & fees</p>
+                 <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">{t('owner_portal.overview.after_commissions')}</p>
               </div>
               <div className="h-14 w-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 shadow-inner group-hover:scale-110 transition-transform">
                  <span className="material-symbols-outlined">payments</span>
@@ -236,11 +240,11 @@ const PortfolioChart = ({
             {/* Thẻ Tiền cọc đã thu (Gross Deposits) - Bên PHẢI */}
             <div className="p-8 rounded-[2rem] bg-slate-50 border border-white flex justify-between items-center group hover:bg-white hover:shadow-xl hover:shadow-emerald-100/20 transition-all duration-500">
               <div className="space-y-1">
-                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Gross Deposits Collected</span>
+                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">{t('owner_portal.overview.gross_deposits')}</span>
                  <span className="text-3xl font-black text-slate-900 tracking-tight">
                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(grossRevenue || 0).replace('₫', '₫')}
                  </span>
-                 <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">All payments from confirmed bookings</p>
+                 <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">{t('owner_portal.overview.gross_deposits_desc')}</p>
               </div>
               <div className="flex flex-col items-end">
                  <div className="h-14 w-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500 shadow-inner group-hover:scale-110 transition-transform">
@@ -254,9 +258,9 @@ const PortfolioChart = ({
             {/* Thẻ Lượt đặt hợp lệ */}
             <div className="p-8 rounded-[2rem] bg-slate-50 border border-white flex justify-between items-center group hover:bg-white hover:shadow-xl hover:shadow-indigo-100/20 transition-all duration-500">
               <div className="space-y-1">
-                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Valid Portfolio Bookings</span>
+                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">{t('owner_portal.overview.valid_bookings')}</span>
                  <span className="text-3xl font-black text-slate-900 tracking-tight">
-                    {new Intl.NumberFormat('en-US').format(totalBookings || 0)} <span className="text-sm font-bold text-violet-500">Units</span>
+                    {new Intl.NumberFormat('en-US').format(totalBookings || 0)} <span className="text-sm font-bold text-violet-500">{t('owner_portal.overview.units')}</span>
                  </span>
               </div>
               <div className="h-14 w-14 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-500 shadow-inner group-hover:scale-110 transition-transform">
@@ -268,11 +272,11 @@ const PortfolioChart = ({
             {(period === 'day' && busyHour) ? (
               <div className="p-8 rounded-[2rem] bg-slate-50 border border-white flex justify-between items-center group hover:bg-white hover:shadow-xl hover:shadow-amber-100/20 transition-all duration-500">
                 <div className="space-y-1">
-                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Peak Operational Hour</span>
+                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">{t('owner_portal.overview.peak_hour')}</span>
                    <span className="text-3xl font-black text-slate-900 tracking-tight lowercase">
-                      {busyHour} <span className="text-sm font-bold text-amber-500 uppercase">Busy</span>
+                      {busyHour} <span className="text-sm font-bold text-amber-500 uppercase">{t('owner_portal.overview.busy')}</span>
                    </span>
-                   <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">Most active window today</p>
+                   <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">{t('owner_portal.overview.active_window')}</p>
                 </div>
                 <div className="h-14 w-14 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-500 shadow-inner group-hover:scale-110 transition-transform">
                    <span className="material-symbols-outlined">schedule</span>
@@ -281,18 +285,18 @@ const PortfolioChart = ({
             ) : (
               <div className="p-8 rounded-[2rem] bg-slate-50 border border-white flex justify-between items-center group hover:bg-white hover:shadow-xl hover:shadow-emerald-100/20 transition-all duration-500">
                 <div className="space-y-1">
-                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Portfolio Success Rate</span>
+                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">{t('owner_portal.overview.success_rate')}</span>
                    <span className="text-3xl font-black text-slate-900 tracking-tight">
                       {new Intl.NumberFormat('en-US').format(totalBookings || 0)} <span className="text-sm font-bold text-slate-300">/</span> {new Intl.NumberFormat('en-US').format((totalBookings || 0) + (totalCancelled || 0))}
                    </span>
-                   <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">Confirmed vs Total Intent</p>
+                   <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">{t('owner_portal.overview.intent_desc')}</p>
                 </div>
                 <div className="flex flex-col items-end">
                    <div className="h-14 w-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500 shadow-inner mb-2 group-hover:scale-110 transition-transform">
                       <span className="material-symbols-outlined">task_alt</span>
                    </div>
                    <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100 uppercase tracking-tighter">
-                      {(((totalBookings || 0) / ((totalBookings || 1) + (totalCancelled || 0))) * 100).toFixed(1)}% Success
+                      {(((totalBookings || 0) / ((totalBookings || 1) + (totalCancelled || 0))) * 100).toFixed(1)}% {t('owner_portal.overview.success')}
                    </span>
                 </div>
               </div>

@@ -12,7 +12,7 @@ const GuestAnalysisBreakdown = ({ guestSizeCounts, isLoading }) => {
   const categories = [
     { 
       key: 'couple', 
-      label: t('workspace.analysis.couple', { defaultValue: 'Couple (2)' }), 
+      label: t('workspace.analysis.couple', { defaultValue: 'Couple (1-2)' }), 
       count: guestSizeCounts?.couple || 0, 
       percent: guestSizeCounts?.percentCouple || 0,
       color: 'bg-violet-500',
@@ -20,7 +20,7 @@ const GuestAnalysisBreakdown = ({ guestSizeCounts, isLoading }) => {
     },
     { 
       key: 'smallGroup', 
-      label: t('workspace.analysis.small_group', { defaultValue: 'Small Group (4-6)' }), 
+      label: t('workspace.analysis.small_group', { defaultValue: 'Small Group (3-7)' }), 
       count: guestSizeCounts?.smallGroup || 0, 
       percent: guestSizeCounts?.percentSmallGroup || 0,
       color: 'bg-indigo-500',

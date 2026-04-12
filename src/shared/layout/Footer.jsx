@@ -1,29 +1,29 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
-import { ROUTES } from '../../config/routes.js';
-import logo from '../../assets/logos/logo.png';
+import { Link } from 'react-router-dom';
+import { ROUTES } from '@/config/routes.js';
+import logo from '@/assets/logos/logo.png';
 
 /**
  * @file Footer.jsx
  * @description Footer chung cho toàn bộ trang public/customer. Hỗ trợ đa ngôn ngữ.
  */
 const Footer = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { label: t('footer.customer.home'), path: ROUTES.HOME },
-    { label: t('footer.customer.restaurants'), path: ROUTES.RESTAURANT_LIST },
-    { label: t('footer.customer.track_booking'), path: ROUTES.TRACK_BOOKING },
-    { label: t('footer.customer.ai_assistant'), path: ROUTES.AI_CHAT },
+    { labelKey: 'footer.customer.home', path: ROUTES.HOME },
+    { labelKey: 'footer.customer.restaurants', path: ROUTES.RESTAURANT_LIST },
+    { labelKey: 'footer.customer.track_booking', path: ROUTES.TRACK_BOOKING },
+    { labelKey: 'footer.customer.ai_assistant', path: ROUTES.AI_CHAT },
   ];
 
   const legalLinks = [
-    { label: t('footer.customer.privacy_policy'), path: ROUTES.POLICIES },
-    { label: t('footer.customer.terms_of_service'), path: ROUTES.POLICIES },
-    { label: t('footer.customer.refund_policy'), path: ROUTES.POLICIES },
-    { label: t('footer.customer.contact_us'), path: ROUTES.CONTACT },
+    { labelKey: 'footer.customer.privacy_policy', path: ROUTES.POLICIES },
+    { labelKey: 'footer.customer.terms_of_service', path: ROUTES.POLICIES },
+    { labelKey: 'footer.customer.refund_policy', path: ROUTES.POLICIES },
+    { labelKey: 'footer.customer.contact_us', path: ROUTES.CONTACT },
   ];
 
   return (
@@ -77,13 +77,13 @@ const Footer = () => {
             </h4>
             <ul className="space-y-4">
               {quickLinks.map((link) => (
-                <li key={link.label}>
+                <li key={link.labelKey}>
                   <Link
                     to={link.path}
                     className="text-slate-600 hover:text-primary text-sm font-bold transition-colors duration-200 flex items-center gap-2 group"
                   >
                     <span className="w-1 h-1 rounded-full bg-slate-200 group-hover:bg-primary group-hover:w-2 transition-all duration-300" />
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -97,13 +97,13 @@ const Footer = () => {
             </h4>
             <ul className="space-y-4">
               {legalLinks.map((link) => (
-                <li key={link.label}>
+                <li key={link.labelKey}>
                   <Link
                     to={link.path}
                     className="text-slate-600 hover:text-primary text-sm font-bold transition-colors duration-200 flex items-center gap-2 group"
                   >
                     <span className="w-1 h-1 rounded-full bg-slate-200 group-hover:bg-primary group-hover:w-2 transition-all duration-300" />
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}

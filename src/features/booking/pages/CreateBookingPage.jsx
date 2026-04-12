@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation, Trans } from 'react-i18next';
 import { ROUTES } from '../../../config/routes.js';
 import { useRestaurant, useRestaurantTables } from '../../restaurants/hooks.js';
 import { useRestaurantAvailability, useCreateBooking, useCancelBooking, useCancelBookingByGuest, useModifyBooking } from '../hooks.js';
@@ -27,6 +28,7 @@ import { calculateDepositAmount } from '../components/DepositSummary';
  * Sử dụng Mock Data cho giai đoạn đầu của dự án.
  */
 const CreateBookingPage = () => {
+  const { t } = useTranslation();
   const { idOrSlug } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -323,7 +325,7 @@ const CreateBookingPage = () => {
   // 7. Xử lý sự kiện (Event Handlers) theo logic code.md
   const handleSelectTable = async (table) => {
     if (!selectedDate || !selectedTimeSlot) {
-      toast.error('Please select a Date and Time Slot first.');
+      toast.error(t('booking.create.toast.select_date_time'));
       return;
     }
 
@@ -370,9 +372,9 @@ const CreateBookingPage = () => {
                 setSelectedTable(table);
                 lastHoldInfo.current = { date: selectedDate, time: selectedTimeSlot, tableId: table.id };
                 setRealtimeStatuses(prev => ({ ...prev, [currentTableId]: 'held' }));
-                toast.success(`Table ${table.tableNumber} is held for you.`);
+                toast.success(t('booking.create.toast.table_held', { number: table.tableNumber }));
             } else {
-                toast.error(response?.error || 'Table is busy!');
+                toast.error(response?.error || t('booking.create.toast.table_busy'));
             }
         } catch (error) {
             console.error('❌ [Socket Error]:', error);
@@ -412,7 +414,7 @@ const CreateBookingPage = () => {
 
     // 1. Hiển thị thông báo và giữ spinner
     setIsProcessing(true);
-    toast.success('Reservation confirmed successfully! Redirecting...');
+    toast.success(t('booking.create.toast.redirecting'));
     
     // 2. Xóa thông tin hold ngay lập tức
     lastHoldInfo.current = { date: null, time: null, tableId: null };
@@ -436,7 +438,7 @@ const CreateBookingPage = () => {
    */
   const handleConfirmBooking = async () => {
     if (!selectedTable || !selectedTimeSlot) {
-      toast.error('Please select both a time slot and a table.');
+      toast.error(t('booking.create.toast.select_date_time'));
       return;
     }
 
@@ -453,7 +455,7 @@ const CreateBookingPage = () => {
         // Xác thực số điện thoại cho khách vãng lai
         const phoneToVerify = guestInfo.guestPhone || modifyState?.guest?.phone;
         if (!isAuthenticated && !phoneToVerify) {
-           toast.error('Identity verification required. Please provide your phone number.');
+           toast.error(t('booking.create.toast.identity_required'));
            setIsProcessing(false);
            setIsReplacingLoading(false);
            return;
@@ -487,7 +489,7 @@ const CreateBookingPage = () => {
       
       // Nếu là khách vãng lai, yêu cầu đầy đủ thông tin để tạo mới đơn
       if (!isAuthenticated && (!guestInfo.guestName || !guestInfo.guestPhone)) {
-        toast.error('Please provide your name and phone number to create a new reservation.');
+        toast.error(t('booking.create.toast.guest_info_required'));
         setIsProcessing(false);
         return;
       }
@@ -514,7 +516,7 @@ const CreateBookingPage = () => {
 
       if (!bookingId) {
         console.error('⚠️ [API Response Debug]:', result);
-        throw new Error('Booking created in DB but Frontend could not retrieve the ID.');
+        throw new Error(t('booking.create.toast.id_retrieve_error'));
       }
       
       setPendingBookingId(bookingId);
@@ -589,13 +591,13 @@ const CreateBookingPage = () => {
   }, [pendingBookingId, handleBookingSuccess, navigate]); 
 
   if (isReplacingLoading) return (
-    <LoadingSpinner message="Updating your reservation..." />
+    <LoadingSpinner message={t('booking.create.loading_modifying')} />
   );
 
   if (isLoadingRest || isLoadingTables) return (
-    <LoadingSpinner message="Curating your dining options..." />
+    <LoadingSpinner message={t('booking.create.loading_rest')} />
   );
-  if (isErrorRest || isErrorTables || !restaurant) return <ErrorState message="Could not find restaurant details." />;
+  if (isErrorRest || isErrorTables || !restaurant) return <ErrorState message={t('booking.create.error_not_found')} />;
 
   return (
     <div className="bg-surface -mt-12 pb-24">
@@ -615,7 +617,7 @@ const CreateBookingPage = () => {
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                     <span className="material-symbols-outlined text-xl font-black">event_available</span>
                   </div>
-                  <h2 className="text-xl font-black text-on-surface">Select Date & Time</h2>
+                  <h2 className="text-xl font-black text-on-surface">{t('booking.create.select_date_time')}</h2>
                </div>
                <TimeSlotPicker 
                  selectedDate={selectedDate} 
@@ -633,7 +635,7 @@ const CreateBookingPage = () => {
                       <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                         <span className="material-symbols-outlined text-xl font-black">table_view</span>
                       </div>
-                      <h2 className="text-xl font-black text-on-surface">Experience Your Way</h2>
+                      <h2 className="text-xl font-black text-on-surface">{t('booking.create.experience_way')}</h2>
                    </div>
                    
                    <FloorFilter 
@@ -656,7 +658,7 @@ const CreateBookingPage = () => {
                   <div className="flex justify-center pt-4">
                     <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary/40">
                       <div className="w-1.5 h-1.5 bg-primary rounded-full animate-ping"></div>
-                      Syncing availability...
+                      {t('booking.create.syncing_availability')}
                     </div>
                   </div>
                 )}
@@ -668,13 +670,13 @@ const CreateBookingPage = () => {
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                     <span className="material-symbols-outlined text-xl font-black">edit_note</span>
                   </div>
-                  <h2 className="text-xl font-black text-on-surface">Special Requests</h2>
+                  <h2 className="text-xl font-black text-on-surface">{t('booking.create.special_requests')}</h2>
                 </div>
                 <textarea 
                   value={specialRequests}
                   onChange={(e) => setSpecialRequests(e.target.value)}
                   className="w-full bg-slate-50 border-none outline-none rounded-[1.25rem] p-6 focus:ring-4 focus:ring-primary/10 transition-all text-on-surface-variant font-medium placeholder:text-slate-300 min-h-[140px] resize-none text-sm" 
-                  placeholder="Tell us about allergies, anniversaries, or specific seating preferences..." 
+                  placeholder={t('booking.create.special_requests_placeholder')} 
                 />
             </section>
           </div>

@@ -21,7 +21,7 @@ const RestaurantProfileForm = ({ restaurant, isLoading }) => {
             {t('workspace.profile.basic_info')}
           </h3>
           <p className="text-sm text-slate-400 font-bold uppercase tracking-widest leading-none mt-1">
-            Section 01
+            {t('workspace.profile.common.section')} 01
           </p>
         </div>
       </div>
@@ -84,7 +84,7 @@ const RestaurantProfileForm = ({ restaurant, isLoading }) => {
             {t('workspace.profile.form.description')}
           </label>
           <div className="px-6 py-5 bg-slate-50 rounded-[2rem] text-slate-700 font-medium leading-relaxed min-h-32">
-            {restaurant?.description || 'No description available for this restaurant.'}
+            {restaurant?.description || t('workspace.profile.form.no_description')}
           </div>
         </div>
       </div>

@@ -1,14 +1,17 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file FloorFilter.jsx
  * @description Bộ lọc tầng (Location) cho sơ đồ bàn.
  */
 const FloorFilter = ({ floors, activeFloor, onSelectFloor }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-3">
       <label className="text-[9px] font-black uppercase tracking-[0.3em] text-on-surface-variant/50 ml-1">
-        Select Area / Floor
+        {t('booking.table_status.select_area')}
       </label>
       <div className="flex gap-2 p-1 bg-surface-container-low rounded-xl border border-outline-variant/10">
         {floors.map((floor) => {
