@@ -93,18 +93,18 @@ const VenueTable = ({ restaurants }) => {
 
                   {/* Action */}
                   <td className="px-8 py-6 text-right">
-                    {isSuspended ? (
-                      <button className="p-2 text-slate-300 cursor-not-allowed" title={t('owner_portal.filters.status_suspended')}>
-                        <span className="material-symbols-outlined">lock</span>
-                      </button>
-                    ) : (
-                      <Link 
-                        to={ROUTES.WORKSPACE_DASHBOARD(venue.slug || venue.id)}
-                        className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900 text-white hover:bg-violet-600 transition-all shadow-sm hover:shadow-lg hover:shadow-violet-200 active:scale-90"
-                      >
-                        <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
-                      </Link>
-                    )}
+                    <Link 
+                      to={ROUTES.WORKSPACE_DASHBOARD(venue.slug || venue.id)}
+                      className={`inline-flex items-center justify-center w-10 h-10 rounded-xl transition-all shadow-sm hover:shadow-lg active:scale-90 ${
+                        isSuspended 
+                          ? 'bg-slate-200 text-slate-500 hover:bg-slate-300' 
+                          : 'bg-slate-900 text-white hover:bg-violet-600 hover:shadow-violet-200'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-[20px]">
+                        {isSuspended ? 'settings_suggest' : 'arrow_forward'}
+                      </span>
+                    </Link>
                   </td>
                 </motion.tr>
               );

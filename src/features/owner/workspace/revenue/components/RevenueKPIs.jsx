@@ -91,7 +91,7 @@ const RevenueKPIs = ({ summary }) => {
             
             {/* Trend Indicator (Placeholder for now) */}
             <div className="mt-4 flex items-center gap-1.5">
-               <span className="text-[10px] font-bold text-slate-400">DATA SYNCED</span>
+               <span className="text-[10px] font-bold text-slate-400">{t('workspace_revenue.kpi.data_synced')}</span>
                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             </div>
           </div>

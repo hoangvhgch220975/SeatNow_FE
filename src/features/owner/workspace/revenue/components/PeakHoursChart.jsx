@@ -83,7 +83,7 @@ const PeakHoursChart = ({ data, openingHours }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-slate-900 text-white px-3 py-2 rounded-xl shadow-xl text-xs font-bold ring-1 ring-slate-700">
-          {label}: {payload[0].value} bookings
+          {label}: {payload[0].value} {t('workspace_revenue.common.bookings').toLowerCase()}
         </div>
       );
     }

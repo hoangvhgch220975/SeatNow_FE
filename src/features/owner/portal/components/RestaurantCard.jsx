@@ -126,23 +126,13 @@ const RestaurantCard = ({ restaurant }) => {
 
         {/* Nút hành động (Action Button) */}
         <div className="mt-auto pt-2">
-          {isSuspended ? (
-            <div 
-              className="w-full h-14 rounded-2xl flex items-center justify-center gap-4 bg-slate-100 text-slate-400 font-black text-[10px] uppercase tracking-[0.2em] cursor-not-allowed"
-              title={t('owner_portal.card.locked_tooltip', { defaultValue: 'This venue is currently suspended and cannot be managed.' })}
-            >
-              {t('owner_portal.card.management_locked', { defaultValue: 'Management Locked' })}
-              <span className="material-symbols-outlined text-[20px]">lock</span>
-            </div>
-          ) : (
-            <Link 
-              to={ROUTES.WORKSPACE_DASHBOARD(workspaceIdentifier)}
-              className="w-full h-14 rounded-2xl flex items-center justify-center gap-4 bg-slate-900 text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-violet-600 hover:shadow-2xl hover:shadow-violet-200 transition-all active:scale-95 group/btn"
-            >
-              {t('owner_portal.card.manage_dashboard', { defaultValue: 'Manage Dashboard' })}
-              <span className="material-symbols-outlined text-[20px] group-hover/btn:translate-x-1 transition-transform">arrow_right_alt</span>
-            </Link>
-          )}
+          <Link 
+            to={ROUTES.WORKSPACE_DASHBOARD(workspaceIdentifier)}
+            className="w-full h-14 rounded-2xl flex items-center justify-center gap-4 bg-slate-900 text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-violet-600 hover:shadow-2xl hover:shadow-violet-200 transition-all active:scale-95 group/btn"
+          >
+            {isSuspended ? t('owner_portal.card.manage_suspended', { defaultValue: 'Manage Suspended' }) : t('owner_portal.card.manage_dashboard', { defaultValue: 'Manage Dashboard' })}
+            <span className="material-symbols-outlined text-[20px] group-hover/btn:translate-x-1 transition-transform">arrow_right_alt</span>
+          </Link>
         </div>
       </div>
     </motion.div>

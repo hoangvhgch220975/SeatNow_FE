@@ -24,7 +24,7 @@ const formatTimeLocale = (timeStr, lang) => {
  * Sub-component: Controlled Time Input with localized display (Vietnamese comment)
  */
 const TimeInput = ({ label, value, onChange, lang, icon: Icon = Clock }) => (
-  <div className="flex flex-col gap-1.5 flex-1 min-w-[140px] group">
+  <div className="flex flex-col gap-1.5 flex-1 min-w-0 group">
     <label className="text-[10px] font-extrabold text-on-surface-variant/60 uppercase tracking-widest flex items-center gap-1 group-focus-within:text-primary transition-colors">
       <Icon size={12} />
       {label}
@@ -36,11 +36,11 @@ const TimeInput = ({ label, value, onChange, lang, icon: Icon = Clock }) => (
         onChange={(e) => onChange(e.target.value)}
         className="w-full h-12 px-4 bg-surface-container-low border border-outline-variant rounded-2xl text-sm font-bold opacity-0 absolute inset-0 z-10 cursor-pointer shadow-none"
       />
-      <div className="w-full h-12 px-4 bg-white border border-outline-variant rounded-2xl flex items-center justify-between group-focus-within:border-primary group-focus-within:ring-2 group-focus-within:ring-primary/10 transition-all">
-        <span className="text-sm font-black text-on-surface">
+      <div className="w-full h-12 px-3 bg-white border border-outline-variant rounded-2xl flex items-center justify-between group-focus-within:border-primary group-focus-within:ring-2 group-focus-within:ring-primary/10 transition-all overflow-hidden">
+        <span className="text-xs sm:text-sm font-black text-on-surface truncate">
           {formatTimeLocale(value, lang)}
         </span>
-        <Clock size={16} className="text-on-surface-variant/30" />
+        <Clock size={16} className="text-on-surface-variant/30 shrink-0 ml-1" />
       </div>
     </div>
   </div>
@@ -189,7 +189,7 @@ const OpeningHoursForm = ({ value = {}, onChange }) => {
         )}
 
         {mode === 'custom' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 2xl:grid-cols-2 gap-3">
             {Object.keys(hours.days).map((day) => {
               const [start, end] = hours.days[day].split('-');
               return (

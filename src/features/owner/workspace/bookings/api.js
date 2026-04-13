@@ -53,6 +53,13 @@ export const bookingOwnerApi = {
     apiClient.put(`/bookings/${bookingId}/no-show`),
 
   /**
+   * Lấy chi tiết một đơn đặt bàn
+   * @param {string} bookingId 
+   */
+  getBookingDetail: (bookingId) => 
+    apiClient.get(`/bookings/${bookingId}`),
+
+  /**
    * Hủy đơn đặt bàn kèm theo lý do cụ thể
    * @param {string} bookingId 
    * @param {string} reason - Lý do hủy từ phía nhà hàng

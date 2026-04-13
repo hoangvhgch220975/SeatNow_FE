@@ -37,6 +37,10 @@ import OwnerMenuPage from '../features/owner/workspace/menu/pages/OwnerMenuPage.
 import OwnerTablesPage from '../features/owner/workspace/tables/pages/OwnerTablesPage.jsx';
 import OwnerBookingsPage from '../features/owner/workspace/bookings/pages/OwnerBookingsPage.jsx';
 import OwnerRevenuePage from '../features/owner/workspace/revenue/pages/OwnerRevenuePage.jsx';
+import OwnerWalletPage from '../features/owner/workspace/wallet/pages/WalletPage.jsx';
+import OwnerTransactionsPage from '../features/owner/workspace/wallet/pages/TransactionsPage.jsx';
+import OwnerBookingDetailPage from '../features/owner/workspace/bookings/pages/OwnerBookingDetailPage.jsx';
+import OwnerSettingsPage from '../features/owner/workspace/settings/pages/OwnerSettingsPage.jsx';
 
 
 
@@ -209,8 +213,24 @@ export const router = createBrowserRouter([
             element: <OwnerBookingsPage />,
           },
           {
+            path: ROUTES.WORKSPACE_BOOKING_DETAIL(':idOrSlug', ':bookingId'),
+            element: <OwnerBookingDetailPage />,
+          },
+          {
             path: ROUTES.WORKSPACE_REVENUE(':idOrSlug'),
             element: <OwnerRevenuePage />,
+          },
+          {
+            path: ROUTES.WORKSPACE_WALLET(':idOrSlug'),
+            element: <OwnerWalletPage />,
+          },
+          {
+            path: ROUTES.WORKSPACE_TRANSACTIONS(':idOrSlug'),
+            element: <OwnerTransactionsPage />,
+          },
+          {
+            path: ROUTES.WORKSPACE_SETTINGS(':idOrSlug'),
+            element: <OwnerSettingsPage />,
           },
           // Các route con khác của workspace sẽ thêm tại đây
         ]

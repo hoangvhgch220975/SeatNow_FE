@@ -70,13 +70,13 @@ const SidebarRestaurantWorkspace = ({ restaurantName }) => {
       label: 'wallet',
       icon: 'account_balance_wallet',
       path: ROUTES.WORKSPACE_WALLET(idOrSlug),
-      comingSoon: true,
+      comingSoon: false,
     },
     {
       label: 'settings',
       icon: 'settings',
       path: ROUTES.WORKSPACE_SETTINGS(idOrSlug),
-      comingSoon: true,
+      comingSoon: false,
     },
   ];
 

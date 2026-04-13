@@ -1038,8 +1038,7 @@
     "overview": {
       "guest_composition_title": "PHÂN TÍCH CƠ CẤU KHÁCH",
       "dominant_peak": "Nhóm chủ đạo",
-      "bookings_recorded": "{{count}} Lượt đặt được ghi nhận",
-      "couples_duos_desc": "Các cặp đôi thực hiện đặt chỗ năng động.",
+      "couples_duos_desc": "{{count}} Nhóm khách 1-2 người",
       "small_groups_desc": "{{count}} Nhóm khách quy mô nhỏ (3-7 người)",
       "large_parties_desc": "{{count}} Nhóm khách quy mô lớn (8+ người)",
       "portfolio_analytics_title": "Phân Tích Danh Mục",
@@ -1238,8 +1237,8 @@
       "menu_management": "Thực đơn",
       "table_management": "Sơ đồ bàn",
       "booking_management": "Lượt đặt",
-      "revenue_stats": "Doanh thu",
-      "wallet": "Ví tiền",
+      "revenue_stats": "Báo cáo doanh thu",
+      "wallet": "Ví & Thanh toán",
       "settings": "Cài đặt",
       "ai_tools": "Công cụ AI",
       "ask_seatnow": "Chat AI",
@@ -1348,7 +1347,13 @@
         "pending": "Chờ Phê Duyệt",
         "active": "Đang Hoạt Động",
         "inactive": "Tạm Ngưng",
-        "edit_profile": "Chỉnh sửa Hồ sơ Nhà hàng"
+        "suspended": "Tạm Nghỉ",
+        "edit_profile": "Chỉnh sửa Hồ sơ Nhà hàng",
+        "btn_close": "Đóng cửa",
+        "btn_open": "Mở cửa",
+        "toast_open_success": "Nhà hàng đã mở cửa hoạt động!",
+        "toast_close_success": "Đã tạm dừng hoạt động nhà hàng.",
+        "toast_update_error": "Không thể cập nhật trạng thái."
       },
       "common": {
         "section": "Phần",
@@ -1370,6 +1375,41 @@
         "no_deposit_desc": "Khách hàng có thể đặt bàn mà không cần thanh toán trước.",
         "opening_hours_note": "* Khung giờ hoạt động hiển thị công khai trên hệ thống.",
         "important_note": "Ghi chú quan trọng"
+      }
+    },
+    "settings": {
+      "title": "Cài Đặt Hệ Thống",
+      "subtitle": "Quản lý thông tin chung, liên hệ, lịch hoạt động và chính sách đặt cọc của bạn.",
+      "save_all": "Lưu Tất Cả Thay Đổi",
+      "saving": "Đang lưu...",
+      "success_toast": "Cập nhật cài đặt thành công!",
+      "error_toast": "Xảy ra lỗi khi cập nhật cài đặt. Vui lòng thử lại.",
+      "sections": {
+        "basic_info": "Thông Tin Cơ Bản",
+        "contact_info": "Liên Hệ & Vị Trí",
+        "opening_hours": "Giờ Mở Cửa",
+        "deposit_policy": "Chính Sách Đặt Cọc",
+        "images": "Hình Ảnh"
+      },
+      "form": {
+        "brand_images": "Ảnh Thương Hiệu",
+        "upload_hint": "Bấm vào để tải lên hoặc kéo thả tệp hình ảnh vào đây.",
+        "name": "Tên Nhà Hàng",
+        "description": "Mô tả",
+        "cuisine": "Loại Ẩm Thực",
+        "price_range": "Mức Giá",
+        "address": "Địa Chỉ",
+        "phone": "Số Điện Thoại",
+        "email": "Email Chính Thức",
+        "map_location": "Vị trí Bản đồ",
+        "latitude": "Vĩ độ",
+        "longitude": "Kinh độ"
+      },
+      "deposit": {
+        "enabled": "Bật Yêu Cầu Đặt Cọc",
+        "min_guests": "Số Khách Tối Thiểu (Áp dụng từ)",
+        "min_amount": "Mức Phí Cọc Cố Định",
+        "note": "Ghi chú (Hiển thị cho khách)"
       }
     }
   },
@@ -1804,6 +1844,10 @@
       "small_group": "Nhóm nhỏ (3-7)",
       "party": "Đoàn đông (8+)"
     },
+    "common": {
+      "bookings": "Lượt đặt",
+      "currency": "VND"
+    },
     "transactions": {
       "title": "Lịch sử Giao dịch Gần đây",
       "col_date": "Ngày đặt",
@@ -1811,7 +1855,113 @@
       "col_status": "Trạng thái",
       "col_amount": "Số tiền",
       "col_net": "Thực nhận",
-      "view_all": "Xem toàn bộ giao dịch"
+      "view_all": "Xem toàn bộ giao dịch",
+      "subtitle": "Các giao dịch đặt cọc gần đây từ khách hàng",
+      "no_transactions": "Không tìm thấy giao dịch nào trong khoảng thời gian này.",
+      "data_synced": "DỮ LIỆU ĐÃ ĐỒNG BỘ"
+    },
+    "insights": {
+      "label": "Gợi ý thông minh",
+      "title": "Smart Insight",
+      "description": "Thu thập thêm dữ liệu để xem các phân tích hành vi nâng cao cho địa điểm của bạn."
+    }
+  },
+  "wallet": {
+    "title": "Ví & Rút Tiền",
+    "subtitle": "Quản lý dòng tiền và các yêu cầu thanh toán của bạn.",
+    "balance": "Số dư khả dụng",
+    "locked": "Hoa hồng tạm giữ",
+    "pending": "Tiền chờ duyệt",
+    "total_withdrawn": "Tổng đã rút thành công",
+    "withdraw_funds": "Rút Tiền Doanh Thu",
+    "amount": "Số tiền rút",
+    "withdraw_all": "Rút hết",
+    "description": "Nội dung (Không bắt buộc)",
+    "method": "Phương thức nhận tiền",
+    "destination": "Nơi nhận tiền",
+    "bank_card": "Thẻ Ngân Hàng",
+    "qr_code": "Quét Mã QR",
+    "bank_name": "Tên ngân hàng (VD: NCB, VCB...)",
+    "card_number": "Số thẻ / Số tài khoản",
+    "account_name": "Tên chủ tài khoản (Viết không dấu)",
+    "expiry_date": "Ngày hết hạn (MM/YY)",
+    "cvv": "Mã bảo mật (CVV)",
+    "qr_hint": "Tải lên mã QR của bạn",
+    "qr_upload_desc": "Kéo thả hoặc nhấp để tải lên",
+    "payout_history": "Yêu Cầu Rút Tiền Gần Đây",
+    "recent_transactions": "Lịch Sử Giao Dịch Gần Đây",
+    "date": "Ngày",
+    "payout_id": "Mã lệnh",
+    "type": "Loại",
+    "income": "Cộng tiền",
+    "fee": "Phí hệ thống",
+    "status": {
+      "completed": "Hoàn thành",
+      "pending": "Đang xử lý",
+      "failed": "Thất bại"
+    },
+    "withdraw_success": "Yêu cầu rút tiền đã được gửi thành công!",
+    "withdraw_error": "Có lỗi khi gửi yêu cầu. Vui lòng thử lại.",
+    "insufficient_balance": "Số dư không đủ để thực hiện yêu cầu này.",
+    "footer_note": "Các yêu cầu rút tiền tiêu chuẩn thường mất từ 1-3 ngày làm việc để xử lý.",
+    "ready_to_withdraw": "SẴN SÀNG ĐỂ RÚT",
+    "release_period": "Thời gian xử lý 48-72h",
+    "service_fees": "Phí dịch vụ hệ thống",
+    "lifetime_earnings": "Tổng thu nhập trọn đời",
+    "withdraw_history_subtitle": "CÁC YÊU CẦU RÚT TIỀN GẦN ĐÂY",
+    "transaction_history_subtitle": "SỔ NHẬT KÝ HOẠT ĐỘNG THỜI GIAN THỰC",
+    "all_transactions": "Tất cả giao dịch",
+    "back_to_wallet": "Quay lại Ví",
+    "transaction_history_full": "Toàn bộ lịch sử giao dịch",
+    "min_withdraw_error": "Số tiền rút tối thiểu là 10.000 VND",
+    "bank_info_required": "Vui lòng nhập đầy đủ thông tin ngân hàng"
+  },
+  "workspace_booking_detail": {
+    "title": "Chi tiết Đặt bàn",
+    "subtitle": "Xem thông tin đầy đủ và quản lý trạng thái đơn đặt chỗ",
+    "back_to_list": "Quay lại danh sách",
+    "customer": {
+      "title": "Thông tin khách hàng",
+      "name": "Họ và tên",
+      "phone": "Số điện thoại",
+      "email": "Email",
+      "guest": "Khách vãng lai",
+      "member": "Thành viên SeatNow"
+    },
+    "booking": {
+      "title": "Thông tin đặt bàn",
+      "code": "Mã đơn",
+      "status": "Trạng thái",
+      "time": "Ngày & Giờ hẹn",
+      "guests": "Số lượng khách",
+      "unit_guests": "khách",
+      "table": "Vị trí bàn",
+      "created_at": "Thời gian tạo đơn",
+      "special_requests": "Yêu cầu đặc biệt",
+      "no_requests": "Không có yêu cầu đặc biệt nào"
+    },
+    "payment": {
+      "title": "Thông tin thanh toán",
+      "deposit_required": "Yêu cầu đặt cọc",
+      "deposit_amount": "Số tiền cọc",
+      "paid_status": "Trạng thái thanh toán",
+      "paid": "Đã thanh toán",
+      "unpaid": "Chưa thanh toán",
+      "paid_at": "Thời gian thanh toán",
+      "refunded": "Đã hoàn cọc",
+      "no_deposit": "Không yêu cầu đặt cọc cho đơn này"
+    },
+    "qr": {
+      "title": "Mã QR Check-in",
+      "desc": "Quét mã này để xác nhận khách đã đến nhà hàng"
+    },
+    "actions": {
+      "title": "Thao tác trạng thái",
+      "confirm_desc": "Xác nhận đơn và giữ bàn cho khách",
+      "arrive_desc": "Đánh dấu khách đã đến và bắt đầu bữa tiệc",
+      "complete_desc": "Hoàn tất đơn và giải phóng bàn",
+      "no_show_desc": "Khách không đến trong khung giờ quy định",
+      "cancel_desc": "Hủy đơn đặt bàn (Hoàn cọc tự động nếu có)"
     }
   }
 }

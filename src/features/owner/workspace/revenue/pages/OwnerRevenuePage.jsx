@@ -7,6 +7,7 @@ import RevenueTrendChart from '../components/RevenueTrendChart';
 import GuestGroupAnalysis from '../components/GuestGroupAnalysis';
 import PeakHoursChart from '../components/PeakHoursChart';
 import TransactionHistory from '../components/TransactionHistory';
+import { TrendingUp } from 'lucide-react';
 
 /**
  * Trang quản lý doanh thu và phân tích chuyên sâu cho nhà hàng
@@ -67,13 +68,15 @@ const OwnerRevenuePage = () => {
           
           {/* Pro Tip / Insight Card */}
           <div className="mt-8 p-6 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2.5rem] text-white shadow-xl shadow-indigo-100 group overflow-hidden relative">
-             <div className="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full group-hover:scale-110 transition-transform duration-500" />
-             <h4 className="text-lg font-black mb-2 relative z-10">Smart Insight</h4>
-             <p className="text-indigo-100 text-sm font-medium leading-relaxed relative z-10">
-               {summary?.totalBookings > 10 
-                 ? `Most of your revenue comes from ${summary?.guestSizeCounts?.couple > summary?.guestSizeCounts?.smallGroup ? 'Couples' : 'Groups'}. Consider highlighting group-friendly table options.`
-                 : "Collect more data to see advanced behavioral insights for your venue."
-               }
+             <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-md">
+                   <TrendingUp size={20} className="text-white" />
+                </div>
+                <span className="text-xs font-black uppercase tracking-widest text-white/60">{t('workspace_revenue.insights.label')}</span>
+             </div>
+             <h4 className="text-lg font-black mb-2 relative z-10">{t('workspace_revenue.insights.title')}</h4>
+             <p className="text-sm font-medium text-white/80 leading-relaxed relative z-10">
+                {t('workspace_revenue.insights.description')}
              </p>
           </div>
         </div>

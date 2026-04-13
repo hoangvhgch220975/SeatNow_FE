@@ -34,7 +34,7 @@ const TransactionHistory = ({ transactions }) => {
             {t('workspace_revenue.transactions.title')}
           </h3>
           <p className="text-slate-500 text-sm font-medium">
-            Recent deposit payments from guests
+            {t('workspace_revenue.transactions.subtitle')}
           </p>
         </div>
         <Link
@@ -134,7 +134,7 @@ const TransactionHistory = ({ transactions }) => {
             ) : (
               <tr>
                 <td colSpan="5" className="px-4 py-14 text-center text-slate-400 font-medium italic">
-                  No transactions found in this period.
+                  {t('workspace_revenue.transactions.no_transactions')}
                 </td>
               </tr>
             )}

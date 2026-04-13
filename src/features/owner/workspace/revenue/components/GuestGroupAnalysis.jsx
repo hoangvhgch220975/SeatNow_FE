@@ -52,7 +52,9 @@ const GuestGroupAnalysis = ({ data }) => {
         {/* Total Center Text */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
             <div className="text-2xl font-black text-slate-900">{total}</div>
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Bookings</div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                {t('workspace_revenue.common.bookings')}
+            </div>
         </div>
       </div>
 

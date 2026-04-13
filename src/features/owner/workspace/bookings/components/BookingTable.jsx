@@ -1,5 +1,6 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '@/config/routes';
 import BookingStatusActions from './BookingStatusActions';
 
 /**
@@ -40,6 +41,8 @@ const PAGE_SIZE = 10;
 
 const BookingTable = ({ bookings, totalCount, currentPage, onPageChange, onAction, isLoading }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { idOrSlug } = useParams();
 
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
   const fromRecord = Math.min((currentPage - 1) * PAGE_SIZE + 1, totalCount);
@@ -123,7 +126,11 @@ const BookingTable = ({ bookings, totalCount, currentPage, onPageChange, onActio
               const hasPaid = booking.depositPaid === 1 || booking.depositPaid === true;
 
               return (
-                <tr key={booking.id} className="group hover:bg-slate-50/50 transition-all duration-200">
+                <tr 
+                  key={booking.id} 
+                  onClick={() => navigate(ROUTES.WORKSPACE_BOOKING_DETAIL(idOrSlug, booking.id))}
+                  className="group hover:bg-slate-50/50 transition-all duration-200 cursor-pointer active:bg-slate-100/50"
+                >
                   <td className="px-6 py-5">
                     <div className="flex items-center gap-3">
                       <div className={`
@@ -204,7 +211,7 @@ const BookingTable = ({ bookings, totalCount, currentPage, onPageChange, onActio
                   </td>
 
                   <td className="px-6 py-5">
-                    <div className="flex justify-end">
+                    <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
                       <BookingStatusActions booking={booking} onAction={onAction} />
                     </div>
                   </td>

@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useUpdateRestaurant } from '@/features/owner/workspace/settings/hooks';
+import toast from 'react-hot-toast';
 
 /**
  * @file ProfileHero.jsx
@@ -8,6 +10,30 @@ import { useTranslation } from 'react-i18next';
  */
 const ProfileHero = ({ restaurant, isLoading }) => {
   const { t } = useTranslation();
+  const updateRestaurantMutation = useUpdateRestaurant();
+
+  const isSaving = updateRestaurantMutation.isPending;
+  const status = restaurant?.status?.toLowerCase();
+  const isPending = status === 'pending';
+  const isActive = status === 'active';
+
+  const handleToggleStatus = async () => {
+    if (isPending) return;
+
+    const newStatus = isActive ? 'suspended' : 'active';
+    try {
+      await updateRestaurantMutation.mutateAsync({
+        restaurantId: restaurant.id,
+        updateData: { status: newStatus }
+      });
+      toast.success(newStatus === 'active' 
+        ? t('workspace.profile.hero.toast_open_success') 
+        : t('workspace.profile.hero.toast_close_success')
+      );
+    } catch (error) {
+      toast.error(error?.response?.data?.message || t('workspace.profile.hero.toast_update_error'));
+    }
+  };
 
   if (isLoading) {
     return (
@@ -32,14 +58,33 @@ const ProfileHero = ({ restaurant, isLoading }) => {
         />
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/10 to-black/60" />
         
-        {/* Status Badge overlay */}
-        <div className="absolute top-6 right-6">
+        {/* Status Badge & Toggle Overlay */}
+        <div className="absolute top-6 right-6 flex items-center gap-3">
           <div className="px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl shadow-sm border border-white/50 flex items-center gap-2">
-            <span className={`w-2.5 h-2.5 rounded-full ${restaurant?.status === 'active' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+            <span className={`w-2.5 h-2.5 rounded-full ${isActive ? 'bg-emerald-500 animate-pulse' : isPending ? 'bg-amber-500' : 'bg-rose-500'}`} />
             <span className="text-[11px] font-black text-slate-900 uppercase tracking-widest">
-              {restaurant?.status === 'active' ? t('workspace.profile.hero.active') : t('workspace.profile.hero.pending')}
+              {isActive ? t('workspace.profile.hero.active') : isPending ? t('workspace.profile.hero.pending') : t('workspace.profile.hero.suspended')}
             </span>
           </div>
+
+          {!isPending && (
+            <button
+              onClick={handleToggleStatus}
+              disabled={isSaving}
+              className={`px-4 py-2 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg transition-all active:scale-95 flex items-center gap-2 ${
+                isActive 
+                  ? 'bg-rose-500 text-white hover:bg-rose-600 shadow-rose-200' 
+                  : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-200'
+              }`}
+            >
+              {isSaving ? (
+                <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <span className="material-symbols-outlined text-[16px]">{isActive ? 'do_not_disturb_on' : 'play_circle'}</span>
+              )}
+              {isActive ? t('workspace.profile.hero.btn_close') : t('workspace.profile.hero.btn_open')}
+            </button>
+          )}
         </div>
       </div>
 

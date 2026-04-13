@@ -314,11 +314,20 @@ seatnow-fe/
 │ │ │ │     └─ TableForm.jsx // Biểu mẫu nhập liệu Modal (Add/Edit)
 │ │ │ │
 │ │ │ ├─ bookings/ // Phân hệ quản lý đặt bàn cho từng nhà hàng (New)
-│ │ │ │ ├─ api.js // API: getBookings, getStatsSummary, confirm/arrive/complete/noShow/cancel
+│ │ │ │ ├─ api.js // API: getBookings, getBookingDetail, confirm/arrive/complete/noShow/cancel
+│ │ │ │ ├─ hooks.js // useBookingDetail, useBookingActions: Hooks xử lý logic đặt bàn (New)
 │ │ │ │ ├─ pages/
 │ │ │ │ │ ├─ OwnerBookingsPage.jsx // Trang quản lý booking chính (Orchestrator)
-│ │ │ │ │ └─ OwnerBookingDetailPage.jsx // (Placeholder - chưa triển khai)
+│ │ │ │ │ └─ OwnerBookingDetailPage.jsx // Trang chi tiết đặt bàn bento-style cao cấp (New)
 │ │ │ │ └─ components/
+│ │ │ │     ├─ detail/ // Sub-components cho trang chi tiết đặt bàn (New)
+│ │ │ │     │ ├─ DetailHeader.jsx
+│ │ │ │     │ ├─ CustomerCard.jsx
+│ │ │ │     │ ├─ BookingInfoCard.jsx
+│ │ │ │     │ ├─ PaymentInfoCard.jsx
+│ │ │ │     │ ├─ SpecialRequestsCard.jsx
+│ │ │ │     │ ├─ CheckInQRCard.jsx
+│ │ │ │     │ └─ ActionCommandCenter.jsx
 │ │ │ │     ├─ BookingStats.jsx // 3 thẻ KPI (Tổng/Hoàn thành/Hủy+NoShow) theo ngày chọn
 │ │ │ │     ├─ BookingFilters.jsx // Date picker + 7 tabs lọc trạng thái (i18n)
 │ │ │ │     ├─ BookingTable.jsx // Bảng 10 dòng/trang: tên khách, mã code, giờ, số khách, bàn, cọc, status, actions
@@ -338,15 +347,31 @@ seatnow-fe/
 │ │ │ │     ├─ PeakHoursChart.jsx // Biểu đồ BarChart phân bổ giờ đặt bàn
 │ │ │ │     └─ TransactionHistory.jsx // Bảng danh sách 10 giao dịch gần nhất
 │ │ │ │
-│ │ │ └─ wallet/ // Của từng nhà hàng
-│ │ │ ├─ api.js // API rút tiền, lịch sử giao dịch nhà hàng
-│ │ │ ├─ pages/
-│ │ │ │ └─ OwnerRestaurantWalletPage.jsx
-│ │ │ └─ components/
-│ │ │ ├─ WalletBalanceCard.jsx
-│ │ │ ├─ TransactionTable.jsx
-│ │ │ └─ WithdrawalForm.jsx
-│ │ │
+│ │ │ ├─ wallet/ // Phân hệ quản lý ví & yêu cầu rút tiền (New)
+│ │ │ │ ├─ api.js // API: lấy số dư, lịch sử giao dịch, gửi yêu cầu rút tiền
+│ │ │ │ ├─ hooks.js // Hooks: useWalletBalance, useTransactionHistory, useWithdrawFunds
+│ │ │ │ ├─ pages/
+│ │ │ │ │ ├─ WalletPage.jsx // Trang quản lý Ví & Thanh toán chính (Bento Grid)
+│ │ │ │ │ └─ TransactionsPage.jsx // Trang lịch sử toàn bộ giao dịch (New)
+│ │ │ │ └─ components/
+│ │ │ │     ├─ WalletBalanceCard.jsx // 4 Thẻ KPI số dư (Available/Locked/Pending/Total)
+│ │ │ │     ├─ WithdrawalForm.jsx // Form yêu cầu rút tiền (Bank/QR tabbed interface)
+│ │ │ │     ├─ TransactionTable.jsx // Bảng lịch sử biến động số dư chi tiết (có header cột)
+│ │ │ │     ├─ TransactionTypeFilter.jsx // Dropdown lọc theo loại giao dịch (New)
+│ │ │ │     ├─ TransactionPagination.jsx // Thanh phân trang tái sử dụng (New)
+│ │ │ │
+│ │ │ ├─ settings/ // Phân hệ cài đặt hệ thống cho nhà hàng (New)
+│ │ │ │ ├─ api.js // API: cập nhật thông tin chung, chính sách cọc
+│ │ │ │ ├─ hooks.js // Hooks: useUpdateRestaurant, useUpdateDepositPolicy
+│ │ │ │ ├─ pages/
+│ │ │ │ │ └─ OwnerSettingsPage.jsx // Orchestrator form tổng hợp lưu toàn bộ dữ liệu
+│ │ │ │ └─ components/
+│ │ │ │     ├─ ImageSettings.jsx // Component đăng ảnh thương hiệu (dùng ImageUploader)
+│ │ │ │     ├─ BasicInfoSettings.jsx // Form tên, mô tả, cuisine, mức giá
+│ │ │ │     ├─ ContactSettings.jsx // Form SĐT, Email, Tọa độ bản đồ
+│ │ │ │     ├─ OpeningHoursSettings.jsx // Cấu hình lịch mở cửa các ngày trong tuần
+│ │ │ │     └─ DepositPolicySettings.jsx // Bật/tắt và thiết lập chính sách cọc
+│ │ │ │
 │ │ ├─ admin/
 │ │ │ ├─ dashboard/
 │ │ │ │ ├─ api.js // API dashboard admin
