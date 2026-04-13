@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/features/auth/store';
 import { useProfileQuery } from '@/features/profile/hooks'; // Hook lấy dữ liệu thực từ DB (Vietnamese comment)
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import NotificationDropdown from '../components/Notifications/NotificationDropdown';
 
 /**
  * @file RestaurantTopbar.jsx
  * @description Thanh công cụ phía trên dành cho Workspace, tích hợp tìm kiếm, thông báo và thông tin người dùng thực từ DB.
  */
-const RestaurantTopbar = ({ restaurantName }) => {
+const RestaurantTopbar = ({ restaurantName, restaurantId }) => {
   const { t } = useTranslation();
   const { user: authUser } = useAuthStore();
   const { data: profile } = useProfileQuery(); // Lấy profile mới nhất từ Database (Vietnamese comment)
@@ -29,10 +30,7 @@ const RestaurantTopbar = ({ restaurantName }) => {
         <LanguageSwitcher />
 
         {/* Notifications Icon */}
-        <button className="w-10 h-10 flex items-center justify-center rounded-2xl hover:bg-slate-50 text-slate-500 relative transition-all border border-transparent hover:border-slate-100">
-          <span className="material-symbols-outlined text-[22px]">notifications</span>
-          <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
-        </button>
+        <NotificationDropdown restaurantId={restaurantId} />
 
         {/* User Profile Summary */}
         <div className="flex items-center gap-3 pl-6 border-l border-slate-100">

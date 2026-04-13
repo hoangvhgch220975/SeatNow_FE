@@ -39,8 +39,8 @@ seatnow-fe/
 │ │ │ ├─ AuthLayout.jsx // Layout cho login/register/otp
 │ │ │ ├─ CustomerLayout.jsx // Layout cho user đã đăng
 │ │ │ ├─ CustomerNavbar.jsx // Thanh điều hướng đầu trang cho user đã đăng nhập
-│ │ │ ├─ OwnerMainLayout.jsx // Layout cấp tài khoản owner (portal)
-│ │ │ ├─ RestaurantWorkspaceLayout.jsx // Layout khi owner vào 1 nhà hàng cụ thể
+│ │ │ ├─ OwnerMainLayout.jsx // Layout cấp tài khoản owner (portal) - [Realtime Init]
+│ │ │ ├─ RestaurantWorkspaceLayout.jsx // Layout khi owner vào 1 nhà hàng cụ thể - [Realtime Init]
 │ │ │ ├─ AdminLayout.jsx // Layout dashboard admin
 │ │ │ ├─ Navbar.jsx // Thanh điều hướng đầu trang
 │ │ │ ├─ OwnerFooter.jsx // Footer chuyên biệt cho Owner Portal (New)
@@ -48,8 +48,8 @@ seatnow-fe/
 │ │ │ ├─ SidebarOwnerMain.jsx // Sidebar cho owner portal
 │ │ │ ├─ SidebarRestaurantWorkspace.jsx // Sidebar cho workspace nhà hàng
 │ │ │ ├─ SidebarAdmin.jsx // Sidebar riêng cho admin
-│ │ │ ├─ OwnerTopbar.jsx // Topbar cho owner portal
-│ │ │ └─ RestaurantTopbar.jsx // Topbar cho restaurant workspace
+│ │ │ ├─ OwnerTopbar.jsx // Topbar cho owner portal (Tích hợp NotificationDropdown)
+│ │ │ └─ RestaurantTopbar.jsx // Topbar cho restaurant workspace (Tích hợp NotificationDropdown)
 │ │ │
 │ │ ├─ guards/
 │ │ │ ├─ ProtectedRoute.jsx // Chặn route nếu chưa đăng nhập
@@ -66,9 +66,14 @@ seatnow-fe/
 │ │ │ ├─ usePagination.js // Logic phân trang
 │ │ │ ├─ useQueryParams.js // Đọc/ghi query params URL
 │ │ │ ├─ useUserLocation.js // Lấy vị trí hiện tại của user
-│ │ │ └─ useDisclosure.js // Mở/đóng modal/drawer/popover
+│ │ │ ├─ useDisclosure.js // Mở/đóng modal/drawer/popover
+│ │ │ └─ useNotificationStore.hooks.js // Quản lý thông báo toàn cục (Updated)
 │ │ │
 │ │ ├─ components/
+│ │ │ ├─ Notifications/ // Hệ thống thông báo thời gian thực (New)
+│ │ │ │ ├─ NotificationDropdown.jsx // Dropdown chuông thông báo
+│ │ │ │ ├─ NotificationItem.jsx // Item hiển thị từng thông báo
+│ │ │ │ └─ NotificationToast.jsx // Thông báo nổi (Toast) Premium (New)
 │ │ │ ├─ ScrollToTop.jsx // Tự động cuộn lên đầu trang khi điều hướng
 │ │ │ ├─ PageTransition.jsx // Hiệu ứng chuyển cảnh (New)
 │ │ │ ├─ LanguageSwitcher.jsx // Nút chuyển ngôn ngữ (floating/dropdown) (New)
@@ -243,7 +248,7 @@ seatnow-fe/
 │ │ │ │ ├─ AnalyticsCharts.jsx // Biểu đồ trục kép phân tích (Dual Axis)
 │ │ │ │ ├─ DateRangePicker.jsx // Bộ chọn ngày dạng Calendar Popup (Timeline Analysis)
 │ │ │ │ ├─ GuestAnalytics.jsx // Phân tích cơ cấu khách hàng (New)
-│ │ │ │ ├─ PortfolioActivityFeed.jsx // Lịch sử hoạt động toàn cầu (New)
+│ │ │ │ ├─ PortfolioActivityFeed.jsx // Lịch sử hoạt động toàn cầu (Sử dụng useNotificationStore)
 │ │ │ │ ├─ TopVenuesList.jsx // Danh sách nhà hàng tiêu biểu (New)
 │ │ │ │ ├─ DashboardHeader.jsx // Lời chào & Trạng thái hệ thống (New)
 │ │ │ │ ├─ MetricCard.jsx // Thẻ KPI đơn lẻ (New)

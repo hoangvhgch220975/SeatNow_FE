@@ -62,7 +62,7 @@ const BookingDetailPage = () => {
       };
       fetchEnrichedTable();
     }
-  }, [tableIdFromBooking, restaurantId, initialTableObj]);
+  }, [tableIdFromBooking, restaurantId]); // Loại bỏ initialTableObj khỏi đây
 
   const restaurantSlug = bookingInfo?.restaurant?.slug || restaurantId;
 

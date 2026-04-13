@@ -26,6 +26,25 @@
     "premium": "Premium",
     "soon": "Soon"
   },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "emptyTitle": "No notifications yet",
+    "emptyMessage": "We'll notify you when there are updates on your bookings or transactions.",
+    "viewAll": "View all history",
+    "types": {
+      "BOOKING_NEW": "New Booking Request",
+      "BOOKING_CONFIRMED": "Booking Confirmed",
+      "BOOKING_CANCELLED": "Booking Cancelled",
+      "BOOKING_NO_SHOW": "No-Show Recorded",
+      "TRANSACTION_DEPOSIT": "Deposit Received",
+      "TRANSACTION_TOPUP": "Wallet Top-up",
+      "TRANSACTION_WITHDRAW_APPROVED": "Withdrawal Request Approved",
+      "REVIEW_NEW": "New Customer Review",
+      "COMMISSION_SETTLED": "Commission Settled",
+      "ADMIN_BROADCAST": "System Announcement"
+    }
+  },
   "analytics": {
     "title": "Global Analytics",
     "summary": "Full Portfolio Performance",
@@ -35,10 +54,10 @@
     "satisfaction": "Satisfaction",
     "avg_transaction": "Avg. Transaction",
     "top_performers": "Top Performers",
-    "recent_activity": "Recent Global Activity",
+    "recent_activity": "Recent Activity",
     "telemetry_system": "Telemetry System",
     "active_sync": "Active Sync",
-    "observation_timeline": "Global Observation Timeline",
+    "observation_timeline": "Observation Timeline",
     "day": "Day",
     "week": "Week",
     "month": "Month",
@@ -47,7 +66,7 @@
     "mom": "MoM",
     "wow": "WoW",
     "yoy": "YoY",
-    "period_select": "Period Select",
+    "period_select": "Calendar Control",
     "unread": "Unread",
     "mark_all_read": "Mark All Read",
     "refresh_feed": "Refresh Feed",
@@ -58,15 +77,6 @@
     "this_month": "This Month",
     "last_7_days": "Last 7 Days",
     "total_completed_bookings": "Total Completed Bookings",
-    "day": "Day",
-    "week": "Week",
-    "month": "Month",
-    "telemetry_system": "Telemetry System",
-    "active_sync": "Active Sync",
-    "observation_timeline": "Observation Timeline",
-    "period_select": "Calendar Control",
-    "top_performers": "Top Performers",
-    "recent_activity": "Recent Activity",
     "gross_revenue": "Gross Portfolio Revenue",
     "total_deposit_volume": "Total Deposit Volume",
     "cancellations_recorded": "Cancellations Recorded",
@@ -89,30 +99,31 @@
   },
   "time": {
     "seconds_ago": "{{count}}s ago",
-    "minutes_ago": "{{count}}m ago",
-    "hours_ago": "{{count}}h ago",
-    "days_ago": "{{count}}d ago"
+    "minutes_ago": "{{count}} mins ago",
+    "hours_ago": "{{count}} hrs ago",
+    "days_ago": "{{count}} days ago"
   },
   "activity": {
     "unread": "{{count}} Unread",
     "mark_all_read": "Mark All Read",
-    "no_activity": "No Recent Activity",
+    "no_activity": "No activity yet",
     "updating": "Updating...",
     "refresh_feed": "Refresh Feed",
-    "feed_updated": "Feed updated successfully",
-    "detail_coming_soon": "Activity detail coming soon",
+    "feed_updated": "Activity feed updated!",
+    "detail_coming_soon": "Detail view coming soon!",
     "types": {
       "new_booking": "New Booking",
       "confirmed": "Confirmed",
       "cancelled": "Cancelled",
-      "no_show": "No-Show",
-      "deposit": "Deposit Paid",
-      "topup": "Wallet Top-up",
+      "no_show": "No Show",
+      "deposit": "Deposit",
+      "topup": "Top-up",
       "withdrawal": "Withdrawal",
-      "review": "New Review",
-      "commission": "Commission Settled",
-      "broadcast": "System Notice"
-    }
+      "review": "Review",
+      "commission": "Commission",
+      "broadcast": "Broadcast"
+    },
+    "title": "Recent Activity"
   },
   "api": {
     "messages": {
@@ -172,7 +183,21 @@
     "welcome": "Welcome back",
     "email": "Email Address",
     "password": "Password",
-    "forgot_password": "Forgot Password?",
+    "forgot_password": {
+      "title": "Forgot Password",
+      "step1_desc": "Enter your registered phone number to receive a reset code.",
+      "step2_desc": "We sent a 6-digit code to the email linked with {{phone}}.",
+      "phone_label": "Phone Number",
+      "otp_label": "One-Time Password (OTP)",
+      "info_note": "Once verified, a new 8-character password will be automatically generated and sent to your registered email.",
+      "reset_btn": "Reset My Password",
+      "resetting_btn": "Resetting Password...",
+      "change_number": "Change Number",
+      "back_to_login": "Back to Sign In",
+      "send_code": "Send Reset Code",
+      "sending": "Sending...",
+      "resend_otp": "Resend OTP"
+    },
     "no_account": "Don't have an account?",
     "signed_out_success": "Signed out successfully",
     "authenticated_account": "Authenticated Account",
@@ -221,21 +246,6 @@
       "verify_email_hint": "Enter the 6-digit code sent to",
       "disclaimer": "Didn't receive a code? Please check your spam folder or wait 60s to resend.",
       "uploading": "Uploading..."
-    },
-    "forgot_password": {
-      "title": "Forgot Password",
-      "step1_desc": "Enter your registered phone number to receive a reset code.",
-      "step2_desc": "We sent a 6-digit code to the email linked with {{phone}}.",
-      "phone_label": "Phone Number",
-      "otp_label": "One-Time Password (OTP)",
-      "info_note": "Once verified, a new 8-character password will be automatically generated and sent to your registered email.",
-      "reset_btn": "Reset My Password",
-      "resetting_btn": "Resetting Password...",
-      "change_number": "Change Number",
-      "back_to_login": "Back to Sign In",
-      "send_code": "Send Reset Code",
-      "sending": "Sending...",
-      "resend_otp": "Resend OTP"
     },
     "validation": {
       "identifier_required": "Please enter Email or Phone Number",
@@ -448,46 +458,18 @@
     "navigation": "Navigation"
   },
   "guest": {
-    "breakdown": "Guest Type Breakdown",
-    "demographics": "Portfolio-wide demographics",
-    "couples": "Couples/Solo (1-2 Guests)",
-    "small_groups": "Small Groups (3-7 Guests)",
-    "parties": "Parties (8+ Guests)",
-    "footer_note": "* Data extrapolated from global reservation metadata across {{count}} managed entities."
-  },
-  "activity": {
-    "title": "Recent Activity",
-    "unread": "{{count}} Unread",
-    "mark_all_read": "Mark All Read",
-    "no_activity": "No activity yet",
-    "refresh_feed": "Refresh Feed",
-    "updating": "Updating...",
-    "feed_updated": "Activity feed updated!",
-    "detail_coming_soon": "Detail view coming soon!",
-    "types": {
-      "new_booking": "New Booking",
-      "confirmed": "Confirmed",
-      "cancelled": "Cancelled",
-      "no_show": "No Show",
-      "deposit": "Deposit",
-      "topup": "Top-up",
-      "withdrawal": "Withdrawal",
-      "review": "Review",
-      "commission": "Commission",
-      "broadcast": "Broadcast"
-    }
-  },
-  "time": {
-    "seconds_ago": "{{count}}s ago",
-    "minutes_ago": "{{count}} mins ago",
-    "hours_ago": "{{count}} hrs ago",
-    "days_ago": "{{count}} days ago"
+    "breakdown": "Guest Size Breakdown",
+    "demographics": "Portfolio Guest Demographics",
+    "couples": "Couples & Duos",
+    "small_groups": "Small Groups (3-7)",
+    "parties": "Large Parties (8+)",
+    "footer_note": "Data aggregated across {{count}} active venues"
   },
   "charts": {
     "performance_statistics": "Performance Statistics",
-    "performance_description": "Correlation between revenue and customer footfall over the selected interval.",
-    "units": "units",
-    "computing_data": "Computing Data Matrix..."
+    "performance_description": "Deep-dive analysis of portfolio revenue and commitment levels over the selected period.",
+    "units": "Units",
+    "computing_data": "Computing operational data..."
   },
   "home": {
     "hero": {
@@ -728,53 +710,53 @@
       "under_construction_title": "Advanced Matrix Under Construction",
       "under_construction_desc": "The global management module is currently being calibrated. Advanced analytics and moderation tools will be available in the next deployment."
     }
+  },
+  "tables": {
+    "title": "Table Management",
+    "floor_overview": "Floor Overview",
+    "all_floors": "All Floors",
+    "add_table": "Add New Table",
+    "stats": {
+      "total": "Total Tables",
+      "available": "Available",
+      "occupied": "Occupied",
+      "unavailable": "Occupied",
+      "maintenance": "Maintenance"
     },
-    "tables": {
-      "title": "Table Management",
-      "floor_overview": "Floor Overview",
-      "all_floors": "All Floors",
-      "add_table": "Add New Table",
-      "stats": {
-        "total": "Total Tables",
-        "available": "Available",
-        "occupied": "Occupied",
-        "unavailable": "Occupied",
-        "maintenance": "Maintenance"
-      },
-      "types": {
-        "standard": "Standard",
-        "vip": "VIP Room",
-        "outdoor": "Outdoor"
-      },
-      "form": {
-        "table_number": "Table Number",
-        "capacity": "Capacity",
-        "location": "Location / Floor",
-        "type": "Table Type",
-        "status": "Status",
-        "guests": "Guests",
-        "required": "Required field",
-        "min_guest": "Min 1 guest",
-        "update_record": "Update Record",
-        "establish_table": "Establish Table",
-        "edit_title": "Refine Table: {{tableNumber}}",
-        "create_success": "New table created successfully",
-        "update_success": "Table updated successfully",
-        "delete_success": "Table deleted from system",
-        "delete_confirm": "Are you sure you want to delete this table?",
-        "delete_confirm_title": "Confirm Decommission",
-        "delete_confirm_msg": "This action will permanently remove this table record from your restaurant's digital inventory. Digital check-ins for this table will be invalidated.",
-        "delete_confirm_btn": "Confirm Deletion"
-      },
-      "view": {
-        "grid": "Grid View",
-        "list": "List View",
-        "no_tables_area": "No tables found in this area",
-        "actions": "Actions",
-        "no_records": "No records found"
-      }
+    "types": {
+      "standard": "Standard",
+      "vip": "VIP Room",
+      "outdoor": "Outdoor"
     },
-    "booking": {
+    "form": {
+      "table_number": "Table Number",
+      "capacity": "Capacity",
+      "location": "Location / Floor",
+      "type": "Table Type",
+      "status": "Status",
+      "guests": "Guests",
+      "required": "Required field",
+      "min_guest": "Min 1 guest",
+      "update_record": "Update Record",
+      "establish_table": "Establish Table",
+      "edit_title": "Refine Table: {{tableNumber}}",
+      "create_success": "New table created successfully",
+      "update_success": "Table updated successfully",
+      "delete_success": "Table deleted from system",
+      "delete_confirm": "Are you sure you want to delete this table?",
+      "delete_confirm_title": "Confirm Decommission",
+      "delete_confirm_msg": "This action will permanently remove this table record from your restaurant's digital inventory. Digital check-ins for this table will be invalidated.",
+      "delete_confirm_btn": "Confirm Deletion"
+    },
+    "view": {
+      "grid": "Grid View",
+      "list": "List View",
+      "no_tables_area": "No tables found in this area",
+      "actions": "Actions",
+      "no_records": "No records found"
+    }
+  },
+  "booking": {
     "history": {
       "title": "Booking History",
       "subtitle": "Manage your upcoming gastronomic experiences and revisit your past culinary journeys.",
@@ -922,6 +904,88 @@
         "success": "Your reservation has been cancelled.",
         "error": "Failed to cancel. Please check your phone number."
       }
+    },
+    "create": {
+      "perfect_table": "Secure Your <1>Perfect</1> Table",
+      "dining_slot": "Update Your <1>Dining</1> Slot",
+      "premium_service": "Premium Reservation Service",
+      "modify_reservation": "Modify Your Reservation",
+      "subtitle": "Choose your preferred spot and experience the botanical excellence of <1>{{name}}</1>. Every table is handled with the utmost care for your satisfaction.",
+      "select_date_time": "Select Date & Time",
+      "experience_way": "Experience Your Way",
+      "syncing_availability": "Syncing availability...",
+      "special_requests": "Special Requests",
+      "special_requests_placeholder": "Tell us about allergies, anniversaries, or specific seating preferences...",
+      "loading_rest": "Curating your dining options...",
+      "loading_modifying": "Updating your reservation...",
+      "error_not_found": "Could not find restaurant details.",
+      "toast": {
+        "select_date_time": "Please select a Date and Time Slot first.",
+        "table_held": "Table {{number}} is held for you.",
+        "table_busy": "Table is busy!",
+        "redirecting": "Reservation confirmed successfully! Redirecting...",
+        "identity_required": "Identity verification required. Please provide your phone number.",
+        "guest_info_required": "Please provide your name and phone number to create a new reservation.",
+        "id_retrieve_error": "Booking created but Frontend could not retrieve the ID."
+      }
+    },
+    "summary": {
+      "title": "Reservation Summary",
+      "secure_process": "Secure Booking Process",
+      "date_time": "Date & Time",
+      "not_selected": "Not Selected",
+      "party_size": "Party Size",
+      "table_type": "Table Type",
+      "no_selection": "No Selection",
+      "proceed_to_deposit": "Proceed to Deposit Payment",
+      "confirm_reservation": "Confirm Reservation",
+      "confirm_modification": "Confirm Modification",
+      "cancel_change_table": "Cancel & Change Table",
+      "processing_payment": "Processing Payment...",
+      "finalizing_reservation": "Finalizing Reservation...",
+      "ssl_encrypted": "Secure 256-bit SSL encrypted transaction"
+    },
+    "form": {
+      "guest_details": "Guest Details",
+      "name_placeholder": "Full Name",
+      "name_error": "Name must be at least 2 characters",
+      "email_placeholder": "Email Address",
+      "email_error": "Invalid email address format",
+      "phone_placeholder": "Phone Number",
+      "phone_error": "Invalid Vietnamese phone number"
+    },
+    "time_picker": {
+      "select_date": "Select Date",
+      "preferred_slot": "Preferred Time Slot",
+      "closed_no_slots": "Restaurant Closed or No Slots available"
+    },
+    "table_status": {
+      "available": "Available",
+      "occupied": "Occupied",
+      "held": "Held",
+      "being_selected": "Being Selected",
+      "selected": "Selected",
+      "vip": "VIP",
+      "vip_table": "VIP Table",
+      "outdoor": "Outdoor",
+      "outdoor_seating": "Outdoor Seating",
+      "standard": "Standard",
+      "guests": "Guests",
+      "main_entrance": "Main Entrance",
+      "empty_title": "Area is currently clear",
+      "empty_desc": "Try exploring our other signature wings.",
+      "markers": {
+        "rooftop": "Skyline Overlook",
+        "outdoor": "Garden Fountain",
+        "terrace": "Main Street View",
+        "default": "Executive Stage"
+      },
+      "select_area": "Select Area / Floor"
+    },
+    "deposit": {
+      "reservation_deposit": "Reservation Deposit",
+      "total_amount": "Total Amount",
+      "free": "FREE (0 VND)"
     }
   },
   "ai_assistant": {
@@ -1673,175 +1737,7 @@
       "a3": "For parties of 8 or more, please use our concierge inquiry form above to ensure seamless seating and customized menu options."
     }
   },
-  "booking": {
-    "create": {
-      "perfect_table": "Secure Your <1>Perfect</1> Table",
-      "dining_slot": "Update Your <1>Dining</1> Slot",
-      "premium_service": "Premium Reservation Service",
-      "modify_reservation": "Modify Your Reservation",
-      "subtitle": "Choose your preferred spot and experience the botanical excellence of <1>{{name}}</1>. Every table is handled with the utmost care for your satisfaction.",
-      "select_date_time": "Select Date & Time",
-      "experience_way": "Experience Your Way",
-      "syncing_availability": "Syncing availability...",
-      "special_requests": "Special Requests",
-      "special_requests_placeholder": "Tell us about allergies, anniversaries, or specific seating preferences...",
-      "loading_rest": "Curating your dining options...",
-      "loading_modifying": "Updating your reservation...",
-      "error_not_found": "Could not find restaurant details.",
-      "toast": {
-        "select_date_time": "Please select a Date and Time Slot first.",
-        "table_held": "Table {{number}} is held for you.",
-        "table_busy": "Table is busy!",
-        "redirecting": "Reservation confirmed successfully! Redirecting...",
-        "identity_required": "Identity verification required. Please provide your phone number.",
-        "guest_info_required": "Please provide your name and phone number to create a new reservation.",
-        "id_retrieve_error": "Booking created but Frontend could not retrieve the ID."
-      }
-    },
-    "summary": {
-      "title": "Reservation Summary",
-      "secure_process": "Secure Booking Process",
-      "date_time": "Date & Time",
-      "not_selected": "Not Selected",
-      "party_size": "Party Size",
-      "table_type": "Table Type",
-      "no_selection": "No Selection",
-      "proceed_to_deposit": "Proceed to Deposit Payment",
-      "confirm_reservation": "Confirm Reservation",
-      "confirm_modification": "Confirm Modification",
-      "cancel_change_table": "Cancel & Change Table",
-      "processing_payment": "Processing Payment...",
-      "finalizing_reservation": "Finalizing Reservation...",
-      "ssl_encrypted": "Secure 256-bit SSL encrypted transaction"
-    },
-    "form": {
-      "guest_details": "Guest Details",
-      "name_placeholder": "Full Name",
-      "name_error": "Name must be at least 2 characters",
-      "email_placeholder": "Email Address",
-      "email_error": "Invalid email address format",
-      "phone_placeholder": "Phone Number",
-      "phone_error": "Invalid Vietnamese phone number"
-    },
-    "time_picker": {
-      "select_date": "Select Date",
-      "preferred_slot": "Preferred Time Slot",
-      "closed_no_slots": "Restaurant Closed or No Slots available"
-    },
-    "table_status": {
-      "available": "Available",
-      "occupied": "Occupied",
-      "held": "Held",
-      "being_selected": "Being Selected",
-      "selected": "Selected",
-      "vip": "VIP",
-      "vip_table": "VIP Table",
-      "outdoor": "Outdoor",
-      "outdoor_seating": "Outdoor Seating",
-      "standard": "Standard",
-      "guests": "Guests",
-      "main_entrance": "Main Entrance",
-      "empty_title": "Area is currently clear",
-      "empty_desc": "Try exploring our other signature wings.",
-      "markers": {
-        "rooftop": "Skyline Overlook",
-        "outdoor": "Garden Fountain",
-        "terrace": "Main Street View",
-        "default": "Executive Stage"
-      },
-      "select_area": "Select Area / Floor"
-    },
-    "deposit": {
-      "reservation_deposit": "Reservation Deposit",
-      "total_amount": "Total Amount",
-      "free": "FREE (0 VND)"
-    }
-  },
-  "charts": {
-    "units": "Units",
-    "computing_data": "Computing operational data...",
-    "performance_statistics": "Performance Statistics",
-    "performance_description": "Deep-dive analysis of portfolio revenue and commitment levels over the selected period."
-  },
-  "guest": {
-    "breakdown": "Guest Size Breakdown",
-    "demographics": "Portfolio Guest Demographics",
-    "couples": "Couples & Duos",
-    "small_groups": "Small Groups (3-7)",
-    "parties": "Large Parties (8+)",
-    "footer_note": "Data aggregated across {{count}} active venues"
-  },
   "i18next_code": "en-US",
-  "owner_bookings": {
-    "page_title": "Booking Management",
-    "page_subtitle": "Manage and track all reservations at your restaurant",
-    "stats": {
-      "total_bookings": "Total Bookings",
-      "completed": "Completed",
-      "cancelled": "Cancelled & No-Show",
-      "for_date": "Data for {{date}}",
-      "all_time": "All-time data"
-    },
-    "filters": {
-      "date_label": "Select date",
-      "status_all": "All",
-      "status_pending": "Pending",
-      "status_confirmed": "Confirmed",
-      "status_arrived": "Arrived",
-      "status_completed": "Completed",
-      "status_cancelled": "Cancelled",
-      "status_no_show": "No-Show"
-    },
-    "table": {
-      "col_guest": "Guest",
-      "col_code": "Booking Code",
-      "col_time": "Time",
-      "col_guests": "Guests",
-      "col_table": "Table",
-      "col_deposit": "Deposit",
-      "col_status": "Status",
-      "col_actions": "Actions",
-      "guest_fallback": "Walk-in Guest",
-      "no_table": "N/A",
-      "deposit_paid": "Paid",
-      "deposit_unpaid": "Unpaid",
-      "no_data": "No bookings found",
-      "no_data_desc": "No reservations found for the selected date and filter."
-    },
-    "pagination": {
-      "showing": "Showing {{from}}-{{to}} of {{total}}",
-      "prev": "Previous",
-      "next": "Next"
-    },
-    "actions": {
-      "confirm": "Confirm",
-      "check_in": "Check-in",
-      "complete": "Complete",
-      "no_show": "No-Show",
-      "cancel": "Cancel"
-    },
-    "pagination": {
-      "showing": "Showing {{from}} - {{to}} of {{total}} bookings",
-      "prev": "Prev",
-      "next": "Next"
-    },
-    "cancel_modal": {
-      "title": "Confirm Booking Cancellation",
-      "label": "Cancellation Reason (Required)",
-      "placeholder": "Enter reason for cancellation here...",
-      "confirm_btn": "Cancel Booking",
-      "cancel_btn": "Go Back"
-    },
-    "toast": {
-      "load_error": "Failed to load bookings",
-      "confirm_success": "Booking confirmed",
-      "arrive_success": "Guest check-in successful",
-      "complete_success": "Booking completed",
-      "no_show_success": "Guest marked as no-show",
-      "cancel_success": "Booking cancelled",
-      "action_error": "Failed to perform action. Please try again."
-    }
-  },
   "workspace_revenue": {
     "title": "Revenue & Analytics",
     "subtitle": "Financial reporting and operational performance at this venue",
@@ -1990,6 +1886,74 @@
       "complete_desc": "Complete reservation and release the table",
       "no_show_desc": "Guest failed to arrive within the timeframe",
       "cancel_desc": "Cancel reservation (Automatic refund if applicable)"
+    }
+  },
+  "owner_bookings": {
+    "page_title": "Booking Management",
+    "page_subtitle": "Manage and track all restaurant reservations",
+    "stats": {
+      "total_bookings": "Total Bookings",
+      "completed": "Completed",
+      "cancelled": "Cancelled & No Show",
+      "for_date": "Date {{date}}",
+      "all_time": "All Time"
+    },
+    "filters": {
+      "date_label": "Pick Date",
+      "status_all": "All",
+      "status_pending": "Pending",
+      "status_confirmed": "Confirmed",
+      "status_arrived": "Arrived",
+      "status_completed": "Completed",
+      "status_cancelled": "Cancelled",
+      "status_no_show": "No Show",
+      "clear_filter": "Clear Filter"
+    },
+    "table": {
+      "col_guest": "Guest",
+      "col_code": "Booking Code",
+      "col_time": "Time",
+      "col_guests": "Guests",
+      "col_table": "Table",
+      "col_deposit": "Deposit",
+      "col_status": "Status",
+      "col_actions": "Actions",
+      "guest_fallback": "Walk-in Guest",
+      "no_table": "N/A",
+      "deposit_paid": "Paid",
+      "deposit_unpaid": "Unpaid",
+      "no_data": "No bookings found",
+      "no_data_desc": "No bookings found for the selected date and filters."
+    },
+    "pagination": {
+      "showing": "Showing {{from}}-{{to}} / {{total}}",
+      "prev": "Prev",
+      "next": "Next"
+    },
+    "actions": {
+      "confirm": "Confirm",
+      "check_in": "Check-in",
+      "complete": "Complete",
+      "no_show": "No Show",
+      "cancel": "Cancel",
+      "confirming": "Confirming...",
+      "processing": "Processing..."
+    },
+    "cancel_modal": {
+      "title": "Confirm Cancellation",
+      "label": "Reason (Required)",
+      "placeholder": "Enter reason here...",
+      "confirm_btn": "Cancel Booking",
+      "cancel_btn": "Go Back"
+    },
+    "toast": {
+      "load_error": "Could not load bookings",
+      "confirm_success": "Booking confirmed",
+      "arrive_success": "Guest checked-in",
+      "complete_success": "Booking completed",
+      "no_show_success": "Marked as no-show",
+      "cancel_success": "Booking cancelled",
+      "action_error": "Action failed. Please try again."
     }
   }
 }

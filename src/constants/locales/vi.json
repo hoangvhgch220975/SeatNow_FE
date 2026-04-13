@@ -26,6 +26,25 @@
     "premium": "Cao cấp",
     "soon": "Sắp ra mắt"
   },
+  "notifications": {
+    "title": "Thông Báo",
+    "markAllRead": "Đánh dấu tất cả đã đọc",
+    "emptyTitle": "Chưa có thông báo nào",
+    "emptyMessage": "Chúng tôi sẽ thông báo cho bạn khi có cập nhật mới về đặt bàn hoặc giao dịch.",
+    "viewAll": "Xem tất cả lịch sử",
+    "types": {
+      "BOOKING_NEW": "Yêu cầu Đặt bàn mới",
+      "BOOKING_CONFIRMED": "Đã xác nhận Đặt bàn",
+      "BOOKING_CANCELLED": "Đã hủy Đặt bàn",
+      "BOOKING_NO_SHOW": "Khách không đến",
+      "TRANSACTION_DEPOSIT": "Nhận tiền đặt cọc",
+      "TRANSACTION_TOPUP": "Nạp tiền vào ví",
+      "TRANSACTION_WITHDRAW_APPROVED": "Lệnh rút tiền đã được duyệt",
+      "REVIEW_NEW": "Đánh giá mới từ khách hàng",
+      "COMMISSION_SETTLED": "Đã đối soát hoa hồng",
+      "ADMIN_BROADCAST": "Thông báo từ quản trị viên"
+    }
+  },
   "analytics": {
     "title": "Phân Tích Tổng Thể",
     "summary": "Hiệu Suất Toàn Danh Mục",
@@ -34,11 +53,11 @@
     "total_bookings": "Tổng Đặt Chỗ",
     "satisfaction": "Sự Hài Lòng",
     "avg_transaction": "Giá Trị Trung Bình",
-    "top_performers": "Xếp Hạng Hiệu Suất",
-    "recent_activity": "Hoạt Động Toàn Cầu",
-    "telemetry_system": "Hệ Thống Từ Xa",
-    "active_sync": "Kết Nối Hoạt Động",
-    "observation_timeline": "Dòng Thời Gian Theo Dõi",
+    "top_performers": "Đơn vị Xuất sắc",
+    "recent_activity": "Hoạt động Gần đây",
+    "telemetry_system": "Hệ thống Viễn thông",
+    "active_sync": "Đang đồng bộ",
+    "observation_timeline": "Dòng thời gian Quan sát",
     "day": "Ngày",
     "week": "Tuần",
     "month": "Tháng",
@@ -47,7 +66,7 @@
     "mom": "So với tháng trước",
     "wow": "So với tuần trước",
     "yoy": "So với năm trước",
-    "period_select": "Chọn Giai Đoạn",
+    "period_select": "Điều khiển Lịch",
     "unread": "Chưa Đọc",
     "mark_all_read": "Đọc Tất Cả",
     "refresh_feed": "Tải Lại Dòng Hoạt Động",
@@ -58,15 +77,6 @@
     "this_month": "Tháng Này",
     "last_7_days": "7 Ngày Qua",
     "total_completed_bookings": "Tổng Chỗ Đã Đặt Thành Công",
-    "day": "Ngày",
-    "week": "Tuần",
-    "month": "Tháng",
-    "telemetry_system": "Hệ thống Viễn thông",
-    "active_sync": "Đang đồng bộ",
-    "observation_timeline": "Dòng thời gian Quan sát",
-    "period_select": "Điều khiển Lịch",
-    "top_performers": "Đơn vị Xuất sắc",
-    "recent_activity": "Hoạt động Gần đây",
     "gross_revenue": "Tổng Doanh Thu Danh Mục",
     "total_deposit_volume": "Tổng Giá Trị Đặt Cọc",
     "cancellations_recorded": "Số Ca Hủy Chỗ",
@@ -94,25 +104,26 @@
     "days_ago": "{{count}} ngày trước"
   },
   "activity": {
-    "unread": "{{count}} Chưa đọc",
-    "mark_all_read": "Đánh dấu tất cả đã đọc",
-    "no_activity": "Không có hoạt động gần đây",
-    "updating": "Đang cập nhật...",
-    "refresh_feed": "Làm mới bảng tin",
-    "feed_updated": "Cập nhật bảng tin thành công",
-    "detail_coming_soon": "Chi tiết hoạt động sẽ sớm ra mắt",
+    "unread": "{{count}} Chưa Đọc",
+    "mark_all_read": "Đánh Dấu Tất Cả",
+    "no_activity": "Chưa có hoạt động nào",
+    "updating": "Đang Cập Nhật...",
+    "refresh_feed": "Tải Lại Dòng Hoạt Động",
+    "feed_updated": "Dòng hoạt động đã được cập nhật!",
+    "detail_coming_soon": "Tính năng xem chi tiết sắp ra mắt!",
     "types": {
-      "new_booking": "Đặt bàn mới",
-      "confirmed": "Đã xác nhận",
-      "cancelled": "Đã hủy",
-      "no_show": "Khách không đến",
-      "deposit": "Đã cọc tiền",
-      "topup": "Nạp tiền ví",
-      "withdrawal": "Rút tiền",
-      "review": "Đánh giá mới",
-      "commission": "Đã quyết toán hoa hồng",
-      "broadcast": "Thông báo hệ thống"
-    }
+      "new_booking": "Đặt Chỗ Mới",
+      "confirmed": "Đã Xác Nhận",
+      "cancelled": "Đã Hủy Chỗ",
+      "no_show": "Khách Không Đến",
+      "deposit": "Đặt Cọc",
+      "topup": "Nạp Tiền",
+      "withdrawal": "Rút Tiền",
+      "review": "Đánh Giá",
+      "commission": "Phí Hoa Hồng",
+      "broadcast": "Thông Báo"
+    },
+    "title": "Hoạt Động Gần Đây"
   },
   "api": {
     "messages": {
@@ -172,7 +183,21 @@
     "welcome": "Chào mừng trở lại",
     "email": "Địa Chỉ Email",
     "password": "Mật Khẩu",
-    "forgot_password": "Quên Mật Khẩu?",
+    "forgot_password": {
+      "title": "Quên Mật Khẩu",
+      "step1_desc": "Nhập số điện thoại đã đăng ký để nhận mã khôi phục.",
+      "step2_desc": "Chúng tôi đã gửi mã 6 chữ số tới email liên kết với số {{phone}}.",
+      "phone_label": "Số Điện Thoại",
+      "otp_label": "Mã Xác Thực (OTP)",
+      "info_note": "Sau khi xác minh, một mật khẩu mới gồm 8 ký tự sẽ được hệ thống tạo tự động và gửi về email đã đăng ký của bạn.",
+      "reset_btn": "Khôi Phục Mật Khẩu",
+      "resetting_btn": "Đang khôi phục...",
+      "change_number": "Thay Đổi Số",
+      "back_to_login": "Quay lại Đăng Nhập",
+      "send_code": "Gửi Mã Khôi Phục",
+      "sending": "Đang gửi...",
+      "resend_otp": "Gửi lại OTP"
+    },
     "no_account": "Chưa có tài khoản?",
     "signed_out_success": "Đã đăng xuất thành công",
     "authenticated_account": "Tài khoản đã xác thực",
@@ -221,21 +246,6 @@
       "verify_email_hint": "Nhập mã 6 chữ số đã được gửi tới",
       "disclaimer": "Không nhận được mã? Vui lòng kiểm tra hộp thư rác hoặc đợi 60 giây để gửi lại.",
       "uploading": "Đang tải lên..."
-    },
-    "forgot_password": {
-      "title": "Quên Mật Khẩu",
-      "step1_desc": "Nhập số điện thoại đã đăng ký để nhận mã khôi phục.",
-      "step2_desc": "Chúng tôi đã gửi mã 6 chữ số tới email liên kết với số {{phone}}.",
-      "phone_label": "Số Điện Thoại",
-      "otp_label": "Mã Xác Thực (OTP)",
-      "info_note": "Sau khi xác minh, một mật khẩu mới gồm 8 ký tự sẽ được hệ thống tạo tự động và gửi về email đã đăng ký của bạn.",
-      "reset_btn": "Khôi Phục Mật Khẩu",
-      "resetting_btn": "Đang khôi phục...",
-      "change_number": "Thay Đổi Số",
-      "back_to_login": "Quay lại Đăng Nhập",
-      "send_code": "Gửi Mã Khôi Phục",
-      "sending": "Đang gửi...",
-      "resend_otp": "Gửi lại OTP"
     },
     "validation": {
       "identifier_required": "Vui lòng nhập Email hoặc Số điện thoại",
@@ -452,46 +462,18 @@
     "navigation": "Điều Hướng"
   },
   "guest": {
-    "breakdown": "Phân Tích Nhóm Khách",
-    "demographics": "Cơ cấu nhân khẩu học toàn danh mục",
-    "couples": "Cặp đôi/Cá nhân (1-2 Khách)",
-    "small_groups": "Nhóm nhỏ (3-7 Khách)",
-    "parties": "Đoàn đông (8+ Khách)",
-    "footer_note": "* Dữ liệu được trích xuất từ siêu dữ liệu đặt chỗ toàn cầu trên {{count}} cơ sở đang quản lý."
-  },
-  "activity": {
-    "title": "Hoạt Động Gần Đây",
-    "unread": "{{count}} Chưa Đọc",
-    "mark_all_read": "Đánh Dấu Tất Cả",
-    "no_activity": "Chưa có hoạt động nào",
-    "refresh_feed": "Tải Lại Dòng Hoạt Động",
-    "updating": "Đang Cập Nhật...",
-    "feed_updated": "Dòng hoạt động đã được cập nhật!",
-    "detail_coming_soon": "Tính năng xem chi tiết sắp ra mắt!",
-    "types": {
-      "new_booking": "Đặt Chỗ Mới",
-      "confirmed": "Đã Xác Nhận",
-      "cancelled": "Đã Hủy Chỗ",
-      "no_show": "Khách Không Đến",
-      "deposit": "Đặt Cọc",
-      "topup": "Nạp Tiền",
-      "withdrawal": "Rút Tiền",
-      "review": "Đánh Giá",
-      "commission": "Phí Hoa Hồng",
-      "broadcast": "Thông Báo"
-    }
-  },
-  "time": {
-    "seconds_ago": "{{count}} giây trước",
-    "minutes_ago": "{{count}} phút trước",
-    "hours_ago": "{{count}} giờ trước",
-    "days_ago": "{{count}} ngày trước"
+    "breakdown": "Cơ cấu Quy mô Khách",
+    "demographics": "Nhân khẩu học Khách hàng Danh mục",
+    "couples": "Cặp đôi (2 người)",
+    "small_groups": "Nhóm nhỏ (3-7 người)",
+    "parties": "Đoàn lớn (8+ người)",
+    "footer_note": "Dữ liệu được tổng hợp từ {{count}} cơ sở đang hoạt động"
   },
   "charts": {
-    "performance_statistics": "Thống Kê Hiệu Suất",
-    "performance_description": "Sự tương quan giữa doanh thu và lượt khách trong khoảng thời gian đã chọn.",
-    "units": "lượt",
-    "computing_data": "Đang tính toán ma trận dữ liệu..."
+    "performance_statistics": "Thống kê Hiệu suất",
+    "performance_description": "Phân tích chuyên sâu về doanh thu danh mục và mức độ cam kết trong giai đoạn được chọn.",
+    "units": "Lượt",
+    "computing_data": "Đang tính toán dữ liệu vận hành..."
   },
   "home": {
     "hero": {
@@ -927,6 +909,88 @@
         "success": "Đặt chỗ của bạn đã được hủy thành công.",
         "error": "Hủy thất bại. Vui lòng kiểm tra lại số điện thoại."
       }
+    },
+    "create": {
+      "perfect_table": "Giữ Chỗ Ngay <1>Vị Trí</1> Hoàn Hảo",
+      "dining_slot": "Cập Nhật <1>Giờ Ăn</1> Của Bạn",
+      "premium_service": "Dịch Vụ Đặt Chỗ Cao Cấp",
+      "modify_reservation": "Chỉnh Sửa Đặt Bàn",
+      "subtitle": "Chọn vị trí yêu thích và trải nghiệm sự tuyệt vời tại <1>{{name}}</1>. Mỗi bàn đều được chúng tôi chăm sóc tận tâm để đảm bảo sự hài lòng của bạn.",
+      "select_date_time": "Chọn Ngày & Giờ",
+      "experience_way": "Trải Nghiệm Theo Cách Của Bạn",
+      "syncing_availability": "Đang đồng bộ tình trạng bàn...",
+      "special_requests": "Yêu Cầu Đặc Biệt",
+      "special_requests_placeholder": "Hãy cho chúng tôi biết về dị ứng, ngày kỷ niệm hoặc sở thích chỗ ngồi cụ thể...",
+      "loading_rest": "Đang chuẩn bị các lựa chọn tốt nhất...",
+      "loading_modifying": "Đang cập nhật đặt bàn của bạn...",
+      "error_not_found": "Không tìm thấy thông tin nhà hàng.",
+      "toast": {
+        "select_date_time": "Vui lòng chọn Ngày và Khung giờ trước.",
+        "table_held": "Bàn {{number}} đã được giữ cho bạn.",
+        "table_busy": "Bàn này hiện đã có người chọn!",
+        "redirecting": "Xác nhận đặt bàn thành công! Đang chuyển hướng...",
+        "identity_required": "Yêu cầu xác minh danh tính. Vui lòng cung cấp số điện thoại của bạn.",
+        "guest_info_required": "Vui lòng cung cấp tên và số điện thoại để tạo đơn đặt bàn mới.",
+        "id_retrieve_error": "Đã tạo đặt bàn nhưng không thể lấy được ID từ hệ thống."
+      }
+    },
+    "summary": {
+      "title": "Tóm Tắt Đặt Bàn",
+      "secure_process": "Quy Trình Đặt Chỗ Bảo Mật",
+      "date_time": "Ngày & Giờ",
+      "not_selected": "Chưa Chọn",
+      "party_size": "Số Lượng Khách",
+      "table_type": "Loại Bàn",
+      "no_selection": "Chưa Chọn Bàn",
+      "proceed_to_deposit": "Tiến Hành Đặt Cọc",
+      "confirm_reservation": "Xác Nhận Đặt Bàn",
+      "confirm_modification": "Xác Nhận Thay Đổi",
+      "cancel_change_table": "Hủy & Đổi Bàn",
+      "processing_payment": "Đang xử lý thanh toán...",
+      "finalizing_reservation": "Đang hoàn tất đặt bàn...",
+      "ssl_encrypted": "Giao dịch được bảo mật SSL 256-bit"
+    },
+    "form": {
+      "guest_details": "Thông Tin Khách Hàng",
+      "name_placeholder": "Họ và Tên",
+      "name_error": "Tên phải có ít nhất 2 ký tự",
+      "email_placeholder": "Địa chỉ Email",
+      "email_error": "Định dạng email không hợp lệ",
+      "phone_placeholder": "Số Điện Thoại",
+      "phone_error": "Số điện thoại Việt Nam không hợp lệ"
+    },
+    "time_picker": {
+      "select_date": "Chọn Ngày",
+      "preferred_slot": "Khung Giờ Yêu Thích",
+      "closed_no_slots": "Nhà hàng đóng cửa hoặc không còn chỗ trống"
+    },
+    "table_status": {
+      "available": "Còn trống",
+      "occupied": "Đã đặt",
+      "held": "Đang giữ",
+      "being_selected": "Đang được chọn",
+      "selected": "Đang chọn",
+      "vip": "VIP",
+      "vip_table": "Bàn VIP",
+      "outdoor": "Ngoài trời",
+      "outdoor_seating": "Chỗ ngồi ngoài trời",
+      "standard": "Tiêu chuẩn",
+      "guests": "Khách",
+      "main_entrance": "Lối vào chính",
+      "empty_title": "Khu vực này hiện đang trống",
+      "empty_desc": "Hãy thử khám phá các khu vực đặc trưng khác của chúng tôi.",
+      "markers": {
+        "rooftop": "Tầm nhìn Skyline",
+        "outdoor": "Đài phun nước vườn",
+        "terrace": "Tầm nhìn phố chính",
+        "default": "Sân khấu trung tâm"
+      },
+      "select_area": "Chọn Khu vực / Tầng"
+    },
+    "deposit": {
+      "reservation_deposit": "Tiền đặt cọc",
+      "total_amount": "Tổng cộng",
+      "free": "MIỄN PHÍ (0 VND)"
     }
   },
   "ai_assistant": {
@@ -1653,180 +1717,7 @@
       "a3": "Đối với các nhóm từ 8 người trở lên, vui lòng sử dụng biểu mẫu yêu cầu bên trên để đảm bảo chỗ ngồi liền mạch và các lựa chọn thực đơn tùy chỉnh."
     }
   },
-  "booking": {
-    "create": {
-      "perfect_table": "Giữ Chỗ Ngay <1>Vị Trí</1> Hoàn Hảo",
-      "dining_slot": "Cập Nhật <1>Giờ Ăn</1> Của Bạn",
-      "premium_service": "Dịch Vụ Đặt Chỗ Cao Cấp",
-      "modify_reservation": "Chỉnh Sửa Đặt Bàn",
-      "subtitle": "Chọn vị trí yêu thích và trải nghiệm sự tuyệt vời tại <1>{{name}}</1>. Mỗi bàn đều được chúng tôi chăm sóc tận tâm để đảm bảo sự hài lòng của bạn.",
-      "select_date_time": "Chọn Ngày & Giờ",
-      "experience_way": "Trải Nghiệm Theo Cách Của Bạn",
-      "syncing_availability": "Đang đồng bộ tình trạng bàn...",
-      "special_requests": "Yêu Cầu Đặc Biệt",
-      "special_requests_placeholder": "Hãy cho chúng tôi biết về dị ứng, ngày kỷ niệm hoặc sở thích chỗ ngồi cụ thể...",
-      "loading_rest": "Đang chuẩn bị các lựa chọn tốt nhất...",
-      "loading_modifying": "Đang cập nhật đặt bàn của bạn...",
-      "error_not_found": "Không tìm thấy thông tin nhà hàng.",
-      "toast": {
-        "select_date_time": "Vui lòng chọn Ngày và Khung giờ trước.",
-        "table_held": "Bàn {{number}} đã được giữ cho bạn.",
-        "table_busy": "Bàn này hiện đã có người chọn!",
-        "redirecting": "Xác nhận đặt bàn thành công! Đang chuyển hướng...",
-        "identity_required": "Yêu cầu xác minh danh tính. Vui lòng cung cấp số điện thoại của bạn.",
-        "guest_info_required": "Vui lòng cung cấp tên và số điện thoại để tạo đơn đặt bàn mới.",
-        "id_retrieve_error": "Đã tạo đặt bàn nhưng không thể lấy được ID từ hệ thống."
-      }
-    },
-    "summary": {
-      "title": "Tóm Tắt Đặt Bàn",
-      "secure_process": "Quy Trình Đặt Chỗ Bảo Mật",
-      "date_time": "Ngày & Giờ",
-      "not_selected": "Chưa Chọn",
-      "party_size": "Số Lượng Khách",
-      "table_type": "Loại Bàn",
-      "no_selection": "Chưa Chọn Bàn",
-      "proceed_to_deposit": "Tiến Hành Đặt Cọc",
-      "confirm_reservation": "Xác Nhận Đặt Bàn",
-      "confirm_modification": "Xác Nhận Thay Đổi",
-      "cancel_change_table": "Hủy & Đổi Bàn",
-      "processing_payment": "Đang xử lý thanh toán...",
-      "finalizing_reservation": "Đang hoàn tất đặt bàn...",
-      "ssl_encrypted": "Giao dịch được bảo mật SSL 256-bit"
-    },
-    "form": {
-      "guest_details": "Thông Tin Khách Hàng",
-      "name_placeholder": "Họ và Tên",
-      "name_error": "Tên phải có ít nhất 2 ký tự",
-      "email_placeholder": "Địa chỉ Email",
-      "email_error": "Định dạng email không hợp lệ",
-      "phone_placeholder": "Số Điện Thoại",
-      "phone_error": "Số điện thoại Việt Nam không hợp lệ"
-    },
-    "time_picker": {
-      "select_date": "Chọn Ngày",
-      "preferred_slot": "Khung Giờ Yêu Thích",
-      "closed_no_slots": "Nhà hàng đóng cửa hoặc không còn chỗ trống"
-    },
-    "table_status": {
-      "available": "Còn trống",
-      "occupied": "Đã đặt",
-      "held": "Đang giữ",
-      "being_selected": "Đang được chọn",
-      "selected": "Đang chọn",
-      "vip": "VIP",
-      "vip_table": "Bàn VIP",
-      "outdoor": "Ngoài trời",
-      "outdoor_seating": "Chỗ ngồi ngoài trời",
-      "standard": "Tiêu chuẩn",
-      "guests": "Khách",
-      "main_entrance": "Lối vào chính",
-      "empty_title": "Khu vực này hiện đang trống",
-      "empty_desc": "Hãy thử khám phá các khu vực đặc trưng khác của chúng tôi.",
-      "markers": {
-        "rooftop": "Tầm nhìn Skyline",
-        "outdoor": "Đài phun nước vườn",
-        "terrace": "Tầm nhìn phố chính",
-        "default": "Sân khấu trung tâm"
-      },
-      "select_area": "Chọn Khu vực / Tầng"
-    },
-    "deposit": {
-      "reservation_deposit": "Tiền đặt cọc",
-      "total_amount": "Tổng cộng",
-      "free": "MIỄN PHÍ (0 VND)"
-    }
-  },
-  "charts": {
-    "units": "Lượt",
-    "computing_data": "Đang tính toán dữ liệu vận hành...",
-    "performance_statistics": "Thống kê Hiệu suất",
-    "performance_description": "Phân tích chuyên sâu về doanh thu danh mục và mức độ cam kết trong giai đoạn được chọn."
-  },
-  "guest": {
-    "breakdown": "Cơ cấu Quy mô Khách",
-    "demographics": "Nhân khẩu học Khách hàng Danh mục",
-    "couples": "Cặp đôi (2 người)",
-    "small_groups": "Nhóm nhỏ (3-7 người)",
-    "parties": "Đoàn lớn (8+ người)",
-    "footer_note": "Dữ liệu được tổng hợp từ {{count}} cơ sở đang hoạt động"
-  },
   "i18next_code": "vi-VN",
-  "owner_bookings": {
-    "page_title": "Quản lý Đặt bàn",
-    "page_subtitle": "Quản lý và theo dõi toàn bộ lượt đặt bàn của nhà hàng",
-    "stats": {
-      "total_bookings": "Tổng Đặt bàn",
-      "completed": "Hoàn thành",
-      "cancelled": "Đã hủy & Không đến",
-      "for_date": "Ngày {{date}}",
-      "all_time": "Tất cả thời gian"
-    },
-    "filters": {
-      "date_label": "Chọn ngày",
-      "status_all": "Tất cả",
-      "status_pending": "Chờ xác nhận",
-      "status_confirmed": "Đã xác nhận",
-      "status_arrived": "Đã đến",
-      "status_completed": "Hoàn thành",
-      "status_cancelled": "Đã hủy",
-      "status_no_show": "Không đến",
-      "clear_filter": "Xóa bộ lọc"
-    },
-    "table": {
-      "col_guest": "Khách",
-      "col_code": "Mã đặt bàn",
-      "col_time": "Thời gian",
-      "col_guests": "Số khách",
-      "col_table": "Bàn",
-      "col_deposit": "Cọc",
-      "col_status": "Trạng thái",
-      "col_actions": "Hành động",
-      "guest_fallback": "Khách vãng lai",
-      "no_table": "N/A",
-      "deposit_paid": "Đã cọc",
-      "deposit_unpaid": "Chưa cọc",
-      "no_data": "Không có đặt bàn nào",
-      "no_data_desc": "Không tìm thấy đặt bàn nào cho ngày và bộ lọc đã chọn."
-    },
-    "pagination": {
-      "showing": "Hiển thị {{from}}-{{to}} / {{total}}",
-      "prev": "Trước",
-      "next": "Tiếp"
-    },
-    "actions": {
-      "confirm": "Xác nhận",
-      "check_in": "Check-in",
-      "complete": "Hoàn thành",
-      "no_show": "Không đến",
-      "cancel": "Hủy",
-      "confirming": "Đang xác nhận...",
-      "processing": "Đang xử lý..."
-    },
-    "cancel_modal": {
-      "title": "Xác nhận Hủy Đặt bàn",
-      "label": "Lý do hủy (Bắt buộc)",
-      "placeholder": "Nhập lý do hủy tại đây...",
-      "confirm_btn": "Hủy Đặt bàn",
-      "cancel_btn": "Quay lại"
-    },
-    "toast": {
-      "confirm_success": "Đã xác nhận đặt bàn thành công!",
-      "confirm_error": "Xác nhận đặt bàn thất bại. Vui lòng thử lại.",
-      "arrive_success": "Đã check-in khách thành công!",
-      "arrive_error": "Check-in thất bại. Vui lòng thử lại.",
-      "complete_success": "Đã hoàn thành đặt bàn!",
-      "complete_error": "Hoàn thành đặt bàn thất bại. Vui lòng thử lại.",
-      "no_show_success": "Đã đánh dấu khách không đến.",
-      "load_error": "Không thể tải danh sách đặt bàn",
-      "confirm_success": "Đã xác nhận đơn đặt bàn",
-      "arrive_success": "Đã check-in khách thành công",
-      "complete_success": "Đơn đặt bàn đã hoàn thành",
-      "no_show_success": "Đã đánh dấu khách vắng mặt",
-      "cancel_success": "Đã hủy đơn đặt bàn",
-      "action_error": "Lỗi khi thực hiện tác vụ. Vui lòng thử lại."
-    }
-  },
   "workspace_revenue": {
     "title": "Doanh Thu & Phân Tích",
     "subtitle": "Báo cáo tài chính và hiệu suất vận hành tại cơ sở",
@@ -1975,6 +1866,74 @@
       "complete_desc": "Hoàn tất đơn và giải phóng bàn",
       "no_show_desc": "Khách không đến trong khung giờ quy định",
       "cancel_desc": "Hủy đơn đặt bàn (Hoàn cọc tự động nếu có)"
+    }
+  },
+  "owner_bookings": {
+    "page_title": "Quản lý Đặt bàn",
+    "page_subtitle": "Quản lý và theo dõi toàn bộ lượt đặt bàn của nhà hàng",
+    "stats": {
+      "total_bookings": "Tổng Đặt bàn",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy & Không đến",
+      "for_date": "Ngày {{date}}",
+      "all_time": "Tất cả thời gian"
+    },
+    "filters": {
+      "date_label": "Chọn ngày",
+      "status_all": "Tất cả",
+      "status_pending": "Chờ xác nhận",
+      "status_confirmed": "Đã xác nhận",
+      "status_arrived": "Đã đến",
+      "status_completed": "Hoàn thành",
+      "status_cancelled": "Đã hủy",
+      "status_no_show": "Không đến",
+      "clear_filter": "Xóa bộ lọc"
+    },
+    "table": {
+      "col_guest": "Khách",
+      "col_code": "Mã đặt bàn",
+      "col_time": "Thời gian",
+      "col_guests": "Số khách",
+      "col_table": "Bàn",
+      "col_deposit": "Cọc",
+      "col_status": "Trạng thái",
+      "col_actions": "Hành động",
+      "guest_fallback": "Khách vãng lai",
+      "no_table": "N/A",
+      "deposit_paid": "Đã cọc",
+      "deposit_unpaid": "Chưa cọc",
+      "no_data": "Không có đặt bàn nào",
+      "no_data_desc": "Không tìm thấy đặt bàn nào cho ngày và bộ lọc đã chọn."
+    },
+    "pagination": {
+      "showing": "Hiển thị {{from}}-{{to}} / {{total}}",
+      "prev": "Trước",
+      "next": "Tiếp"
+    },
+    "actions": {
+      "confirm": "Xác nhận",
+      "check_in": "Check-in",
+      "complete": "Hoàn thành",
+      "no_show": "Không đến",
+      "cancel": "Hủy",
+      "confirming": "Đang xác nhận...",
+      "processing": "Đang xử lý..."
+    },
+    "cancel_modal": {
+      "title": "Xác nhận Hủy Đặt bàn",
+      "label": "Lý do hủy (Bắt buộc)",
+      "placeholder": "Nhập lý do hủy tại đây...",
+      "confirm_btn": "Hủy Đặt bàn",
+      "cancel_btn": "Quay lại"
+    },
+    "toast": {
+      "load_error": "Không thể tải danh sách đặt bàn",
+      "confirm_success": "Đã xác nhận đơn đặt bàn",
+      "arrive_success": "Đã check-in khách thành công",
+      "complete_success": "Đơn đặt bàn đã hoàn thành",
+      "no_show_success": "Đã đánh dấu khách vắng mặt",
+      "cancel_success": "Đã hủy đơn đặt bàn",
+      "action_error": "Lỗi khi thực hiện tác vụ. Vui lòng thử lại."
     }
   }
 }

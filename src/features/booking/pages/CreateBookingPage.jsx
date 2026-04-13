@@ -10,7 +10,7 @@ import ErrorState from '../../../shared/feedback/ErrorState';
 import toast from 'react-hot-toast';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { bookingSocket, connectSockets, disconnectSockets } from '../../../lib/socket.js';
+import { bookingSocket, connectBookingSocket, disconnectSockets } from '../../../lib/socket.js';
 
 import FloorFilter from '../components/FloorFilter';
 import TimeSlotPicker from '../components/TimeSlotPicker';
@@ -158,11 +158,13 @@ const CreateBookingPage = () => {
   }, [tablesData, restaurantId, AVAILABLE_AREAS]);
 
   // 5. Fetch tính khả dụng (Real-time Availability)
-  const { data: availabilityData, isFetching: isFetchingAvailability } = useRestaurantAvailability(restaurantId, {
+  const availabilityParams = useMemo(() => ({
     date: selectedDate,
     time: selectedTimeSlot,
     guests: partySize
-  });
+  }), [selectedDate, selectedTimeSlot, partySize]);
+
+  const { data: availabilityData, isFetching: isFetchingAvailability } = useRestaurantAvailability(restaurantId, availabilityParams);
 
   const availableTables = useMemo(() => {
     const raw = availabilityData?.data || availabilityData;
@@ -172,12 +174,14 @@ const CreateBookingPage = () => {
   }, [availabilityData]);
 
   // 6. Xử lý danh sách tầng (Floors)
-  const floors = useMemo(() => {
-    if (!activeFloor && AVAILABLE_AREAS.length > 0) {
-      setActiveFloor(AVAILABLE_AREAS[0].id);
+  const floors = AVAILABLE_AREAS;
+
+  // Set tầng mặc định nếu chưa có
+  React.useEffect(() => {
+    if (!activeFloor && floors.length > 0) {
+      setActiveFloor(floors[0].id);
     }
-    return AVAILABLE_AREAS;
-  }, [AVAILABLE_AREAS, activeFloor]);
+  }, [floors, activeFloor]);
 
   // 7. Kết hợp dữ liệu bàn (Full Map + Availability + Socket)
   const displayTables = useMemo(() => {
@@ -237,7 +241,7 @@ const CreateBookingPage = () => {
   React.useEffect(() => {
     if (!restaurantId) return;
 
-    connectSockets(token);
+    connectBookingSocket(token);
     
     const onConnect = () => {
         bookingSocket.emit('joinRestaurant', restaurantId);

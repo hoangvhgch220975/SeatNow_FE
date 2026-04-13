@@ -6,6 +6,7 @@ import { ROUTES } from '@/config/routes.js';
 import { Link, useNavigate } from 'react-router';
 import { toast } from 'react-hot-toast';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher.jsx';
+import NotificationDropdown from '@/shared/components/Notifications/NotificationDropdown.jsx';
 
 /**
  * @file OwnerTopbar.jsx
@@ -57,10 +58,7 @@ const OwnerTopbar = () => {
         </Link>
 
         {/* Notifications (Vietnamese comment) */}
-        <button className="p-3 text-slate-500 hover:bg-slate-100/50 rounded-2xl transition-all relative group border border-transparent hover:border-slate-100">
-          <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">notifications</span>
-          <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white shadow-sm"></span>
-        </button>
+        <NotificationDropdown />
 
         {/* User Profile Area with Dropdown (Vietnamese comment) */}
         <div className="relative" ref={dropdownRef}>

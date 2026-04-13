@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Outlet, Navigate } from 'react-router';
 import { useAuthStore } from '@/features/auth/store.js';
 import { ROLES } from '@/config/roles.js';
@@ -5,6 +6,8 @@ import SidebarOwnerMain from './SidebarOwnerMain.jsx';
 import OwnerTopbar from './OwnerTopbar.jsx';
 import OwnerFooter from './OwnerFooter.jsx';
 import ScrollToTop from '../components/ScrollToTop.jsx';
+import useNotificationStore from '@/shared/hooks/useNotificationStore.hooks.js';
+import { storage } from '@/lib/storage';
 
 /**
  * @file OwnerMainLayout.jsx
@@ -12,6 +15,21 @@ import ScrollToTop from '../components/ScrollToTop.jsx';
  */
 const OwnerMainLayout = () => {
   const { isAuthenticated, user } = useAuthStore();
+  const { initNotificationSocket, fetchActivities, cleanupSocket } = useNotificationStore();
+
+  // Khởi tạo Realtime Notification khi vào vùng Owner
+  useEffect(() => {
+    if (isAuthenticated && user?.id && user?.role === ROLES.OWNER) {
+      const token = storage.getToken();
+      initNotificationSocket(user.id, user.role, token);
+      fetchActivities();
+    }
+
+    return () => {
+      // Cleanup socket khi rời khỏi vùng Owner hoặc unmount layout
+      cleanupSocket();
+    };
+  }, [isAuthenticated, user, initNotificationSocket, fetchActivities, cleanupSocket]);
 
   // Kiểm tra quyền truy cập: Chỉ cho phép OWNER
   if (!isAuthenticated) return <Navigate to="/login" replace />;
