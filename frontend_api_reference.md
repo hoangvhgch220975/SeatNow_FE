@@ -1,7 +1,7 @@
 # 📘 SeatNow – Frontend API Reference & Integration Guide
 
 > **Mục đích:** Tài liệu này cung cấp toàn bộ danh sách endpoints, Socket.IO events, và hướng dẫn kết nối frontend cho dự án SeatNow.
-> **Cập nhật lần cuối:** 2026-04-13 (v1.0.9)
+> **Cập nhật lần cuối:** 2026-04-14 (v1.1.0)
 
 ---
 
@@ -94,7 +94,7 @@ Dưới đây là chi tiết những hành động mà mỗi vai trò (Role) **c
   - **Tài chính:** Gửi yêu cầu Rút tiền từ Ví (Wallet) của quán về tài khoản ngân hàng (Yêu cầu này sẽ gửi cho Admin duyệt). 
     - _Lưu ý về số dư:_ Số dư khả dụng (`balance`) là số tiền thực nhận (Net Revenue) sau khi đã "tạm ứng" phí hoa hồng vào `lockedAmount`. Nhà hàng chỉ có thể rút tiền từ `balance`.
 - **Không thể làm gì?**
-  - **KHÔNG THỂ tự kích hoạt nhà hàng (Activate) từ trạng thái Pending:** Khi nhà hàng mới tạo hoặc bị Admin khóa định danh, Owner không thể tự kích hoạt. Tuy nhiên, nếu nhà hàng đã ở trạng thái `active`, Owner có quyền tự chuyển sang `suspended` (để tạm đóng cửa kinh doanh) và tự `active` lại sau đó.
+  - **KHÔNG THỂ tự kích hoạt nhà hàng (Activate) từ trạng thái Pending:** Khi nhà hàng mới tạo hoặc bị Admin khóa định danh, Owner không thể tự kích hoạt. Tuy nhiên, nếu nhà hàng đã ở trạng thái `active`, Owner có quyền tự chuyển sang `suspended` (để tạm đóng cửa kinh doanh) và tự `active` lại sau đó bằng API `PUT /restaurants/:id`.
   - **KHÔNG THỂ thay đổi phần trăm hoa hồng (Commission Rate) hoặc gói Premium:** Các chỉ số tài chính tính phí định kỳ là dữ liệu nhạy cảm do Admin quyết định và thu tiền.
   - **KHÔNG THỂ tự động duyệt rút tiền:** Lệnh sẽ nằm ở trạng thái "Chờ xử lý" (Pending) cho tới khi nhận dòng tiền thực tế, lúc đó Admin mới chuyển trạng thái Approve.
   - **KHÔNG THỂ nhìn dữ liệu chéo của hệ thống:** Chỉ xem báo cáo và kiểm tra dữ liệu ứng với nhà hàng dưới danh nghĩa chủ sở hữu.
@@ -728,6 +728,9 @@ Khi người dùng chọn số lượng khách (`numGuests`), Frontend cần tí
 | `PUT`  | `/bookings/:id/cancel/guest` | Hủy booking (Khách vãng lai)       | ❌ (optional JWT) | –                      |
 | `PUT`  | `/bookings/:id/modify`       | Chỉnh sửa / Đổi lịch đặt bàn       | ❌ (optional JWT) | Any                    |
 
+> [!IMPORTANT]
+> **Chính sách No-show tự động:** Hệ thống có Job quét tự động mỗi phút. Nếu khách không đến sau **15 phút** (Grace Period) kể từ giờ đặt bàn của đơn `CONFIRMED`, trạng thái sẽ tự động chuyển thành `NO_SHOW`.
+
 #### Body mẫu (Modify - Chỉnh sửa lịch):
 
 ```json
@@ -1099,7 +1102,7 @@ Các URL này do Cổng thanh toán gọi trực tiếp:
 | Method | Endpoint               | Mô tả                                              | Auth |
 | ------ | ---------------------- | -------------------------------------------------- | ---- |
 | `GET`  | `/wallet/balance`             | Kiểm tra số dư ví & Thống kê chi tiết (hỗ trợ `restaurantId` query)                                       | ✅   |
-| `GET`  | `/wallet/history`             | Lịch sử giao dịch ví (Toàn bộ hoặc lọc theo `type`)                                                       | ✅   |
+| `GET`  | `/wallet/history`             | Lịch sử giao dịch ví (Toàn bộ hoặc lọc theo `type=WITHDRAWAL`)                                                       | ✅   |
 | `GET`  | `/wallet/recent-transactions` | Lấy 5 giao dịch thanh toán tiền cọc mới nhất phục vụ Dashboard (kèm thông tin khách hàng, số bàn, mã đơn)      | ✅   |
 | `POST` | `/wallet/withdraw`            | Yêu cầu rút tiền từ ví (chỉ rút từ `balance`)                                                               | ✅   |
 
@@ -1650,30 +1653,44 @@ Dịch vụ AI cung cấp khả năng tư vấn nhà hàng, phân tích doanh th
 ### ⚡ Đặc điểm kỹ thuật
 
 - **Caching Layer (Redis):** Dữ liệu được cache giúp tốc độ phản hồi cực nhanh.
-- **Language Policy (STRICT):** Phản hồi theo đúng ngôn ngữ người dùng hỏi (Tiếng Việt <-> Tiếng Anh).
+- **Language Policy (GOLDEN RULE):** AI tuân thủ nghiêm ngặt quy tắc: **"Phản hồi bằng chính ngôn ngữ người dùng yêu cầu"**. 
+- **Target Language:** Hệ thống sử dụng tham số `lang` trong Request Body để xác định ngôn ngữ phản hồi (mặc định là `en`).
+- **Intelligent Search (Database-Level):** Đối với các yêu cầu gợi ý (Public & Customer), hệ thống sẽ tự động bóc tách từ khóa từ tin nhắn (`message`) để tìm kiếm trực tiếp trong Database (Tên, Mô tả, Cuisine). Kết quả khớp từ DB sẽ được AI ưu tiên gợi ý hàng đầu.
+- **Strict Consistency:** Đối với các yêu cầu chat (đa lượt), AI sẽ phản hồi theo ngôn ngữ của câu hỏi cuối cùng nếu không có tham số `lang` ép kiểu. Tuy nhiên, khuyến khích FE luôn gửi `lang` để đảm bảo trải nghiệm đồng nhất.
 
 ### 🌐 1. Public AI (Khách vãng lai)
 
 - **Endpoint:** `POST /api/v1/ai/public/recommend`
-- **Body:** `{ "message": "string" }`
+- **Body:** `{ "message": "string", "lang": "string (en|vi)" }`
+- **Lưu ý:** `message` nên chứa từ khóa về món ăn hoặc địa điểm để AI tìm kiếm chính xác hơn trong Database (ví dụ: "Cho tôi nhà hàng phở").
 
 ### 👤 2. Customer AI (Khách hàng)
 
-- **Gợi ý nhanh:** `POST /api/v1/ai/customer/recommend`
-- **Chat:** `POST /api/v1/ai/customer/chat` (`{ "message": "string" }`)
+- **Gợi ý nhanh:** `POST /api/v1/ai/customer/recommend` 
+    - Body: `{ "lang": "string (en|vi)" }`
+- **Chat:** `POST /api/v1/ai/customer/chat` 
+    - Body: `{ "message": "string", "lang": "string (en|vi)" }`
+    - **Tính năng:** Hỗ trợ tìm kiếm thông minh từ Database dựa trên nội dung chat.
 - **Xóa lịch sử:** `DELETE /api/v1/ai/customer/chat/history`
 
 ### 🛡️ 3. Admin AI (Quản trị viên)
 
 - **Phân tích doanh thu:** `POST /api/v1/ai/admin/revenue-summary`
-- **Chat phân tích:** `POST /api/v1/ai/admin/chat` (`{ "message": "string" }`)
+    - Body: `{ "lang": "string (en|vi)" }`
+- **Chat phân tích:** `POST /api/v1/ai/admin/chat`
+    - Body: `{ "message": "string", "lang": "string (en|vi)" }`
 - **Xóa lịch sử:** `DELETE /api/v1/ai/admin/chat/history`
 
 ### 🏪 4. Owner AI (Chủ nhà hàng)
 
-- **Phân tích kinh doanh:** `POST /api/v1/ai/owner/revenue-summary`
-- **Tư vấn đa lượt:** `POST /api/v1/ai/owner/chat` (`{ "message": "string" }`)
-- **Xóa lịch sử:** `DELETE /api/v1/ai/owner/chat/history`
+Hệ thống hỗ trợ cả phân tích chuỗi (Portfolio) và phân tích sâu cho từng nhà hàng cụ thể.
+
+- **Phân tích kinh doanh (One-shot):** `POST /api/v1/ai/owner/revenue-summary`
+    - Body: `{ "restaurantId": "UUID_HOAC_SLUG", "lang": "en|vi" }` (Optional). Nếu không gửi, AI sẽ phân tích toàn bộ các quán của Owner.
+- **Tư vấn đa lượt (Chat):** `POST /api/v1/ai/owner/chat`
+    - Body: `{ "message": "string", "restaurantId": "UUID_HOAC_SLUG", "lang": "en|vi" }` (Optional).
+    - *Lưu ý:* Khi gửi `restaurantId`, AI sẽ sử dụng ngữ cảnh và lịch sử chat riêng biệt cho quán đó.
+- **Xóa lịch sử:** `DELETE /api/v1/ai/owner/chat/history?restaurantId=...`
 
 ---
 

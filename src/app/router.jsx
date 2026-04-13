@@ -41,7 +41,10 @@ import OwnerWalletPage from '../features/owner/workspace/wallet/pages/WalletPage
 import OwnerTransactionsPage from '../features/owner/workspace/wallet/pages/TransactionsPage.jsx';
 import OwnerBookingDetailPage from '../features/owner/workspace/bookings/pages/OwnerBookingDetailPage.jsx';
 import OwnerSettingsPage from '../features/owner/workspace/settings/pages/OwnerSettingsPage.jsx';
-
+import AIChatPortfolioPage from '../features/owner/portal/pages/AIChatPortfolioPage.jsx';
+import AIRevenueInsightsPage from '../features/owner/portal/pages/AIRevenueInsightsPage.jsx';
+import WorkspaceAIChatPage from '../features/owner/workspace/ai/pages/WorkspaceAIChatPage.jsx';
+import WorkspaceAIRevenuePage from '../features/owner/workspace/ai/pages/WorkspaceAIRevenuePage.jsx';
 
 
 /**
@@ -175,6 +178,14 @@ export const router = createBrowserRouter([
             element: <PartnerPolicyPage />,
           },
           {
+            path: ROUTES.OWNER_AI_CHAT,
+            element: <AIChatPortfolioPage />,
+          },
+          {
+            path: ROUTES.OWNER_AI_REVENUE,
+            element: <AIRevenueInsightsPage />,
+          },
+          {
             path: ROUTES.CREATE_RESTAURANT,
             element: <CreateRestaurantPage />,
           },
@@ -231,6 +242,16 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.WORKSPACE_SETTINGS(':idOrSlug'),
             element: <OwnerSettingsPage />,
+          },
+          {
+            // [AI]: Trang hội thoại AI theo từng nhà hàng
+            path: ROUTES.WORKSPACE_AI_CHAT(':idOrSlug'),
+            element: <WorkspaceAIChatPage />,
+          },
+          {
+            // [AI]: Trang phân tích doanh thu AI theo từng nhà hàng
+            path: ROUTES.WORKSPACE_AI_REVENUE(':idOrSlug'),
+            element: <WorkspaceAIRevenuePage />,
           },
           // Các route con khác của workspace sẽ thêm tại đây
         ]

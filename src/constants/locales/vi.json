@@ -955,10 +955,20 @@
       "recommend_button": "Gợi ý Nhanh",
       "send_button": "Gửi"
     },
-    "suggestions": [
-      "Tôi muốn tìm hiểu các gợi ý nhà hàng cao cấp.",
-      "Bạn có thể đề xuất một nhà hàng phù hợp cho gia đình ở gần đây không?",
-      "Những địa điểm ẩm thực nào đang thịnh hành trong thành phố?"
+    "suggestions_guest": [
+      "Tìm nhà hàng món Nhật cao cấp ở Quận 1",
+      "Gợi ý nhà hàng có view sông lãng mạn cho 2 người",
+      "Những địa điểm ăn uống đang thịnh hành hiện nay là gì?"
+    ],
+    "suggestions_customer": [
+      "Dựa trên các lần đặt bàn trước, bạn đề xuất món gì cho hôm nay?",
+      "Nhà hàng nào phù hợp nhất với sở thích đồ Âu của tôi?",
+      "Kiểm tra các ưu đãi dành riêng cho tôi tại các nhà hàng đã ghé thăm"
+    ],
+    "suggestions_owner": [
+      "Phân tích báo cáo doanh thu dự kiến cho tháng này",
+      "Làm thế nào để tối ưu hóa tỷ lệ lấp đầy bàn vào ngày giữa tuần?",
+      "Đề xuất chiến dịch marketing để thu hút thêm khách hàng mới"
     ],
     "footer": "© 2026 Dịch vụ Chăm sóc Khách hàng SeatNow AI"
   },
@@ -968,6 +978,8 @@
       "nav_portfolio_overview": "Tổng quan",
       "nav_all_venues": "Nhà hàng",
       "nav_global_analytics": "Phân tích",
+      "nav_ai_assistant": "Trợ lý AI",
+      "nav_ai_insights": "AI Thống kê doanh thu",
       "soon": "Sắp ra mắt",
       "coming_soon_toast": "{{label}} sắp ra mắt!",
       "add_new_venue": "Thêm mới"
@@ -1403,7 +1415,8 @@
         "email": "Email Chính Thức",
         "map_location": "Vị trí Bản đồ",
         "latitude": "Vĩ độ",
-        "longitude": "Kinh độ"
+        "longitude": "Kinh độ",
+        "location_pinned": "Vị trí đã định vị"
       },
       "deposit": {
         "enabled": "Bật Yêu Cầu Đặt Cọc",

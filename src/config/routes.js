@@ -31,6 +31,8 @@ export const ROUTES = {
   OWNER_RESTAURANTS: '/owner/restaurants',
   OWNER_ANALYTICS: '/owner/analytics',
   OWNER_POLICIES: '/owner/policies',
+  OWNER_AI_CHAT: '/owner/ai-assistant',
+  OWNER_AI_REVENUE: '/owner/ai-revenue',
   CREATE_RESTAURANT: '/owner/restaurants/new',
   
   // --- OWNER WORKSPACE (Dynamic param :slug or :id) ---

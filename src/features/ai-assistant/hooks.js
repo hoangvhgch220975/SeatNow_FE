@@ -1,100 +1,117 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { aiApi } from './api.js';
 import { useState, useEffect, useCallback } from 'react';
 import { useAuthStore } from '../auth/store.js';
+import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 
 /**
  * @file hooks.js
- * @description Hệ thống quản lý hội thoại AI tích hợp lịch sử và phiên làm việc (Sessions) đồng bộ Redis.
+ * @description Hook tổng hợp quản lý hội thoại AI cho mọi Role (Guest, Customer, Owner).
+ * Tích hợp đa ngôn ngữ và đồng bộ lịch sử Redis.
  */
 
 const STORAGE_KEY_PREFIX = 'seatnow_ai_sessions_';
 
-export const useAIAssistant = () => {
+export const useAI = (restaurantId = null) => {
+  const { i18n } = useTranslation();
   const { isAuthenticated, user } = useAuthStore();
   
   // KIỂM TRA ĐỘ SẴN SÀNG CỦA AUTH
   const isAuthReady = !isAuthenticated || (isAuthenticated && user !== null);
   
-  // Xác định vai trò
+  // [Xác định vai trò và định danh]
+  const isOwner = isAuthenticated && user?.role?.toUpperCase() === 'RESTAURANT_OWNER';
   const isCustomer = isAuthenticated && user?.role?.toUpperCase() === 'CUSTOMER';
-  const userId = isCustomer ? (user?.id || user?._id) : 'guest';
-  const displayName = user?.fullName || user?.name || 'Friend';
+  const isGuest = !isAuthenticated;
+  
+  const userId = user?.id || user?._id || 'guest';
+  const role = user?.role || 'GUEST';
+  const currentLang = i18n.language || 'en';
 
   const [sessions, setSessions] = useState([]);
   const [activeSessionId, setActiveSessionId] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
-  const [sessionKey, setSessionKey] = useState(null);
 
-  /**
-   * @description Đồng bộ hóa nội dung hội thoại với bản trên Redis (Ground Truth)
-   * Giúp xóa bỏ tình trạng chat cũ vẫn hiện khi Redis đã bị xóa.
-   */
+  // 1. [Logic: Đồng bộ lịch sử từ Server]
+  // Đồng bộ hóa với Redis theo từng SessionId cụ thể
   const syncWithServerHistory = async (targetSessionId) => {
+    if (isGuest || !targetSessionId) return;
+
     try {
-      const response = await aiApi.getCustomerHistory();
-      const serverHistory = response.data?.history || response.data || [];
+      let response;
+      const roleLower = role.toLowerCase();
       
-      if (serverHistory.length > 0) {
-          setChatHistory(serverHistory);
+      // [Phân tách theo Role]: Truyền kèm sessionId để lấy đúng lịch sử của phiên đó
+      if (isCustomer) {
+        response = await aiApi.getCustomerHistory(targetSessionId);
+      } else if (isOwner) {
+        response = await aiApi.getOwnerHistory(restaurantId, targetSessionId);
+      } else if (roleLower === 'admin') {
+        response = await aiApi.getAdminHistory(targetSessionId);
+      }
+
+      const serverHistory = response?.data?.history || response?.data || [];
+      
+      // Chuyển đổi format từ backend sang format UI ({role, message})
+      const formattedHistory = serverHistory.map(h => ({
+        role: h.role,
+        message: h.parts?.[0] || h.message || ''
+      }));
+
+      if (formattedHistory.length > 0) {
+          setChatHistory(formattedHistory);
           setSessions(prev => prev.map(s => 
-              s.id === targetSessionId ? { ...s, messages: serverHistory } : s
-          ));
-      } else {
-          // NẾU REDIS RỖNG -> Xóa trắng UI theo yêu cầu người dùng
-          setChatHistory(prev => [prev[0]]); // Giữ lại câu chào đầu tiên
-          setSessions(prev => prev.map(s => 
-              s.id === targetSessionId ? { ...s, messages: [s.messages[0]] } : s
+              s.id === targetSessionId ? { ...s, messages: formattedHistory } : s
           ));
       }
     } catch (e) {
-      console.warn("[SYNC] No Redis history found for this user yet.");
+      console.warn(`[AI-Sync] No server history found for session ${targetSessionId}`);
     }
   };
 
-  // 1. Load lịch sử từ localStorage khi khởi tạo
+  // 2. [Logic: Khởi tạo dữ liệu]
   useEffect(() => {
     if (!isAuthReady) return;
 
-    if (!isCustomer) {
+    // // [Role: PUBLIC/GUEST]: Luôn bắt đầu chat mới mỗi lần load trang
+    if (isGuest) {
       startNewChat(true);
       return;
     }
 
-    const key = `${STORAGE_KEY_PREFIX}${userId}`;
-    const saved = localStorage.getItem(key);
+    // // [Role: CUSTOMER/OWNER/ADMIN]: Load lịch sử từ LocalStorage theo VAI TRÒ
+    // Cô lập hoàn toàn: Lịch sử theo tổ hợp Role + UserId
+    const storageKey = `${STORAGE_KEY_PREFIX}${role.toLowerCase()}_${userId}`;
+    const saved = localStorage.getItem(storageKey);
     let loadedSessions = [];
 
     if (saved) {
       try {
         loadedSessions = JSON.parse(saved);
         setSessions(loadedSessions);
-      } catch (e) {
-        console.error("Failed to load AI history", e);
-      }
+      } catch (e) { console.error("History load error", e); }
     }
 
     if (loadedSessions.length > 0) {
       const latest = loadedSessions[0];
       setActiveSessionId(latest.id);
       setChatHistory(latest.messages);
-      
-      // THỰC HIỆN ĐỒNG BỘ VỚI REDIS NGAY LÚC NÀY
-      if (isCustomer) {
-          syncWithServerHistory(latest.id);
-      }
+      syncWithServerHistory(latest.id);
     } else {
       startNewChat(true);
     }
-  }, [userId, isAuthReady]);
+  }, [userId, role, isAuthReady, isGuest]);
 
-  // 2. Tự động lưu sessions vào storage
+  // 3. [Logic: Lưu trữ cục bộ theo Role]
   useEffect(() => {
-    if (isCustomer && sessions.length > 0) {
-      localStorage.setItem(`${STORAGE_KEY_PREFIX}${userId}`, JSON.stringify(sessions));
+    if (!isGuest && sessions.length > 0) {
+      const storageKey = `${STORAGE_KEY_PREFIX}${role.toLowerCase()}_${userId}`;
+      localStorage.setItem(storageKey, JSON.stringify(sessions));
     }
-  }, [sessions, userId, isCustomer]);
+  }, [sessions, userId, role, isGuest]);
 
+  // 4. [Logic: Quản lý phiên chat]
   const updateSessionHistory = (newHistory) => {
     setSessions(prev => prev.map(s => {
       if (s.id === activeSessionId) {
@@ -107,16 +124,13 @@ export const useAIAssistant = () => {
   };
 
   const startNewChat = useCallback(async (isInitial = false) => {
-    if (isCustomer && !isInitial) {
-      try { await aiApi.clearCustomerHistory(); } catch(e) {}
-    }
-
+    // [Xử lý]: Khi bắt đầu chat mới hoàn toàn (Client-side), backend sẽ tự có key mới theo sessionId mới
+    // Không cần gọi clearHistory toàn bộ nữa vì mỗi session đã được cô lập
+    
     const newId = crypto.randomUUID();
     const welcomeMsg = { 
       role: 'model', 
-      message: isCustomer 
-        ? `Greetings ${displayName}! I am your SeatNow Executive Concierge. How may I assist you today?`
-        : "Welcome! I am your AI Restaurant Concierge. How can I help you today?"
+      message: `Hello! I am your SeatNow AI Advisor. How can I help you today?` 
     };
 
     const newSession = {
@@ -128,33 +142,26 @@ export const useAIAssistant = () => {
 
     setChatHistory([welcomeMsg]);
     setActiveSessionId(newId);
-    setSessionKey(null);
-    
     setSessions(prev => [newSession, ...prev]);
-  }, [isCustomer, displayName]);
+  }, [isGuest, isCustomer, isOwner, restaurantId, currentLang]);
 
-  const loadSession = (sessionId) => {
-    const session = sessions.find(s => s.id === sessionId);
-    if (session) {
-      setActiveSessionId(sessionId);
-      setChatHistory(session.messages);
-      // Khi load session cũ, ta nên sync lại với Redis nếu là Customer
-      if (isCustomer) syncWithServerHistory(sessionId);
-    }
-  };
-
+  // 5. [Logic: Xử lý Mutation gửi tin nhắn]
   const mutation = useMutation({
     mutationFn: async (message) => {
-      let currentKey = sessionKey;
-      if (isCustomer && !currentKey && userId) currentKey = `ai:customer:${userId}`;
+      let res;
+      const roleLower = role.toLowerCase();
+      // // [Phân luồng gọi API]: Luôn truyền kèm activeSessionId
+      if (isOwner) {
+        res = await aiApi.ownerChat(message, restaurantId, currentLang, activeSessionId);
+      } else if (isCustomer) {
+        res = await aiApi.customerChat(message, currentLang, activeSessionId);
+      } else if (roleLower === 'admin') {
+        res = await aiApi.adminChat(message, currentLang, activeSessionId);
+      } else {
+        res = await aiApi.publicRecommend(message, currentLang);
+      }
 
-      const res = isCustomer 
-        ? await aiApi.customerChat(message, currentKey)
-        : await aiApi.publicRecommend(message, currentKey);
-      
-      if (res?.session_key) setSessionKey(res.session_key);
-      const result = res?.data?.reply || res?.recommendations || res?.reply || res?.message || res?.data || res?.content || res;
-      return typeof result === 'string' ? result : JSON.stringify(result);
+      return res?.data?.reply || res?.reply || res?.recommendations || res?.message || res;
     },
     onSuccess: (reply) => {
       const aiMsg = { role: 'model', message: reply };
@@ -163,6 +170,9 @@ export const useAIAssistant = () => {
         updateSessionHistory(newHistory);
         return newHistory;
       });
+    },
+    onError: (err) => {
+        toast.error("AI service is currently busy. Please try again later.");
     }
   });
 
@@ -175,78 +185,59 @@ export const useAIAssistant = () => {
     });
   };
 
-  const clearHistory = async () => {
-    if (isCustomer) {
-      try {
-        await aiApi.clearCustomerHistory();
-        const welcomeMsg = [
-          { role: 'model', message: `Confirmed. Your memory has been reset in Redis. Ready for a new experience.` }
-        ];
-        setChatHistory(welcomeMsg);
-        setSessions(prev => prev.map(s => 
-          s.id === activeSessionId ? { ...s, messages: welcomeMsg, title: 'Blank Slate' } : s
-        ));
-      } catch (e) {
-        console.error("Failed to clear Redis history", e);
-      }
-    }
-  };
-
-  /**
-   * @description Xóa phiên chat và đồng bộ xóa luôn cả trên Redis
-   */
-  const deleteSession = async (sessionId) => {
-    // 1. Xóa trên Server (Redis) - CHỈ CHO CUSTOMER
-    if (isCustomer) {
-      try { await aiApi.clearCustomerHistory(); } catch (e) { console.error("Redis sync deletion failed", e); }
-    }
-
-    // 2. Xóa trên UI (localStorage)
-    setSessions(prev => prev.filter(s => s.id !== sessionId));
-    if (activeSessionId === sessionId) startNewChat(true); // Tạo chat mới hoàn toàn sạch
-  };
-
+  // 6. [Logic: Gợi ý Magic Recommend]
   const recommendMutation = useMutation({
-    mutationFn: (message) => aiApi.customerRecommend(message),
-    onSuccess: (response) => {
-      // Bóc tách dữ liệu linh hoạt (kết quả từ FastAPI có thể lồng trong .data)
-      const result = response?.recommendations || response?.data?.recommendations || response?.message || response?.data || response;
-      const aiResponse = typeof result === 'string' ? result : (result?.message || "No recommendations found.");
-      
-      const aiMsg = { role: 'model', message: aiResponse };
-      setChatHistory(prev => {
-         const newHistory = [...prev, aiMsg];
-         updateSessionHistory(newHistory);
-         return newHistory;
-      });
+    mutationFn: () => {
+        if (isCustomer) return aiApi.customerRecommend(currentLang);
+        if (isOwner) return aiApi.ownerRevenueSummary(restaurantId, currentLang);
+        return aiApi.publicRecommend("Recommend some restaurants", currentLang);
     },
-    onError: (error) => {
-      console.error("[Recommend API Error]", error);
-      setChatHistory(prev => [...prev, { role: 'model', message: "Sorry, I couldn't fetch recommendations right now." }]);
+    onSuccess: (res) => {
+      const result = res?.recommendations || res?.data?.summary || res?.summary || res?.reply || "I don't have enough data to recommend yet.";
+      const aiMsg = { role: 'model', message: typeof result === 'string' ? result : JSON.stringify(result) };
+      setChatHistory(prev => {
+        const newHistory = [...prev, aiMsg];
+        updateSessionHistory(newHistory);
+        return newHistory;
+      });
     }
   });
 
-  const sendRecommend = (message) => {
-    if (!message || !message.trim() || recommendMutation.isPending) return;
-    addUserMessage(`✨ [Executive Search]: ${message}`);
-    recommendMutation.mutate(message);
-  };
-
   return {
     chatHistory,
-    sendMessage: mutation.mutate,
-    sendRecommend: sendRecommend, // Sử dụng hàm wrapper mới
-    addUserMessage,
-    clearHistory,
+    sendMessage: (msg) => { addUserMessage(msg); mutation.mutate(msg); },
+    sendRecommend: () => recommendMutation.mutate(),
     isLoading: mutation.isPending || recommendMutation.isPending,
-    isCustomer,
+    isAuthReady,
     sessions,
     activeSessionId,
     startNewChat,
-    loadSession,
-    deleteSession,
-    isAuthReady 
+    loadSession: (sid) => {
+        const s = sessions.find(x => x.id === sid);
+        if (s) { 
+          setActiveSessionId(sid); 
+          setChatHistory(s.messages); 
+          syncWithServerHistory(sid); 
+        }
+    },
+    deleteSession: async (sid) => {
+        // [Xóa phiên]: Xóa cả trên LocalStorage và Redis (nếu cần)
+        setSessions(prev => prev.filter(x => x.id !== sid));
+        if (activeSessionId === sid) startNewChat(true);
+        
+        try {
+          if (isCustomer) await aiApi.clearCustomerHistory(sid);
+          if (isOwner) await aiApi.clearOwnerHistory(restaurantId, sid);
+        } catch(e) {}
+    },
+    hasPersonalization: !isGuest,
+    isOwner,
+    isCustomer,
+    isGuest,
+    role
   };
 };
 
-export const usePublicAI = () => useAIAssistant();
+export const useAIAssistant = (rid) => useAI(rid);
+export const usePublicAI = () => useAI();
+export const useOwnerAI = (rid) => useAI(rid);

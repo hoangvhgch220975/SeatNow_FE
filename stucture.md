@@ -235,6 +235,8 @@ seatnow-fe/
 │ │ │ │ │ ├─ OwnerHomePage.jsx // Welcome page cho owner
 │ │ │ │ │ ├─ OwnerRestaurantsPage.jsx // Danh sách nhà hàng của owner
 │ │ │ │ │ ├─ GlobalAnalyticsPage.jsx // Trang thống kê toàn bộ Portfolio (New)
+│ │ │ │ │ ├─ AIChatPortfolioPage.jsx // Trang AI Chat cấp Portfolio (Owner)
+│ │ │ │ │ ├─ AIRevenueInsightsPage.jsx // Báo cáo One-shot AI - Tự động phân tích doanh thu
 │ │ │ │ │ └─ CreateRestaurantPage.jsx // Form đăng ký nhà hàng mới
 │ │ │ │ └─ components/
 │ │ │ │ ├─ AnalyticsSummary.jsx // Thẻ KPI Executive 3-Column Bento (Gross/Net Separated)
@@ -372,6 +374,11 @@ seatnow-fe/
 │ │ │ │     ├─ OpeningHoursSettings.jsx // Cấu hình lịch mở cửa các ngày trong tuần
 │ │ │ │     └─ DepositPolicySettings.jsx // Bật/tắt và thiết lập chính sách cọc
 │ │ │ │
+│ │ │ └─ ai/ // [MỚI] Phân hệ AI tích hợp cho từng nhà hàng cụ thể
+│ │ │     └─ pages/
+│ │ │         ├─ WorkspaceAIChatPage.jsx // Wrapper - Truyền restaurantId vào AIAssistantPage
+│ │ │         └─ WorkspaceAIRevenuePage.jsx // Wrapper - Truyền restaurantId vào AIRevenueInsightsPage
+│ │ │
 │ │ ├─ admin/
 │ │ │ ├─ dashboard/
 │ │ │ │ ├─ api.js // API dashboard admin
@@ -431,14 +438,18 @@ seatnow-fe/
 │ │ │ └─ SettlementResultTable.jsx
 │ │ │
 │ │ ├─ ai-assistant/
-│ │ │ ├─ api.js // API hỏi đáp AI cho khách vãng lai & customer
-│ │ │ ├─ hooks.js // usePublicAI quản lý luồng chat vãng lai
+│ │ │ ├─ api.js // API đa vai trò (lang, sessionId, restaurantId context)
+│ │ │ ├─ hooks.js // useAI: Hook tổng hợp - Session isolation, Role isolation, LocalStorage
 │ │ │ ├─ pages/
-│ │ │ │ └─ AIAssistantPage.jsx // Trang trợ lý ảo thiết kế Premium
+│ │ │ │ └─ AIAssistantPage.jsx // Orchestrator - Hỗ trợ Workspace mode (restaurantId prop)
 │ │ │ └─ components/
-│ │ │ ├─ ChatBox.jsx // (Đã tích hợp vào AIAssistantPage)
-│ │ │ ├─ PromptSuggestions.jsx // (Đã tích hợp vào AIAssistantPage)
-│ │ │ └─ MessageBubble.jsx // (Đã tích hợp vào AIAssistantPage)
+│ │ │     ├─ ChatSidebar.jsx // Quản lý lịch sử hội thoại (Session list)
+│ │ │     ├─ ChatBox.jsx // [TÁCH MỚI] Danh sách tin nhắn + ThinkingIndicator
+│ │ │     ├─ PromptSuggestions.jsx // [TÁCH MỚI] Pills gợi ý câu hỏi theo vai trò
+│ │ │     ├─ MessageBubble.jsx // Render tin nhắn Markdown (Chuyên nghiệp)
+│ │ │     ├─ ChatInputBar.jsx // Ô nhập liệu & Magic AI Tools (dùng PromptSuggestions)
+│ │ │     ├─ ThinkingIndicator.jsx // Hiệu ứng AI đang suy nghĩ
+│ │ │     └─ AnalysisLoadingView.jsx // Loading animation cho trang báo cáo AI
 │ │ │
 │ │ ├─ map/
 │ │ │ ├─ api.js // API near-me/geocoding nội bộ

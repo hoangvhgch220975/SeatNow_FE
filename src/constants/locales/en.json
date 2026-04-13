@@ -950,10 +950,20 @@
       "recommend_button": "Recommend",
       "send_button": "Send"
     },
-    "suggestions": [
-      "I am looking for some high-quality dining recommendations.",
-      "Could you suggest a family-friendly restaurant nearby?",
-      "Which dining spots are currently trending in the city?"
+    "suggestions_guest": [
+      "Find premium Japanese restaurants in District 1",
+      "Suggest a romantic riverside view restaurant for 2",
+      "What are the currently trending dining spots?"
+    ],
+    "suggestions_customer": [
+      "Based on my past bookings, what do you recommend for today?",
+      "Which restaurant best suits my preference for European cuisine?",
+      "Check exclusive offers for me at visited restaurants"
+    ],
+    "suggestions_owner": [
+      "Analyze the projected revenue report for this month",
+      "How to optimize occupancy rates during mid-week days?",
+      "Suggest a marketing campaign to attract new customers"
     ],
     "footer": "© 2026 SeatNow AI Concierge Service"
   },
@@ -963,6 +973,8 @@
       "nav_portfolio_overview": "Overview",
       "nav_all_venues": "Venues",
       "nav_global_analytics": "Analytics",
+      "nav_ai_assistant": "AI Assistant",
+      "nav_ai_insights": "AI Portfolio Insights",
       "soon": "Soon",
       "coming_soon_toast": "{{label}} is coming soon!",
       "add_new_venue": "Add Venue"
@@ -1423,7 +1435,8 @@
         "email": "Official Email",
         "map_location": "Map Location",
         "latitude": "Latitude",
-        "longitude": "Longitude"
+        "longitude": "Longitude",
+        "location_pinned": "Location pinned"
       },
       "deposit": {
         "enabled": "Require Deposit",

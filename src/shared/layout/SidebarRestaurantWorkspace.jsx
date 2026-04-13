@@ -85,14 +85,12 @@ const SidebarRestaurantWorkspace = ({ restaurantName }) => {
       label: 'ask_seatnow',
       icon: 'auto_awesome',
       path: ROUTES.WORKSPACE_AI_CHAT(idOrSlug),
-      comingSoon: true,
       isAI: true,
     },
     {
       label: 'revenue_insights',
       icon: 'insights',
       path: ROUTES.WORKSPACE_AI_REVENUE(idOrSlug),
-      comingSoon: true,
     },
   ];
 
@@ -155,25 +153,38 @@ const SidebarRestaurantWorkspace = ({ restaurantName }) => {
           ))}
         </div>
 
-        {/* AI Tools Section */}
+        {/* AI Tools Section — Đã kích hoạt links */}
         <div className="pt-6 mt-6 border-t border-slate-200 space-y-1">
           <p className="px-4 py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
             {t('workspace.sidebar.ai_tools')}
           </p>
           {aiTools.map((item) => (
-            <a
+            <NavLink
               key={item.label}
-              href={item.path}
-              onClick={(e) => handleComingSoon(e, item.label)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 hover:translate-x-1 text-sm font-bold ${
-                item.isAI ? 'text-violet-600' : 'text-slate-600'
-              } hover:bg-violet-50`}
+              to={item.path}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 hover:translate-x-1 text-sm font-bold ${
+                  isActive
+                    ? 'bg-violet-50 text-violet-700 shadow-sm ring-1 ring-violet-100'
+                    : item.isAI ? 'text-violet-600 hover:bg-violet-50' : 'text-slate-600 hover:bg-violet-50'
+                }`
+              }
             >
-              <span className="material-symbols-outlined text-slate-400" style={item.isAI ? { fontVariationSettings: "'FILL' 1", color: '#7c3aed' } : {}}>
-                {item.icon}
-              </span>
-              {t(`workspace.sidebar.${item.label}`)}
-            </a>
+              {({ isActive }) => (
+                <>
+                  <span
+                    className="material-symbols-outlined text-[20px]"
+                    style={item.isAI || isActive ? { fontVariationSettings: "'FILL' 1", color: '#7c3aed' } : {}}
+                  >
+                    {item.icon}
+                  </span>
+                  <span className="truncate">{t(`workspace.sidebar.${item.label}`)}</span>
+                  {item.isAI && (
+                    <span className="ml-auto text-[8px] font-black bg-violet-100 text-violet-600 px-1.5 py-0.5 rounded-full uppercase tracking-tighter shrink-0">AI</span>
+                  )}
+                </>
+              )}
+            </NavLink>
           ))}
         </div>
       </nav>

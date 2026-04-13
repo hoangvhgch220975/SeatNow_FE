@@ -91,32 +91,33 @@ const ContactSettings = ({ register, errors, setValue, watch }) => {
           </div>
         </div>
 
-        {/* Coordinates */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest px-4">
-              {t('workspace.settings.form.latitude')}
-            </label>
-            <input
-              type="number"
-              step="any"
-              {...register('latitude')}
-              className="w-full px-6 py-4 bg-slate-50 focus:bg-white border-2 border-transparent focus:border-indigo-600 rounded-2xl text-slate-900 font-bold outline-none transition-all"
-            />
+        {/* Map Visualization */}
+        {currentLat && currentLng && (
+          <div className="space-y-4 pt-4 border-t border-slate-50">
+            <div className="flex items-center justify-between px-4">
+              <label className="text-xs font-black text-slate-400 uppercase tracking-widest">
+                {t('workspace.profile.common.live_map')}
+              </label>
+              <div className="flex items-center gap-2">
+                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                 <span className="text-[10px] font-bold text-slate-300 uppercase tracking-tight">
+                   {t('workspace.settings.form.location_pinned')}
+                 </span>
+              </div>
+            </div>
+            <div className="relative w-full aspect-video rounded-3xl overflow-hidden border-4 border-slate-50 shadow-inner">
+              <iframe
+                title="Restaurant Location"
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                style={{ border: 0 }}
+                src={`https://maps.google.com/maps?q=${currentLat},${currentLng}&z=16&output=embed`}
+                allowFullScreen
+              />
+            </div>
           </div>
-
-          <div className="space-y-2">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest px-4">
-              {t('workspace.settings.form.longitude')}
-            </label>
-            <input
-              type="number"
-              step="any"
-              {...register('longitude')}
-              className="w-full px-6 py-4 bg-slate-50 focus:bg-white border-2 border-transparent focus:border-indigo-600 rounded-2xl text-slate-900 font-bold outline-none transition-all"
-            />
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Map Selection Modal */}

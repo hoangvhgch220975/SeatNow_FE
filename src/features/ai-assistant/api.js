@@ -6,64 +6,77 @@ import { apiClient as axios } from '../../lib/axios.js';
  */
 export const aiApi = {
   // --- 1. PUBLIC AI (Khách vãng lai) ---
-  publicRecommend: async (message) => {
-    return await axios.post('/ai/public/recommend', { message });
+  publicRecommend: async (message, lang = 'en') => {
+    // [Gợi ý public]: Không lưu lịch sử nên không cần sessionId
+    return await axios.post('/ai/public/recommend', { message, lang });
   },
 
   // --- 2. CUSTOMER AI (Khách hàng) ---
   
-  /**
-   * Hội thoại trực tiếp (Main Chat)
-   */
-  customerChat: async (message, session_key = null) => {
-    const payload = { message };
-    if (session_key) payload.session_key = session_key;
-    return await axios.post('/ai/customer/chat', payload);
+  customerChat: async (message, lang = 'en', sessionId = null) => {
+    // [Chat Khách hàng]: Đính kèm sessionId để cô lập hội thoại
+    return await axios.post('/ai/customer/chat', { message, lang, sessionId });
   },
 
-  /**
-   * Gợi ý nhanh (One-shot)
-   */
-  customerRecommend: async (message) => {
-    return await axios.post('/ai/customer/recommend', { message });
+  customerRecommend: async (lang = 'en') => {
+    return await axios.post('/ai/customer/recommend', { lang });
   },
 
-  /**
-   * Xóa lịch sử hội thoại khách hàng trên Redis
-   */
-  clearCustomerHistory: async () => {
-    return await axios.delete('/ai/customer/chat/history');
+  clearCustomerHistory: async (sessionId = null) => {
+    const url = sessionId ? `/ai/customer/chat/history?sessionId=${sessionId}` : '/ai/customer/chat/history';
+    return await axios.delete(url);
   },
 
-  /**
-   * Lấy lịch sử hội thoại thực tế từ Redis
-   */
-  getCustomerHistory: async () => {
-    return await axios.get('/ai/customer/chat/history');
+  getCustomerHistory: async (sessionId = null) => {
+    const url = sessionId ? `/ai/customer/chat/history?sessionId=${sessionId}` : '/ai/customer/chat/history';
+    return await axios.get(url);
   },
 
-  // --- 3. ADMIN AI (Quản trị viên) ---
+  // --- 3. OWNER AI (Chủ nhà hàng) ---
 
-  /**
-   * Hội thoại phân tích dành cho Admin
-   */
-  adminChat: async (message, session_key = null) => {
-    const payload = { message };
-    if (session_key) payload.session_key = session_key;
-    return await axios.post('/ai/admin/chat', payload);
+  ownerChat: async (message, restaurantId = null, lang = 'en', sessionId = null) => {
+    const payload = { message, lang, sessionId };
+    if (restaurantId) payload.restaurantId = restaurantId;
+    return await axios.post('/ai/owner/chat', payload);
   },
 
-  /**
-   * Phân tích doanh thu & Báo cáo
-   */
-  adminRevenueSummary: async (params = {}) => {
-    return await axios.post('/ai/admin/revenue-summary', params);
+  ownerRevenueSummary: async (restaurantId = null, lang = 'en') => {
+    const payload = { lang };
+    if (restaurantId) payload.restaurantId = restaurantId;
+    return await axios.post('/ai/owner/revenue-summary', payload);
   },
 
-  /**
-   * Xóa lịch sử phân tích của quản trị viên
-   */
-  clearAdminHistory: async () => {
-    return await axios.delete('/ai/admin/chat/history');
+  clearOwnerHistory: async (restaurantId = null, sessionId = null) => {
+    let url = '/ai/owner/chat/history?';
+    if (restaurantId) url += `restaurantId=${restaurantId}&`;
+    if (sessionId) url += `sessionId=${sessionId}`;
+    return await axios.delete(url);
+  },
+
+  getOwnerHistory: async (restaurantId = null, sessionId = null) => {
+    let url = '/ai/owner/chat/history?';
+    if (restaurantId) url += `restaurantId=${restaurantId}&`;
+    if (sessionId) url += `sessionId=${sessionId}`;
+    return await axios.get(url);
+  },
+
+  // --- 4. ADMIN AI (Quản trị viên) ---
+
+  adminChat: async (message, lang = 'en', sessionId = null) => {
+    return await axios.post('/ai/admin/chat', { message, lang, sessionId });
+  },
+
+  adminRevenueSummary: async (lang = 'en') => {
+    return await axios.post('/ai/admin/revenue-summary', { lang });
+  },
+
+  getAdminHistory: async (sessionId = null) => {
+    const url = sessionId ? `/ai/admin/chat/history?sessionId=${sessionId}` : '/ai/admin/chat/history';
+    return await axios.get(url);
+  },
+
+  clearAdminHistory: async (sessionId = null) => {
+    const url = sessionId ? `/ai/admin/chat/history?sessionId=${sessionId}` : '/ai/admin/chat/history';
+    return await axios.delete(url);
   }
 };
