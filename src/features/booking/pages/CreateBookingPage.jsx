@@ -95,67 +95,43 @@ const CreateBookingPage = () => {
   // Trạng thái đồng bộ tức thì (Zero-Latency) từ Socket
   const [realtimeStatuses, setRealtimeStatuses] = useState({});
 
-  // 3. Cấu hình Khu vực (Areas) - Khớp chính xác với Tables.location trong DB (Table stucture.md)
-  const AVAILABLE_AREAS = useMemo(() => [
-    { id: '1st Floor', label: '1st Floor' },
-    { id: '2nd Floor', label: '2nd Floor' },
-    { id: '3rd Floor', label: '3rd Floor' },
-    { id: '4th Floor', label: '4th Floor' },
-    { id: '5th Floor', label: '5th Floor' },
-    { id: 'Rooftop', label: 'Rooftop' },
-    { id: 'Terrace', label: 'Terrace' },
-    { id: 'Outdoor', label: 'Outdoor' }
-  ], []);
-
-  // 4. Phân loại Khu vực (Area Category) để chọn layout
-  const getAreaCategory = (areaId) => {
-    if (!areaId) return 'FLOOR';
-    if (areaId.includes('Floor')) return 'FLOOR';
-    if (areaId.includes('Rooftop')) return 'ROOFTOP';
-    if (areaId.includes('Terrace')) return 'TERRACE';
-    if (areaId.includes('Outdoor')) return 'OUTDOOR';
-    return 'FLOOR';
-  };
-
-  // 5. Khôi phục logic tạo bàn mẫu (Deterministic Mock) để lấp đầy sơ đồ
+  // 3. Lấy danh sách bàn thực tế từ Backend
   const deterministicTables = useMemo(() => {
     const raw = tablesData?.data || tablesData;
-    let baseTables = [];
+    if (!raw) return [];
     
-    // Nếu có dữ liệu thật từ Backend, lấy làm gốc
-    if ((Array.isArray(raw) && raw.length > 0) || (Array.isArray(raw?.items) && raw.items.length > 0)) {
-      baseTables = Array.isArray(raw) ? raw : raw.items;
-      // Vẫn trả về baseTables nếu đã có dữ liệu thật để đảm bảo tính chính xác
-      return baseTables;
+    let baseTables = [];
+    if (Array.isArray(raw)) {
+      baseTables = raw;
+    } else if (Array.isArray(raw.items)) {
+      baseTables = raw.items;
     }
+    
+    return baseTables;
+  }, [tablesData]);
 
-    if (!restaurantId) return [];
+  // 4. Cấu hình Khu vực (Areas) - Khớp chính xác với giao diện mẫu ban đầu
+  const AVAILABLE_AREAS = useMemo(() => [
+    { id: '1st Floor', label: t('workspace.floor_plan.floors.1st') },
+    { id: '2nd Floor', label: t('workspace.floor_plan.floors.2nd') },
+    { id: '3rd Floor', label: t('workspace.floor_plan.floors.3rd') },
+    { id: '4th Floor', label: t('workspace.floor_plan.floors.4th') },
+    { id: '5th Floor', label: t('workspace.floor_plan.floors.5th') },
+    { id: 'Rooftop', label: t('workspace.floor_plan.floors.rooftop') },
+    { id: 'Terrace', label: t('workspace.floor_plan.floors.terrace') },
+    { id: 'Outdoor', label: t('workspace.floor_plan.floors.outdoor') }
+  ], [t]);
 
-    // Nếu không có dữ liệu bàn thực, tạo bàn giả để demo giao diện
-    const fakeTables = [];
-    AVAILABLE_AREAS.forEach(area => {
-      const category = getAreaCategory(area.id);
-      const categorySeed = restaurantId.split('-').reduce((acc, char) => acc + char.charCodeAt(0), 0) + 
-                          category.split('').reduce((acc, char) => acc + (char.charCodeAt(0) * 2), 0);
-      
-      let count = 12 + (categorySeed % 8);
-      if (category === 'OUTDOOR') count = 8 + (categorySeed % 6);
-      
-      for (let i = 0; i < count; i++) {
-        fakeTables.push({
-          id: `fake-${restaurantId}-${category}-${i}`,
-          tableNumber: (category === 'FLOOR' ? 100 : (category === 'ROOFTOP' ? 500 : 800)) + i + 1,
-          capacity: [2, 4, 6, 8][(categorySeed + i) % 4],
-          type: (categorySeed + i) % 6 === 0 ? 'vip' : ((categorySeed + i) % 8 === 1 ? 'outdoor' : 'standard'),
-          location: area.id,
-          status: 'available',
-          category: category
-        });
-      }
-    });
-
-    return fakeTables;
-  }, [tablesData, restaurantId, AVAILABLE_AREAS]);
+  // 5. Phân loại Khu vực (Area Category) để chọn layout
+  const getAreaCategory = (areaId) => {
+    if (!areaId) return 'FLOOR';
+    const id = areaId.toLowerCase();
+    if (id.includes('floor')) return 'FLOOR';
+    if (id.includes('rooftop')) return 'ROOFTOP';
+    if (id.includes('terrace')) return 'TERRACE';
+    if (id.includes('outdoor')) return 'OUTDOOR';
+    return 'FLOOR';
+  };
 
   // 5. Fetch tính khả dụng (Real-time Availability)
   const availabilityParams = useMemo(() => ({

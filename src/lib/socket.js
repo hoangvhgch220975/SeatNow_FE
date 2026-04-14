@@ -39,7 +39,6 @@ export const connectNotificationSocket = (userId, role, token) => {
   if (notificationSocket) {
     const oldUserId = notificationSocket.io.opts.query?.userId;
     if (oldUserId && oldUserId !== userId) {
-      console.log('🔄 [Notification Socket] User session changed. Reconnecting...');
       notificationSocket.disconnect();
       notificationSocket = null;
     }
@@ -59,19 +58,18 @@ export const connectNotificationSocket = (userId, role, token) => {
 
   // [DISCOVERY] Nghe mọi event để bắt đúng tên event từ BE
   notificationSocket.onAny((eventName, ...args) => {
-    console.log(`📡 [ANY EVENT RECEIVED]: ${eventName}`, args);
+    // Hidden debug: console.log(`📡 [ANY EVENT RECEIVED]: ${eventName}`, args);
   });
 
   notificationSocket.on('connect', () => {
-    console.log('✅ [Notification Socket] Connected for user:', userId);
+    // Hidden debug: console.log('✅ [Notification Socket] Connected for user:', userId);
   });
 
   notificationSocket.on('connect_error', (err) => {
-    console.error('❌ [Notification Socket] Connection error:', err.message);
+    // Hidden debug: console.error('❌ [Notification Socket] Connection error:', err.message);
   });
 
   notificationSocket.on('disconnect', (reason) => {
-    console.log('ℹ️ [Notification Socket] Disconnected. Reason:', reason);
     if (reason === 'io server disconnect') {
       notificationSocket.connect();
     }
@@ -92,6 +90,5 @@ export const disconnectSockets = () => {
     notificationSocket.disconnect();
     notificationSocket.removeAllListeners(); // Xóa sạch listener cũ
     notificationSocket = null; // Xóa reference để connect mới hoàn toàn
-    console.log('🧹 [Socket] All sockets disconnected and references cleared.');
   }
 };

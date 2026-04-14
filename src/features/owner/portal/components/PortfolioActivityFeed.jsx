@@ -10,7 +10,7 @@ import useNotificationStore from '@/shared/hooks/useNotificationStore.hooks.js';
  * @description Hiển thị dòng thời gian các hoạt động gần đây của Owner từ Notification Store.
  */
 const PortfolioActivityFeed = ({ isLoading: parentLoading }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   
   // Lấy dữ liệu và actions từ Zustand Store

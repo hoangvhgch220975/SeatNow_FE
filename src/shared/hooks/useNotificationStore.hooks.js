@@ -99,14 +99,11 @@ const useNotificationStore = create((set, get) => ({
   initNotificationSocket: (userId, role, token) => {
     if (get().isSocketConnected) return;
 
-    console.log('🔗 [Notification Store] Initializing sockets for user:', userId);
 
     const socket = connectNotificationSocket(userId, role, token);
     const bSocket = bookingSocket;
 
     const handleIncomingNotification = (payload, eventName) => {
-      console.log(`🔔 [Realtime Event Received: ${eventName}]:`, payload);
-      
       const restaurantId = get().extractRestaurantId(payload);
       
       let restaurantName = payload.restaurantName || payload.data?.restaurantName || payload.metadata?.restaurant?.name || '';
