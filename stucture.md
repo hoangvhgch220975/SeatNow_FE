@@ -44,11 +44,13 @@ seatnow-fe/
 │ │ │ ├─ AdminLayout.jsx // Layout dashboard admin
 │ │ │ ├─ Navbar.jsx // Thanh điều hướng đầu trang
 │ │ │ ├─ OwnerFooter.jsx // Footer chuyên biệt cho Owner Portal (New)
+│ │ │ ├─ AdminFooter.jsx // Footer chuyên biệt cho Admin Side (New)
 │ │ │ ├─ Footer.jsx // Chân trang mặc định cho Customer/Guest
 │ │ │ ├─ SidebarOwnerMain.jsx // Sidebar cho owner portal
 │ │ │ ├─ SidebarRestaurantWorkspace.jsx // Sidebar cho workspace nhà hàng
-│ │ │ ├─ SidebarAdmin.jsx // Sidebar riêng cho admin
+│ │ │ ├─ SidebarAdmin.jsx // Sidebar riêng cho admin (Sharp UI)
 │ │ │ ├─ OwnerTopbar.jsx // Topbar cho owner portal (Tích hợp NotificationDropdown)
+│ │ │ ├─ AdminHeader.jsx // Header chuyên biệt cho Admin (New)
 │ │ │ └─ RestaurantTopbar.jsx // Topbar cho restaurant workspace (Tích hợp NotificationDropdown)
 │ │ │
 │ │ ├─ guards/
@@ -97,7 +99,7 @@ seatnow-fe/
 │ │ ├─ nav.public.js // Menu cho public/customer
 │ │ ├─ nav.owner-main.js // Menu cho owner portal
 │ │ ├─ nav.restaurant-workspace.js // Menu cho restaurant workspace
-│ │ └─ nav.admin.js // Menu cho admin
+│ │ └─ nav.admin.js // Menu Admin: Tách biệt nhóm Chính & AI (Updated)
 │ │
 │ ├─ constants/ // Hằng số domain
 │ │ ├─ locales/ // Folder chứa file đa ngôn ngữ (New)
@@ -387,39 +389,49 @@ seatnow-fe/
 │ │ │         └─ WorkspaceAIRevenuePage.jsx // Wrapper - Truyền restaurantId vào AIRevenueInsightsPage
 │ │ │
 │ │ ├─ admin/
-│ │ │ ├─ dashboard/
-│ │ │ │ ├─ api.js // API dashboard admin
-│ │ │ │ ├─ pages/
-│ │ │ │ │ └─ AdminDashboardPage.jsx // Trang dashboard admin
-│ │ │ │ └─ components/
-│ │ │ │ ├─ StatsCards.jsx // Card tổng users/restaurants/bookings
-│ │ │ │ ├─ RevenueChart.jsx // Biểu đồ doanh thu admin
-│ │ │ │ └─ SystemSummary.jsx // Tóm tắt hệ thống
-│ │ │ │
+│ │ │ ├─ components/ // [NEW] Thành phần Admin dùng chung
+│ │ │ │ ├─ AdminStatusBadge.jsx 
+│ │ │ │ └─ AdminActionDialog.jsx 
+│ │ │
+│ │ │ ├─ audit/ // [Module] Phân hệ kiểm duyệt hồ sơ
+│ │ │ │ ├─ api.js
+│ │ │ │ ├─ hooks.js
+│ │ │ │ ├─ components/
+│ │ │ │ │ └─ PartnerLeadTable.jsx // [NEW] Bảng duyệt hồ sơ đối tác
+│ │ │ │ └─ pages/
+│ │ │ │     └─ AuditRequestsPage.jsx 
+│ │ │
+│ │ │ ├─ partners/ // [Module] Phân hệ quản lý đối tác
+│ │ │ │ ├─ api.js
+│ │ │ │ ├─ hooks.js
+│ │ │ │ ├─ components/
+│ │ │ │ │ ├─ OwnerAccountTable.jsx // [NEW] Bảng quản trị tài khoản chủ
+│ │ │ │ │ └─ PartnerDialog.jsx // [NEW] Form thêm/sửa đối tác (i18n)
+│ │ │ │ └─ pages/
+│ │ │ │     └─ PartnerManagementPage.jsx 
+│ │ │
+│ │ │ ├─ restaurants/ // [Module] Quản trị vận hành nhà hàng
+│ │ │ │ ├─ api.js
+│ │ │ │ ├─ hooks.js 
+│ │ │ │ ├─ components/
+│ │ │ │ │ ├─ RestaurantFilters.jsx 
+│ │ │ │ │ ├─ RestaurantTable.jsx 
+│ │ │ │ │ └─ PendingRestaurantTable.jsx 
+│ │ │ │ └─ pages/
+│ │ │ │     └─ ActiveVenuesPage.jsx 
+│ │ │
 │ │ │ ├─ users/
-│ │ │ │ ├─ api.js // API quản lý users/owner
-│ │ │ │ ├─ pages/
-│ │ │ │ │ └─ AdminUsersPage.jsx // Trang user management
-│ │ │ │ └─ components/
-│ │ │ │ ├─ UserTable.jsx // Bảng người dùng
-│ │ │ │ ├─ CreateOwnerForm.jsx // Form tạo tài khoản owner
-│ │ │ │ └─ ResetPasswordDialog.jsx // Dialog reset mật khẩu owner
-│ │ │ │
-│ │ │ ├─ restaurants/
-│ │ │ │ ├─ api.js // API duyệt/suspend nhà hàng
-│ │ │ │ ├─ pages/
-│ │ │ │ │ ├─ PendingRestaurantsPage.jsx // Danh sách nhà hàng chờ duyệt
-│ │ │ │ │ └─ AdminRestaurantsPage.jsx // Danh sách tất cả nhà hàng
-│ │ │ │ └─ components/
-│ │ │ │ ├─ PendingRestaurantTable.jsx // Bảng pending
-│ │ │ │ └─ ApproveRestaurantDialog.jsx // Dialog duyệt nhà hàng
-│ │ │ │
+│ │ │ │ ├─ api.js
+│ │ │ │ ├─ hooks.js
+│ │ │ │ └─ pages/ AdminUsersPage.jsx 
+│ │ │
 │ │ │ ├─ bookings/
-│ │ │ │ ├─ api.js // API tra cứu booking hệ thống
-│ │ │ │ ├─ pages/
-│ │ │ │ │ └─ AdminBookingsPage.jsx // Trang audit booking
-│ │ │ │ └─ components/
-│ │ │ │ └─ BookingAuditTable.jsx // Bảng booking toàn hệ thống
+│ │ │ │ ├─ api.js 
+│ │ │ │ ├─ hooks.js
+│ │ │ │ ├─ components/
+│ │ │ │ │ └─ BookingAuditTable.jsx 
+│ │ │ │ └─ pages/
+│ │ │ │     └─ AdminBookingsPage.jsx 
 │ │ │ │
 │ │ │ ├─ transactions/
 │ │ │ │ ├─ api.js // API tra cứu giao dịch

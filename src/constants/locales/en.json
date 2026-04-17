@@ -27,7 +27,21 @@
     "feature_coming_soon": "Feature Coming Soon",
     "export_analysis": "Export Analysis",
     "premium": "Premium",
-    "soon": "Soon"
+    "soon": "Soon",
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
   },
   "notifications": {
     "title": "Notifications",
@@ -460,9 +474,232 @@
     "member": "Member"
   },
   "admin": {
+    "title": "SeatNow Control Center",
+    "logged_in_as": "Logged in as",
+    "main_terminal": "Main Terminal",
+    "user_matrix": "User Matrix",
     "global_ledger": "Global Ledger",
-    "navigation": "Navigation"
+    "navigation": "Navigation",
+    "console": "Admin Console",
+    "role_super_admin": "Super Admin",
+    "new_report": "New Report",
+    "dashboard": {
+      "title": "System Overview",
+      "subtitle": "Welcome back, Chief. Here's what has been happening in the network.",
+      "powered_by": "Powered by SeatNow Artificial Intelligence Network",
+      "filter": {
+        "day": "Today",
+        "week": "This Week",
+        "month": "This Month",
+        "quarter": "Quarterly",
+        "year": "Yearly"
+      },
+      "stats": {
+        "total_revenue": "Total Net Revenue",
+        "pending_venues": "Pending Audit",
+        "total_users": "Active Users",
+        "success_rate": "Success Rate"
+      },
+      "charts": {
+        "revenue_trend": "Revenue Trend",
+        "revenue_label": "Revenue",
+        "booking_dist": "Booking Distribution",
+        "status": {
+          "confirmed": "Confirmed",
+          "completed": "Completed",
+          "cancelled": "Cancelled"
+        },
+        "tags": {
+          "day": "6 Slots / 24h",
+          "week": "Last 7 Days",
+          "month": "Daily / Month",
+          "quarter": "Monthly / Quarter",
+          "year": "Monthly / Year"
+        }
+      },
+      "audit": {
+        "recent_requests": "Recent Partner Leads",
+        "pending_withdrawals": "Pending Withdrawals",
+        "empty_requests": "No new partner requests",
+        "empty_withdrawals": "No pending withdrawals",
+        "status_new_lead": "New Lead",
+        "status_pending": "Pending",
+        "btn_approve": "APPROVE",
+        "view_all": "View All"
+      },
+      "system": {
+        "health": "System Status",
+        "online": "Online",
+        "offline": "Offline"
+      }
+    },
+    "nav": {
+      "dashboard": "Overview",
+      "partner_accounts": "Partner Accounts",
+      "partner_requests": "Audit Requests",
+      "active_venues": "Venues",
+      "users": "Users",
+      "bookings": "Bookings",
+      "finances": "Transactions",
+      "withdrawals": "Payouts",
+      "ai_chat": "Copilot",
+      "ai_analytics": "Insights",
+      "settings": "Settings",
+      "soon": "Soon"
+    },
+
+    "panel": {
+      "restaurant_management": "System Console",
+      "search_placeholder": "Search venues, owners...",
+      "status_all": "All",
+      "status_pending": "Pending",
+      "status_active": "Active",
+      "status_suspended": "Suspended",
+      "coming_soon_toast": "{{label}} module is under development. Please check back later!",
+      "filter_more": "More Filters",
+      "table": {
+        "restaurant": "Restaurant",
+        "owner": "Owner",
+        "cuisine": "Cuisine",
+        "rating_price": "Rating & Price",
+        "commission": "Commission",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "restaurants": {
+        "title": "Venue Management",
+        "pending_title": "Pending Audit",
+        "subtitle": "Overview and management of all restaurant partners on the network",
+        "stats": {
+          "total": "Total Venues",
+          "active": "Active",
+          "pending": "Pending",
+          "suspended": "Suspended"
+        },
+        "filters": {
+          "search_placeholder": "Search by restaurant name...",
+          "all": "All Status",
+          "active": "Active",
+          "pending": "Pending",
+          "suspended": "Suspended"
+        },
+        "table": {
+          "restaurant": "Restaurant",
+          "owner": "Owner",
+          "cuisine": "Cuisine",
+          "status": "Status",
+          "registered": "Registration Date",
+          "actions": "Actions"
+        },
+        "actions": {
+          "approve": "Approve",
+          "suspend": "Suspend",
+          "activate": "Activate"
+        },
+        "dialog": {
+          "approve_title": "Confirm Venue Approval",
+          "approve_desc": "Restaurant {{name}} will be activated. System will automatically create a wallet and notify the owner.",
+          "suspend_title": "Confirm Suspension",
+          "suspend_desc": "Restaurant {{name}} will be hidden from search results. Owners will not be able to receive new bookings.",
+          "activate_title": "Confirm Activation",
+          "activate_desc": "Restaurant {{name}} will be active again on the network.",
+          "confirm": "Confirm",
+          "cancel": "Cancel"
+        },
+        "empty": "No matching restaurants found",
+        "empty_pending": "No venues currently pending audit"
+      }
+    },
+    "audit": {
+      "title": "Document Audit",
+      "subtitle": "Centralized Audit Portal: Approve partner accounts and activate new venues.",
+      "tabs": {
+        "leads": "New Leads",
+        "venues": "New Venues"
+      },
+      "table": {
+        "lead_info": "Partner Info",
+        "expected_restaurant": "Proposed Restaurant",
+        "request_date": "Requested At",
+        "empty_leads": "No pending partner requests"
+      },
+      "info": {
+        "rules_title": "Approval Protocol:",
+        "rule_lead": "Approving a Lead automatically creates an Owner account and sends an email notification.",
+        "rule_venue": "Approving a Venue activates it on the platform and initializes the SeatNow Wallet."
+      }
+    },
+    "partners": {
+      "title": "Partner Management",
+      "subtitle": "Manage all active Restaurant Owner accounts on the platform.",
+      "search_placeholder": "Search by name, email, or phone...",
+      "empty": "No partners found",
+      "table": {
+        "owner": "Business Owner",
+        "contact": "Contact Details",
+        "joined_date": "Member Since",
+        "actions": {
+          "label": "Administrative",
+          "delete": "Delete Partner",
+          "reset": "Reset Password"
+        }
+      },
+      "actions": {
+        "add": "Add Partner"
+      },
+      "dialog": {
+        "title_add": "Add New Partner",
+        "title_edit": "Update Partner",
+        "subtitle_add": "Create restaurant management account",
+        "subtitle_edit": "Edit Business Owner account",
+        "name": "Full Name",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "email_note": "* Email cannot be changed after creation",
+        "btn_cancel": "Cancel",
+        "btn_save": "Save Changes",
+        "btn_create": "Create Account",
+        "errors": {
+          "name_required": "Name is required",
+          "email_required": "Email is required",
+          "email_invalid": "Invalid email format",
+          "phone_required": "Phone number is required",
+          "phone_invalid": "Invalid phone (e.g., +84...)"
+        },
+        "confirm_delete_title": "Confirm Delete Partner",
+        "confirm_delete_message": "Are you sure you want to permanently delete partner {{name}}? This action cannot be undone.",
+        "confirm_reset_title": "Confirm Password Reset",
+        "confirm_reset_message": "A new password will be generated and sent via email to {{name}}. Continue?",
+        "cancel": "Cancel",
+        "notes": {
+          "delete": "All data associated with this account will be removed from the management system.",
+          "reset": "A new password will be randomly generated and securely sent via the partner's email."
+        }
+      }
+    },
+    "toasts": {
+      "approve_success": "Partner approved & account created successfully",
+      "approve_venue_success": "Venue profile approved & activated successfully",
+      "create_success": "Partner account for {{name}} created successfully!",
+      "update_success": "Information for {{name}} updated successfully!",
+      "delete_success": "Partner account for {{name}} permanently deleted!",
+      "reset_success": "New password for {{name}} sent to owner's email",
+      "suspend_success": "Restaurant suspended successfully",
+      "activate_success": "Restaurant activated successfully",
+      "error_generic": "System error occurred, please try again later",
+      "EMAIL_ALREADY_EXISTS": "This email is already in use by another account",
+      "PHONE_ALREADY_EXISTS": "This phone number already exists in our system"
+    },
+    "footer": {
+      "system_status": "System Status",
+      "healthy": "Healthy",
+      "copyright": "© 2026 SeatNow System Administration Center",
+      "compliance": "Compliance Level",
+      "security_locked": "Multi-layer Security"
+    }
   },
+
+
   "guest": {
     "breakdown": "Guest Size Breakdown",
     "demographics": "Portfolio Guest Demographics",
@@ -806,7 +1043,14 @@
         "all": "All",
         "upcoming": "Upcoming",
         "completed": "Completed",
-        "canceled": "Canceled"
+        "canceled": "Canceled",
+        "activate_desc": "Are you sure you want to unlock {{name}}?",
+        "cancel": "Cancel",
+        "notes": {
+          "approve": "The system will automatically initialize an E-wallet for this restaurant to start receiving revenue.",
+          "suspend": "The restaurant will be completely hidden from search results and will not be able to receive any new bookings.",
+          "activate": "The restaurant will reappear on the application. The owner will receive an email notification about the unlock."
+        }
       },
       "empty": {
         "title": "No {{tab}} bookings found",
@@ -1999,5 +2243,55 @@
       "cancel_success": "Booking cancelled",
       "action_error": "Action failed. Please try again."
     }
-  }
+  },
+  "workspace_revenue": {
+      "title": "Revenue & Analytics",
+      "subtitle": "Financial reporting and operational performance at this venue",
+      "kpi": {
+        "total_revenue": "TOTAL NET REVENUE",
+        "net_explainer": "Total actual funds received after system fees and refunds.",
+        "gross_revenue": "GROSS REVENUE",
+        "gross_explainer": "Total transaction volume before any deductions or fees.",
+        "total_bookings": "TOTAL BOOKINGS",
+        "bookings_explainer": "Total number of successful reservations in this period.",
+        "cancel_rate": "CANCELLATION RATE",
+        "cancel_explainer": "Percentage of bookings cancelled or recorded as no-shows.",
+        "data_synced": "Data synced"
+      },
+      "common": {
+        "bookings": "Bookings"
+      },
+      "guest_types": {
+        "couple": "Couple (2)",
+        "small_group": "Small Group (3-7)",
+        "party": "Party (8+)"
+      },
+      "charts": {
+        "revenue_trend": "Growth Trend",
+        "revenue_trend_desc": "Analysis of revenue fluctuations over time.",
+        "guest_analysis": "Guest Analysis",
+        "guest_analysis_desc": "Distribution of guest sizes in this period",
+        "peak_hours": "Peak Hours",
+        "peak_hours_desc": "Booking density by time of day",
+        "no_data": "No data available for this period",
+        "net_revenue": "Net Revenue",
+        "gross": "Gross"
+      },
+      "insights": {
+        "label": "Smart Insights",
+        "title": "Revenue Optimization",
+        "description": "Based on historical data, increasing staff during peak hours could improve efficiency by up to 15%."
+      },
+      "transactions": {
+        "title": "Recent Transactions",
+        "subtitle": "Detailed cash flow from latest bookings",
+        "view_all": "View All",
+        "col_date": "Date / ID",
+        "col_customer": "Customer",
+        "col_status": "Status",
+        "col_amount": "Gross Revenue",
+        "col_net": "Net Received",
+        "no_transactions": "No transactions recorded yet."
+      }
+    }
 }

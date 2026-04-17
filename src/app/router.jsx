@@ -12,7 +12,10 @@ import PolicyPage from '../features/static/pages/PolicyPage.jsx';
 import ContactPage from '../features/static/pages/ContactPage.jsx';
 import AuthLayout from '../shared/layout/AuthLayout.jsx';
 import AdminLayout from '../shared/layout/AdminLayout.jsx';
-import AdminDashboardPage from '../features/admin/pages/AdminDashboardPage.jsx';
+import AdminDashboardPage from '../features/admin/dashboard/pages/AdminDashboardPage.jsx';
+import ActiveVenuesPage from '../features/admin/restaurants/pages/ActiveVenuesPage.jsx';
+import AuditRequestsPage from '../features/admin/audit/pages/AuditRequestsPage.jsx';
+import PartnerManagementPage from '../features/admin/partners/pages/PartnerManagementPage.jsx';
 import LoginPage from '../features/auth/pages/LoginPage.jsx';
 import RegisterPage from '../features/auth/pages/RegisterPage.jsx';
 import ForgotPasswordPage from '../features/auth/pages/ForgotPasswordPage.jsx';
@@ -272,6 +275,18 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN_DASHBOARD,
             element: <AdminDashboardPage />,
+          },
+          {
+            path: ROUTES.ADMIN_RESTAURANTS,
+            element: <ActiveVenuesPage />,
+          },
+          {
+            path: ROUTES.ADMIN_PARTNER_REQUESTS,
+            element: <AuditRequestsPage />,
+          },
+          {
+            path: ROUTES.ADMIN_PARTNERS,
+            element: <PartnerManagementPage />,
           },
         ]
       },

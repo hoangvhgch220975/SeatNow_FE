@@ -3,449 +3,485 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Wallet &amp; Payouts | The Culinary Curator</title>
+<title>Restaurant Management | SeatNow Admin</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "inverse-surface": "#2e3132",
-              "outline": "#7b7487",
-              "on-surface-variant": "#4a4455",
-              "primary-container": "#7c3aed",
-              "on-error": "#ffffff",
-              "secondary": "#6e3aca",
-              "on-primary-fixed": "#25005a",
-              "secondary-fixed-dim": "#d3bbff",
-              "inverse-primary": "#d2bbff",
-              "surface-container-lowest": "#ffffff",
-              "surface": "#f8f9fa",
-              "on-primary-fixed-variant": "#5a00c6",
-              "on-primary-container": "#ede0ff",
-              "surface-container": "#edeeef",
-              "secondary-fixed": "#ebddff",
-              "primary-fixed-dim": "#d2bbff",
-              "tertiary-container": "#a15100",
-              "surface-container-low": "#f3f4f5",
-              "surface-dim": "#d9dadb",
-              "surface-tint": "#732ee4",
-              "on-tertiary-fixed": "#301400",
-              "on-error-container": "#93000a",
-              "on-secondary": "#ffffff",
-              "on-background": "#191c1d",
-              "secondary-container": "#8856e5",
-              "surface-container-highest": "#e1e3e4",
-              "on-secondary-fixed": "#250059",
-              "on-secondary-container": "#fffbff",
-              "surface-bright": "#f8f9fa",
-              "inverse-on-surface": "#f0f1f2",
-              "on-tertiary-container": "#ffe0cd",
-              "on-secondary-fixed-variant": "#581db3",
-              "surface-container-high": "#e7e8e9",
-              "primary": "#630ed4",
-              "on-primary": "#ffffff",
-              "error-container": "#ffdad6",
-              "primary-fixed": "#eaddff",
-              "error": "#ba1a1a",
-              "outline-variant": "#ccc3d8",
-              "background": "#f8f9fa",
-              "tertiary-fixed-dim": "#ffb784",
-              "tertiary": "#7d3d00",
-              "on-tertiary-fixed-variant": "#713700",
-              "on-surface": "#191c1d",
-              "tertiary-fixed": "#ffdcc6",
-              "surface-variant": "#e1e3e4",
-              "on-tertiary": "#ffffff"
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#191c1d",
+                        "surface-dim": "#d9dadb",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-bright": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ede0ff",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "outline": "#7b7487",
+                        "secondary-fixed-dim": "#d3bbff",
+                        "primary-fixed-dim": "#d2bbff",
+                        "inverse-primary": "#d2bbff",
+                        "primary-container": "#7c3aed",
+                        "tertiary-fixed-dim": "#ffb784",
+                        "on-tertiary-fixed": "#301400",
+                        "background": "#f8f9fa",
+                        "on-secondary-container": "#fffbff",
+                        "primary": "#630ed4",
+                        "on-secondary-fixed-variant": "#581db3",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#7d3d00",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "primary-fixed": "#eaddff",
+                        "surface-variant": "#e1e3e4",
+                        "secondary": "#6e3aca",
+                        "on-surface": "#191c1d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#4a4455",
+                        "on-secondary-fixed": "#250059",
+                        "surface-tint": "#732ee4",
+                        "secondary-fixed": "#ebddff",
+                        "on-primary-fixed": "#25005a",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "inverse-surface": "#2e3132",
+                        "surface-container": "#edeeef",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface": "#f8f9fa",
+                        "secondary-container": "#8856e5",
+                        "tertiary-container": "#a15100",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-tertiary-container": "#ffe0cd",
+                        "outline-variant": "#ccc3d8",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
             },
-            fontFamily: {
-              "headline": ["Plus Jakarta Sans"],
-              "body": ["Plus Jakarta Sans"],
-              "label": ["Plus Jakarta Sans"]
-            },
-            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
-          },
-        },
-      }
+        }
     </script>
 <style>
-      body { font-family: 'Plus Jakarta Sans', sans-serif; }
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-      .custom-scrollbar::-webkit-scrollbar-thumb { background: #ccc3d8; border-radius: 10px; }
-      
-      .tab-content { display: none; }
-      .tab-content.active { display: block; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #ccc3d8; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-surface text-on-surface selection:bg-primary-fixed">
-<!-- SideNavBar (Authority: JSON & Design System) -->
-<aside class="h-screen w-64 fixed left-0 top-0 border-r-0 bg-slate-50 flex flex-col py-6 px-4 z-50">
-<div class="mb-10 px-2 flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
-<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<body class="bg-background text-on-surface flex min-h-screen">
+<!-- Sidebar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col p-6 space-y-2 bg-slate-50 dark:bg-slate-950 h-screen w-64 rounded-r-[3rem] z-50">
+<div class="flex flex-col mb-10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
 </div>
 <div>
-<h1 class="text-lg font-extrabold text-slate-900 tracking-tight">The Culinary Curator</h1>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Partner Dashboard</p>
+<h1 class="text-xl font-black text-violet-600 leading-none">SeatNow</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold">Admin Console</p>
+</div>
 </div>
 </div>
 <nav class="flex-1 space-y-1">
-<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-100 rounded-lg transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span class="font-medium text-sm">Overview</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-100 rounded-lg transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
-<span class="font-medium text-sm">Menu</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-100 rounded-lg transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="table_restaurant">table_restaurant</span>
-<span class="font-medium text-sm">Tables</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-100 rounded-lg transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
-<span class="font-medium text-sm">Bookings</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-100 rounded-lg transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="payments">payments</span>
-<span class="font-medium text-sm">Revenue</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-purple-600 font-bold border-r-4 border-purple-600 bg-purple-50/50 rounded-l-lg transition-transform active:translate-x-1" href="#">
-<span class="material-symbols-outlined" data-icon="account_balance_wallet" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
-<span class="font-medium text-sm">Wallet</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-100 rounded-lg transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-<span class="font-medium text-sm">Settings</span>
-</a>
+<!-- Navigation Items Mapping -->
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 transition-all duration-300 hover:translate-x-1 font-semibold text-sm" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-violet-600 bg-violet-50 rounded-2xl transition-all duration-300 hover:translate-x-1 font-semibold text-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant</span> Restaurants
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 transition-all duration-300 hover:translate-x-1 font-semibold text-sm" href="#">
+<span class="material-symbols-outlined">group_add</span> Partner Requests
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 transition-all duration-300 hover:translate-x-1 font-semibold text-sm" href="#">
+<span class="material-symbols-outlined">person</span> Users
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 transition-all duration-300 hover:translate-x-1 font-semibold text-sm" href="#">
+<span class="material-symbols-outlined">event_available</span> Bookings
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 transition-all duration-300 hover:translate-x-1 font-semibold text-sm" href="#">
+<span class="material-symbols-outlined">receipt_long</span> Transactions
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 transition-all duration-300 hover:translate-x-1 font-semibold text-sm" href="#">
+<span class="material-symbols-outlined">payments</span> Withdrawals
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 transition-all duration-300 hover:translate-x-1 font-semibold text-sm" href="#">
+<span class="material-symbols-outlined">insights</span> AI Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 transition-all duration-300 hover:translate-x-1 font-semibold text-sm" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
 </nav>
-<div class="mt-auto pt-6 space-y-1">
-<div class="h-px bg-gradient-to-r from-slate-100 to-transparent w-full mb-4"></div>
-<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-100 rounded-lg transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
-<span class="font-medium text-sm">Help Center</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-error hover:bg-error-container/20 rounded-lg transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="logout">logout</span>
-<span class="font-medium text-sm">Logout</span>
-</a>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<button class="w-full py-4 bg-primary text-on-primary rounded-xl font-bold text-sm shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span> New Report
+            </button>
 </div>
 </aside>
-<!-- Main Content Shell -->
-<main class="ml-64 min-h-screen flex flex-col">
-<!-- TopAppBar (Authority: JSON & Design System) -->
-<header class="fixed top-0 right-0 left-64 z-40 bg-white/70 backdrop-blur-xl shadow-[0_40px_40px_rgba(99,14,212,0.04)] px-8 py-4 flex items-center justify-between">
-<div class="flex items-center gap-8 flex-1">
-<h2 class="text-xl font-bold tracking-tight text-slate-900">Wallet &amp; Payouts</h2>
-<div class="relative w-full max-w-md">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search transactions..." type="text"/>
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 min-h-screen flex flex-col relative">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 w-full flex justify-between items-center px-8 py-4 bg-slate-50/70 backdrop-blur-xl z-40 shadow-sm shadow-violet-500/5">
+<div class="flex items-center gap-6">
+<h2 class="text-xl font-bold tracking-tight text-slate-900">Restaurant Management</h2>
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20" placeholder="Search restaurants, owners..." type="text"/>
 </div>
 </div>
 <div class="flex items-center gap-4">
-<button class="w-10 h-10 flex items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 transition-all">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
 </button>
-<button class="w-10 h-10 flex items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 transition-all">
-<span class="material-symbols-outlined" data-icon="help">help</span>
-</button>
-<div class="h-8 w-px bg-slate-100 mx-2"></div>
-<div class="flex items-center gap-3 pl-2 group cursor-pointer">
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/20">
 <div class="text-right">
-<p class="text-sm font-semibold text-slate-900 leading-tight">M. Castiglione</p>
-<p class="text-[11px] text-slate-400 font-medium">Owner</p>
+<p class="text-xs font-bold text-slate-900">Admin Profile</p>
+<p class="text-[10px] text-slate-500">Super Admin</p>
 </div>
-<img alt="Restaurant Owner" class="w-10 h-10 rounded-full object-cover border-2 border-primary/10" data-alt="professional portrait of a middle-aged restaurant owner in a modern kitchen setting, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCRrpU5J425gosT_XtbThqc3E1eJ-BW1YBdq9T8o16WJe9kDcK07frrmny-KZXw-nWgApQ4_bBvPEauydXYaEjdx58bRQhh82lC2_wQ_wc_JA_oqMZd1pXWHpNJncOkpijGix_z0w12PglhjWjVS-lcGxAt6-aVozGhOn5LicyWLwCFzlfPYqtOHmGioHWwqTC0MeL87PWFpSf1FEZrQ65FUDX7AvUM3y2NKS7AnUJi-OqfFyWRkT0D3x1hLrFyu444KYAXx7EOZ8k"/>
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full object-cover shadow-md" data-alt="professional headshot of a middle-aged man in a charcoal suit with soft office lighting and clean background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWlawH0Rw-sYZsCmsbMUqTLo2Nz3cw7Q0EWytBmmzb6wcz_q5Hf3Lt_YRCU7kX9BMn4koEvz5lQ1gTa3VS02R4GaI3Mek9DjQzyVVdWNC5ePkFbwckYAbF_PTJPdKLv0kfWvc6Vhkf4EV_3tPUP2nrYY4gkTc-8QECQHR-sCHCOE7Xm1LmS6WbHcXOCvX4-PxNbXKi-jpMJZ5SwiPddcp_vF7ut0Bgqovrw8fjnSdTRctYzBVDjfp3H5XWX8mM6L2Dwb8I595apWB3"/>
 </div>
 </div>
 </header>
-<!-- Canvas -->
-<div class="mt-24 px-10 pb-20 space-y-12 max-w-7xl mx-auto w-full">
-<!-- Financial Summary Cards (Bento Style) -->
-<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- Current Balance -->
-<div class="bg-primary text-white p-8 rounded-xl relative overflow-hidden group">
-<div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-500"></div>
-<div class="relative z-10">
-<span class="material-symbols-outlined text-white/60 mb-4" data-icon="account_balance_wallet" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
-<h3 class="text-sm font-medium text-white/80 uppercase tracking-widest">Current Balance</h3>
-<p class="text-4xl font-extrabold mt-2 tracking-tight">$4,250.00</p>
-<div class="mt-6 flex items-center gap-2 text-xs font-semibold bg-white/10 w-fit px-3 py-1 rounded-full">
-<span class="material-symbols-outlined text-xs">trending_up</span>
-                        +12.5% from last month
-                    </div>
-</div>
-</div>
-<!-- Pending Clearance -->
-<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_40px_40px_rgba(99,14,212,0.02)] border border-outline-variant/10">
-<span class="material-symbols-outlined text-purple-600 mb-4" data-icon="schedule">schedule</span>
-<h3 class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">Pending Clearance</h3>
-<p class="text-4xl font-extrabold mt-2 tracking-tight text-slate-900">$1,120.00</p>
-<p class="text-xs text-slate-400 mt-6 font-medium">Expected release: 48-72 hours</p>
-</div>
-<!-- Total Payouts -->
-<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_40px_40px_rgba(99,14,212,0.02)] border border-outline-variant/10">
-<span class="material-symbols-outlined text-purple-600 mb-4" data-icon="payments">payments</span>
-<h3 class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">Total Payouts</h3>
-<p class="text-4xl font-extrabold mt-2 tracking-tight text-slate-900">$12,400.00</p>
-<p class="text-xs text-slate-400 mt-6 font-medium">Lifetime restaurant earnings</p>
-</div>
-</section>
-<!-- Middle Section: Payout Request & Payout History -->
-<section class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
-<!-- Payout Request Form -->
-<div class="lg:col-span-2 bg-surface-container-low p-8 rounded-xl border border-outline-variant/5 space-y-8">
-<div>
-<h2 class="text-xl font-bold text-slate-900">Request Payout</h2>
-<p class="text-sm text-on-surface-variant mt-2">Transfer your available funds to your chosen destination.</p>
-</div>
+<!-- Content Canvas -->
+<div class="p-8 space-y-8">
+<!-- Filters & Tabs Section -->
 <div class="space-y-6">
-<div class="space-y-2">
-<label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Withdraw Amount</label>
-<div class="relative">
-<span class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-slate-400">$</span>
-<input class="w-full bg-surface-container-lowest border-none rounded-lg py-4 pl-10 pr-4 text-lg font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 transition-all" type="number" value="4250.00"/>
-</div>
-</div><div class="space-y-2">
-<label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Description</label>
-<textarea class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 text-sm font-medium text-slate-900 focus:ring-2 focus:ring-primary/20 transition-all min-h-[80px]" placeholder="Add a note for this payout (optional)"></textarea>
-</div>
-<div class="space-y-3">
-<label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Destination</label>
-<div class="grid grid-cols-2 gap-2 bg-surface-container-highest p-1 rounded-xl">
-<button class="flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition-all bg-white text-primary shadow-sm" id="tab-link-card" onclick="switchTab('link-card')">
-<span class="material-symbols-outlined text-base" data-icon="credit_card">credit_card</span>
-                                Link Card
-                            </button>
-<button class="flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition-all text-slate-500 hover:text-slate-700" id="tab-upload-qr" onclick="switchTab('upload-qr')">
-<span class="material-symbols-outlined text-base" data-icon="qr_code_2">qr_code_2</span>
-                                Upload QR
-                            </button>
-</div>
-<!-- Link Card Form -->
-<div class="tab-content active space-y-4 pt-2" id="content-link-card"><div class="space-y-4 pt-2">
-<div class="space-y-1">
-<input class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Bank: NCB" type="text"/>
-</div>
-<div class="space-y-1">
-<input class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="9704198526191432198" type="text"/>
-</div>
-<div class="space-y-1">
-<input class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="NGUYEN VAN A" type="text"/>
-</div>
-<div class="grid grid-cols-2 gap-4">
-<input class="bg-surface-container-lowest border border-outline-variant/20 rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="07/15" type="text"/>
-<input class="bg-surface-container-lowest border border-outline-variant/20 rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="CVV" type="text"/>
-</div>
-</div></div>
-<!-- Upload QR Area -->
-<div class="tab-content space-y-4 pt-2" id="content-upload-qr">
-<div class="border-2 border-dashed border-outline-variant/40 rounded-xl p-8 flex flex-col items-center justify-center bg-surface-container-lowest hover:bg-slate-50 transition-colors cursor-pointer group">
-<div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-primary" data-icon="cloud_upload">cloud_upload</span>
-</div>
-<p class="text-sm font-bold text-slate-700">Drop your QR code here</p>
-<p class="text-[11px] text-slate-400 mt-1">or click to browse</p>
-</div>
-</div>
-</div>
-<button class="w-full bg-primary hover:bg-primary-container text-white font-bold py-4 rounded-full transition-all duration-300 active:scale-95 shadow-lg shadow-primary/20 flex items-center justify-center gap-2" type="button">
-<span class="material-symbols-outlined text-sm" data-icon="send">send</span>
-                        Withdraw Funds
-                    </button>
-<p class="text-[10px] text-center text-slate-400 px-4 leading-relaxed font-medium">
-                        Standard payouts take 1-3 business days. Funds will be deposited into your verified destination.
-                    </p>
-</div>
-</div>
-<!-- Payout History Table -->
-<div class="lg:col-span-3 bg-surface-container-lowest rounded-xl shadow-[0_40px_40px_rgba(99,14,212,0.02)] overflow-hidden">
-<div class="p-8 pb-4 flex items-center justify-between">
-<h2 class="text-xl font-bold text-slate-900">Payout History</h2>
-<button class="text-primary text-sm font-semibold hover:underline">Download CSV</button>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead>
-<tr class="border-b border-slate-50">
-<th class="px-8 py-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Date</th>
-<th class="px-4 py-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Payout ID</th>
-<th class="px-4 py-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest text-right">Amount</th>
-<th class="px-8 py-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest text-right">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-50">
-<tr class="hover:bg-slate-50/50 transition-colors">
-<td class="px-8 py-4 text-sm font-semibold text-slate-900">May 12, 2024</td>
-<td class="px-4 py-4 text-sm font-medium text-slate-400">#PAY-9921</td>
-<td class="px-4 py-4 text-sm font-bold text-slate-900 text-right">$3,200.00</td>
-<td class="px-8 py-4 text-right">
-<span class="inline-flex items-center gap-1 text-[10px] font-bold px-3 py-1 bg-green-50 text-green-600 rounded-full uppercase">
-<span class="w-1 h-1 rounded-full bg-green-600"></span>
-                                        Completed
-                                    </span>
-</td>
-</tr>
-<tr class="hover:bg-slate-50/50 transition-colors">
-<td class="px-8 py-4 text-sm font-semibold text-slate-900">May 08, 2024</td>
-<td class="px-4 py-4 text-sm font-medium text-slate-400">#PAY-9918</td>
-<td class="px-4 py-4 text-sm font-bold text-slate-900 text-right">$1,450.00</td>
-<td class="px-8 py-4 text-right">
-<span class="inline-flex items-center gap-1 text-[10px] font-bold px-3 py-1 bg-blue-50 text-blue-600 rounded-full uppercase">
-<span class="w-1 h-1 rounded-full bg-blue-600"></span>
-                                        Processing
-                                    </span>
-</td>
-</tr>
-<tr class="hover:bg-slate-50/50 transition-colors">
-<td class="px-8 py-4 text-sm font-semibold text-slate-900">May 01, 2024</td>
-<td class="px-4 py-4 text-sm font-medium text-slate-400">#PAY-9905</td>
-<td class="px-4 py-4 text-sm font-bold text-slate-900 text-right">$4,100.00</td>
-<td class="px-8 py-4 text-right">
-<span class="inline-flex items-center gap-1 text-[10px] font-bold px-3 py-1 bg-green-50 text-green-600 rounded-full uppercase">
-<span class="w-1 h-1 rounded-full bg-green-600"></span>
-                                        Completed
-                                    </span>
-</td>
-</tr>
-<tr class="hover:bg-slate-50/50 transition-colors">
-<td class="px-8 py-4 text-sm font-semibold text-slate-900">Apr 24, 2024</td>
-<td class="px-4 py-4 text-sm font-medium text-slate-400">#PAY-9882</td>
-<td class="px-4 py-4 text-sm font-bold text-slate-900 text-right">$950.00</td>
-<td class="px-8 py-4 text-right">
-<span class="inline-flex items-center gap-1 text-[10px] font-bold px-3 py-1 bg-red-50 text-red-600 rounded-full uppercase">
-<span class="w-1 h-1 rounded-full bg-red-600"></span>
-                                        Failed
-                                    </span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<!-- Recent Transactions Table -->
-<section class="bg-surface-container-lowest rounded-xl shadow-[0_40px_40px_rgba(99,14,212,0.02)] border border-outline-variant/10">
-<div class="p-8 flex items-center justify-between border-b border-slate-50">
-<h2 class="text-xl font-extrabold text-slate-900">Recent Transactions</h2>
+<!-- Status Tabs -->
 <div class="flex gap-2">
-<button class="px-4 py-2 rounded-full border border-slate-100 text-xs font-bold text-slate-500 hover:bg-slate-50">Filter</button>
-<button class="px-4 py-2 rounded-full border border-slate-100 text-xs font-bold text-slate-500 hover:bg-slate-50">Export</button>
+<button class="px-6 py-2.5 rounded-full text-sm font-bold bg-primary text-on-primary shadow-md">All Restaurants</button>
+<button class="px-6 py-2.5 rounded-full text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high transition-colors">Pending Approval</button>
+<button class="px-6 py-2.5 rounded-full text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high transition-colors">Active</button>
+<button class="px-6 py-2.5 rounded-full text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high transition-colors">Suspended</button>
+</div>
+<!-- Advanced Filter Bar -->
+<div class="flex items-center justify-between p-2 bg-surface-container-low rounded-2xl">
+<div class="flex gap-4 p-1">
+<select class="bg-surface-container-lowest border-none rounded-xl text-xs font-bold px-4 py-2 ring-1 ring-outline-variant/10 focus:ring-primary/40">
+<option>Price Range: All</option>
+<option>$</option>
+<option>$$</option>
+<option>$$$</option>
+<option>$$$$</option>
+</select>
+<select class="bg-surface-container-lowest border-none rounded-xl text-xs font-bold px-4 py-2 ring-1 ring-outline-variant/10 focus:ring-primary/40">
+<option>Cuisine: All Types</option>
+<option>French Editorial</option>
+<option>Modern Japanese</option>
+<option>Nordic Fusion</option>
+<option>Artisan Italian</option>
+</select>
+<select class="bg-surface-container-lowest border-none rounded-xl text-xs font-bold px-4 py-2 ring-1 ring-outline-variant/10 focus:ring-primary/40">
+<option>Commission: Any</option>
+<option>5% - 10%</option>
+<option>10% - 15%</option>
+<option>15%+</option>
+</select>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 text-primary font-bold text-xs uppercase tracking-tight hover:bg-primary/5 rounded-xl transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        More Filters
+                    </button>
 </div>
 </div>
-<div class="overflow-x-auto">
-<table class="w-full text-left">
+<!-- Modern Table Layout -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/10">
+<table class="w-full text-left border-collapse">
 <thead>
-<tr class="bg-slate-50/50">
-<th class="px-8 py-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Date</th>
-<th class="px-4 py-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Description</th>
-<th class="px-4 py-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Type</th>
-<th class="px-8 py-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest text-right">Amount</th>
+<tr class="bg-surface-container-low/50">
+<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-on-surface-variant/70">Restaurant</th>
+<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-on-surface-variant/70">Slug &amp; Owner</th>
+<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-on-surface-variant/70">Cuisine</th>
+<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-on-surface-variant/70 text-center">Rating &amp; Price</th>
+<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-on-surface-variant/70 text-center">Commission</th>
+<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-on-surface-variant/70">Status</th>
+<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-on-surface-variant/70 text-right">Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-slate-50">
-<!-- Income Row -->
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5 text-sm font-semibold text-slate-900">May 15, 2024</td>
-<td class="px-4 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
-<span class="material-symbols-outlined text-sm" data-icon="restaurant">restaurant</span>
+<tbody class="divide-y divide-outline-variant/5">
+<!-- Table Row 1 -->
+<tr class="group hover:bg-surface-container-low/30 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<img alt="Restaurant Image" class="w-12 h-12 rounded-xl object-cover shadow-sm ring-1 ring-outline-variant/20" data-alt="high-end minimalist restaurant interior with soft beige walls, sculptural lighting, and wooden furniture in morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLz_ulGbEACmSyNuzA0Pxn2ZB7EVH_OKylZIeRI_MB3Ko3Id1DRzHR0kBoVurstroriwrAns13HKQHAh1TGTN5BIF4V-tWdP1TpRL1kFmrkfDKmUiBmpJIyxouLb71MSeLt7kcXqaKG0-LgSZXooRebS8-c6Xkfh_agqGH1vXhL_DsbFkTOE9hYjq9LpMAsM37rxEi03saBPXGk_n-5j7S29WAcpm9H1lHeQ8uxZJhsG0ZjHqRtRHTFalYmdU8glREjpd3Ee2PUWtP"/>
+<div>
+<p class="text-sm font-bold text-slate-900">Le Monochrome</p>
+<p class="text-xs text-slate-500">Paris, France</p>
 </div>
-<span class="text-sm font-bold text-slate-900">Booking #BK-9421 Deposit</span>
 </div>
 </td>
-<td class="px-4 py-5">
-<span class="text-[10px] font-bold px-2 py-1 bg-green-50 text-green-700 rounded-md uppercase">Income</span>
+<td class="px-6 py-5">
+<p class="text-xs font-mono text-primary bg-primary/5 px-2 py-0.5 rounded w-fit">le-monochrome-paris</p>
+<p class="text-xs mt-1 text-slate-600 font-medium">Marc Antoine</p>
 </td>
-<td class="px-8 py-5 text-right font-bold text-green-600">+$245.00</td>
+<td class="px-6 py-5">
+<span class="text-xs font-semibold px-3 py-1 bg-surface-container-high rounded-full">Contemporary French</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-1 text-amber-500">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.9</span>
+</div>
+<span class="text-[10px] font-black text-slate-400 mt-1">$$$$</span>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="text-sm font-bold text-slate-700">12.5%</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
+                                </span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-violet-50 text-violet-600 rounded-lg transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 hover:bg-slate-100 text-slate-500 rounded-lg transition-colors" title="Suspend">
+<span class="material-symbols-outlined text-[20px]">block</span>
+</button>
+</div>
+</td>
 </tr>
-<!-- Fee Row -->
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5 text-sm font-semibold text-slate-900">May 14, 2024</td>
-<td class="px-4 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-<span class="material-symbols-outlined text-sm" data-icon="percent">percent</span>
+<!-- Table Row 2 -->
+<tr class="group hover:bg-surface-container-low/30 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<img alt="Restaurant Image" class="w-12 h-12 rounded-xl object-cover shadow-sm ring-1 ring-outline-variant/20" data-alt="exquisite sushi platter arranged on a black slate board with edible flowers and gold leaf accents, studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA25Pw6gNXtamEneQQottQDFcifLFIzmH2_pG7nLaIGGT-TlQzVxXjFFc5Qq2BZ_rKfKTSwBpKdxnU2p-wZrVN0l-aW8NIAYelX3kIrNYKcm3K-sXHL8Ilv-o7W45OVnNeAJAJVvKa6JV5k_PSOjl2OiHIY-m-sdTPuZjAj2R9WuRDUe13TETvTufrJRC5JBojVaNSXilbjKgZUJj3GxO5EUSC71UATbuhoEFrYdUK3tyayseQQ-OKkS7DsbGD0s4jmc_YL-8eHlORk"/>
+<div>
+<p class="text-sm font-bold text-slate-900">Umi Shizen</p>
+<p class="text-xs text-slate-500">Tokyo, JP</p>
 </div>
-<span class="text-sm font-bold text-slate-900">Platform Service Fee</span>
 </div>
 </td>
-<td class="px-4 py-5">
-<span class="text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-600 rounded-md uppercase">Fee</span>
+<td class="px-6 py-5">
+<p class="text-xs font-mono text-primary bg-primary/5 px-2 py-0.5 rounded w-fit">umi-shizen-tokyo</p>
+<p class="text-xs mt-1 text-slate-600 font-medium">Kenji Tanaka</p>
 </td>
-<td class="px-8 py-5 text-right font-bold text-slate-900">-$12.25</td>
+<td class="px-6 py-5">
+<span class="text-xs font-semibold px-3 py-1 bg-surface-container-high rounded-full">Omakase Japanese</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-1 text-slate-300">
+<span class="material-symbols-outlined text-[16px]">star</span>
+<span class="text-xs font-bold">—</span>
+</div>
+<span class="text-[10px] font-black text-slate-400 mt-1">$$$$$</span>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="text-sm font-bold text-slate-700">15.0%</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 ring-1 ring-amber-200">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Pending
+                                </span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="px-4 py-1.5 bg-primary text-on-primary text-[10px] font-bold uppercase rounded-lg shadow-sm hover:translate-y-[-1px] transition-transform">
+                                        Approve
+                                    </button>
+<button class="p-2 hover:bg-slate-100 text-slate-500 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</td>
 </tr>
-<!-- Income Row -->
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5 text-sm font-semibold text-slate-900">May 14, 2024</td>
-<td class="px-4 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
-<span class="material-symbols-outlined text-sm" data-icon="restaurant">restaurant</span>
+<!-- Table Row 3 -->
+<tr class="group hover:bg-surface-container-low/30 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<img alt="Restaurant Image" class="w-12 h-12 rounded-xl object-cover shadow-sm ring-1 ring-outline-variant/20" data-alt="dark moody restaurant bar with velvet chairs, neon purple lighting accents and luxury cocktail glasses on marble bar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoMAPGhdJr8mcdPrhsJH2dvDf077ltcO8hB7MyeDr6AtRGNCXfSFCUpG7ZJkjSs-avAu7y4k_rpwh2YRYikyIcEoFAy0yuuXfh6JQobx0Vb18eoebWVRRoSFvOAHmeKZ4m7yjb4S9N8eqm1GAx0qeEqaEwfdcP5iruy7zHAsqJsDlcRAApiFsS8dJNLJvTH2reB0CxGKI84II3g07dwRYbRymfPWRYTcPyVLi0heK9leZJ4w-Meh7qWJ_VPn6RERBFRdcxYqQ1RRqL"/>
+<div>
+<p class="text-sm font-bold text-slate-900">Neon Bistro</p>
+<p class="text-xs text-slate-500">Berlin, DE</p>
 </div>
-<span class="text-sm font-bold text-slate-900">Booking #BK-9419 Deposit</span>
-</div>
-</td>
-<td class="px-4 py-5">
-<span class="text-[10px] font-bold px-2 py-1 bg-green-50 text-green-700 rounded-md uppercase">Income</span>
-</td>
-<td class="px-8 py-5 text-right font-bold text-green-600">+$180.00</td>
-</tr>
-<!-- Fee Row -->
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5 text-sm font-semibold text-slate-900">May 13, 2024</td>
-<td class="px-4 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-<span class="material-symbols-outlined text-sm" data-icon="percent">percent</span>
-</div>
-<span class="text-sm font-bold text-slate-900">SMS Notification Fee</span>
 </div>
 </td>
-<td class="px-4 py-5">
-<span class="text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-600 rounded-md uppercase">Fee</span>
+<td class="px-6 py-5">
+<p class="text-xs font-mono text-primary bg-primary/5 px-2 py-0.5 rounded w-fit">neon-bistro-berlin</p>
+<p class="text-xs mt-1 text-slate-600 font-medium">Lukas Weber</p>
 </td>
-<td class="px-8 py-5 text-right font-bold text-slate-900">-$0.15</td>
+<td class="px-6 py-5">
+<span class="text-xs font-semibold px-3 py-1 bg-surface-container-high rounded-full">Fusion Kitchen</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-1 text-amber-500">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.2</span>
+</div>
+<span class="text-[10px] font-black text-slate-400 mt-1">$$</span>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="text-sm font-bold text-slate-700">10.0%</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-100 text-rose-700 ring-1 ring-rose-200">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Suspended
+                                </span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 hover:bg-slate-100 text-slate-500 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 hover:bg-emerald-50 text-emerald-600 rounded-lg transition-colors" title="Activate">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</button>
+</div>
+</td>
 </tr>
 </tbody>
 </table>
+<!-- Pagination -->
+<div class="px-6 py-4 flex items-center justify-between border-t border-outline-variant/10">
+<p class="text-xs font-medium text-on-surface-variant">Showing 1 to 10 of 248 restaurants</p>
+<div class="flex items-center gap-2">
+<button class="p-2 border border-outline-variant/20 rounded-lg text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-on-primary rounded-lg text-xs font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-slate-100 rounded-lg text-xs font-bold text-slate-600">2</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-slate-100 rounded-lg text-xs font-bold text-slate-600">3</button>
+<button class="p-2 border border-outline-variant/20 rounded-lg text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
 </div>
-<div class="p-4 bg-slate-50/50 flex justify-center border-t border-slate-50">
-<button class="text-xs font-extrabold text-primary hover:text-primary-container transition-colors uppercase tracking-widest">Load More Transactions</button>
+</div>
+</div>
+<!-- Bento Stats Section (Visual Flourish) -->
+<div class="grid grid-cols-4 gap-6">
+<div class="col-span-1 bg-violet-50 p-6 rounded-xl space-y-2">
+<span class="material-symbols-outlined text-violet-600 bg-white p-2 rounded-lg">trending_up</span>
+<p class="text-xs font-bold text-violet-600/60 uppercase tracking-widest">Growth Rate</p>
+<h3 class="text-2xl font-black text-violet-900">+24% <span class="text-xs font-medium text-slate-500">MTD</span></h3>
+</div>
+<div class="col-span-1 bg-surface-container-low p-6 rounded-xl space-y-2">
+<span class="material-symbols-outlined text-slate-600 bg-white p-2 rounded-lg">hourglass_empty</span>
+<p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Avg. Approval</p>
+<h3 class="text-2xl font-black text-slate-900">4.2 hrs</h3>
+</div>
+<div class="col-span-2 bg-primary p-6 rounded-xl relative overflow-hidden flex flex-col justify-end min-h-[140px]">
+<div class="absolute top-0 right-0 p-8 opacity-20 transform translate-x-10 -translate-y-10">
+<span class="material-symbols-outlined text-[120px] text-white">verified</span>
+</div>
+<div class="relative z-10">
+<h3 class="text-xl font-bold text-white mb-1">Scale your operations</h3>
+<p class="text-primary-fixed text-sm">Automate verification for high-tier partners with the new AI verification module.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Drawer (Restaurant Details) -->
+<div class="fixed top-0 right-0 h-full w-[400px] bg-white shadow-2xl z-[60] border-l border-outline-variant/10 flex flex-col transform translate-x-0 transition-transform duration-500">
+<!-- Drawer Header -->
+<div class="p-6 border-b border-outline-variant/10 flex items-center justify-between">
+<div>
+<h3 class="text-lg font-bold text-slate-900">Restaurant Details</h3>
+<p class="text-xs text-slate-500">Viewing: Le Monochrome</p>
+</div>
+<button class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-slate-400">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Cover Image -->
+<div class="relative h-48 w-full bg-slate-200">
+<img alt="Detail Image" class="w-full h-full object-cover" data-alt="top-down artistic shot of gourmet french dish on ceramic plate with architectural garnish and soft kitchen lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2klagMxeiKBlNbACTe-OaGTyH5fo7yyN0PtmqzpoTaimEvdpaV0uXhU8ApruyTpPAqxmMZSCyWERTb108S7vs3AbneIli0PvZyLNWFFLDeVeCTSoywoPqMDZYZfwxGADxtRcVdqGXJ_K1XVsSDLvOOcn1khAOagXpSfU7Ffa_97ylT2KiBCDkD2BwAU_QtPU1YtQVgrB8J6qRLqHQEZxtIBZMy3_uVacDyssNBpqF8sdjj5ON51a8V2mNF0bcAUTyT5AIRTesL9Fv"/>
+<div class="absolute bottom-4 left-6 bg-white/70 backdrop-blur px-3 py-1 rounded-full border border-white/20">
+<p class="text-[10px] font-bold text-primary uppercase">Elite Partner</p>
+</div>
+</div>
+<div class="p-8 space-y-8">
+<!-- Owner Info Section -->
+<section class="space-y-4">
+<h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Owner Information</h4>
+<div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl">
+<img alt="Owner Avatar" class="w-12 h-12 rounded-full object-cover" data-alt="smiling mature man with glasses in a professional white chef coat, warm kitchen lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzMoRQga6bUV9BGWPw3H6hiW63RSnzKLBRJHMt60V9veR7FbwTPlzrDZBuAI_5HRLVgWlhgMX1-akA5qZda4iIu7mCh6_UQal02iiXyCOqVRK3u-R5ygPFFo3BcncNY2T6WCukah9Q3uIihbxKO7WthGVMyVIBooTbM5uWbRBW98zxt6LsCObw4itwqcUxf6mYdLu78CMyIQRh4Sv2RCNa0WRMM-g9Q0tq4MNSjBkqCaaZrcJ8FX8Z9h_JLrym7fP9O0XAWNZpNRwV"/>
+<div>
+<p class="text-sm font-bold text-slate-900">Marc Antoine</p>
+<p class="text-xs text-slate-500">m.antoine@lemonochrome.com</p>
+<p class="text-[10px] font-medium text-slate-400 mt-0.5">+33 1 23 45 67 89</p>
+</div>
+</div>
+</section>
+<!-- Opening Hours Section -->
+<section class="space-y-4">
+<h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Weekly Schedule</h4>
+<div class="grid grid-cols-1 gap-2">
+<div class="flex justify-between text-xs py-2 border-b border-outline-variant/5">
+<span class="font-semibold text-slate-600">Monday - Friday</span>
+<span class="font-bold text-slate-900">12:00 PM — 11:00 PM</span>
+</div>
+<div class="flex justify-between text-xs py-2 border-b border-outline-variant/5">
+<span class="font-semibold text-slate-600">Saturday</span>
+<span class="font-bold text-slate-900">11:00 AM — 01:00 AM</span>
+</div>
+<div class="flex justify-between text-xs py-2 text-rose-500">
+<span class="font-semibold">Sunday</span>
+<span class="font-bold">Closed</span>
+</div>
+</div>
+</section>
+<!-- Policies Section -->
+<section class="space-y-4">
+<h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Booking &amp; Deposit</h4>
+<div class="p-4 rounded-2xl border-2 border-dashed border-outline-variant/20 space-y-3">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]">payments</span>
+<div>
+<p class="text-xs font-bold text-slate-900">Deposit Required</p>
+<p class="text-[10px] text-slate-500 leading-relaxed">€25.00 per guest for parties over 4 people. Non-refundable if cancelled within 24 hours.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]">timer</span>
+<div>
+<p class="text-xs font-bold text-slate-900">Grace Period</p>
+<p class="text-[10px] text-slate-500 leading-relaxed">15 minutes grace period before the reservation is automatically cancelled.</p>
+</div>
+</div>
 </div>
 </section>
 </div>
-<!-- Sticky Footer CTA -->
+</div>
+<!-- Drawer Footer Actions -->
+<div class="p-6 bg-slate-50 border-t border-outline-variant/10 flex gap-3">
+<button class="flex-1 py-3 bg-rose-100 text-rose-700 rounded-xl font-bold text-xs uppercase tracking-tight hover:bg-rose-200 transition-colors">
+                    Suspend Partner
+                </button>
+<button class="flex-1 py-3 bg-primary text-on-primary rounded-xl font-bold text-xs uppercase tracking-tight shadow-md shadow-primary/20 hover:translate-y-[-1px] transition-all">
+                    Save Changes
+                </button>
+</div>
+</div>
+<!-- Overlay -->
+<div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[55] pointer-events-none opacity-0 transition-opacity"></div>
 </main>
-<script>
-    function switchTab(tab) {
-        // Reset Tabs
-        const linkCardBtn = document.getElementById('tab-link-card');
-        const uploadQrBtn = document.getElementById('tab-upload-qr');
-        
-        linkCardBtn.className = "flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition-all text-slate-500 hover:text-slate-700";
-        uploadQrBtn.className = "flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition-all text-slate-500 hover:text-slate-700";
-        
-        // Hide Contents
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        
-        // Activate Selected
-        if (tab === 'link-card') {
-            linkCardBtn.className = "flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition-all bg-white text-primary shadow-sm";
-            document.getElementById('content-link-card').classList.add('active');
-        } else {
-            uploadQrBtn.className = "flex items-center justify-center gap-2 py-2 text-xs font-bold rounded-lg transition-all bg-white text-primary shadow-sm";
-            document.getElementById('content-upload-qr').classList.add('active');
-        }
-    }
-</script>
 </body></html>

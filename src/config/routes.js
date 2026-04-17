@@ -7,7 +7,6 @@ export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
-  REGISTER_OWNER: '/register-owner',
   OWNER_JOIN: '/be-my-member',
   VERIFY_OTP: '/verify-otp',
   FORGOT_PASSWORD: '/forgot-password',
@@ -52,16 +51,20 @@ export const ROUTES = {
   // --- ADMIN ---
   ADMIN_DASHBOARD: '/admin',
   ADMIN_USERS: '/admin/users',
-  ADMIN_RESTAURANTS_PENDING: '/admin/restaurants/pending',
   ADMIN_RESTAURANTS: '/admin/restaurants',
+  ADMIN_PARTNER_REQUESTS: '/admin/partner-requests',
+  ADMIN_PARTNERS: '/admin/partners',
   ADMIN_BOOKINGS: '/admin/bookings',
   ADMIN_TRANSACTIONS: '/admin/transactions',
   ADMIN_WITHDRAWALS: '/admin/withdrawals',
   ADMIN_COMMISSIONS: '/admin/commissions',
+  ADMIN_AI_CHAT: '/admin/ai-chat',
+  ADMIN_AI_ANALYTICS: '/admin/ai-analytics',
+  ADMIN_SETTINGS: '/admin/settings',
   
   // --- AI ASSISTANT ---
   AI_CHAT: '/ai-assistant',
-  ADMIN_AI_CHAT: '/admin/ai-assistant',
+
 
   // --- MAP ROUTING ---
   MAP_EXPLORE: '/map/explore',
