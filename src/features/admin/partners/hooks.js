@@ -14,8 +14,7 @@ export const usePartnerLeads = () => {
     queryKey: ['admin', 'partners', 'leads'],
     queryFn: async () => {
       const response = await partnerAdminApi.getLeads();
-      // Handle the spec structure { success, data, pagination }
-      return response.data?.data || response.data || [];
+      return response.data || {};
     },
     staleTime: 1 * 60 * 1000,
   });

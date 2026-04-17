@@ -1,8 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { MoreHorizontal, ExternalLink, ShieldCheck, ShieldAlert, Lock, Unlock } from 'lucide-react';
+import { ExternalLink, ShieldCheck, ShieldAlert, Lock, Unlock, Edit3 } from 'lucide-react';
 import AdminStatusBadge from '../../components/AdminStatusBadge';
 import { formatDate } from '../../../../shared/utils/formatDateTime';
+import restaurantPlaceholder from '../../../../assets/placeholder/restaurant_placeholder.png';
 
 /**
  * @file RestaurantTable.jsx
@@ -10,6 +11,16 @@ import { formatDate } from '../../../../shared/utils/formatDateTime';
  */
 const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
   const { t } = useTranslation();
+
+  const parseCuisine = (cuisineData) => {
+    if (!cuisineData) return t('admin.restaurants.table.cuisine_default');
+    try {
+      const parsed = typeof cuisineData === 'string' ? JSON.parse(cuisineData) : cuisineData;
+      return Array.isArray(parsed) ? parsed.join(', ') : parsed;
+    } catch (e) {
+      return cuisineData;
+    }
+  };
 
   if (loading) {
     return (
@@ -65,9 +76,13 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-xs">
                     <img 
-                      src={res.coverImage || '/images/restaurant-placeholder.jpg'} 
+                      src={res.coverImage || (res.images && res.images[0]) || restaurantPlaceholder} 
                       alt={res.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = restaurantPlaceholder;
+                      }}
                     />
                   </div>
                   <div>
@@ -75,13 +90,17 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
                       {res.name}
                       <ExternalLink size={12} className="text-slate-300 group-hover:text-violet-500 transition-colors cursor-pointer" />
                     </div>
-                    <div className="text-xs text-slate-500">{res.cuisine || 'International'}</div>
+                    <div className="text-xs text-slate-500">{parseCuisine(res.cuisineTypeJson)}</div>
                   </div>
                 </div>
               </td>
               <td className="px-6 py-4">
-                <div className="text-sm font-medium text-slate-700">{res.ownerName || 'Unknown Owner'}</div>
-                <div className="text-[10px] text-slate-400 font-medium">{res.ownerEmail || 'no-email@seatnow.vn'}</div>
+                <div className="text-sm font-medium text-slate-700">
+                  {res.ownerName || res.owner_name || res.OwnerName || t('admin.restaurants.table.owner_default')}
+                </div>
+                <div className="text-[10px] text-slate-400 font-medium">
+                  {res.ownerEmail || res.owner_email || res.OwnerEmail || 'no-email@seatnow.vn'}
+                </div>
               </td>
               <td className="px-6 py-4">
                 <AdminStatusBadge status={res.status} />
@@ -118,9 +137,14 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
                       <Unlock size={18} />
                     </button>
                   )}
-                  <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl transition-all">
-                    <MoreHorizontal size={18} />
+                  <button 
+                    onClick={() => onAction('edit', res)}
+                    className="p-2 text-slate-400 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all"
+                    title={t('common.edit') || 'Chỉnh sửa'}
+                  >
+                    <Edit3 size={18} />
                   </button>
+
                 </div>
               </td>
             </tr>

@@ -16,18 +16,26 @@
     "save": "Save Changes",
     "cancel": "Cancel",
     "back": "Back",
-    "delete": "Delete",
-    "view_all": "View All",
     "refresh": "Refresh",
+    "reloading": "Reloading...",
+    "delete": "Delete",
+    "edit": "Edit",
+    "phone": "Phone",
+    "description": "Description",
+    "view_all": "View All",
     "compressing": "Compressing...",
     "uploading": "Uploading...",
     "all_rights_reserved": "All rights reserved",
     "language": "Language",
     "global": "Global",
+    "media": "Media",
+    "operation": "Operation",
     "feature_coming_soon": "Feature Coming Soon",
     "export_analysis": "Export Analysis",
     "premium": "Premium",
     "soon": "Soon",
+    "showing": "Showing",
+    "of": "of",
     "months": {
       "jan": "Jan",
       "feb": "Feb",
@@ -565,49 +573,111 @@
         "commission": "Commission",
         "status": "Status",
         "actions": "Actions"
+      }
+    },
+    "restaurants": {
+      "title": "Restaurant Management",
+      "pending_title": "Pending Audit List",
+      "subtitle": "Administer the operational status of restaurants across the entire system.",
+      "stats": {
+        "total": "Total Venues",
+        "active": "Active",
+        "pending": "Pending",
+        "suspended": "Suspended"
       },
-      "restaurants": {
-        "title": "Venue Management",
-        "pending_title": "Pending Audit",
-        "subtitle": "Overview and management of all restaurant partners on the network",
-        "stats": {
-          "total": "Total Venues",
-          "active": "Active",
-          "pending": "Pending",
-          "suspended": "Suspended"
-        },
-        "filters": {
-          "search_placeholder": "Search by restaurant name...",
-          "all": "All Status",
-          "active": "Active",
-          "pending": "Pending",
-          "suspended": "Suspended"
-        },
-        "table": {
-          "restaurant": "Restaurant",
-          "owner": "Owner",
-          "cuisine": "Cuisine",
-          "status": "Status",
-          "registered": "Registration Date",
-          "actions": "Actions"
-        },
-        "actions": {
-          "approve": "Approve",
-          "suspend": "Suspend",
-          "activate": "Activate"
-        },
-        "dialog": {
-          "approve_title": "Confirm Venue Approval",
-          "approve_desc": "Restaurant {{name}} will be activated. System will automatically create a wallet and notify the owner.",
-          "suspend_title": "Confirm Suspension",
-          "suspend_desc": "Restaurant {{name}} will be hidden from search results. Owners will not be able to receive new bookings.",
-          "activate_title": "Confirm Activation",
-          "activate_desc": "Restaurant {{name}} will be active again on the network.",
-          "confirm": "Confirm",
-          "cancel": "Cancel"
-        },
-        "empty": "No matching restaurants found",
-        "empty_pending": "No venues currently pending audit"
+      "edit_warning": "Any changes will immediately affect the partner's business operations. Please verify information carefully before saving.",
+      "filters": {
+        "search_placeholder": "Search by restaurant name...",
+        "all": "All Status",
+        "active": "Active",
+        "pending": "Pending",
+        "suspended": "Suspended"
+      },
+      "table": {
+        "restaurant": "Restaurant",
+        "owner": "Owner",
+        "cuisine": "Cuisine",
+        "status": "Status",
+        "registered": "Registration Date",
+        "actions": "Actions",
+        "cuisine_default": "International Cuisine",
+        "owner_default": "Unknown Owner"
+      },
+      "actions": {
+        "approve": "Approve",
+        "suspend": "Suspend",
+        "activate": "Activate",
+        "edit_title": "Edit Restaurant"
+      },
+      "dialog": {
+        "approve_title": "Confirm Venue Approval",
+        "approve_desc": "Restaurant {{name}} will be activated. System will automatically create a wallet and notify the owner.",
+        "suspend_title": "Confirm Suspension",
+        "suspend_desc": "Restaurant {{name}} will be hidden from search results. Owners will not be able to receive new bookings.",
+        "activate_title": "Confirm Activation",
+        "activate_desc": "Restaurant {{name}} will be active again on the network.",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      },
+      "pending_title": "Pending Audit List",
+      "pending_subtitle": "Carefully review contact info and facilities before approving new partners into the system.",
+      "protocol_check": "Security Protocol Check",
+      "protocol_desc": "All approved restaurants will immediately be assigned a unique wallet address. Ensure data accuracy.",
+      "empty": "No matching restaurants found",
+      "empty_pending": "No venues currently pending audit",
+      "edit_form": {
+        "name": "Restaurant Name",
+        "phone": "Business Hotline",
+        "email": "Business Email",
+        "address": "Official Address",
+        "description": "Biography / Description",
+        "desc_placeholder": "Tell the world about this venue...",
+        "premium_title": "Premium Protocol",
+        "premium_desc": "Enable specialized ranking and priority exposure throughout the portfolio.",
+        "commission_label": "Commission Fee",
+        "system_status": "System Status",
+        "status_active": "ACTIVE / VERIFIED",
+        "status_pending": "PENDING AUDIT",
+        "status_suspended": "SUSPENDED / BLOCKED",
+        "cuisine_tags": "Cuisine Tags (Standard List)",
+        "price_category": "Pricing Category",
+        "operating_schedule": "Operating Schedule",
+        "schedule_all": "All",
+        "schedule_split": "Split",
+        "schedule_custom": "Custom",
+        "everyday": "Everyday",
+        "opens_at": "Opens At",
+        "closes_at": "Closes At",
+        "save_btn": "COMMIT EXECUTIVE CHANGES",
+        "create_title": "Create New Restaurant",
+        "create_subtitle": "Set up operating profile for SeatNow partner",
+        "owner_selection": "System Owner",
+        "choose_owner_placeholder": "Choose a partner...",
+        "search_owner_placeholder": "Search by Name, Email or Phone...",
+        "no_owner_found": "No partners found",
+        "owner_ready": "Owner assigned",
+        "owner_required": "Owner selection required",
+        "create_confirm": "INITIALIZE PROFILE",
+        "basic_info": "Identity Information",
+        "location": "Geolocation",
+        "rest_name": "Brand Name",
+        "address_placeholder": "Enter exact address...",
+        "location_notice": "* GPS coordinates will be auto-decoded from this address.",
+        "economics": "Financial Configuration",
+        "commission_rate": "Commission Rate (%)",
+        "premium_status": "Premium Status",
+        "premium_desc": "Priority visibility & Executive badge",
+        "cuisine_management": "Cuisine Categories",
+        "opening_hours": "Operating Hours",
+        "mode_all": "All Week",
+        "mode_split": "Split Days",
+        "mode_custom": "Custom",
+        "every_day": "Every day of the week",
+        "weekday": "Weekdays (Mon - Fri)",
+        "weekend": "Weekends (Sat - Sun)",
+        "closed": "CLOSED",
+        "status_notice": "* This status determines visibility on the customer application.",
+        "commission": "Commission"
       }
     },
     "audit": {
@@ -684,8 +754,8 @@
       "update_success": "Information for {{name}} updated successfully!",
       "delete_success": "Partner account for {{name}} permanently deleted!",
       "reset_success": "New password for {{name}} sent to owner's email",
-      "suspend_success": "Restaurant suspended successfully",
-      "activate_success": "Restaurant activated successfully",
+      "suspend_success": "Restaurant {{name}} has been suspended",
+      "activate_success": "Restaurant {{name}} is active again",
       "error_generic": "System error occurred, please try again later",
       "EMAIL_ALREADY_EXISTS": "This email is already in use by another account",
       "PHONE_ALREADY_EXISTS": "This phone number already exists in our system"
@@ -987,7 +1057,15 @@
         "system_uptime": "System Uptime"
       },
       "under_construction_title": "Advanced Matrix Under Construction",
-      "under_construction_desc": "The global management module is currently being calibrated. Advanced analytics and moderation tools will be available in the next deployment."
+      "under_construction_desc": "The global management module is currently being calibrated. Advanced analytics and moderation tools will be available in the next deployment.",
+      "error": {
+        "name_required": "Restaurant name cannot be empty",
+        "address_required": "Address cannot be empty",
+        "phone_required": "Phone number cannot be empty",
+        "owner_required": "You must assign an owner to this restaurant",
+        "cuisine_required": "Please select at least one cuisine type",
+        "validation_failed": "Please check missing information fields"
+      }
     }
   },
   "tables": {

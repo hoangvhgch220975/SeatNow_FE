@@ -140,10 +140,10 @@ const OwnerAccountTable = ({
       </div>
 
       {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+      {total > limit && (
+        <div className="mt-auto px-6 py-5 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-            Trang {page} / {totalPages} ({total} đối tác)
+            {t('common.showing')} <span className="text-slate-700">{owners.length}</span> {t('common.of')} <span className="text-slate-700">{total}</span> {t('admin.partners.title')}
           </div>
           <div className="flex items-center gap-2">
             <button

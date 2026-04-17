@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 import { useCreateRestaurant } from '../hooks';
 import { useAuthStore } from '@/features/auth/store';
 import { useImageUpload } from '@/features/media/hooks';
-import MapLocationPicker from '../components/create-wizard/MapLocationPicker';
+import MapLocationPicker from '@/shared/components/MapLocationPicker';
 import OpeningHoursForm from '../components/create-wizard/OpeningHoursForm';
 import CuisineSelector from '../components/create-wizard/CuisineSelector';
 import DepositPolicyForm from '../components/create-wizard/DepositPolicyForm';

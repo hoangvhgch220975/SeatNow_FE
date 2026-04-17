@@ -17,10 +17,14 @@ import AdminActionDialog from '../../components/AdminActionDialog';
 const AuditRequestsPage = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('leads'); // 'leads' or 'venues'
+  const [params, setParams] = useState({ page: 1, limit: 5 });
 
   // Data Fetching (Scoped to Audit Module)
-  const { data: leads = [], isLoading: loadingLeads } = useAuditLeads();
-  const { data: venues = [], isLoading: loadingVenues } = useAuditVenues();
+  const { data: leadsData = { data: [], pagination: {} }, isLoading: loadingLeads } = useAuditLeads(params);
+  const { data: venuesData = { data: [], pagination: {} }, isLoading: loadingVenues } = useAuditVenues(params);
+
+  const leads = leadsData?.data || [];
+  const venues = venuesData?.data || [];
 
   // Actions (Scoped to Audit Module)
   const { approveLead, isApprovingLead, approveVenue, isApprovingVenue } = useAuditActions();
@@ -45,6 +49,10 @@ const AuditRequestsPage = () => {
     setModal({ ...modal, isOpen: false });
   };
 
+  const handlePageChange = (newPage) => {
+    setParams({ ...params, page: newPage });
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-700">
       {/* Header */}
@@ -66,7 +74,7 @@ const AuditRequestsPage = () => {
           }`}
         >
           <UserPlus size={16} />
-          {t('admin.audit.tabs.leads')} ({leads.length})
+          {t('admin.audit.tabs.leads')} ({leadsData.pagination?.total || leads.length})
         </button>
         <button
           onClick={() => setActiveTab('venues')}
@@ -75,7 +83,7 @@ const AuditRequestsPage = () => {
           }`}
         >
           <Store size={16} />
-          {t('admin.audit.tabs.venues')} ({venues.length})
+          {t('admin.audit.tabs.venues')} ({venuesData.pagination?.total || venues.length})
         </button>
       </div>
 
@@ -85,12 +93,16 @@ const AuditRequestsPage = () => {
           <PartnerLeadTable 
             leads={leads} 
             loading={loadingLeads} 
+            pagination={leadsData.pagination}
+            onPageChange={handlePageChange}
             onApprove={openApproveLeadModal} 
           />
         ) : (
           <PendingRestaurantTable 
             restaurants={venues} 
             loading={loadingVenues} 
+            pagination={venuesData.pagination}
+            onPageChange={handlePageChange}
             onApprove={openApproveVenueModal}
           />
         )}

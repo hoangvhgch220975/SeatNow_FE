@@ -16,18 +16,26 @@
     "save": "Lưu Thay Đổi",
     "cancel": "Hủy",
     "back": "Quay lại",
+    "refresh": "Làm mới",
+    "reloading": "Đang tải lại...",
     "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "phone": "Số điện thoại",
+    "description": "Mô tả",
     "view_all": "Xem Tất Cả",
-    "refresh": "Tải Lại",
     "compressing": "Đang nén ảnh...",
     "uploading": "Đang tải lên...",
     "all_rights_reserved": "Mọi quyền được bảo lưu",
     "language": "Ngôn ngữ",
     "global": "Toàn Cầu",
+    "media": "Hình ảnh",
+    "operation": "Vận hành",
     "feature_coming_soon": "Tính Năng Sắp Ra Mắt",
     "export_analysis": "Xuất Dữ Liệu",
     "premium": "Cao cấp",
     "soon": "Sắp ra mắt",
+    "showing": "Đang hiển thị",
+    "of": "trên",
     "months": {
       "jan": "Th1",
       "feb": "Th2",
@@ -565,49 +573,109 @@
         "commission": "Hoa hồng",
         "status": "Trạng thái",
         "actions": "Hành động"
+      }
+    },
+    "restaurants": {
+      "title": "Quản trị Nhà hàng",
+      "subtitle": "Quản trị trạng thái vận hành của các nhà hàng trên toàn hệ thống.",
+      "stats": {
+        "total": "Tổng nhà hàng",
+        "active": "Đang hoạt động",
+        "suspended": "Tạm dừng hoạt động"
       },
-      "restaurants": {
-        "title": "Quản lý Nhà hàng",
-        "pending_title": "Chờ Kiểm Duyệt",
-        "subtitle": "Tổng quan và quản lý tất cả đối tác nhà hàng trên hệ thống",
-        "stats": {
-          "total": "Tổng cộng",
-          "active": "Đang hoạt động",
-          "pending": "Chờ duyệt",
-          "suspended": "Đình chỉ"
-        },
-        "filters": {
-          "search_placeholder": "Tìm kiếm theo tên nhà hàng...",
-          "all": "Tất cả",
-          "active": "Đang hoạt động",
-          "pending": "Chờ duyệt",
-          "suspended": "Đình chỉ"
-        },
-        "table": {
-          "restaurant": "Nhà hàng",
-          "owner": "Chủ sở hữu",
-          "cuisine": "Ẩm thực",
-          "status": "Trạng thái",
-          "registered": "Ngày đăng ký",
-          "actions": "Hành động"
-        },
-        "actions": {
-          "approve": "Duyệt",
-          "suspend": "Tạm ngừng",
-          "activate": "Mở khóa"
-        },
-        "dialog": {
-          "approve_title": "Xác nhận Duyệt Nhà hàng",
-          "approve_desc": "Nhà hàng {{name}} sẽ được kích hoạt. Hệ thống sẽ tự động tạo ví và thông báo cho chủ nhà hàng.",
-          "suspend_title": "Xác nhận Tạm ngừng",
-          "suspend_desc": "Nhà hàng {{name}} sẽ bị ẩn khỏi hệ thống đặt bàn. Chủ nhà hàng sẽ không thể nhận đơn mới.",
-          "activate_title": "Xác nhận Mở khóa",
-          "activate_desc": "Nhà hàng {{name}} sẽ được hoạt động trở lại trên hệ thống.",
-          "confirm": "Xác nhận",
-          "cancel": "Hủy"
-        },
-        "empty": "Không tìm thấy nhà hàng nào phù hợp",
-        "empty_pending": "Không có nhà hàng nào đang chờ duyệt"
+      "edit_warning": "Mọi thay đổi sẽ ảnh hưởng ngay lập tức đến hoạt động kinh doanh của đối tác. Vui lòng xác nhận kỹ thông tin trước khi lưu.",
+      "filters": {
+        "search_placeholder": "Tìm kiếm theo tên nhà hàng...",
+        "all": "Tất cả",
+        "active": "Đang hoạt động",
+        "pending": "Chờ duyệt",
+        "suspended": "Đình chỉ"
+      },
+      "table": {
+        "restaurant": "Nhà hàng",
+        "owner": "Chủ sở hữu",
+        "cuisine": "Ẩm thực",
+        "status": "Trạng thái",
+        "registered": "Ngày đăng ký",
+        "actions": "Hành động",
+        "cuisine_default": "Ẩm thực Quốc tế",
+        "owner_default": "Chưa rõ chủ sở hữu"
+      },
+      "actions": {
+        "approve": "Duyệt",
+        "suspend": "Tạm ngừng",
+        "activate": "Mở khóa",
+        "edit_title": "Chỉnh sửa nhà hàng"
+      },
+      "dialog": {
+        "approve_title": "Xác nhận Duyệt Nhà hàng",
+        "approve_desc": "Nhà hàng {{name}} sẽ được kích hoạt. Hệ thống sẽ tự động tạo ví và thông báo cho chủ nhà hàng.",
+        "suspend_title": "Xác nhận Tạm ngừng",
+        "suspend_desc": "Nhà hàng {{name}} sẽ bị ẩn khỏi hệ thống đặt bàn. Chủ nhà hàng sẽ không thể nhận đơn mới.",
+        "activate_title": "Xác nhận Mở khóa",
+        "activate_desc": "Nhà hàng {{name}} sẽ được hoạt động trở lại trên hệ thống.",
+        "confirm": "Xác nhận",
+        "cancel": "Hủy"
+      },
+      "pending_title": "Danh sách Chờ Duyệt",
+      "pending_subtitle": "Kiểm tra kỹ thông tin liên hệ và cơ sở trước khi phê chuẩn đối tác mới vào hệ thống.",
+      "protocol_check": "Quy trình Kiểm tra Bảo mật",
+      "protocol_desc": "Tất cả nhà hàng sau khi duyệt sẽ ngay lập tức được hệ thống SeatNow Wallet gán một địa chỉ ví điện tử định danh. Hãy đảm bảo tính chính xác của dữ liệu.",
+      "empty": "Không tìm thấy nhà hàng nào phù hợp",
+      "empty_pending": "Không có nhà hàng nào đang chờ duyệt",
+      "edit_form": {
+        "name": "Tên nhà hàng",
+        "phone": "Số điện thoại kinh doanh",
+        "email": "Email liên hệ",
+        "address": "Địa chỉ chính thức",
+        "description": "Mô tả / Giới thiệu",
+        "desc_placeholder": "Kể cho thế giới nghe về địa điểm này...",
+        "premium_title": "Giao thức Premium",
+        "premium_desc": "Kích hoạt xếp hạng đặc biệt và ưu tiên hiển thị trong toàn danh mục.",
+        "commission_label": "Phí hoa hồng",
+        "system_status": "Trạng thái hệ thống",
+        "status_active": "HOẠT ĐỘNG / ĐÃ XÁC THỰC",
+        "status_pending": "CHỜ KIỂM DUYỆT",
+        "status_suspended": "ĐÌNH CHỈ / KHÓA",
+        "cuisine_tags": "Nhãn ẩm thực (Danh sách chuẩn)",
+        "price_category": "Phân loại mức giá",
+        "operating_schedule": "Lịch trình vận hành",
+        "schedule_all": "Tất cả",
+        "schedule_split": "Chia nhóm",
+        "schedule_custom": "Tùy chỉnh",
+        "everyday": "Hàng ngày",
+        "opens_at": "Mở cửa lúc",
+        "closes_at": "Đóng cửa lúc",
+        "save_btn": "XÁC NHẬN THAY ĐỔI",
+        "create_title": "Tạo nhà hàng mới",
+        "create_subtitle": "Thiết lập hồ sơ vận hành cho đối tác SeatNow",
+        "owner_selection": "Chủ sở hữu hệ thống",
+        "choose_owner_placeholder": "Chọn đối tác sở hữu...",
+        "search_owner_placeholder": "Tìm theo Tên, Email hoặc SĐT...",
+        "no_owner_found": "Không tìm thấy đối tác nào",
+        "owner_ready": "Đã gán chủ sở hữu",
+        "owner_required": "Yêu cầu chọn chủ sở hữu",
+        "create_confirm": "KHỞI TẠO HỒ SƠ",
+        "basic_info": "Thông tin nhận diện",
+        "location": "Định vị địa lý",
+        "rest_name": "Tên thương hiệu",
+        "address_placeholder": "Nhập địa chỉ chính xác...",
+        "location_notice": "* Tọa độ GPS sẽ được hệ thống tự động giải mã từ địa chỉ này.",
+        "economics": "Cấu hình tài chính",
+        "commission_rate": "Tỷ lệ hoa hồng (%)",
+        "premium_status": "Trạng thái Cao cấp",
+        "premium_desc": "Ưu tiên hiển thị & nhãn Executive",
+        "cuisine_management": "Danh mục Ẩm thực",
+        "opening_hours": "Khung giờ vận hành",
+        "mode_all": "Cả tuần",
+        "mode_split": "Phân ngày",
+        "mode_custom": "Tùy biến",
+        "every_day": "Mọi ngày trong tuần",
+        "weekday": "Ngày trong tuần (T2 - T6)",
+        "weekend": "Cuối tuần (T7 - CN)",
+        "closed": "ĐÓNG CỬA",
+        "status_notice": "* Trạng thái này quyết định khả năng hiển thị của nhà hàng trên ứng dụng khách hàng.",
+        "commission": "Hoa hồng"
       }
     },
     "audit": {
@@ -684,8 +752,8 @@
       "update_success": "Cập nhật thông tin cho {{name}} thành công!",
       "delete_success": "Đã xóa vĩnh viễn tài khoản đối tác {{name}}!",
       "reset_success": "Đã gửi email khôi phục mật khẩu cho đối tác {{name}}!",
-      "suspend_success": "Nhà hàng đã tạm dừng hoạt động",
-      "activate_success": "Nhà hàng đã hoạt động trở lại",
+      "suspend_success": "Nhà hàng {{name}} đã tạm dừng hoạt động",
+      "activate_success": "Nhà hàng {{name}} đã hoạt động trở lại",
       "error_generic": "Lỗi hệ thống, vui lòng thử lại",
       "EMAIL_ALREADY_EXISTS": "Email này đã được sử dụng bởi một tài khoản khác",
       "PHONE_ALREADY_EXISTS": "Số điện thoại này đã tồn tại trong hệ thống"
@@ -988,7 +1056,15 @@
         "system_uptime": "Thời Gian Hoạt Động"
       },
       "under_construction_title": "Ma Trận Nâng Cao Đang Được Xây Dựng",
-      "under_construction_desc": "Module quản lý toàn cầu đang được hiệu chuẩn. Các công cụ phân tích nâng cao và kiểm duyệt sẽ có sẵn trong đợt triển khai tiếp theo."
+      "under_construction_desc": "Module quản lý toàn cầu đang được hiệu chuẩn. Các công cụ phân tích nâng cao và kiểm duyệt sẽ có sẵn trong đợt triển khai tiếp theo.",
+      "error": {
+        "name_required": "Tên nhà hàng không được để trống",
+        "address_required": "Địa chỉ không được để trống",
+        "phone_required": "Số điện thoại không được để trống",
+        "owner_required": "Bạn phải gán một chủ sở hữu cho nhà hàng này",
+        "cuisine_required": "Vui lòng chọn ít nhất một loại ẩm thực",
+        "validation_failed": "Vui lòng kiểm tra lại các trường thông tin còn thiếu"
+      }
     }
   },
   "tables": {

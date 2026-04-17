@@ -14,45 +14,85 @@ export const useAdminRestaurants = (params = {}) => {
     queryKey: ['admin', 'restaurants', 'list', params],
     queryFn: async () => {
       const response = await restaurantAdminApi.getAll(params);
-      return response.data?.data || response.data || [];
+      return response;
     },
     staleTime: 2 * 60 * 1000,
   });
 };
 
-// Hook xử lý các hành động Vận hành (Suspend/Activate)
+// Hook lấy danh sách nhà hàng đang chờ duyệt
+export const useAdminPendingRestaurants = () => {
+  return useQuery({
+    queryKey: ['admin', 'restaurants', 'pending'],
+    queryFn: async () => {
+      const response = await restaurantAdminApi.getPending();
+      return response;
+    },
+    staleTime: 1 * 60 * 1000,
+  });
+};
+
+// Hook xử lý các hành động Vận hành (Suspend/Activate/Approve)
 export const useRestaurantActions = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
+  const handleSuccess = (key, variables) => {
+    toast.success(t(`admin.toasts.${key}`, { name: variables.name }));
+    queryClient.invalidateQueries({ queryKey: ['admin', 'restaurants'] });
+  };
+
+  const handleError = (error) => {
+    const msg = error.response?.data?.message;
+    const translated = t(`admin.toasts.${msg}`);
+    toast.error(translated !== `admin.toasts.${msg}` ? translated : (msg || t('admin.toasts.error_generic')));
+  };
+
   // Tạm ngừng nhà hàng
   const suspendMutation = useMutation({
-    mutationFn: (id) => restaurantAdminApi.suspend(id),
-    onSuccess: () => {
-      toast.success(t('admin.toasts.suspend_success'));
-      queryClient.invalidateQueries({ queryKey: ['admin', 'restaurants'] });
-    },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || t('admin.toasts.error_generic'));
-    }
+    mutationFn: ({ id }) => restaurantAdminApi.suspend(id),
+    onSuccess: (_, variables) => handleSuccess('suspend_success', variables),
+    onError: handleError
   });
 
   // Mở khóa nhà hàng
   const activateMutation = useMutation({
-    mutationFn: (id) => restaurantAdminApi.activate(id),
-    onSuccess: () => {
-      toast.success(t('admin.toasts.activate_success'));
-      queryClient.invalidateQueries({ queryKey: ['admin', 'restaurants'] });
-    },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || t('admin.toasts.error_generic'));
-    }
+    mutationFn: ({ id }) => restaurantAdminApi.activate(id),
+    onSuccess: (_, variables) => handleSuccess('activate_success', variables),
+    onError: handleError
+  });
+
+  // Phê duyệt nhà hàng mới
+  const approveMutation = useMutation({
+    mutationFn: ({ id }) => restaurantAdminApi.approve(id),
+    onSuccess: (_, variables) => handleSuccess('approve_success', variables),
+    onError: handleError
+  });
+
+  // Cập nhật thông tin nhà hàng
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => restaurantAdminApi.update(id, data),
+    onSuccess: (_, variables) => handleSuccess('update_success', variables),
+    onError: handleError
+  });
+
+  // Tạo mới nhà hàng (Tạo hộ)
+  const createMutation = useMutation({
+    mutationFn: (data) => restaurantAdminApi.create(data),
+    onSuccess: (_, variables) => handleSuccess('create_success', variables),
+    onError: handleError
   });
 
   return {
-    suspend: suspendMutation.mutate,
+    suspend: suspendMutation.mutateAsync,
     isSuspending: suspendMutation.isPending,
-    activate: activateMutation.mutate,
-    isActivating: activateMutation.isPending
+    activate: activateMutation.mutateAsync,
+    isActivating: activateMutation.isPending,
+    approve: approveMutation.mutateAsync,
+    isApproving: approveMutation.isPending,
+    update: updateMutation.mutateAsync,
+    isUpdating: updateMutation.isPending,
+    create: createMutation.mutateAsync,
+    isCreating: createMutation.isPending
   };
 };

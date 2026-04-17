@@ -4,7 +4,7 @@ import { ShieldAlert, Info, ArrowLeft, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '../../../../config/routes';
 import PendingRestaurantTable from '../components/PendingRestaurantTable';
-import ApproveRestaurantDialog from '../components/ApproveRestaurantDialog';
+import AdminActionDialog from '../../components/AdminActionDialog';
 import { useAdminPendingRestaurants, useRestaurantActions } from '../hooks';
 
 /**
@@ -19,17 +19,18 @@ const PendingRestaurantsPage = () => {
   const [actionModal, setActionModal] = useState({
     isOpen: false,
     restaurant: null,
-    type: 'approve'
+    type: 'approve_restaurant'
   });
 
-  const { data: restaurants = [], isLoading, refetch, isRefetching } = useAdminPendingRestaurants();
+  const { data, isLoading, refetch, isRefetching } = useAdminPendingRestaurants();
+  const restaurants = data?.data || data || [];
   const { approve, isApproving } = useRestaurantActions();
 
   const openApproveModal = (restaurant) => {
     setActionModal({
       isOpen: true,
       restaurant,
-      type: 'approve'
+      type: 'approve_restaurant'
     });
   };
 
@@ -42,7 +43,7 @@ const PendingRestaurantsPage = () => {
     if (!restaurant) return;
     
     // Mutation calls
-    approve(restaurant.id);
+    approve({ id: restaurant.id, name: restaurant.name });
     closeActionModal();
   };
 
@@ -69,7 +70,7 @@ const PendingRestaurantsPage = () => {
               </span>
             </div>
             <p className="text-slate-500 text-sm font-medium">
-              Kiểm tra kỹ thông tin liên hệ và cơ sở trước khi phê chuẩn đối tác mới vào hệ thống.
+              {t('admin.restaurants.pending_subtitle')}
             </p>
           </div>
 
@@ -79,7 +80,7 @@ const PendingRestaurantsPage = () => {
             className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-2xl hover:bg-slate-50 transition-all shadow-sm active:scale-95 disabled:opacity-50"
           >
             <RefreshCw size={16} className={isRefetching ? 'animate-spin' : ''} />
-            {isRefetching ? 'Reloading...' : 'Refresh List'}
+            {isRefetching ? t('common.reloading') : t('common.refresh')}
           </button>
         </div>
       </div>
@@ -90,10 +91,9 @@ const PendingRestaurantsPage = () => {
           <Info size={24} />
         </div>
         <div>
-          <h4 className="font-bold text-amber-900 text-sm mb-1 uppercase tracking-tight">Security Protocol Check</h4>
+          <h4 className="font-bold text-amber-900 text-sm mb-1 uppercase tracking-tight">{t('admin.restaurants.protocol_check')}</h4>
           <p className="text-amber-800/80 text-xs leading-relaxed max-w-3xl">
-            Tất cả nhà hàng sau khi duyệt sẽ ngay lập tức được hệ thống SeatNow Wallet gán một địa chỉ ví điện tử định danh. 
-            Mọi lỗi về sai lệch thông tin sau khi duyệt cần can thiệp trực tiếp vào Database. Hãy đảm bảo tính chính xác của dữ liệu.
+            {t('admin.restaurants.protocol_desc')}
           </p>
         </div>
       </div>
@@ -109,12 +109,12 @@ const PendingRestaurantsPage = () => {
       </div>
 
       {/* Approve Dialog */}
-      <ApproveRestaurantDialog
+      <AdminActionDialog
         isOpen={actionModal.isOpen}
         onClose={closeActionModal}
         onConfirm={handleConfirmAction}
-        restaurant={actionModal.restaurant}
-        actionType="approve"
+        data={actionModal.restaurant}
+        type={actionModal.type}
         loading={isApproving}
       />
     </div>

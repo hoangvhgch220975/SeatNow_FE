@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 
 // components
-import MapLocationPicker from '@/features/owner/portal/components/create-wizard/MapLocationPicker';
+import MapLocationPicker from '@/shared/components/MapLocationPicker';
 
 const ContactSettings = ({ register, errors, setValue, watch }) => {
   const { t } = useTranslation();

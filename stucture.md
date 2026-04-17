@@ -416,7 +416,10 @@ seatnow-fe/
 │ │ │ │ ├─ components/
 │ │ │ │ │ ├─ RestaurantFilters.jsx 
 │ │ │ │ │ ├─ RestaurantTable.jsx 
-│ │ │ │ │ └─ PendingRestaurantTable.jsx 
+│ │ │ │ │ ├─ PendingRestaurantTable.jsx 
+│ │ │ │ │ ├─ EditRestaurantDialog.jsx 
+│ │ │ │ │ ├─ CreateRestaurantDialog.jsx 
+│ │ │ │ │ └─ OwnerPicker.jsx 
 │ │ │ │ └─ pages/
 │ │ │ │     └─ ActiveVenuesPage.jsx 
 │ │ │

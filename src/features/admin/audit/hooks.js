@@ -14,7 +14,7 @@ export const useAuditLeads = () => {
     queryKey: ['admin', 'audit', 'leads'],
     queryFn: async () => {
       const response = await auditAdminApi.getLeads();
-      return response.data?.data || response.data || [];
+      return response.data || {};
     },
     staleTime: 1 * 60 * 1000,
   });
@@ -26,7 +26,7 @@ export const useAuditVenues = () => {
     queryKey: ['admin', 'audit', 'venues'],
     queryFn: async () => {
       const response = await auditAdminApi.getPendingVenues();
-      return response.data?.data || response.data || [];
+      return response.data || {};
     },
     staleTime: 1 * 60 * 1000,
   });
