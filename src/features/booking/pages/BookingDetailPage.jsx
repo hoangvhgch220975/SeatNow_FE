@@ -261,6 +261,22 @@ const BookingDetailPage = () => {
           <div className="lg:col-span-4 space-y-10">
             {isConfirmed ? (
               <BookingQRCode value={normalizedBooking.bookingCode} />
+            ) : normalizedBooking.status === 'completed' ? (
+              <div className="bg-emerald-50/50 p-10 rounded-3xl border-2 border-emerald-100/50 text-center animate-in fade-in zoom-in duration-500">
+                <span className="material-symbols-outlined text-4xl text-emerald-500 mb-4">celebration</span>
+                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700 mb-4">{t('booking.detail.completed_title') || 'EXPERIENCE COMPLETED'}</h3>
+                <p className="text-emerald-900/60 text-xs font-bold leading-relaxed italic mb-8">
+                  {t('booking.detail.completed_desc') || 'We hope you had a wonderful meal! Your opinion matters to us and the community.'}
+                </p>
+                
+                <button 
+                  onClick={() => navigate(`/restaurants/${fullRes?.slug || restaurantId}/reviews/new?bookingId=${id}`)}
+                  className="w-full py-5 bg-emerald-500 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-emerald-200 hover:bg-emerald-600 transition-all active:scale-95 flex items-center justify-center gap-3"
+                >
+                  <span className="material-symbols-outlined text-lg">rate_review</span>
+                  {t('restaurants.reviews.write_review') || 'Write a Review'}
+                </button>
+              </div>
             ) : normalizedBooking.status === 'pending' ? (
               <div className="bg-amber-50/50 p-10 rounded-3xl border-2 border-amber-100/50 text-center animate-in fade-in zoom-in duration-500">
                 <span className="material-symbols-outlined text-4xl text-amber-500 mb-4 animate-bounce">pending_actions</span>

@@ -1,41 +1,52 @@
 import React, { useState } from 'react';
+import imageCompression from 'browser-image-compression';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
-/**
- * ImageUploader Component
- * Handles direct uploading to Cloudinary with preview and multi-file support.
- * 
- * @param {Array} value - List of image URLs
- * @param {Function} onChange - Callback when images are added or removed
- * @param {number} maxImages - Maximum number of allowed images
- */
 const ImageUploader = ({ value = [], onChange, maxImages = 1 }) => {
   const { t } = useTranslation();
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState(''); // '', 'compressing', 'uploading'
 
-  /**
-   * Handles file selection and initiates Cloudinary upload
-   */
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (!files || files.length === 0) return;
 
-    // Check limits
     if (value.length + files.length > maxImages) {
       toast.error(`You can only upload up to ${maxImages} images`);
       return;
     }
 
     setIsUploading(true);
+    setUploadStatus('compressing');
+    
     try {
-      // Parallel upload to Cloudinary
-      const uploadPromises = files.map(file => uploadToCloudinary(file));
+      // 1. Nén ảnh phía client
+      const compressionOptions = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+
+      const compressedFiles = await Promise.all(
+        files.map(async (file) => {
+          try {
+            return await imageCompression(file, compressionOptions);
+          } catch (err) {
+            console.error('Compression error:', err);
+            return file; // Fallback to original if compression fails
+          }
+        })
+      );
+
+      setUploadStatus('uploading');
+
+      // 2. Upload song song lên Cloudinary
+      const uploadPromises = compressedFiles.map(file => uploadToCloudinary(file));
       const results = await Promise.all(uploadPromises);
       const urls = results.map(res => res.secure_url);
       
-      // Update state via parent callback
       if (maxImages === 1) {
         onChange([urls[0]]);
       } else {
@@ -47,6 +58,7 @@ const ImageUploader = ({ value = [], onChange, maxImages = 1 }) => {
       toast.error('Failed to upload images. Please check your connection.');
     } finally {
       setIsUploading(false);
+      setUploadStatus('');
     }
   };
 
@@ -93,8 +105,15 @@ const ImageUploader = ({ value = [], onChange, maxImages = 1 }) => {
           `}>
             {isUploading ? (
               <div className="flex flex-col items-center gap-4">
-                <div className="w-12 h-12 border-4 border-violet-700/20 border-t-violet-700 rounded-full animate-spin"></div>
-                <span className="text-sm font-black text-violet-700 uppercase tracking-widest">{t('common.loading')}</span>
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[10px] font-black text-primary uppercase tracking-widest">
+                    {uploadStatus === 'compressing' ? t('common.compressing') : t('common.uploading')}
+                  </span>
+                  <span className="text-[8px] font-bold text-on-surface-variant/40 uppercase tracking-tighter mt-1 animate-pulse">
+                    Please wait
+                  </span>
+                </div>
               </div>
             ) : (
               <>

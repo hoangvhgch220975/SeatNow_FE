@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { formatDate } from '../../../shared/utils/formatDateTime.js';
 import MediaLightbox from '../../../shared/ui/MediaLightbox.jsx';
 
@@ -9,6 +10,7 @@ const getInitials = (name) => {
   if (!name) return '??';
   return name
     .split(' ')
+    .filter(Boolean)
     .map((n) => n[0])
     .join('')
     .toUpperCase()
@@ -20,6 +22,7 @@ const getInitials = (name) => {
  * @description Thành phần hiển thị một thẻ đánh giá đơn lẻ.
  */
 const ReviewCard = ({ review, index }) => {
+  const { t } = useTranslation();
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
@@ -39,10 +42,15 @@ const ReviewCard = ({ review, index }) => {
     review.displayName || 
     review.name;
 
-  const isVietnamesePlaceholder = rawName === 'Khách vãng lai' || rawName === 'Khách';
+  // Kiểm tra nếu tên trả về là placeholder cứng của Backend (Vietnamese comment)
+  const isPlaceholder = !rawName || rawName === 'Khách vãng lai' || rawName === 'Khách' || rawName === 'Guest';
   
-  // Ưu tiên hiển thị tên thực tế nếu không phải placeholder
-  const reviewerName = (!isVietnamesePlaceholder && rawName) || (review.customerId || review.userId ? 'Verified Customer' : 'Guest');
+  const isGuest = !review.customerId && !review.userId && !review.customer?.id;
+  
+  // Nếu là placeholder của BE, ép buộc dùng i18n key để đồng bộ ngôn ngữ (Vietnamese comment)
+  const reviewerName = isPlaceholder 
+    ? (review.isVerified ? t('restaurants.reviews.verified_customer') : t('restaurants.reviews.guest_reviewer'))
+    : rawName;
   
   const baseAvatar = 
     review.customerAvatar || 
@@ -51,11 +59,11 @@ const ReviewCard = ({ review, index }) => {
     review.customer?.avatar || 
     review.avatar;
 
-  // Kiểm tra nếu avatar là một placeholder mặc định (như ui-avatars.com)
+  // Kiểm tra nếu avatar là một placeholder mặc định (Vietnamese comment)
   const isPlaceholderAvatar = typeof baseAvatar === 'string' && (baseAvatar.includes('ui-avatars.com') || baseAvatar.includes('placeholder'));
 
-  // Xử lý Avatar tự động cho Guest (Khách vãng lai) - Bỏ qua placeholder để dùng DiceBear
-  const reviewerAvatar = (!isPlaceholderAvatar && baseAvatar) || (reviewerName.trim() === 'Guest' 
+  // Xử lý Avatar tự động cho Guest - Dùng DiceBear nếu không có avatar thực (Vietnamese comment)
+  const reviewerAvatar = (!isPlaceholderAvatar && baseAvatar) || (isGuest
     ? `https://api.dicebear.com/7.x/adventurer/svg?seed=${review.id || review._id || index}&backgroundColor=b6e3f4,c0aede,d1d4f9` 
     : null);
 
@@ -67,16 +75,36 @@ const ReviewCard = ({ review, index }) => {
       <div className="flex flex-col sm:flex-row gap-8 items-start">
         {/* Author Metadata */}
         <div className="flex items-center sm:flex-col gap-4 sm:w-32 flex-shrink-0">
-          <div className="w-14 h-14 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-black text-lg shadow-inner ring-4 ring-white overflow-hidden">
-            {reviewerAvatar ? (
-              <img src={reviewerAvatar} alt={reviewerName} className="w-full h-full object-cover" />
-            ) : (
-              getInitials(reviewerName)
+          <div className="relative">
+            <div className="w-14 h-14 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-black text-lg shadow-inner ring-4 ring-white overflow-hidden">
+              {reviewerAvatar ? (
+                <img src={reviewerAvatar} alt={reviewerName} className="w-full h-full object-cover" />
+              ) : (
+                getInitials(reviewerName)
+              )}
+            </div>
+            {/* Verified Badge Icon */}
+            {review.isVerified && (
+              <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm">
+                <span 
+                  className="material-symbols-outlined text-primary text-base leading-none block font-bold"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  check_circle
+                </span>
+              </div>
             )}
           </div>
           <div className="sm:text-center">
-            <h4 className="font-bold text-on-surface text-sm line-clamp-1">{reviewerName}</h4>
-            <p className="text-[10px] text-on-surface-variant/70 font-medium uppercase tracking-widest mt-1">
+            <div className="flex items-center gap-1 sm:justify-center">
+              <h4 className="font-bold text-on-surface text-sm line-clamp-1">{reviewerName}</h4>
+            </div>
+            {review.isVerified && (
+              <p className="text-[9px] font-black text-primary uppercase tracking-tighter mt-0.5">
+                {t('restaurants.reviews.verified_badge')}
+              </p>
+            )}
+            <p className="text-[10px] text-on-surface-variant/50 font-medium uppercase tracking-widest mt-1">
               {formatDate(review.createdAt)}
             </p>
           </div>

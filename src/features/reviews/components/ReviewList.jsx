@@ -1,11 +1,14 @@
 import React from 'react';
 import ReviewCard from './ReviewCard';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @file ReviewList.jsx
  * @description Hiển thị danh sách các bài đánh giá hoặc trạng thái loading/trống.
  */
 const ReviewList = ({ reviews = [], isLoading }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="grid grid-cols-1 gap-10">
       {isLoading ? (
@@ -30,8 +33,9 @@ const ReviewList = ({ reviews = [], isLoading }) => {
         <div className="py-20 text-center border-2 border-dashed border-outline-variant/10 rounded-3xl">
           <span className="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-3">rate_review</span>
           <p className="text-on-surface-variant font-medium italic">
-            No reviews yet. Be the first to share your experience!
+            {t('restaurants.reviews.no_reviews')}
           </p>
+
         </div>
       )}
     </div>

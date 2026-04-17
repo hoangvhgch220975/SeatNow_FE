@@ -1,10 +1,14 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 
 /**
  * @file RatingSummary.jsx
  * @description Hiển thị tổng quan điểm số trung bình và biểu đồ phân bổ sao.
  */
 const RatingSummary = ({ rating, reviewCount, summary = {} }) => {
+  const { t } = useTranslation();
+
   // Tính toán phần trăm cho các thanh biểu đồ (Progress bars)
   const totalSummary = Object.values(summary).reduce((acc, val) => acc + val, 0) || 1;
   const getPercentage = (count) => (count / totalSummary) * 100;
@@ -28,8 +32,12 @@ const RatingSummary = ({ rating, reviewCount, summary = {} }) => {
           ))}
         </div>
         <div className="text-sm font-medium text-on-surface-variant italic">
-          {reviewCount > 0 ? `${reviewCount} verified reviews` : 'No verified reviews yet'}
+          {reviewCount > 0 
+            ? t('restaurants.reviews.count_verified', { count: reviewCount })
+            : t('restaurants.reviews.no_reviews')
+          }
         </div>
+
       </div>
 
       {/* Rating Breakdown Bars */}

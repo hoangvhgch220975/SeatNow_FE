@@ -90,7 +90,10 @@ const TransactionTable = ({
 
               <tbody>
                 {transactions.map((tx) => {
-                  const isIncome = tx.amount > 0;
+                  // Xác định giao dịch là dòng tiền ra (rút tiền, hoa hồng, hoàn tiền) (Vietnamese comment)
+                  const isOutflow = ['WITHDRAWAL', 'COMMISSION', 'REFUND'].includes(tx.type);
+                  const isIncome = !isOutflow;
+
                   const isDeposit = tx.type === 'DEPOSIT_PAYMENT';
                   const hasAvatar = isDeposit && tx.customerAvatar;
 
@@ -132,7 +135,7 @@ const TransactionTable = ({
 
                       {/* Cột ngày & giờ */}
                       <td className="px-3 py-4 whitespace-nowrap">
-                        <p className="text-[11px] font-bold text-slate-700">
+                        <p className={`text-[11px] font-bold text-slate-700`}>
                           {format(new Date(tx.createdAt), 'MMM dd, yyyy')}
                         </p>
                         <p className="text-[10px] text-slate-400 font-medium mt-0.5">
@@ -166,7 +169,7 @@ const TransactionTable = ({
                       {/* Cột số tiền biến động */}
                       <td className="px-3 py-4 text-right whitespace-nowrap">
                         <p className={`font-extrabold tracking-tight ${isIncome ? 'text-green-600' : 'text-red-600'}`}>
-                          {isIncome ? '+' : ''}{formatCurrency(tx.amount)}
+                          {isIncome ? '+' : '-'}{formatCurrency(Math.abs(tx.amount))}
                         </p>
                       </td>
 

@@ -8,6 +8,10 @@ import './lib/i18n.js';
 // Root CSS: import tailwind entry which includes base styles
 import './styles/tailwind.css';
 
+// Khởi chạy đồng bộ Session (Logout khi thoát trình duyệt) (Vietnamese comment)
+import { storage } from './lib/storage.js';
+storage.initSessionSync();
+
 // Context Providers global
 import { AppProviders } from './app/providers.jsx';
 

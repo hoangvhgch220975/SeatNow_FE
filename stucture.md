@@ -223,15 +223,17 @@ seatnow-fe/
 │ │ │ └─ PaymentResult.jsx (New)
 │ │ │
 │ │ ├─ reviews/
-│ │ │ ├─ api.js // API lấy danh sách review, tóm tắt (summary), tạo review
+│ │ │ ├─ api.js // API: list, summary, CREATE review (Hybrid Support)
 │ │ │ ├─ hooks.js // useRestaurantReviews, useRestaurantReviewSummary
-│ │ │ ├─ pages/ // (trống - chưa có trang riêng)
+│ │ │ ├─ pages/
+│ │ │ │ └─ CreateReviewPage.jsx // Trang tạo đánh giá (Split Layout, Premium UI)
 │ │ │ └─ components/
-│ │ │ ├─ ReviewSection.jsx // Smart Container: fetch, logic phân trang, hiển thị tổng hợp
-│ │ │ ├─ ReviewForm.jsx // Form gửi đánh giá (chưa hoàn thiện)
-│ │ │ ├─ ReviewCard.jsx // Thẻ hiển thị một bài đánh giá đơn lẻ
-│ │ │ ├─ ReviewList.jsx // Danh sách đánh giá + Skeletons
-│ │ │ └─ RatingSummary.jsx // Tổng hợp rating trung bình & Star breakdown
+│ │ │   ├─ ReviewSection.jsx // Smart Container: fetch, pagination, summary display
+│ │ │   ├─ ReviewForm.jsx // Form gửi đánh giá (Glassmorphism, Multi-size support)
+│ │ │   ├─ StarRatingInput.jsx // Bộ chọn sao tùy chỉnh (Premium, Multi-size labels)
+│ │ │   ├─ ReviewCard.jsx // Thẻ hiển thị (Verified badge, DiceBear Guest Avatar support)
+│ │ │   ├─ ReviewList.jsx // Danh sách đánh giá + Empty states
+│ │ │   └─ RatingSummary.jsx // Tổng hợp rating trung bình & Star breakdown
 │ │ │
 │ │ ├─ owner/
 │ │ │ ├─ portal/ // Cấp tài khoản owner - Quản lý danh sách nhà hàng

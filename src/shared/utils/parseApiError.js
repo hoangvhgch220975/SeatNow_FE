@@ -56,6 +56,11 @@ const MESSAGE_MAP = {
   'VALIDATION_ERROR':                 "api.messages.VALIDATION_ERROR",
   'RATE_LIMIT_EXCEEDED':              "api.messages.RATE_LIMIT_EXCEEDED",
   'MISSING_REQUIRED_FIELDS':          "api.messages.MISSING_REQUIRED_FIELDS",
+
+  // ── Reviews (New) ──
+  'BOOKING_NOT_COMPLETED':            "api.messages.BOOKING_NOT_COMPLETED",
+  'REVIEW_ALREADY_EXISTS':            "api.messages.REVIEW_ALREADY_EXISTS",
+  'RESTAURANT_NOT_FOUND':             "api.messages.RESTAURANT_NOT_FOUND",
 };
 
 /**

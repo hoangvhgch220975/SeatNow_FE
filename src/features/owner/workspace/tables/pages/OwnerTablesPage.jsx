@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -38,9 +38,12 @@ const OwnerTablesPage = () => {
   const [tableToDelete, setTableToDelete] = useState(null);
 
   // Fetch dữ liệu qua React Query (Vietnamese comment)
-  const { data: tables, isLoading: isLoadingTables } = useTables(restaurantId, {
+  // ✅ Dùng useMemo để tránh tạo object mới mỗi lần render → gây refetch vô hạn
+  const tableParams = useMemo(() => ({
     location: currentFloor !== 'all' ? currentFloor : undefined
-  });
+  }), [currentFloor]);
+
+  const { data: tables, isLoading: isLoadingTables } = useTables(restaurantId, tableParams);
   
   const { data: stats, isLoading: isLoadingStats } = useTableStats(restaurantId);
 

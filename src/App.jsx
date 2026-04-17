@@ -1,17 +1,30 @@
+import React, { useEffect } from 'react';
 import { useLocation, useOutlet } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
+import { Toaster } from 'react-hot-toast';
 import PageTransition from './shared/components/PageTransition.jsx';
+import { useAuthStore } from './features/auth/store';
 
 /**
  * @file App.jsx
- * @description Root Component. Đơn giản là một "vỏ bọc" Outlet cho toàn ứng dụng.
- * Tầng Layout thực tế sẽ được phân nhánh ở cấp Router.
+ * @description Root Component. Quản lý các sự kiện toàn cục và chuyển cảnh trang.
  */
-import { Toaster } from 'react-hot-toast';
 
 function App() {
   const location = useLocation();
   const element = useOutlet();
+  const { logout } = useAuthStore();
+
+  // ✅ Lắng nghe sự kiện Logout tự động khi Token hết hạn (phát ra từ axios interceptor)
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      console.warn('⚠️ [Session] Token expired or invalid. Redirecting to login...');
+      logout();
+    };
+
+    window.addEventListener('auth:unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('auth:unauthorized', handleUnauthorized);
+  }, [logout]);
 
   return (
     <>

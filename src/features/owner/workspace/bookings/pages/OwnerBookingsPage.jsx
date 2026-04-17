@@ -78,7 +78,8 @@ const OwnerBookingsPage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [restaurantId, selectedDate, selectedStatus, currentPage, t]);
+  // ✅ Bỏ `t` khỏi deps vì không ảnh hưởng logic fetch, tránh tạo fetchData mới vô ích
+  }, [restaurantId, selectedDate, selectedStatus, currentPage]);
 
   // --- TỰ ĐỘNG CẬP NHẬT KHI CÓ THAY ĐỔI FILTER ---
   useEffect(() => {
