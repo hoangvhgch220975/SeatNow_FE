@@ -431,7 +431,10 @@ seatnow-fe/
 │ │ │ ├─ users/
 │ │ │ │ ├─ api.js
 │ │ │ │ ├─ hooks.js
-│ │ │ │ └─ pages/ AdminUsersPage.jsx 
+│ │ │ │ ├─ components/
+│ │ │ │ │ └─ UserTable.jsx 
+│ │ │ │ └─ pages/ 
+│ │ │ │     └─ AdminUsersPage.jsx 
 │ │ │
 │ │ │ ├─ bookings/
 │ │ │ │ ├─ api.js 

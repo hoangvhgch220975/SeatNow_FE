@@ -57,7 +57,7 @@
     "confirm_message": "Are you sure you want to perform this action?",
     "reject": "Reject",
     "approve": "Approve",
-    "clear_all": "Clear all",
+    "clear_all": "Read all",
     "view_details": "View details"
   },
   "notifications": {
@@ -788,6 +788,42 @@
           "reset": "A new password will be randomly generated and securely sent via the partner's email."
         }
       }
+    },
+    "users": {
+      "title": "Membership Management",
+      "subtitle": "Oversee and manage user accounts (Customers & Partners) across the entire platform.",
+      "stats": {
+        "total": "Total Members",
+        "customers": "Customers",
+        "owners": "Partners (Owners)"
+      },
+      "filters": {
+        "search_placeholder": "Search by Name, Email or Phone...",
+        "role_all": "All Roles",
+        "role_customer": "Customer",
+        "role_owner": "Restaurant Owner"
+      },
+      "table": {
+        "user": "User",
+        "email": "Email",
+        "phone": "Phone",
+        "role": "Role",
+        "joined": "Joined Date",
+        "actions": "Actions",
+        "user_plural": "Users",
+        "showing_entities": "Showing {{start}} - {{end}} of {{total}} users"
+      },
+      "toasts": {
+        "delete_success": "User account deleted successfully",
+        "error_delete": "Failed to delete account. Please try again later"
+      },
+      "dialog": {
+        "delete_title": "Confirm Account Deletion",
+        "delete_desc": "Are you sure you want to permanently delete the account for <strong>{{name}}</strong>? This action cannot be undone and all associated data will be removed.",
+        "delete_confirm": "Confirm Delete",
+        "delete_cancel": "Cancel"
+      },
+      "empty": "No users found matching your criteria"
     },
     "toasts": {
       "approve_success": "Partner approved & account created successfully",

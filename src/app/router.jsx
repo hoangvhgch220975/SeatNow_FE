@@ -16,6 +16,7 @@ import AdminDashboardPage from '../features/admin/dashboard/pages/AdminDashboard
 import ActiveVenuesPage from '../features/admin/restaurants/pages/ActiveVenuesPage.jsx';
 import AuditRequestsPage from '../features/admin/audit/pages/AuditRequestsPage.jsx';
 import PartnerManagementPage from '../features/admin/partners/pages/PartnerManagementPage.jsx';
+import AdminUsersPage from '../features/admin/users/pages/AdminUsersPage.jsx';
 import LoginPage from '../features/auth/pages/LoginPage.jsx';
 import RegisterPage from '../features/auth/pages/RegisterPage.jsx';
 import ForgotPasswordPage from '../features/auth/pages/ForgotPasswordPage.jsx';
@@ -275,6 +276,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN_DASHBOARD,
             element: <AdminDashboardPage />,
+          },
+          {
+            path: ROUTES.ADMIN_USERS,
+            element: <AdminUsersPage />,
           },
           {
             path: ROUTES.ADMIN_RESTAURANTS,

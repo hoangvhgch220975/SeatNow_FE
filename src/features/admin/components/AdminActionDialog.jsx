@@ -139,6 +139,25 @@ const AdminActionDialog = ({
           type: 'danger',
           confirmText: t('admin.partners.table.actions.delete'),
         };
+      case 'delete_user':
+        return {
+          title: t('admin.users.dialog.delete_title'),
+          message: (
+            <div className="space-y-3 font-medium">
+              <div 
+                dangerouslySetInnerHTML={{ 
+                  __html: t('admin.users.dialog.delete_desc', { name: data.fullName || data.email }) 
+                }} 
+              />
+              <div className="p-3 bg-rose-50 rounded-xl border border-rose-100 flex gap-3 text-rose-700 text-xs">
+                <AlertTriangle size={18} className="flex-shrink-0" />
+                <p>{t('admin.partners.dialog.notes.delete')}</p>
+              </div>
+            </div>
+          ),
+          type: 'danger',
+          confirmText: t('admin.users.dialog.delete_confirm'),
+        };
       case 'reset':
         const resetPartnerName = data.name || data.fullName || t('admin.partners.dialog.name');
         return {

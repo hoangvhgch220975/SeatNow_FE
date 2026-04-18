@@ -57,7 +57,7 @@
     "confirm_message": "Bạn có chắc chắn muốn thực hiện hành động này?",
     "reject": "Từ chối",
     "approve": "Duyệt",
-    "clear_all": "Xóa tất cả",
+    "clear_all": "Đọc tất cả",
     "view_details": "Xem chi tiết"
   },
   "notifications": {
@@ -786,6 +786,42 @@
           "reset": "Mật khẩu mới sẽ được hệ thống sinh ngẫu nhiên và gửi an toàn qua email của đối tác."
         }
       }
+    },
+    "users": {
+      "title": "Quản lý Thành viên",
+      "subtitle": "Giám sát và quản lý tài khoản người dùng (Khách hàng & Đối tác) trên toàn hệ diện.",
+      "stats": {
+        "total": "Tổng số thành viên",
+        "customers": "Khách hàng",
+        "owners": "Đối tác (Chủ quán)"
+      },
+      "filters": {
+        "search_placeholder": "Tìm kiếm theo Tên, Email hoặc SĐT...",
+        "role_all": "Tất cả vai trò",
+        "role_customer": "Khách hàng",
+        "role_owner": "Chủ nhà hàng"
+      },
+      "table": {
+        "user": "Người dùng",
+        "email": "Email",
+        "phone": "Số điện thoại",
+        "role": "Vai trò",
+        "joined": "Ngày tham gia",
+        "actions": "Hành động",
+        "user_plural": "Người dùng",
+        "showing_entities": "Hiển thị {{start}} - {{end}} trong tổng số {{total}} người dùng"
+      },
+      "toasts": {
+        "delete_success": "Đã xóa tài khoản người dùng thành công",
+        "error_delete": "Không thể xóa tài khoản. Vui lòng thử lại sau"
+      },
+      "dialog": {
+        "delete_title": "Xác nhận xóa tài khoản",
+        "delete_desc": "Bạn có chắc chắn muốn xóa vĩnh viễn tài khoản của <strong>{{name}}</strong>? Hành động này không thể hoàn tác.",
+        "delete_confirm": "Xác nhận xóa",
+        "delete_cancel": "Hủy bỏ"
+      },
+      "empty": "Không tìm thấy người dùng nào phù hợp"
     },
     "toasts": {
       "approve_success": "Đối tác đã được phê duyệt & tạo tài khoản",
