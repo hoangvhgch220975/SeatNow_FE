@@ -581,6 +581,71 @@
       "settings": "Settings",
       "soon": "Soon"
     },
+    "profile": {
+      "role_super_admin": "Root Administrator",
+      "system_status": "Access Protocol",
+      "system_identity": "System Identity",
+      "verified_node": "Verified Administrative Node",
+      "personal_settings": "Personal Settings",
+      "manage_data": "Manage your administrative profile data",
+      "security_level": "Level 5 Security",
+      "default_name": "SeatNow Admin",
+      "tabs": {
+        "overview": "Overview",
+        "settings": "Settings",
+        "security": "Security"
+      },
+      "overview": {
+        "sig_id": "Digital Signature ID",
+        "active": "Active",
+        "proto_ver": "Protocol Version",
+        "optimized": "Optimized",
+        "region": "Regional Zone",
+        "region_vn_south": "Vietnam-North",
+        "reg_date": "System Registration Date",
+        "integrity": "Security Integrity",
+        "integrity_desc": "This node is operating under full administrative protocols. All actions are logged and audited in real-time.",
+        "enc_level": "Encryption Level",
+        "aes_256": "AES-256 Bit",
+        "uptime": "System Uptime"
+      },
+      "settings": {
+        "strict_proto": "Strict Security Protocol",
+        "locked_notice": "Primary contact information (Email & Phone) is locked at the system level for administrative accounts. Contact the Security Operations Center to initiate a recovery protocol for these fields.",
+        "full_name_label": "Administrative Full Name",
+        "full_name_placeholder": "Enter full name",
+        "avatar_label": "Avatar Resource URL",
+        "avatar_placeholder": "https://image-url.com/avatar.jpg",
+        "avatar_hint": "Cloudinary or external image URL supported.",
+        "email_label": "Primary Administrative Email",
+        "phone_label": "Secure Hotline Access",
+        "btn_security": "Update Security Credentials",
+        "btn_syncing": "Synchronizing...",
+        "btn_confirm": "Confirm Protocol Changes"
+      },
+      "security": {
+        "title": "Security Protocol",
+        "subtitle": "Update your administrative access credentials",
+        "curr_key_label": "Current Access Key",
+        "curr_key_placeholder": "Enter current password",
+        "new_string_label": "New Security String",
+        "new_string_placeholder": "Min. 8 characters",
+        "confirm_key_label": "Confirm Identity Key",
+        "confirm_key_placeholder": "Repeat new password",
+        "btn_updating": "Updating credentials...",
+        "btn_update_proto": "Update Protocol Key",
+        "warning_title": "Access Control Warning",
+        "warning_desc": "Updating your administrative password will invalidate all current active sessions. Ensure you have recorded your new credentials securely as system-level recovery requires multi-sig approval from the root ops team."
+      },
+      "toasts": {
+        "update_success": "System identity updated successfully!",
+        "update_error": "Failed to update protocol data. Please try again.",
+        "security_success": "Security credentials updated successfully!",
+        "security_error": "Failed to verify current credentials.",
+        "invalid_old_password": "The current password you entered is incorrect. Please verify and try again.",
+        "name_short": "Identity name must be at least 2 characters."
+      }
+    },
 
     "panel": {
       "restaurant_management": "System Console",

@@ -101,7 +101,7 @@ const AdminHeader = () => {
 
               <div className="space-y-1">
                 <Link
-                  to={ROUTES.PROFILE}
+                  to={ROUTES.ADMIN_PROFILE}
                   onClick={() => setIsProfileOpen(false)}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-violet-50 text-slate-600 hover:text-violet-700 transition-all font-bold text-xs"
                 >

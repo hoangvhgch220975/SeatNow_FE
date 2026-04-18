@@ -128,12 +128,10 @@ const BookingTable = ({ bookings, loading }) => {
               </td>
 
               {/* Customer */}
-              <td className="px-4 py-5 font-mono">
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold text-slate-900 truncate max-w-[200px]" title={booking.guestName || booking.customerName}>
-                    {booking.guestName || booking.customerName || 'N/A'}
-                  </span>
-                </div>
+              <td className="px-4 py-5">
+                <span className="text-sm font-bold text-slate-900 truncate max-w-[200px]" title={booking.guestName || booking.customerName || booking.CustomerName}>
+                  {booking.guestName || booking.customerName || booking.CustomerName || 'N/A'}
+                </span>
               </td>
 
               {/* Restaurant */}

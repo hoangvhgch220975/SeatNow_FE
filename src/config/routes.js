@@ -60,6 +60,7 @@ export const ROUTES = {
   ADMIN_COMMISSIONS: '/admin/commissions',
   ADMIN_AI_CHAT: '/admin/ai-chat',
   ADMIN_AI_ANALYTICS: '/admin/ai-analytics',
+  ADMIN_PROFILE: '/admin/profile',
   ADMIN_SETTINGS: '/admin/settings',
   
   // --- AI ASSISTANT ---

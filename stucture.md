@@ -437,6 +437,16 @@ seatnow-fe/
 │ │ │ │ └─ pages/ 
 │ │ │ │     └─ AdminUsersPage.jsx 
 │ │ │
+│ │ │ ├─ profile/ // [MỚI] Module quản lý hồ sơ Admin
+│ │ │ │ ├─ api.js // API nội bộ module [NEW]
+│ │ │ │ ├─ hooks.js // Hooks nội bộ module [NEW]
+│ │ │ │ ├─ pages/
+│ │ │ │ │ └─ AdminProfilePage.jsx // Trang layout chính
+│ │ │ │ └─ components/
+│ │ │ │     ├─ AdminProfileOverview.jsx // Thẻ định danh hệ thống
+│ │ │ │     ├─ AdminProfileSettings.jsx // Form thiết lập thông tin
+│ │ │ │     └─ AdminSecuritySettings.jsx // Form đổi mật khẩu bảo mật
+│ │ │
 │ │ │ ├─ bookings/
 │ │ │ │ ├─ api.js // API: Lấy danh sách & thống kê booking toàn sàn
 │ │ │ │ ├─ hooks.js // Hooks: useAdminBookings, useAdminBookingStats

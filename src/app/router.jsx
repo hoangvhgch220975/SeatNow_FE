@@ -50,6 +50,7 @@ import AIChatPortfolioPage from '../features/owner/portal/pages/AIChatPortfolioP
 import AIRevenueInsightsPage from '../features/owner/portal/pages/AIRevenueInsightsPage.jsx';
 import WorkspaceAIChatPage from '../features/owner/workspace/ai/pages/WorkspaceAIChatPage.jsx';
 import WorkspaceAIRevenuePage from '../features/owner/workspace/ai/pages/WorkspaceAIRevenuePage.jsx';
+import AdminProfilePage from '../features/admin/profile/pages/AdminProfilePage.jsx';
 import CreateReviewPage from '../features/reviews/pages/CreateReviewPage.jsx';
 
 
@@ -297,6 +298,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN_BOOKINGS,
             element: <AdminBookingsPage />,
+          },
+          {
+            path: ROUTES.ADMIN_PROFILE,
+            element: <AdminProfilePage />,
           },
         ]
       },

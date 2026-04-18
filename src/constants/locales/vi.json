@@ -581,6 +581,71 @@
       "settings": "Cài đặt",
       "soon": "Soon"
     },
+    "profile": {
+      "role_super_admin": "Quản trị viên Cấp cao",
+      "system_status": "Giao thức Truy cập",
+      "system_identity": "Định danh Hệ thống",
+      "verified_node": "Nút Quản trị đã Xác thực",
+      "personal_settings": "Thiết lập Cá nhân",
+      "manage_data": "Quản lý dữ liệu hồ sơ quản trị của bạn",
+      "security_level": "Bảo mật Cấp độ 5",
+      "default_name": "Quản trị viên SeatNow",
+      "tabs": {
+        "overview": "Tổng quan",
+        "settings": "Thiết lập",
+        "security": "Bảo mật"
+      },
+      "overview": {
+        "sig_id": "Mã Chữ ký Số",
+        "active": "Hoạt động",
+        "proto_ver": "Phiên bản Giao thức",
+        "optimized": "Tối ưu",
+        "region": "Khu vực Vùng",
+        "region_vn_south": "Việt Nam - Miền Bắc",
+        "reg_date": "Ngày Đăng ký Hệ thống",
+        "integrity": "Tính Toàn vẹn Bảo mật",
+        "integrity_desc": "Nút này đang hoạt động dưới các giao thức quản trị đầy đủ. Mọi hành động đều được ghi nhật ký và kiểm duyệt theo thời gian thực.",
+        "enc_level": "Cấp độ Mã hóa",
+        "aes_256": "AES-256 Bit",
+        "uptime": "Thời gian Hoạt động Hệ thống"
+      },
+      "settings": {
+        "strict_proto": "Giao thức Bảo mật Nghiêm ngặt",
+        "locked_notice": "Thông tin liên lạc chính (Email & Số điện thoại) đã bị khóa ở cấp độ hệ thống cho các tài khoản quản trị. Liên hệ Trung tâm Điều hành Bảo mật để khởi tạo giao thức khôi phục cho các trường này.",
+        "full_name_label": "Họ và Tên Quản trị",
+        "full_name_placeholder": "Nhập họ và tên",
+        "avatar_label": "URL Nguồn Ảnh đại diện",
+        "avatar_placeholder": "https://duong-dan-anh.com/avatar.jpg",
+        "avatar_hint": "Hỗ trợ Cloudinary hoặc URL ảnh bên ngoài.",
+        "email_label": "Email Quản trị Chính",
+        "phone_label": "Truy cập Hotline Bảo mật",
+        "btn_security": "Cập nhật Thông tin Bảo mật",
+        "btn_syncing": "Đang đồng bộ...",
+        "btn_confirm": "Xác nhận Thay đổi Giao thức"
+      },
+      "security": {
+        "title": "Giao thức Bảo mật",
+        "subtitle": "Cập nhật thông tin truy cập quản trị của bạn",
+        "curr_key_label": "Khóa Truy cập Hiện tại",
+        "curr_key_placeholder": "Nhập mật khẩu hiện tại",
+        "new_string_label": "Chuỗi Bảo mật Mới",
+        "new_string_placeholder": "Tối thiểu 8 ký tự",
+        "confirm_key_label": "Xác nhận Khóa Định danh",
+        "confirm_key_placeholder": "Nhập lại mật khẩu mới",
+        "btn_updating": "Đang cập nhật thông tin...",
+        "btn_update_proto": "Cập nhật Khóa Giao thức",
+        "warning_title": "Cảnh báo Kiểm soát Truy cập",
+        "warning_desc": "Cập nhật mật khẩu quản trị của bạn sẽ vô hiệu hóa tất cả các phiên hoạt động hiện tại. Đảm bảo bạn đã ghi lại thông tin xác thực mới một cách an toàn vì việc khôi phục cấp hệ thống yêu cầu phê duyệt đa chữ ký từ nhóm vận hành gốc."
+      },
+      "toasts": {
+        "update_success": "Định danh hệ thống đã được cập nhật thành công!",
+        "update_error": "Lỗi cập nhật dữ liệu giao thức. Vui lòng thử lại.",
+        "security_success": "Thông tin bảo mật đã được cập nhật thành công!",
+        "security_error": "Lỗi xác thực thông tin hiện tại.",
+        "invalid_old_password": "Mật khẩu hiện tại không chính xác. Vui lòng kiểm tra và thử lại.",
+        "name_short": "Tên định danh phải có ít nhất 2 ký tự."
+      }
+    },
     "panel": {
       "restaurant_management": "Quản trị hệ thống",
       "search_placeholder": "Tìm kiếm nhà hàng, đối tác...",
