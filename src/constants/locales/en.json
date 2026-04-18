@@ -58,7 +58,8 @@
     "reject": "Reject",
     "approve": "Approve",
     "clear_all": "Read all",
-    "view_details": "View details"
+    "view_details": "View details",
+    "close": "Close"
   },
   "notifications": {
     "title": "Notifications",
@@ -666,7 +667,7 @@
         "status_active": "ACTIVE / VERIFIED",
         "status_pending": "PENDING AUDIT",
         "status_suspended": "SUSPENDED / BLOCKED",
-        "cuisine_tags": "Cuisine Tags (Standard List)",
+        "cuisine_tags": "Cuisine Tags",
         "price_category": "Pricing Category",
         "operating_schedule": "Operating Schedule",
         "schedule_all": "All",
@@ -788,6 +789,40 @@
           "reset": "A new password will be randomly generated and securely sent via the partner's email."
         }
       }
+    },
+    "bookings": {
+      "title": "Booking Management",
+      "subtitle": "Oversee and track all reservation activities across the SeatNow platform.",
+      "stats": {
+        "total": "Total Bookings",
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "filters": {
+        "restaurant_all": "All Restaurants",
+        "restaurant_label": "Select Restaurant",
+        "status_all": "All Statuses",
+        "status_pending": "Pending",
+        "status_confirmed": "Confirmed",
+        "status_arrived": "Arrived",
+        "status_completed": "Completed",
+        "status_cancelled": "Cancelled",
+        "status_no_show": "No-show"
+      },
+      "table": {
+        "code": "Booking Code",
+        "customer": "Customer",
+        "restaurant": "Restaurant",
+        "date_time": "Date & Time",
+        "guests": "Guests",
+        "deposit": "Deposit",
+        "status": "Status",
+        "actions": "Actions",
+        "booking_plural": "Bookings"
+      },
+      "empty": "No booking data found"
     },
     "users": {
       "title": "Membership Management",

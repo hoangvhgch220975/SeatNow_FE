@@ -4,6 +4,7 @@ import { Plus, Download, Store, ShieldCheck, ShieldAlert, Lock } from 'lucide-re
 import RestaurantFilters from '../components/RestaurantFilters';
 import RestaurantTable from '../components/RestaurantTable';
 import ApproveRestaurantDialog from '../components/ApproveRestaurantDialog';
+import RestaurantDetailDialog from '../components/RestaurantDetailDialog';
 import { useAdminRestaurants, useRestaurantActions } from '../hooks';
 import Pagination from '../../../../shared/ui/Pagination';
 
@@ -20,6 +21,11 @@ const AdminRestaurantsPage = () => {
     isOpen: false,
     restaurant: null,
     type: 'approve' // approve, suspend, activate
+  });
+
+  const [detailModal, setDetailModal] = useState({
+    isOpen: false,
+    restaurant: null
   });
 
   const { data, isLoading } = useAdminRestaurants(filters);
@@ -43,6 +49,13 @@ const AdminRestaurantsPage = () => {
 
   const closeActionModal = () => {
     setActionModal(prev => ({ ...prev, isOpen: false }));
+  };
+
+  const openDetailModal = (restaurant) => {
+    setDetailModal({
+      isOpen: true,
+      restaurant
+    });
   };
 
   const handleConfirmAction = () => {
@@ -114,6 +127,7 @@ const AdminRestaurantsPage = () => {
           restaurants={restaurants} 
           loading={isLoading} 
           onAction={openActionModal}
+          onViewDetail={openDetailModal}
         />
 
         {/* Pagination */}
@@ -137,6 +151,13 @@ const AdminRestaurantsPage = () => {
         restaurant={actionModal.restaurant}
         actionType={actionModal.type}
         loading={isApproving || isSuspending || isActivating}
+      />
+
+      {/* Detail Dialog */}
+      <RestaurantDetailDialog 
+        isOpen={detailModal.isOpen}
+        onClose={() => setDetailModal({ isOpen: false, restaurant: null })}
+        restaurant={detailModal.restaurant}
       />
     </div>
   );

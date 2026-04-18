@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Users, Search, Filter, Info, UserCheck, Shield, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useUsersList, useUserActions } from '../hooks';
+import { useUsersList, useUserActions, useAdminUserStats } from '../hooks';
 import UserTable from '../components/UserTable';
+import UserStats from '../components/UserStats';
 import AdminActionDialog from '../../components/AdminActionDialog';
 
 /**
@@ -26,6 +27,7 @@ const AdminUsersPage = () => {
   // Data fetching
   const { data, isLoading } = useUsersList(params);
   const { deleteUser, isDeleting } = useUserActions();
+  const { data: statsData, isLoading: isStatsLoading } = useAdminUserStats();
 
   // Dialog state
   const [modal, setModal] = useState({ isOpen: false, data: null });
@@ -70,33 +72,20 @@ const AdminUsersPage = () => {
   return (
     <div className="space-y-8 p-1 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header Area */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight uppercase mb-1">
-            {t('admin.users.title')}
-          </h1>
-          <p className="text-slate-500 text-sm font-medium">
-            {t('admin.users.subtitle')}
-          </p>
-        </div>
-
-        {/* Quick Stats Summary (Premium Bubble) */}
-        <div className="flex items-center gap-3">
-           <div className="px-5 py-3 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md transition-all flex items-center gap-4 group">
-              <div className="w-10 h-10 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Users size={20} />
-              </div>
-              <div className="pr-2">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1.5">
-                  {t('admin.users.stats.total')}
-                </p>
-                <p className="text-xl font-black text-slate-900 leading-none">
-                  {data?.pagination?.total || 0}
-                </p>
-              </div>
-           </div>
-        </div>
+      <div>
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight uppercase mb-1">
+          {t('admin.users.title')}
+        </h1>
+        <p className="text-slate-500 text-sm font-medium">
+          {t('admin.users.subtitle')}
+        </p>
       </div>
+
+      {/* Statistics Section */}
+      <UserStats 
+        stats={statsData?.data} 
+        loading={isStatsLoading} 
+      />
 
       {/* Controls: Search & Filters */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">

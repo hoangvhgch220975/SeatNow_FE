@@ -17,6 +17,7 @@ import ActiveVenuesPage from '../features/admin/restaurants/pages/ActiveVenuesPa
 import AuditRequestsPage from '../features/admin/audit/pages/AuditRequestsPage.jsx';
 import PartnerManagementPage from '../features/admin/partners/pages/PartnerManagementPage.jsx';
 import AdminUsersPage from '../features/admin/users/pages/AdminUsersPage.jsx';
+import AdminBookingsPage from '../features/admin/bookings/pages/AdminBookingsPage.jsx';
 import LoginPage from '../features/auth/pages/LoginPage.jsx';
 import RegisterPage from '../features/auth/pages/RegisterPage.jsx';
 import ForgotPasswordPage from '../features/auth/pages/ForgotPasswordPage.jsx';
@@ -292,6 +293,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN_PARTNERS,
             element: <PartnerManagementPage />,
+          },
+          {
+            path: ROUTES.ADMIN_BOOKINGS,
+            element: <AdminBookingsPage />,
           },
         ]
       },

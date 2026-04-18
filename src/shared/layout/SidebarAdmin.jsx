@@ -34,7 +34,8 @@ const SidebarAdmin = () => {
       ROUTES.ADMIN_RESTAURANTS_PENDING,
       ROUTES.ADMIN_PARTNER_REQUESTS,
       ROUTES.ADMIN_PARTNERS,
-      ROUTES.ADMIN_USERS
+      ROUTES.ADMIN_USERS,
+      ROUTES.ADMIN_BOOKINGS
     ];
     return implementedRoutes.includes(path);
   };

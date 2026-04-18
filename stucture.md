@@ -424,6 +424,7 @@ seatnow-fe/
 │ │ │ │ │ ├─ PendingRestaurantTable.jsx 
 │ │ │ │ │ ├─ EditRestaurantDialog.jsx 
 │ │ │ │ │ ├─ CreateRestaurantDialog.jsx 
+│ │ │ │ │ ├─ RestaurantDetailDialog.jsx 
 │ │ │ │ │ └─ OwnerPicker.jsx 
 │ │ │ │ └─ pages/
 │ │ │ │     └─ ActiveVenuesPage.jsx 
@@ -437,12 +438,14 @@ seatnow-fe/
 │ │ │ │     └─ AdminUsersPage.jsx 
 │ │ │
 │ │ │ ├─ bookings/
-│ │ │ │ ├─ api.js 
-│ │ │ │ ├─ hooks.js
+│ │ │ │ ├─ api.js // API: Lấy danh sách & thống kê booking toàn sàn
+│ │ │ │ ├─ hooks.js // Hooks: useAdminBookings, useAdminBookingStats
 │ │ │ │ ├─ components/
-│ │ │ │ │ └─ BookingAuditTable.jsx 
+│ │ │ │ │ ├─ BookingStats.jsx // Thẻ chỉ số tổng quan (Premium Bubbles)
+│ │ │ │ │ ├─ BookingFilters.jsx // Bộ lọc Search, Status, Date range
+│ │ │ │ │ └─ BookingTable.jsx // Bảng danh sách booking chi tiết
 │ │ │ │ └─ pages/
-│ │ │ │     └─ AdminBookingsPage.jsx 
+│ │ │ │     └─ AdminBookingsPage.jsx // Trang quản trị booking trung tâm
 │ │ │ │
 │ │ │ ├─ transactions/
 │ │ │ │ ├─ api.js // API tra cứu giao dịch

@@ -58,7 +58,8 @@
     "reject": "Từ chối",
     "approve": "Duyệt",
     "clear_all": "Đọc tất cả",
-    "view_details": "Xem chi tiết"
+    "view_details": "Xem chi tiết",
+    "close": "Đóng"
   },
   "notifications": {
     "title": "Thông Báo",
@@ -664,7 +665,7 @@
         "status_active": "HOẠT ĐỘNG / ĐÃ XÁC THỰC",
         "status_pending": "CHỜ KIỂM DUYỆT",
         "status_suspended": "ĐÌNH CHỈ / KHÓA",
-        "cuisine_tags": "Nhãn ẩm thực (Danh sách chuẩn)",
+        "cuisine_tags": "Nhãn ẩm thực",
         "price_category": "Phân loại mức giá",
         "operating_schedule": "Lịch trình vận hành",
         "schedule_all": "Tất cả",
@@ -786,6 +787,40 @@
           "reset": "Mật khẩu mới sẽ được hệ thống sinh ngẫu nhiên và gửi an toàn qua email của đối tác."
         }
       }
+    },
+    "bookings": {
+      "title": "Quản lý Đơn đặt chỗ",
+      "subtitle": "Giám sát và tra cứu toàn bộ hoạt động đặt bàn trên hệ thống SeatNow.",
+      "stats": {
+        "total": "Tổng số đơn",
+        "pending": "Đang chờ",
+        "confirmed": "Đã xác nhận",
+        "completed": "Hoàn thành",
+        "cancelled": "Đã hủy"
+      },
+      "filters": {
+        "restaurant_all": "Tất cả nhà hàng",
+        "restaurant_label": "Chọn nhà hàng",
+        "status_all": "Tất cả trạng thái",
+        "status_pending": "Chờ duyệt",
+        "status_confirmed": "Đã xác nhận",
+        "status_arrived": "Đã đến",
+        "status_completed": "Hoàn thành",
+        "status_cancelled": "Đã hủy",
+        "status_no_show": "Vắng mặt (No-show)"
+      },
+      "table": {
+        "code": "Mã đơn",
+        "customer": "Khách hàng",
+        "restaurant": "Nhà hàng",
+        "date_time": "Ngày & Giờ",
+        "guests": "Số khách",
+        "deposit": "Tiền cọc",
+        "status": "Trạng thái",
+        "actions": "Hành động",
+        "booking_plural": "Đơn đặt bàn"
+      },
+      "empty": "Không có dữ liệu đơn đặt bàn"
     },
     "users": {
       "title": "Quản lý Thành viên",

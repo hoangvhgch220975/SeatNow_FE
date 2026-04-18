@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ExternalLink, ShieldCheck, ShieldAlert, Lock, Unlock, Edit3 } from 'lucide-react';
+import { 
+  ExternalLink, ShieldCheck, ShieldAlert, Lock, Unlock, Edit3, Eye
+} from 'lucide-react';
 import AdminStatusBadge from '../../components/AdminStatusBadge';
 import { formatDate } from '../../../../shared/utils/formatDateTime';
 import restaurantPlaceholder from '../../../../assets/placeholder/restaurant_placeholder.png';
@@ -9,7 +11,7 @@ import restaurantPlaceholder from '../../../../assets/placeholder/restaurant_pla
  * @file RestaurantTable.jsx
  * @description Bảng hiển thị danh sách nhà hàng dùng cho Admin.
  */
-const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
+const RestaurantTable = ({ restaurants = [], loading, onAction, onViewDetail }) => {
   const { t } = useTranslation();
 
   const parseCuisine = (cuisineData) => {
@@ -71,7 +73,11 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
         </thead>
         <tbody className="divide-y divide-slate-100">
           {restaurants.map((res) => (
-            <tr key={res.id} className="hover:bg-slate-50/50 transition-colors group">
+            <tr 
+              key={res.id} 
+              className="hover:bg-slate-50/50 transition-colors group cursor-pointer"
+              onClick={() => onViewDetail && onViewDetail(res)}
+            >
               <td className="px-6 py-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-xs">
@@ -109,10 +115,10 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
                 {formatDate(res.createdAt)}
               </td>
               <td className="px-6 py-4">
-                <div className="flex items-center justify-end gap-2">
+                <div className="flex items-center justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                   {res.status?.toLowerCase() === 'pending' && (
                     <button 
-                      onClick={() => onAction('approve', res)}
+                      onClick={(e) => { e.stopPropagation(); onAction('approve', res); }}
                       className="px-3 py-1.5 bg-primary hover:bg-primary/90 text-white text-[10px] font-bold rounded-lg transition-all shadow-sm shadow-primary/20 flex items-center gap-1.5"
                     >
                       <ShieldCheck size={14} />
@@ -121,7 +127,7 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
                   )}
                   {res.status?.toLowerCase() === 'active' && (
                     <button 
-                      onClick={() => onAction('suspend', res)}
+                      onClick={(e) => { e.stopPropagation(); onAction('suspend', res); }}
                       className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"
                       title={t('admin.restaurants.actions.suspend')}
                     >
@@ -130,7 +136,7 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
                   )}
                   {res.status?.toLowerCase() === 'suspended' && (
                     <button 
-                      onClick={() => onAction('activate', res)}
+                      onClick={(e) => { e.stopPropagation(); onAction('activate', res); }}
                       className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all"
                       title={t('admin.restaurants.actions.activate')}
                     >
@@ -138,13 +144,20 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
                     </button>
                   )}
                   <button 
-                    onClick={() => onAction('edit', res)}
+                    onClick={(e) => { e.stopPropagation(); onAction('edit', res); }}
                     className="p-2 text-slate-400 hover:text-violet-600 hover:bg-violet-50 rounded-xl transition-all"
                     title={t('common.edit') || 'Chỉnh sửa'}
                   >
                     <Edit3 size={18} />
                   </button>
 
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); onViewDetail && onViewDetail(res); }}
+                    className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                    title={t('common.view_detail') || 'Xem chi tiết'}
+                  >
+                    <Eye size={18} />
+                  </button>
                 </div>
               </td>
             </tr>

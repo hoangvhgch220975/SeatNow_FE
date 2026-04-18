@@ -6,6 +6,7 @@ import RestaurantTable from '../components/RestaurantTable';
 import AdminActionDialog from '../../components/AdminActionDialog';
 import EditRestaurantDialog from '../components/EditRestaurantDialog';
 import CreateRestaurantDialog from '../components/CreateRestaurantDialog';
+import RestaurantDetailDialog from '../components/RestaurantDetailDialog';
 import { useAdminRestaurants, useRestaurantActions } from '../hooks';
 import { useDashboardStats } from '../../dashboard/hooks';
 
@@ -27,6 +28,11 @@ const ActiveVenuesPage = () => {
   const [editModal, setEditModal] = useState({
     isOpen: false,
     data: null
+  });
+
+  const [detailModal, setDetailModal] = useState({
+    isOpen: false,
+    restaurant: null
   });
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -53,6 +59,9 @@ const ActiveVenuesPage = () => {
         break;
       case 'edit':
         setEditModal({ isOpen: true, data: restaurant });
+        break;
+      case 'view':
+        setDetailModal({ isOpen: true, restaurant });
         break;
       default:
         break;
@@ -166,6 +175,7 @@ const ActiveVenuesPage = () => {
           restaurants={restaurants} 
           loading={isLoading} 
           onAction={openActionModal}
+          onViewDetail={(res) => openActionModal('view', res)}
         />
 
         {/* Pagination Section */}
@@ -238,6 +248,13 @@ const ActiveVenuesPage = () => {
         data={actionModal.data}
         type={actionModal.type}
         loading={isSuspending || isActivating}
+      />
+
+      {/* Detail Dialog */}
+      <RestaurantDetailDialog 
+        isOpen={detailModal.isOpen}
+        onClose={() => setDetailModal({ isOpen: false, restaurant: null })}
+        restaurant={detailModal.restaurant}
       />
     </div>
   );

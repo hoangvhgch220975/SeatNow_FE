@@ -22,3 +22,11 @@ export const getUsers = (params) => {
 export const deleteUser = (id) => {
   return apiClient.delete(`/admin/users/${id}`);
 };
+
+/**
+ * Lấy dữ liệu thống kê tổng quan cho Dashboard
+ * @returns {Promise}
+ */
+export const getAdminStats = () => {
+  return apiClient.get('/admin/dashboard/stats');
+};

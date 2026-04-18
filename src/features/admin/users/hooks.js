@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { getUsers, deleteUser } from './api';
+import { getUsers, deleteUser, getAdminStats } from './api';
 import { toast } from 'react-hot-toast';
 
 /**
@@ -20,6 +20,17 @@ export const useUsersList = (query) => {
       return response;
     },
     staleTime: 2 * 60 * 1000, // Dữ liệu sạch trong 2 phút
+  });
+};
+
+/**
+ * Hook lấy số liệu thống kê người dùng cho Admin Dashboard
+ */
+export const useAdminUserStats = () => {
+  return useQuery({
+    queryKey: ['admin', 'dashboard', 'stats'],
+    queryFn: getAdminStats,
+    refetchInterval: 30000, // Làm mới mỗi 30 giây
   });
 };
 
