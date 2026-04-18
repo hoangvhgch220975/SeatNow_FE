@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserPlus, Store, Info } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 
 // Module-scoped Hooks & Components
 import { useAuditLeads, useAuditVenues, useAuditActions } from '../hooks';
@@ -16,18 +17,34 @@ import AdminActionDialog from '../../components/AdminActionDialog';
  */
 const AuditRequestsPage = () => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState('leads'); // 'leads' or 'venues'
-  const [params, setParams] = useState({ page: 1, limit: 5 });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') === 'venues' ? 'venues' : 'leads';
+  const [activeTab, setActiveTab] = useState(initialTab);
+  const [params, setParams] = useState({ page: 1, limit: 10 });
 
-  // Data Fetching (Scoped to Audit Module)
-  const { data: leadsData = { data: [], pagination: {} }, isLoading: loadingLeads } = useAuditLeads(params);
-  const { data: venuesData = { data: [], pagination: {} }, isLoading: loadingVenues } = useAuditVenues(params);
+  // Data Fetching - BE trả về cấu trúc khác nhau cho từng endpoint
+  const { data: leadsData, isLoading: loadingLeads } = useAuditLeads(params);
+  const { data: venuesData, isLoading: loadingVenues } = useAuditVenues(params);
 
-  const leads = leadsData?.data || [];
-  const venues = venuesData?.data || [];
+  // Leads: BE trả về object { 0: {...}, 1: {...}, success: true }
+  const leads = leadsData
+    ? Object.values(leadsData).filter(item => typeof item === 'object' && item !== null && item.id)
+    : [];
+
+  // Venues: BE trả về { success: true, data: [...] }
+  const venues = Array.isArray(venuesData?.data)
+    ? venuesData.data
+    : Array.isArray(venuesData)
+    ? venuesData
+    : [];
 
   // Actions (Scoped to Audit Module)
-  const { approveLead, isApprovingLead, approveVenue, isApprovingVenue } = useAuditActions();
+  const { 
+    approveLead, isApprovingLead, 
+    rejectLead, isRejectingLead, 
+    approveVenue, isApprovingVenue,
+    rejectVenue, isRejectingVenue 
+  } = useAuditActions();
 
   // Dialog State
   const [modal, setModal] = useState({ isOpen: false, data: null, type: 'approve_lead' });
@@ -36,17 +53,34 @@ const AuditRequestsPage = () => {
     setModal({ isOpen: true, data: lead, type: 'approve_lead' });
   };
 
+  const openRejectLeadModal = (lead) => {
+    setModal({ isOpen: true, data: lead, type: 'reject' });
+  };
+
   const openApproveVenueModal = (venue) => {
     setModal({ isOpen: true, data: venue, type: 'approve_restaurant' });
   };
 
-  const handleConfirmAction = () => {
-    if (modal.type === 'approve_lead') {
-      approveLead(modal.data._id || modal.data.id);
-    } else {
-      approveVenue(modal.data.id);
+  const openRejectVenueModal = (venue) => {
+    setModal({ isOpen: true, data: venue, type: 'reject_restaurant' });
+  };
+
+  const handleConfirmAction = async (extraData) => {
+    const id = modal.data?._id || modal.data?.id;
+    try {
+      if (modal.type === 'approve_lead') {
+        await approveLead({ id, lead: modal.data });
+      } else if (modal.type === 'reject') {
+        await rejectLead(id);
+      } else if (modal.type === 'reject_restaurant') {
+        await rejectVenue(id);
+      } else {
+        await approveVenue(id);
+      }
+      setModal({ ...modal, isOpen: false });
+    } catch (err) {
+      console.warn('Action failed, keeping modal open.', err);
     }
-    setModal({ ...modal, isOpen: false });
   };
 
   const handlePageChange = (newPage) => {
@@ -54,10 +88,10 @@ const AuditRequestsPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-700">
+    <div className="space-y-8 p-1 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-slate-900 tracking-tight uppercase mb-2">
+      <div>
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight uppercase mb-1">
           {t('admin.audit.title')}
         </h1>
         <p className="text-slate-500 text-sm font-medium">
@@ -68,22 +102,28 @@ const AuditRequestsPage = () => {
       {/* Tabs Control */}
       <div className="flex items-center gap-1 bg-slate-100 p-1.5 rounded-2xl w-fit mb-8 shadow-inner">
         <button
-          onClick={() => setActiveTab('leads')}
+          onClick={() => {
+            setActiveTab('leads');
+            setSearchParams({ tab: 'leads' });
+          }}
           className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
             activeTab === 'leads' ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
           }`}
         >
           <UserPlus size={16} />
-          {t('admin.audit.tabs.leads')} ({leadsData.pagination?.total || leads.length})
+          {t('admin.audit.tabs.leads')} ({leads.length})
         </button>
         <button
-          onClick={() => setActiveTab('venues')}
+          onClick={() => {
+            setActiveTab('venues');
+            setSearchParams({ tab: 'venues' });
+          }}
           className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
             activeTab === 'venues' ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
           }`}
         >
           <Store size={16} />
-          {t('admin.audit.tabs.venues')} ({venuesData.pagination?.total || venues.length})
+          {t('admin.audit.tabs.venues')} ({venues.length})
         </button>
       </div>
 
@@ -93,17 +133,19 @@ const AuditRequestsPage = () => {
           <PartnerLeadTable 
             leads={leads} 
             loading={loadingLeads} 
-            pagination={leadsData.pagination}
+            pagination={null}
             onPageChange={handlePageChange}
-            onApprove={openApproveLeadModal} 
+            onApprove={openApproveLeadModal}
+            onReject={openRejectLeadModal}
           />
         ) : (
           <PendingRestaurantTable 
             restaurants={venues} 
             loading={loadingVenues} 
-            pagination={venuesData.pagination}
+            pagination={null}
             onPageChange={handlePageChange}
             onApprove={openApproveVenueModal}
+            onReject={openRejectVenueModal}
           />
         )}
       </div>
@@ -129,7 +171,7 @@ const AuditRequestsPage = () => {
         onConfirm={handleConfirmAction}
         data={modal.data}
         type={modal.type}
-        loading={isApprovingLead || isApprovingVenue}
+        loading={isApprovingLead || isRejectingLead || isApprovingVenue || isRejectingVenue}
       />
     </div>
   );

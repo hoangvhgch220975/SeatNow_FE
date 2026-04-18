@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Phone, Clock, ShieldCheck, XCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { formatDateTime } from '../../../../shared/utils/formatDateTime';
+import AdminEmptyState from '../../components/AdminEmptyState';
 import restaurantPlaceholder from '../../../../assets/placeholder/restaurant_placeholder.png';
 
 /**
@@ -17,14 +18,17 @@ const PendingRestaurantTable = ({
   onPageChange
 }) => {
   const { t } = useTranslation();
-  const { page = 1, total = 0, limit = 5 } = pagination;
+  const { page = 1, total = 0, limit = 5 } = pagination ?? {};
   const totalPages = Math.ceil(total / limit);
 
   const parseCuisine = (cuisineData) => {
     if (!cuisineData) return t('admin.restaurants.table.cuisine_default');
     try {
       const parsed = typeof cuisineData === 'string' ? JSON.parse(cuisineData) : cuisineData;
-      return Array.isArray(parsed) ? parsed.join(', ') : parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed[0]; // Lấy cái đầu tiên theo yêu cầu
+      }
+      return parsed;
     } catch (e) {
       return cuisineData;
     }
@@ -44,17 +48,11 @@ const PendingRestaurantTable = ({
 
   if (restaurants.length === 0) {
     return (
-      <div className="bg-white rounded-[32px] border-2 border-dashed border-slate-200 p-20 text-center max-w-2xl mx-auto my-10 shadow-xs">
-        <div className="w-20 h-20 bg-violet-50 rounded-[24px] flex items-center justify-center mx-auto mb-6">
-          <Clock className="text-violet-400" size={36} />
-        </div>
-        <h3 className="text-2xl font-black text-slate-800 mb-2 uppercase tracking-tight">
-          {t('admin.restaurants.empty_pending')}
-        </h3>
-        <p className="text-slate-500 text-sm leading-relaxed font-medium">
-          {t('admin.restaurants.subtitle')}
-        </p>
-      </div>
+      <AdminEmptyState 
+        icon={Clock}
+        title={t('admin.restaurants.empty_pending')}
+        subtitle={t('admin.restaurants.subtitle')}
+      />
     );
   }
 

@@ -28,8 +28,8 @@ const ConfirmDialog = ({
   
   let finalConfirmText = confirmText;
   if (!finalConfirmText) {
-    // Nếu là loại nguy hiểm (danger), mặc định là "Delete", ngược lại là "Confirm" (Vietnamese comment)
-    finalConfirmText = type === 'danger' ? t('common.delete', { defaultValue: 'Delete' }) : t('common.confirm', { defaultValue: 'Confirm' });
+    // Luôn mặc định là "Confirm" theo yêu cầu người dùng (Vietnamese comment)
+    finalConfirmText = t('common.confirm', { defaultValue: 'Confirm' });
   }
 
   return (

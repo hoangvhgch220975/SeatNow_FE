@@ -7,7 +7,10 @@ import {
   Star, 
   Info, 
   Circle,
-  Clock
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+  Activity
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { vi, enUS } from 'date-fns/locale';
@@ -44,6 +47,30 @@ const NotificationItem = ({ activity, onClose }) => {
         color: 'text-amber-500',
         bgColor: 'bg-amber-50',
         borderColor: 'border-amber-100'
+      };
+    }
+    if (type === 'RESTAURANT_APPROVED') {
+      return {
+        icon: CheckCircle,
+        color: 'text-emerald-500',
+        bgColor: 'bg-emerald-50',
+        borderColor: 'border-emerald-100'
+      };
+    }
+    if (type === 'RESTAURANT_ACTIVATED') {
+      return {
+        icon: Activity,
+        color: 'text-blue-500',
+        bgColor: 'bg-blue-50',
+        borderColor: 'border-blue-100'
+      };
+    }
+    if (type === 'RESTAURANT_SUSPENDED') {
+      return {
+        icon: AlertTriangle,
+        color: 'text-rose-500',
+        bgColor: 'bg-rose-50',
+        borderColor: 'border-rose-100'
       };
     }
     if (type === 'REVIEW_NEW') {
@@ -93,6 +120,17 @@ const NotificationItem = ({ activity, onClose }) => {
       await markAsRead(activity.id);
     }
 
+    // Ưu tiên sử dụng link từ Backend và Map vào Workspace (Vietnamese: Ưu tiên link BE)
+    if (activity.link && idOrSlug) {
+      if (activity.link === '/restaurant/bookings') return navigate(`/owner/restaurants/${idOrSlug}/bookings`);
+      if (activity.link === '/restaurant/reviews') return navigate(`/owner/restaurants/${idOrSlug}/dashboard`);
+      if (activity.link === '/restaurant/wallet') return navigate(`/owner/restaurants/${idOrSlug}/wallet`);
+      if (activity.link === '/restaurant/settings') return navigate(`/owner/restaurants/${idOrSlug}/settings`);
+      
+      // Nếu là link khác thì đi thẳng
+      return navigate(activity.link);
+    }
+
     let targetPath = '';
     if (type.startsWith('BOOKING_')) {
       const bookingId = metadata?.booking?.id;
@@ -103,9 +141,13 @@ const NotificationItem = ({ activity, onClose }) => {
       if (idOrSlug) {
         targetPath = `/owner/restaurants/${idOrSlug}/wallet`;
       }
-    } else if (type === 'REVIEW_NEW') {
+    } else if (type === 'REVIEW_NEW' || type === 'RESTAURANT_APPROVED' || type === 'RESTAURANT_ACTIVATED') {
       if (idOrSlug) {
         targetPath = `/owner/restaurants/${idOrSlug}/dashboard`;
+      }
+    } else if (type === 'RESTAURANT_SUSPENDED') {
+      if (idOrSlug) {
+        targetPath = `/owner/restaurants/${idOrSlug}/profile`;
       }
     }
 

@@ -14,7 +14,7 @@ export const useAuditLeads = () => {
     queryKey: ['admin', 'audit', 'leads'],
     queryFn: async () => {
       const response = await auditAdminApi.getLeads();
-      return response.data || {};
+      return response;
     },
     staleTime: 1 * 60 * 1000,
   });
@@ -26,7 +26,7 @@ export const useAuditVenues = () => {
     queryKey: ['admin', 'audit', 'venues'],
     queryFn: async () => {
       const response = await auditAdminApi.getPendingVenues();
-      return response.data || {};
+      return response;
     },
     staleTime: 1 * 60 * 1000,
   });
@@ -39,31 +39,31 @@ export const useAuditActions = () => {
 
   // Duyệt Lead (Owner account)
   const approveLead = useMutation({
-    mutationFn: (id) => auditAdminApi.approveLead(id),
-    onMutate: async (id) => {
-      const promise = auditAdminApi.approveLead(id);
-      toast.promise(promise, {
-        loading: t('admin.toasts.processing') || 'Processing...',
-        success: t('admin.toasts.approve_success') || 'Partner approved successfully!',
-        error: t('admin.toasts.approve_error') || 'Failed to approve partner',
-      });
-      return promise;
+    mutationFn: ({ id, lead }) => {
+      // Chuyển về data phẳng vì admin-service sẽ bọc nó vào property 'payload' khi gọi Auth-Service 
+      // HOẶC Auth-Service nhận req.body trực tiếp là object user.
+      const body = {
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+      };
+      return auditAdminApi.approveLead(id, body);
     },
     onSuccess: () => {
+      toast.success(t('admin.toasts.approve_success') || 'Partner approved successfully!');
       queryClient.invalidateQueries({ queryKey: ['admin', 'audit', 'leads'] });
+    },
+    onError: (error) => {
+      toast.error(error?.message || t('admin.toasts.approve_error') || 'Failed to approve partner');
     },
   });
 
-  const rejectLeadMutation = useMutation({
+  // Từ chối Lead
+  const rejectLead = useMutation({
     mutationFn: (id) => auditAdminApi.rejectLead(id),
-    onMutate: async (id) => {
-      const promise = auditAdminApi.rejectLead(id);
-      toast.promise(promise, {
-        loading: t('admin.toasts.processing') || 'Processing...',
-        success: t('admin.toasts.reject_success') || 'Request rejected',
-        error: t('admin.toasts.reject_error') || 'Failed to reject request',
-      });
-      return promise;
+    onSuccess: () => {
+      toast.success(t('admin.toasts.reject_success') || 'Request rejected');
+      queryClient.invalidateQueries({ queryKey: ['admin', 'audit', 'leads'] });
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || t('admin.toasts.error_generic'));
@@ -74,7 +74,20 @@ export const useAuditActions = () => {
   const approveVenue = useMutation({
     mutationFn: (id) => auditAdminApi.approveVenue(id),
     onSuccess: () => {
-      toast.success(t('admin.toasts.approve_venue_success'));
+      toast.success(t('admin.toasts.approve_venue_success') || 'Venue approved successfully!');
+      queryClient.invalidateQueries({ queryKey: ['admin', 'audit'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'restaurants'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || t('admin.toasts.error_generic'));
+    }
+  });
+
+  // Từ chối Hồ sơ nhà hàng (Venue)
+  const rejectVenue = useMutation({
+    mutationFn: (id) => auditAdminApi.rejectVenue(id),
+    onSuccess: () => {
+      toast.success(t('admin.toasts.reject_success') || 'Venue rejected and removed successfully!');
       queryClient.invalidateQueries({ queryKey: ['admin', 'audit'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'restaurants'] });
     },
@@ -84,9 +97,13 @@ export const useAuditActions = () => {
   });
 
   return {
-    approveLead: approveLead.mutate,
+    approveLead: approveLead.mutateAsync, // Sử dụng mutateAsync để await được trong component
     isApprovingLead: approveLead.isPending,
-    approveVenue: approveVenue.mutate,
+    rejectLead: rejectLead.mutateAsync,
+    isRejectingLead: rejectLead.isPending,
+    approveVenue: approveVenue.mutateAsync,
     isApprovingVenue: approveVenue.isPending,
+    rejectVenue: rejectVenue.mutateAsync,
+    isRejectingVenue: rejectVenue.isPending,
   };
 };

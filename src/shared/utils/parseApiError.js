@@ -45,6 +45,7 @@ const MESSAGE_MAP = {
 
   // ── Participation/Partner ──
   'SUBMISSION_SUCCESS':               "api.messages.SUBMISSION_SUCCESS",
+  'PARTNER_REQUEST_SUBMITTED':        "api.messages.PARTNER_REQUEST_SUBMITTED",
 
   // ── Permission ──
   'UNAUTHORIZED':                     "api.messages.UNAUTHORIZED",

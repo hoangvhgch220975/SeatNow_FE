@@ -88,7 +88,7 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
                   <div>
                     <div className="font-bold text-slate-800 text-sm flex items-center gap-1.5">
                       {res.name}
-                      <ExternalLink size={12} className="text-slate-300 group-hover:text-violet-500 transition-colors cursor-pointer" />
+                      <ExternalLink size={12} className="text-slate-300 group-hover:text-primary transition-colors cursor-pointer" />
                     </div>
                     <div className="text-xs text-slate-500">{parseCuisine(res.cuisineTypeJson)}</div>
                   </div>
@@ -113,7 +113,7 @@ const RestaurantTable = ({ restaurants = [], loading, onAction }) => {
                   {res.status?.toLowerCase() === 'pending' && (
                     <button 
                       onClick={() => onAction('approve', res)}
-                      className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-[10px] font-bold rounded-lg transition-all shadow-sm shadow-violet-200 flex items-center gap-1.5"
+                      className="px-3 py-1.5 bg-primary hover:bg-primary/90 text-white text-[10px] font-bold rounded-lg transition-all shadow-sm shadow-primary/20 flex items-center gap-1.5"
                     >
                       <ShieldCheck size={14} />
                       {t('admin.restaurants.actions.approve')}

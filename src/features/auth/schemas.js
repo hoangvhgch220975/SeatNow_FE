@@ -30,3 +30,9 @@ export const getChangePasswordSchema = (t) => z.object({
   message: t('auth.validation.password_mismatch'),
   path: ["confirmPassword"],
 });
+export const getPartnerRequestSchema = (t) => z.object({
+  name: z.string().min(2, t('auth.validation.name_min')),
+  email: z.string().email(t('auth.validation.email_invalid')),
+  phone: z.string().regex(/^(0|\+84)[0-9]{9,11}$/, t('auth.validation.phone_invalid')),
+  documentUrls: z.array(z.string()).min(1, t('api.messages.MISSING_REQUIRED_FIELDS')),
+});

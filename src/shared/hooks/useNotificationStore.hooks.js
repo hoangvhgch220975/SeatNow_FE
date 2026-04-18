@@ -1,21 +1,19 @@
 import React from 'react';
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { apiClient } from '../../lib/axios';
 import { connectNotificationSocket, bookingSocket, disconnectSockets } from '../../lib/socket';
 import toast from 'react-hot-toast';
 import { queryClient } from '../../lib/queryClient';
 
 /**
- * @file useNotificationStore.js
+ * @file useNotificationStore.hooks.js
  * @description Quản lý trạng thái thông báo toàn ứng dụng cho Owner (Zustand).
- * Kết hợp Hybrid: REST API fetch lịch sử + Socket.IO realtime.
+ * Cơ chế DB-First: Đồng bộ 100% với Database khi tải lại trang.
  */
 
-/**
- * Danh sách các Event cụ thể từ Backend
- */
 const NOTIFICATION_EVENTS = [
-  'notification', // Fallback event chung
+  'notification',
   'BOOKING_NEW',
   'BOOKING_CONFIRMED',
   'BOOKING_CANCELLED',
@@ -24,201 +22,199 @@ const NOTIFICATION_EVENTS = [
   'TRANSACTION_TOPUP',
   'TRANSACTION_WITHDRAW_APPROVED',
   'REVIEW_NEW',
-  'COMMISSION_SETTLED'
+  'COMMISSION_SETTLED',
+  'RESTAURANT_APPROVED',
+  'RESTAURANT_ACTIVATED',
+  'RESTAURANT_SUSPENDED'
 ];
 
-const useNotificationStore = create((set, get) => ({
-  activities: [],
-  unreadCount: 0,
-  total: 0,
-  isLoading: false,
-  isSocketConnected: false,
+// Biến cục bộ để khử trùng lặp Toast trong cùng 1 phiên socket
+let lastShownToastId = null;
+let lastShownTimestamp = 0;
 
-  /**
-   * Helper: Trích xuất restaurantId từ metadata đa cấu trúc
-   */
-  extractRestaurantId: (payload) => {
-    return payload.restaurantId || 
-           payload.data?.booking?.restaurantId || 
-           payload.metadata?.booking?.restaurantId || 
-           payload.data?.restaurant?.id || 
-           payload.metadata?.restaurant?.id;
-  },
+const useNotificationStore = create(
+  persist(
+    (set, get) => ({
+      activities: [],
+      unreadCount: 0,
+      total: 0,
+      isLoading: false,
+      isSocketConnected: false,
 
-  /**
-   * Tải danh sách thông báo offline từ Database
-   * Thực hiện Smart Merge để không làm mất thông báo realtime vừa nhận
-   */
-  fetchActivities: async (params = { limit: 20, offset: 0 }) => {
-    set({ isLoading: true });
-    try {
-      const res = await apiClient.get('/owner/activity', { params });
-      if (res.success) {
-        const serverItems = res.data.items || [];
-        const currentActivities = get().activities;
+      /**
+       * Helper: Trích xuất restaurantId từ metadata đa cấu trúc
+       */
+      extractRestaurantId: (payload) => {
+        return payload.restaurantId || 
+               payload.data?.booking?.restaurantId || 
+               payload.metadata?.booking?.restaurantId || 
+               payload.data?.restaurant?.id || 
+               payload.metadata?.restaurant?.id;
+      },
 
-        // 1. Chuẩn hóa dữ liệu từ Server (Trích xuất restaurantId ra ngoài cùng)
-        const normalizedServerItems = serverItems.map(item => ({
-          ...item,
-          restaurantId: get().extractRestaurantId(item)
-        }));
+      /**
+       * Tải danh sách thông báo lịch sử từ Database
+       * Ghi đè dữ liệu cũ để đảm bảo đồng bộ 100% với DB (Source of Truth)
+       */
+      fetchActivities: async (params = { limit: 20, offset: 0 }) => {
+        set({ isLoading: true });
+        try {
+          const res = await apiClient.get('/owner/activity', { params });
+          if (res.success) {
+            const serverItems = res.data.items || [];
+            
+            // Chuẩn hóa và sắp xếp
+            const finalActivities = serverItems.map(item => ({
+              ...item,
+              restaurantId: get().extractRestaurantId(item)
+            })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-        // 2. Smart Merge sử dụng Map để tránh trùng lặp ID
-        const mergedMap = new Map();
-        
-        // Ưu tiên dữ liệu từ Server vì nó có ID chính thức và trạng thái chuẩn
-        normalizedServerItems.forEach(item => mergedMap.set(item.id, item));
-        
-        // Giữ lại các thông báo realtime trong bộ nhớ mà Server chưa kịp trả về
-        currentActivities.forEach(item => {
-          if (!mergedMap.has(item.id)) {
-            mergedMap.set(item.id, item);
+            set({
+              activities: finalActivities,
+              unreadCount: res.data.unreadCount || 0,
+              total: res.data.total || 0,
+            });
           }
-        });
-
-        // 3. Chuyển về mảng và sắp xếp theo thời gian mới nhất
-        const finalActivities = Array.from(mergedMap.values())
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-        set({
-          activities: finalActivities,
-          unreadCount: res.data.unreadCount || 0,
-          total: res.data.total || 0,
-        });
-      }
-    } catch (error) {
-      console.error('❌ Failed to fetch notifications:', error);
-    } finally {
-      set({ isLoading: false });
-    }
-  },
-
-  /**
-   * Khởi tạo kết nối Socket và lắng nghe sự kiện
-   */
-  initNotificationSocket: (userId, role, token) => {
-    if (get().isSocketConnected) return;
-
-
-    const socket = connectNotificationSocket(userId, role, token);
-    const bSocket = bookingSocket;
-
-    const handleIncomingNotification = (payload, eventName) => {
-      const restaurantId = get().extractRestaurantId(payload);
-      
-      let restaurantName = payload.restaurantName || payload.data?.restaurantName || payload.metadata?.restaurant?.name || '';
-
-      // Tự động truy vấn tên nhà hàng từ Cache nếu chưa có trong payload (Vietnamese comment)
-      if (!restaurantName && restaurantId) {
-        const queriesData = queryClient.getQueriesData({ queryKey: ['owner', 'restaurants'] });
-        for (const [_, data] of queriesData) {
-          const restaurants = data?.data || data?.items || data;
-          if (Array.isArray(restaurants)) {
-            const found = restaurants.find(r => r.id === restaurantId);
-            if (found) {
-              restaurantName = found.name;
-              break;
-            }
-          }
+        } catch (error) {
+          console.error('❌ [Owner Store] Fetch failed:', error.message);
+        } finally {
+          set({ isLoading: false });
         }
-      }
+      },
 
-      // Import component Toast và hiển thị (Sử dụng React.createElement để tránh lỗi JSX trong file .js) (Vietnamese comment)
-      import('./../components/Notifications/NotificationToast').then((module) => {
-        const NotificationToast = module.default;
-        toast.custom((t) => React.createElement(NotificationToast, { 
-          t, 
-          payload, 
-          eventName, 
-          restaurantName 
-        }), { duration: 3000, position: 'top-right' });
-      });
+      /**
+       * Khởi tạo kết nối Socket và lắng nghe sự kiện
+       */
+      initNotificationSocket: (userId, role, token) => {
+        if (get().isSocketConnected) return;
 
-      set((state) => {
-        const exists = state.activities.some(a => a.id === payload.id);
-        if (exists) return state;
+        const socket = connectNotificationSocket(userId, role, token);
+        const bSocket = bookingSocket;
 
-        const newActivity = {
-          id: payload.id || `rt-${Date.now()}`,
-          type: payload.event || payload.type || eventName,
-          title: payload.title || eventName.replace(/_/g, ' '),
-          message: payload.message || '',
-          isRead: false,
-          metadata: payload.data || payload.metadata,
-          restaurantId: restaurantId,
-          createdAt: new Date().toISOString(),
+        const handleIncomingNotification = (payload, eventName) => {
+          const payloadId = payload.id;
+          const now = Date.now();
+
+          // 1. Khử trùng lặp Toast (Toast-only deduplication)
+          const isToastDuplicate = payloadId && payloadId === lastShownToastId && (now - lastShownTimestamp < 2000);
+          
+          if (!isToastDuplicate) {
+            lastShownToastId = payloadId;
+            lastShownTimestamp = now;
+
+            const restaurantId = get().extractRestaurantId(payload);
+            let restaurantName = payload.restaurantName || payload.data?.restaurantName || payload.metadata?.restaurant?.name || '';
+
+            if (!restaurantName && restaurantId) {
+              const queriesData = queryClient.getQueriesData({ queryKey: ['owner', 'restaurants'] });
+              for (const [_, data] of queriesData) {
+                const restaurants = data?.data || data?.items || data;
+                if (Array.isArray(restaurants)) {
+                  const found = restaurants.find(r => r.id === restaurantId);
+                  if (found) {
+                    restaurantName = found.name;
+                    break;
+                  }
+                }
+              }
+            }
+
+            // Hiển thị Toast
+            import('./../components/Notifications/NotificationToast').then((module) => {
+              const NotificationToast = module.default;
+              toast.custom((t) => {
+                 return React.createElement(NotificationToast, { 
+                  t, 
+                  payload, 
+                  eventName, 
+                  restaurantName 
+                });
+              }, { duration: 3000, position: 'top-right' });
+            }).catch(err => console.error('❌ [Owner Store] Toast load error:', err));
+          }
+
+          // 2. Cập nhật Store (Store-only deduplication)
+          set((state) => {
+            const existsInStore = payloadId && state.activities.some(a => a.id === payloadId);
+            if (existsInStore) return state;
+
+            const newActivity = {
+              id: payloadId || `rt-${now}`,
+              type: payload.event || payload.type || eventName,
+              title: payload.title || eventName.replace(/_/g, ' '),
+              message: payload.message || '',
+              link: payload.link || payload.data?.link || payload.metadata?.link || '',
+              isRead: false,
+              metadata: payload.data || payload.metadata,
+              restaurantId: get().extractRestaurantId(payload),
+              createdAt: payload.createdAt || new Date().toISOString(),
+            };
+
+            return {
+              activities: [newActivity, ...state.activities],
+              unreadCount: state.unreadCount + 1,
+            };
+          });
         };
 
-        return {
-          activities: [newActivity, ...state.activities],
-          unreadCount: state.unreadCount + 1,
-        };
-      });
-    };
+        NOTIFICATION_EVENTS.forEach(eventName => {
+          socket.off(eventName);
+          socket.on(eventName, (payload) => handleIncomingNotification(payload, eventName));
+          
+          if (bSocket) {
+            bSocket.off(eventName);
+            bSocket.on(eventName, (payload) => handleIncomingNotification(payload, eventName));
+          }
+        });
 
-    // Đăng ký đồng loạt các event từ danh sách
-    NOTIFICATION_EVENTS.forEach(eventName => {
-      socket.off(eventName);
-      socket.on(eventName, (payload) => handleIncomingNotification(payload, eventName));
-      
-      if (bSocket) {
-        bSocket.off(eventName);
-        bSocket.on(eventName, (payload) => handleIncomingNotification(payload, eventName));
-      }
-    });
+        set({ isSocketConnected: true });
+      },
 
-    set({ isSocketConnected: true });
-  },
+      cleanupSocket: () => {
+        disconnectSockets();
+        set({ isSocketConnected: false });
+      },
 
-  /**
-   * Đóng kết nối socket (gọi khi logout)
-   */
-  cleanupSocket: () => {
-    disconnectSockets();
-    set({ isSocketConnected: false });
-  },
+      markAsRead: async (activityId) => {
+        try {
+          set((state) => ({
+            activities: state.activities.map((item) =>
+              item.id === activityId ? { ...item, isRead: true } : item
+            ),
+            unreadCount: Math.max(0, state.unreadCount - 1),
+          }));
 
-  /**
-   * Đánh dấu 1 thông báo là đã đọc
-   */
-  markAsRead: async (activityId) => {
-    try {
-      // Cập nhật UI ngay lập tức (Optimistic Update)
-      set((state) => ({
-        activities: state.activities.map((item) =>
-          item.id === activityId ? { ...item, isRead: true } : item
-        ),
-        unreadCount: Math.max(0, state.unreadCount - 1),
-      }));
+          await apiClient.put(`/owner/activity/${activityId}/read`);
+        } catch (error) {
+          console.error('❌ [Owner Store] markAsRead failed:', error.message);
+        }
+      },
 
-      // Gọi API đồng bộ
-      await apiClient.put(`/owner/activity/${activityId}/read`);
-    } catch (error) {
-      // Nếu lỗi thì fallback (có thể fetch lại hoặc giữ nguyên tùy ux)
-      console.error('❌ Failed to mark notification as read:', error);
+      markAllAsRead: async () => {
+        try {
+          const { unreadCount } = get();
+          if (unreadCount === 0) return;
+
+          set((state) => ({
+            activities: state.activities.map((item) => ({ ...item, isRead: true })),
+            unreadCount: 0,
+          }));
+
+          await apiClient.put('/owner/activity/read-all');
+        } catch (error) {
+          console.error('❌ [Owner Store] markAllAsRead failed:', error.message);
+        }
+      },
+    }),
+    {
+      name: 'owner-notifications-storage',
+      partialize: (state) => ({ 
+        // Không lưu mảng activities để đảm bảo đồng bộ 100% với DB khi F5
+        unreadCount: state.unreadCount,
+        total: state.total
+      }),
     }
-  },
-
-  /**
-   * Đánh dấu toàn bộ là đã đọc
-   */
-  markAllAsRead: async () => {
-    try {
-      const { unreadCount } = get();
-      if (unreadCount === 0) return;
-
-      // Optimistic Update
-      set((state) => ({
-        activities: state.activities.map((item) => ({ ...item, isRead: true })),
-        unreadCount: 0,
-      }));
-
-      // API call
-      await apiClient.put('/owner/activity/read-all');
-    } catch (error) {
-      console.error('❌ Failed to mark all as read:', error);
-    }
-  },
-}));
+  )
+);
 
 export default useNotificationStore;

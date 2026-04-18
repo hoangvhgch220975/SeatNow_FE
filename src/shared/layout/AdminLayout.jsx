@@ -4,13 +4,28 @@ import { ROLES } from '@/config/roles.js';
 import SidebarAdmin from './SidebarAdmin.jsx';
 import AdminHeader from './AdminHeader.jsx';
 import AdminFooter from './AdminFooter.jsx';
+import useAdminNotificationStore from '@/shared/hooks/useAdminNotificationStore.js';
+import { useEffect } from 'react';
 
 /**
  * @file AdminLayout.jsx
  * @description Layout cao cấp dành cho Quản trị viên hệ thống (Admin). 
  */
 const AdminLayout = () => {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, token } = useAuthStore();
+  const initSocket = useAdminNotificationStore(state => state.initAdminSocket);
+  const cleanup = useAdminNotificationStore(state => state.cleanup);
+
+  /**
+   * Khởi tạo Real-time Audit Socket (Vietnamese: Khởi tạo kết nối thời gian thực cho Admin)
+   * Phải đặt hook này lên trên các lệnh return sớm để đảm bảo thứ tự Hook của React.
+   */
+  useEffect(() => {
+    if (isAuthenticated && user?.role?.toUpperCase() === ROLES.ADMIN && token) {
+      initSocket(user.id, user.role, token);
+    }
+    return () => cleanup();
+  }, [isAuthenticated, user, token, initSocket, cleanup]);
 
   // Guard: Chỉ cho phép ADMIN
   if (!isAuthenticated) return <Navigate to="/login" replace />;

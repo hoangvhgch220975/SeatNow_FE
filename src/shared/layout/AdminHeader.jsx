@@ -6,7 +6,7 @@ import { ROUTES } from '@/config/routes.js';
 import { Link, useNavigate } from 'react-router';
 import { toast } from 'react-hot-toast';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher.jsx';
-import NotificationDropdown from '@/shared/components/Notifications/NotificationDropdown.jsx';
+import AdminNotificationDropdown from '@/shared/components/Notifications/AdminNotificationDropdown.jsx';
 
 /**
  * @file AdminHeader.jsx
@@ -52,8 +52,8 @@ const AdminHeader = () => {
         {/* Language Switcher */}
         <LanguageSwitcher variant="minimal" />
 
-        {/* Notifications */}
-        <NotificationDropdown />
+        {/* Notifications (Vietnamese: Thông báo dành riêng cho Admin) */}
+        <AdminNotificationDropdown />
 
         {/* Admin Profile Dropdown */}
         <div className="relative" ref={dropdownRef}>

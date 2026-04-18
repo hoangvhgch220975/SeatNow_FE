@@ -32,7 +32,13 @@ function App() {
         position="top-center" 
         containerStyle={{ zIndex: 99999 }}
         toastOptions={{
-          duration: 2000,
+          duration: 5000, // Mặc định 5s cho các thông báo chung
+          success: {
+            duration: 2000, // 2s cho thông báo thành công
+          },
+          error: {
+            duration: 2000, // 2s cho thông báo thất bại
+          },
         }}
       />
       <AnimatePresence mode="wait" initial={false}>

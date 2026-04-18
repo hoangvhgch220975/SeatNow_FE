@@ -69,10 +69,14 @@ seatnow-fe/
 │ │ │ ├─ useQueryParams.js // Đọc/ghi query params URL
 │ │ │ ├─ useUserLocation.js // Lấy vị trí hiện tại của user
 │ │ │ ├─ useDisclosure.js // Mở/đóng modal/drawer/popover
-│ │ │ └─ useNotificationStore.hooks.js // Quản lý thông báo toàn cục (Updated)
+│ │ │ ├─ useAdminNotificationStore.js // Zustand store for Admin real-time alerts. [NEW]
+│ │ │ └─ useNotificationStore.hooks.js // Global notification store (Owner/Customer).
 │ │ │
 │ │ ├─ components/
 │ │ │ ├─ Notifications/ // Hệ thống thông báo thời gian thực (New)
+│ │ │ │ ├─ AdminNotificationDropdown.jsx // Custom dropdown for Admin. [NEW]
+│ │ │ │ ├─ AdminNotificationItem.jsx // Individual admin alert item. [NEW]
+│ │ │ │ ├─ AdminNotificationToast.jsx // Premium toast for admin events. [NEW]
 │ │ │ │ ├─ NotificationDropdown.jsx // Dropdown chuông thông báo
 │ │ │ │ ├─ NotificationItem.jsx // Item hiển thị từng thông báo
 │ │ │ │ └─ NotificationToast.jsx // Thông báo nổi (Toast) Premium (New)
@@ -391,7 +395,8 @@ seatnow-fe/
 │ │ ├─ admin/
 │ │ │ ├─ components/ // [NEW] Thành phần Admin dùng chung
 │ │ │ │ ├─ AdminStatusBadge.jsx 
-│ │ │ │ └─ AdminActionDialog.jsx 
+│ │ │ │ ├─ AdminActionDialog.jsx 
+│ │ │ │ └─ AdminEmptyState.jsx 
 │ │ │
 │ │ │ ├─ audit/ // [Module] Phân hệ kiểm duyệt hồ sơ
 │ │ │ │ ├─ api.js

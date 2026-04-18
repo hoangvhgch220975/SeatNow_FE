@@ -49,7 +49,16 @@
       "oct": "Oct",
       "nov": "Nov",
       "dec": "Dec"
-    }
+    },
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "done": "Done",
+    "confirm_title": "Confirm Action",
+    "confirm_message": "Are you sure you want to perform this action?",
+    "reject": "Reject",
+    "approve": "Approve",
+    "clear_all": "Clear all",
+    "view_details": "View details"
   },
   "notifications": {
     "title": "Notifications",
@@ -67,7 +76,15 @@
       "TRANSACTION_WITHDRAW_APPROVED": "Withdrawal Request Approved",
       "REVIEW_NEW": "New Customer Review",
       "COMMISSION_SETTLED": "Commission Settled",
-      "ADMIN_BROADCAST": "System Announcement"
+      "ADMIN_BROADCAST": "System Announcement",
+      "RESTAURANT_APPROVED": "Restaurant Approved",
+      "RESTAURANT_ACTIVATED": "Restaurant Activated",
+      "RESTAURANT_SUSPENDED": "Restaurant Suspended",
+      "PARTNER_REQUEST_SUBMITTED": "New Partner Request Submitted",
+      "RESTAURANT_CREATED": "New Venue Profile Pending Audit",
+      "WITHDRAWAL_REQUESTED": "New Payout Request from Partner",
+      "TRANSACTION_TOPUP": "System Fund Top-up Successful",
+      "COMMISSION_SETTLED": "Periodic Commission Settlement"
     }
   },
   "analytics": {
@@ -183,6 +200,7 @@
       "MISSING_REQUIRED_FIELDS": "Please fill in all required fields, including your business license.",
       "DEFAULT_ERROR": "Something went wrong. Please try again later.",
       "SUBMISSION_SUCCESS": "Request submitted successfully! Our team will contact you soon.",
+      "PARTNER_REQUEST_SUBMITTED": "Your partnership request has been submitted successfully! The SeatNow team will contact you soon to begin the journey.",
       "BOOKING_NOT_COMPLETED": "Rating is only available for completed dining experiences.",
       "REVIEW_ALREADY_EXISTS": "You have already posted a review for this booking.",
       "RESTAURANT_NOT_FOUND": "The restaurant you're trying to review could not be found."
@@ -491,6 +509,13 @@
     "console": "Admin Console",
     "role_super_admin": "Super Admin",
     "new_report": "New Report",
+    "notifications": {
+      "title": "Console Alerts",
+      "subtitle": "Secure Administrative Protocol",
+      "empty_title": "All Systems Clear",
+      "empty_message": "No critical administrative notifications at the moment.",
+      "gateway_active": "Real-time Audit Gateway Active"
+    },
     "dashboard": {
       "title": "System Overview",
       "subtitle": "Welcome back, Chief. Here's what has been happening in the network.",
@@ -606,18 +631,20 @@
       "actions": {
         "approve": "Approve",
         "suspend": "Suspend",
-        "activate": "Activate",
-        "edit_title": "Edit Restaurant"
+        "activate": "Activate"
       },
       "dialog": {
         "approve_title": "Confirm Venue Approval",
         "approve_desc": "Restaurant {{name}} will be activated. System will automatically create a wallet and notify the owner.",
         "suspend_title": "Confirm Suspension",
-        "suspend_desc": "Restaurant {{name}} will be hidden from search results. Owners will not be able to receive new bookings.",
-        "activate_title": "Confirm Activation",
-        "activate_desc": "Restaurant {{name}} will be active again on the network.",
+        "suspend_desc": "Restaurant {{name}} will be hidden from the booking system. The owner will not be able to receive new orders.",
+        "activate_title": "Confirm Unlock",
+        "activate_desc": "Restaurant {{name}} will be reactivated on the system.",
         "confirm": "Confirm",
-        "cancel": "Cancel"
+        "cancel": "Done",
+        "notes": {
+          "approve": "The system will automatically initialize a SeatNow Wallet for this restaurant."
+        }
       },
       "pending_title": "Pending Audit List",
       "pending_subtitle": "Carefully review contact info and facilities before approving new partners into the system.",
@@ -697,6 +724,21 @@
         "rules_title": "Approval Protocol:",
         "rule_lead": "Approving a Lead automatically creates an Owner account and sends an email notification.",
         "rule_venue": "Approving a Venue activates it on the platform and initializes the SeatNow Wallet."
+      },
+      "dialog": {
+        "approve_title": "Approve New Partner",
+        "approve_desc": "The system will create an Owner account for {{name}}. Login credentials will be securely sent via email.",
+        "reject_title": "Reject Partner Request",
+        "reject_desc": "Are you sure you want to reject the request from {{name}}? This action will send a rejection email to the partner.",
+        "reject_venue_title": "Reject Venue Profile",
+        "reject_venue_desc": "Are you sure you want to reject the restaurant profile {{name}}? This action will permanently remove the pending profile.",
+        "notes": {
+          "reject_venue": "This profile will be permanently deleted from the system as it has not been activated. The owner will receive a rejection email."
+        }
+      },
+      "actions": {
+        "approve": "Approve & Create Account",
+        "reject": "Reject Request"
       }
     },
     "partners": {
@@ -749,6 +791,7 @@
     },
     "toasts": {
       "approve_success": "Partner approved & account created successfully",
+      "reject_success": "Partner request rejected successfully",
       "approve_venue_success": "Venue profile approved & activated successfully",
       "create_success": "Partner account for {{name}} created successfully!",
       "update_success": "Information for {{name}} updated successfully!",

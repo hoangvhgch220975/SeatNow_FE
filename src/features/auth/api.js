@@ -138,5 +138,15 @@ export const authApi = {
   refreshToken: async (refreshToken) => {
     return apiClient.post('/auth/refresh-token', { refreshToken });
   },
+
+  /**
+   * Kiểm tra xem Email hoặc Số điện thoại đã tồn tại chưa (Dùng cho validation)
+   * @param {Object} params - { email, phone }
+   */
+  checkAvailability: async (params) => {
+    const p = { ...params };
+    if (p.phone) p.phone = normalizePhone(p.phone);
+    return apiClient.get('/auth/exists', { params: p });
+  },
 };
 
