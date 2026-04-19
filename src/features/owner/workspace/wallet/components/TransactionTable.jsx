@@ -20,6 +20,7 @@ const TransactionTable = ({
   title,
   subtitle = 'Real-time activity ledger',
   showViewAll = true,
+  hideHeader = false,
   className = ''
 }) => {
   const { t } = useTranslation();
@@ -58,18 +59,20 @@ const TransactionTable = ({
   return (
     <div className={`bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm flex flex-col ${className}`}>
       {/* Header */}
-      <div className="p-6 border-b border-slate-100 flex items-center justify-between shrink-0">
-        <div>
-          <h3 className="text-lg font-bold text-slate-900">{title || t('wallet.recent_transactions')}</h3>
-          <p className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-widest">{subtitle}</p>
+      {!hideHeader && (
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between shrink-0">
+          <div>
+            <h3 className="text-lg font-bold text-slate-900">{title || t('wallet.recent_transactions')}</h3>
+            <p className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-widest">{subtitle}</p>
+          </div>
+          <button
+            onClick={handleViewAll}
+            className="p-2 bg-slate-50 rounded-xl text-slate-400 hover:text-primary transition-colors hover:bg-primary/5"
+          >
+            <Search size={18} />
+          </button>
         </div>
-        <button
-          onClick={handleViewAll}
-          className="p-2 bg-slate-50 rounded-xl text-slate-400 hover:text-primary transition-colors hover:bg-primary/5"
-        >
-          <Search size={18} />
-        </button>
-      </div>
+      )}
 
       {/* Table body */}
       <div className="overflow-x-auto">
@@ -101,7 +104,8 @@ const TransactionTable = ({
                     <motion.tr
                       key={tx.id}
                       variants={itemVariants}
-                      className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors"
+                      onClick={() => navigate(ROUTES.WORKSPACE_TRANSACTION_DETAIL(idOrSlug, tx.id))}
+                      className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors cursor-pointer group"
                     >
                       {/* Cột mô tả giao dịch + tên khách */}
                       <td className="px-4 py-4">
@@ -117,7 +121,7 @@ const TransactionTable = ({
                           </div>
                           <div className="min-w-0">
                             <p className="text-xs font-bold text-slate-900 truncate max-w-[160px]">
-                              {tx.description || (isIncome ? t('wallet.income') : t('wallet.fee'))}
+                              {tx.description || t(`wallet.transaction_detail.types.${tx.type}`)}
                             </p>
                             <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
                               {tx.bookingCode && (
@@ -149,7 +153,7 @@ const TransactionTable = ({
                           const typeInfo = TRANSACTION_TYPES.find((t) => t.value === tx.type);
                           return (
                             <span className={`px-2 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap ${typeInfo?.color || 'bg-slate-100 text-slate-500'}`}>
-                              {tx.type?.replace(/_/g, ' ') || '—'}
+                              {t(`wallet.transaction_detail.types.${tx.type}`)}
                             </span>
                           );
                         })()}
@@ -168,9 +172,43 @@ const TransactionTable = ({
 
                       {/* Cột số tiền biến động */}
                       <td className="px-3 py-4 text-right whitespace-nowrap">
-                        <p className={`font-extrabold tracking-tight ${isIncome ? 'text-green-600' : 'text-red-600'}`}>
-                          {isIncome ? '+' : '-'}{formatCurrency(Math.abs(tx.amount))}
-                        </p>
+                        <div className="flex flex-col items-end">
+                          {(() => {
+                            const fee = tx.commissionAmount || tx.commissionFee || tx.fee || tx.commission || 0;
+                            const headlineAmount = tx.type === 'SETTLEMENT' ? (tx.amount - fee) : tx.amount;
+                            const isZero = headlineAmount === 0;
+                            return (
+                              <p className={`font-extrabold tracking-tight ${isZero ? 'text-slate-400' : (isIncome ? 'text-green-600' : 'text-red-600')}`}>
+                                {isZero ? '' : (isIncome ? '+' : '-')}{formatCurrency(Math.abs(headlineAmount))}
+                              </p>
+                            );
+                          })()}
+                          
+                          {/* Bóc tách phí cho loại SETTLEMENT (Giải ngân tiền cọc) */}
+                          {tx.type === 'SETTLEMENT' && (
+                            <div className="mt-1 space-y-0.5 border-t border-slate-50 pt-1">
+                              <div className="flex items-center justify-end gap-1.5 text-[9px] font-bold">
+                                <span className="text-slate-400 capitalize">{t('wallet.commission_fee')}:</span>
+                                <span className="text-red-500">
+                                  -{formatCurrency(tx.commissionAmount || tx.commissionFee || tx.fee || tx.commission || 0)}
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-end gap-1.5 text-[9px] font-black">
+                                <span className="text-slate-400 capitalize">{t('wallet.net_amount')}:</span>
+                                {(() => {
+                                  const fee = tx.commissionAmount || tx.commissionFee || tx.fee || tx.commission || 0;
+                                  const netAmountCalculated = tx.type === 'SETTLEMENT' ? (tx.amount - fee) : tx.amount;
+                                  const isZeroNet = netAmountCalculated === 0;
+                                  return (
+                                    <span className={isZeroNet ? 'text-slate-400' : 'text-green-600'}>
+                                      {isZeroNet ? '' : (netAmountCalculated > 0 ? '+' : '')}{formatCurrency(Math.abs(netAmountCalculated))}
+                                    </span>
+                                  );
+                                })()}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </td>
 
 

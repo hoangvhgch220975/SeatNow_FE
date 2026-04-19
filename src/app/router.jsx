@@ -44,6 +44,7 @@ import OwnerBookingsPage from '../features/owner/workspace/bookings/pages/OwnerB
 import OwnerRevenuePage from '../features/owner/workspace/revenue/pages/OwnerRevenuePage.jsx';
 import OwnerWalletPage from '../features/owner/workspace/wallet/pages/WalletPage.jsx';
 import OwnerTransactionsPage from '../features/owner/workspace/wallet/pages/TransactionsPage.jsx';
+import OwnerTransactionDetailPage from '../features/owner/workspace/wallet/pages/TransactionDetailPage.jsx';
 import OwnerBookingDetailPage from '../features/owner/workspace/bookings/pages/OwnerBookingDetailPage.jsx';
 import OwnerSettingsPage from '../features/owner/workspace/settings/pages/OwnerSettingsPage.jsx';
 import AIChatPortfolioPage from '../features/owner/portal/pages/AIChatPortfolioPage.jsx';
@@ -53,6 +54,7 @@ import WorkspaceAIRevenuePage from '../features/owner/workspace/ai/pages/Workspa
 import AdminProfilePage from '../features/admin/profile/pages/AdminProfilePage.jsx';
 import AdminAIChatPage from '../features/admin/ai/pages/AdminAIChatPage.jsx';
 import AdminAIAnalyticsPage from '../features/admin/ai/pages/AdminAIAnalyticsPage.jsx';
+import AdminTransactionsPage from '../features/admin/transactions/pages/AdminTransactionsPage.jsx';
 import CreateReviewPage from '../features/reviews/pages/CreateReviewPage.jsx';
 
 
@@ -254,6 +256,10 @@ export const router = createBrowserRouter([
             element: <OwnerTransactionsPage />,
           },
           {
+            path: ROUTES.WORKSPACE_TRANSACTION_DETAIL(':idOrSlug', ':transactionId'),
+            element: <OwnerTransactionDetailPage />,
+          },
+          {
             path: ROUTES.WORKSPACE_SETTINGS(':idOrSlug'),
             element: <OwnerSettingsPage />,
           },
@@ -300,6 +306,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN_BOOKINGS,
             element: <AdminBookingsPage />,
+          },
+          {
+            path: ROUTES.ADMIN_TRANSACTIONS,
+            element: <AdminTransactionsPage />,
           },
           {
             path: ROUTES.ADMIN_PROFILE,

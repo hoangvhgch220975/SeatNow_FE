@@ -16,6 +16,7 @@
     "save": "Lưu Thay Đổi",
     "cancel": "Hủy",
     "back": "Quay lại",
+    "page": "Trang",
     "refresh": "Làm mới",
     "reloading": "Đang tải lại...",
     "delete": "Xóa",
@@ -59,7 +60,33 @@
     "approve": "Duyệt",
     "clear_all": "Đọc tất cả",
     "view_details": "Xem chi tiết",
-    "close": "Đóng"
+    "close": "Đóng",
+    "coming_soon": "Mô-đun chỉnh sửa kỹ thuật sẽ sớm ra mắt!",
+    "coming_soon_module": "Tính năng sắp ra mắt!",
+    "cuisines": {
+      "Vietnamese Cuisine": "Ẩm Thực Việt Nam",
+      "European Cuisine": "Ẩm Thực Châu Âu",
+      "Japanese Cuisine": "Ẩm Thực Nhật Bản",
+      "Chinese Cuisine": "Ẩm Thực Trung Hoa",
+      "Korean Cuisine": "Ẩm Thực Hàn Quốc",
+      "Italian Cuisine": "Ẩm Thực Ý",
+      "French Cuisine": "Ẩm Thực Pháp",
+      "Spanish Cuisine": "Ẩm Thực Tây Ban Nha",
+      "Mexican Cuisine": "Ẩm Thực Mexico",
+      "Indian Cuisine": "Ẩm Thực Ấn Độ",
+      "Thai Cuisine": "Ẩm Thực Thái Lan",
+      "Hotpot": "Lẩu",
+      "Grill": "Nướng",
+      "Seafood": "Hải Sản",
+      "Street Food": "Ẩm Thực Đường Phố",
+      "Fast Food": "Thức Ăn Nhanh",
+      "Cafe": "Cà Phê / Tiệm Bánh",
+      "Bar & Pub": "Bar & Pub",
+      "Fine Dining": "Ẩm Thực Cao Cấp (Fine Dining)",
+      "Buffet": "Buffet",
+      "Vegetarian": "Ẩm Thực Chay"
+    },
+    "no_data_desc": "Thử điều chỉnh bộ lọc để tìm kiếm những gì bạn đang cần."
   },
   "notifications": {
     "title": "Thông Báo",
@@ -204,7 +231,8 @@
       "PARTNER_REQUEST_SUBMITTED": "Yêu cầu hợp tác của bạn đã được gửi thành công! Đội ngũ SeatNow sẽ liên hệ với bạn sớm nhất để bắt đầu hành trình.",
       "BOOKING_NOT_COMPLETED": "Chỉ có thể đánh giá những đơn đặt chỗ đã hoàn thành (COMPLETED).",
       "REVIEW_ALREADY_EXISTS": "Bạn đã đánh giá cho đơn đặt chỗ này rồi.",
-      "RESTAURANT_NOT_FOUND": "Không tìm thấy nhà hàng bạn muốn đánh giá."
+      "RESTAURANT_NOT_FOUND": "Không tìm thấy nhà hàng bạn muốn đánh giá.",
+      "RESTAURANT_SUSPENDED": "Nhà hàng đã bị Admin khóa. Vui lòng liên hệ bộ phận hỗ trợ để được mở lại."
     }
   },
   "auth": {
@@ -957,8 +985,50 @@
       "system_status": "Trạng thái hệ thống",
       "healthy": "Hoạt động tốt",
       "copyright": "© 2026 Trung Tâm Quản Trị Hệ Thống SeatNow",
-      "compliance": "Mức độ tuân thủ",
       "security_locked": "Bảo mật đa tầng"
+    },
+    "transactions": {
+      "title": "Quản lý Giao dịch",
+      "subtitle": "Theo dõi dòng tiền, thu phí hoa hồng và các khoản rút tiền trên toàn hệ diện.",
+      "stats": {
+        "total_commission": "Lợi nhuận sàn",
+        "uncollected_commission": "Hoa hồng chưa thu",
+        "total_transactions": "Tổng giao dịch",
+        "total_wallet_balance": "Số dư ví nhà hàng"
+      },
+      "filters": {
+        "date_from": "Từ ngày",
+        "date_to": "Đến ngày",
+        "restaurant_all": "Tất cả nhà hàng",
+        "type_all": "Tất cả loại",
+        "type_deposit": "Thanh toán cọc",
+        "type_topup": "Nạp tiền",
+        "type_commission": "Phí hoa hồng",
+        "type_withdrawal": "Rút tiền",
+        "type_refund": "Hoàn tiền",
+        "type_settlement": "Giải ngân",
+        "status_all": "Tất cả trạng thái",
+        "status_completed": "Thành công",
+        "status_pending": "Đang xử lý",
+        "status_failed": "Thất bại"
+      },
+      "table": {
+        "id": "Mã GD",
+        "date": "Thời gian",
+        "restaurant": "Nhà hàng",
+        "type": "Loại",
+        "amount": "Số tiền",
+        "net_amount": "Thực nhận",
+        "commission_amount": "Phí hoa hồng",
+        "total_amount": "Tổng giá trị giao dịch",
+        "financial_breakdown": "Phẫu diện tài chính",
+        "status": "Trạng thái",
+        "action": "Hành động",
+        "view_booking": "Xem Booking",
+        "no_data": "Không tìm thấy giao dịch nào phù hợp.",
+        "footer_hint": "Lịch sử giao dịch được bảo mật bởi SeatNow Financial",
+        "title": "Giao dịch"
+      }
     }
   },
   "guest": {
@@ -1563,7 +1633,39 @@
       "placeholder": "Nhắn tin cho Trợ lý AI...",
       "recommend_tooltip": "Nhận Gợi ý từ Chuyên gia",
       "recommend_button": "Gợi ý Nhanh",
-      "send_button": "Gửi"
+      "send_button": "Gửi",
+      "ultra_responsive": "Phản hồi Siêu tốc",
+      "roles": {
+        "admin": "Hệ thống Quản trị Copilot",
+        "owner": "Trợ lý Chiến lược Kinh doanh",
+        "customer": "Trợ giúp Ăn uống Cá nhân hóa",
+        "guest": "Trợ giúp Khám phá"
+      },
+      "protocols": {
+        "admin": "Giao thức Root đang hoạt động",
+        "owner": "Đã bật ngữ cảnh Danh mục",
+        "customer": "Đã đồng bộ hồ sơ",
+        "guest": "Chế độ Ẩn danh"
+      }
+    },
+    "insights": {
+      "title_restaurant": "Phân tích Nhà hàng",
+      "title_portfolio": "Phân tích Danh mục Kinh doanh",
+      "refresh": "Làm mới",
+      "retry": "Thử lại ngay",
+      "error_title": "Đã xảy ra lỗi",
+      "error_desc": "Không thể tạo báo cáo. Vui lòng thử lại.",
+      "strategic_report": "Báo cáo Chiến lược",
+      "realtime_data": "Dữ liệu Thời gian thực",
+      "disclaimer": "Dữ liệu được AI phân tích dựa trên lịch sử vận hành. Các gợi ý chiến lược chỉ mang tính tham khảo.",
+      "loading_steps": [
+        "Đang thu thập dữ liệu doanh thu...",
+        "Phân tích xu hướng đặt bàn 12 tháng qua...",
+        "Đánh giá hiệu suất các nhà hàng...",
+        "Xác định cơ hội tăng trưởng...",
+        "Đang biên soạn báo cáo chiến lược..."
+      ],
+      "loading_footer": "Chúng tôi đang xử lý hàng ngàn giao dịch để đưa ra dự báo chính xác nhất."
     },
     "suggestions_guest": [
       "Tìm nhà hàng món Nhật cao cấp ở Quận 1",
@@ -2363,9 +2465,60 @@
     "all_transactions": "Tất cả giao dịch",
     "back_to_wallet": "Quay lại Ví",
     "transaction_history_full": "Toàn bộ lịch sử giao dịch",
+    "commission_fee": "Phí hoa hồng",
+    "net_amount": "Thực nhận",
     "min_withdraw_error": "Số tiền rút tối thiểu là 10.000 VND",
-    "bank_info_required": "Vui lòng nhập đầy đủ thông tin ngân hàng"
+    "bank_info_required": "Vui lòng nhập đầy đủ thông tin ngân hàng",
+    "topup": "Nạp tiền",
+    "topup_funds": "Nạp Tiền Vào Ví",
+    "topup_amount": "Số tiền cần nạp",
+    "select_provider": "Chọn cổng thanh toán",
+    "min_topup_error": "Số tiền nạp tối thiểu là 10.000 VND",
+    "topup_success": "Yêu cầu nạp tiền đã được khởi tạo!",
+    "topup_redirect_notice": "Yêu cầu nạp tiền đã được tạo. Trang thanh toán sẽ tự động mở. Nếu không, hãy nhấn nút bên dưới. Bạn cũng có thể theo dõi giao dịch này trong chi tiết dưới đây.",
+    "pay_now": "Thanh toán ngay",
+    "transaction_detail": {
+      "title": "Chi tiết giao dịch",
+      "back_to_list": "Quay lại lịch sử",
+      "transaction_id": "Mã giao dịch",
+      "type": "Loại giao dịch",
+      "status": "Trạng thái",
+      "method": "Phương thức",
+      "created_at": "Thời gian tạo",
+      "description": "Ghi chú",
+      "booking_info": "Thông tin đặt chỗ liên quan",
+      "customer": "Khách hàng",
+      "table": "Bàn",
+      "booking_code": "Mã đơn hàng",
+      "provider": "Cổng thanh toán",
+      "provider_txn_id": "Mã GD Cổng/Ngân hàng",
+      "reference_code": "Mã tham chiếu",
+      "view_receipt": "Xem biên lai",
+      "total_gross": "Tổng số tiền xử lý",
+      "system_fee": "Phí hệ thống (SeatNow)",
+      "net_revenue": "Doanh thu thực nhận",
+      "timeline": {
+        "created": "Khởi tạo yêu cầu",
+        "processing": "Đang xử lý",
+        "completed": "Hoàn thành thành công",
+        "failed": "Giao dịch thất bại"
+      },
+      "types": {
+        "DEPOSIT_PAYMENT": "Khách thanh toán cọc",
+        "TOP_UP": "Nạp tiền vào ví",
+        "WITHDRAWAL": "Rút tiền",
+        "SETTLEMENT": "Giải ngân tiền cọc",
+        "COMMISSION": "Phí hoa hồng",
+        "REFUND": "Hoàn tiền",
+        "all": "Tất cả loại"
+      }
+    },
+    "all": "Tất cả loại",
+    "commission_fee": "Phí hoa hồng",
+    "net_amount": "Thực nhận",
+    "filter_type": "Lọc theo loại"
   },
+
   "workspace_booking_detail": {
     "title": "Chi tiết Đặt bàn",
     "subtitle": "Xem thông tin đầy đủ và quản lý trạng thái đơn đặt chỗ",
@@ -2536,6 +2689,19 @@
       "col_amount": "Doanh thu gộp",
       "col_net": "Thực nhận",
       "no_transactions": "Chưa có giao dịch nào được ghi nhận."
+    }
+  },
+  "restaurants": {
+    "info": {
+      "days": {
+        "Monday": "Thứ hai",
+        "Tuesday": "Thứ ba",
+        "Wednesday": "Thứ tư",
+        "Thursday": "Thứ năm",
+        "Friday": "Thứ sáu",
+        "Saturday": "Thứ bảy",
+        "Sunday": "Chủ nhật"
+      }
     }
   }
 }

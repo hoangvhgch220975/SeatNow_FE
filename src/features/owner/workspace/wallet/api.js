@@ -27,4 +27,19 @@ export const walletApi = {
    */
   getWalletHistory: (restaurantId, type = '', limit = 10) => 
     apiClient.get(`/payment/wallet/history`, { params: { restaurantId, type, limit } }),
+
+  /**
+   * Tạo yêu cầu nạp tiền (Top-up)
+   * @param {Object} payload - { restaurantId, provider, amount }
+   */
+  topupWallet: (payload) => 
+    apiClient.post(`/payment/wallet/topup/create`, payload),
+
+  /**
+   * Kiểm tra trạng thái giao dịch
+   * @param {string} transactionId - ID giao dịch
+   */
+  getTransactionStatus: (transactionId) => 
+    apiClient.get(`/payment/transaction/${transactionId}`),
 };
+

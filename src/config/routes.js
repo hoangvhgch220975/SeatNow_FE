@@ -44,6 +44,7 @@ export const ROUTES = {
   WORKSPACE_REVENUE: (idOrSlug) => `/owner/restaurants/${idOrSlug}/revenue`,
   WORKSPACE_WALLET: (idOrSlug) => `/owner/restaurants/${idOrSlug}/wallet`,
   WORKSPACE_TRANSACTIONS: (idOrSlug) => `/owner/restaurants/${idOrSlug}/wallet/transactions`,
+  WORKSPACE_TRANSACTION_DETAIL: (idOrSlug, transactionId) => `/owner/restaurants/${idOrSlug}/wallet/transactions/${transactionId}`,
   WORKSPACE_SETTINGS: (idOrSlug) => `/owner/restaurants/${idOrSlug}/settings`,
   WORKSPACE_AI_CHAT: (idOrSlug) => `/owner/restaurants/${idOrSlug}/ai-chat`,
   WORKSPACE_AI_REVENUE: (idOrSlug) => `/owner/restaurants/${idOrSlug}/ai-revenue`,

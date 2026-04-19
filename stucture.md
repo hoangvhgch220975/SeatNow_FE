@@ -234,63 +234,15 @@ seatnow-fe/
 │ │ │ ├─ pages/
 │ │ │ │ └─ CreateReviewPage.jsx // Trang tạo đánh giá (Split Layout, Premium UI)
 │ │ │ └─ components/
-│ │ │   ├─ ReviewSection.jsx // Smart Container: fetch, pagination, summary display
-│ │ │   ├─ ReviewForm.jsx // Form gửi đánh giá (Glassmorphism, Multi-size support)
-│ │ │   ├─ StarRatingInput.jsx // Bộ chọn sao tùy chỉnh (Premium, Multi-size labels)
-│ │ │   ├─ ReviewCard.jsx // Thẻ hiển thị (Verified badge, DiceBear Guest Avatar support)
-│ │ │   ├─ ReviewList.jsx // Danh sách đánh giá + Empty states
-│ │ │   └─ RatingSummary.jsx // Tổng hợp rating trung bình & Star breakdown
+│ │ │ ├─ ReviewSection.jsx // Smart Container: fetch, pagination, summary display
+│ │ │ ├─ ReviewForm.jsx // Form gửi đánh giá (Glassmorphism, Multi-size support)
+│ │ │ ├─ StarRatingInput.jsx // Bộ chọn sao tùy chỉnh (Premium, Multi-size labels)
+│ │ │ ├─ ReviewCard.jsx // Thẻ hiển thị (Verified badge, DiceBear Guest Avatar support)
+│ │ │ ├─ ReviewList.jsx // Danh sách đánh giá + Empty states
+│ │ │ └─ RatingSummary.jsx // Tổng hợp rating trung bình & Star breakdown
 │ │ │
 │ │ ├─ owner/
-│ │ │ ├─ portal/ // Cấp tài khoản owner - Quản lý danh sách nhà hàng
-│ │ │ │ ├─ api.js // API portal: list restaurants, create new, notifications
-│ │ │ │ ├─ pages/
-│ │ │ │ │ ├─ OwnerHomePage.jsx // Welcome page cho owner
-│ │ │ │ │ ├─ OwnerRestaurantsPage.jsx // Danh sách nhà hàng của owner
-│ │ │ │ │ ├─ GlobalAnalyticsPage.jsx // Trang thống kê toàn bộ Portfolio (New)
-│ │ │ │ │ ├─ AIChatPortfolioPage.jsx // Trang AI Chat cấp Portfolio (Owner)
-│ │ │ │ │ ├─ AIRevenueInsightsPage.jsx // Báo cáo One-shot AI - Tự động phân tích doanh thu
-│ │ │ │ │ └─ CreateRestaurantPage.jsx // Form đăng ký nhà hàng mới
-│ │ │ │ └─ components/
-│ │ │ │ ├─ AnalyticsSummary.jsx // Thẻ KPI Executive 3-Column Bento (Gross/Net Separated)
-│ │ │ │ ├─ AnalyticsCharts.jsx // Biểu đồ trục kép phân tích (Dual Axis)
-│ │ │ │ ├─ DateRangePicker.jsx // Bộ chọn ngày dạng Calendar Popup (Timeline Analysis)
-│ │ │ │ ├─ GuestAnalytics.jsx // Phân tích cơ cấu khách hàng (New)
-│ │ │ │ ├─ PortfolioActivityFeed.jsx // Lịch sử hoạt động toàn cầu (Sử dụng useNotificationStore)
-│ │ │ │ ├─ TopVenuesList.jsx // Danh sách nhà hàng tiêu biểu (New)
-│ │ │ │ ├─ DashboardHeader.jsx // Lời chào & Trạng thái hệ thống (New)
-│ │ │ │ ├─ MetricCard.jsx // Thẻ KPI đơn lẻ (New)
-│ │ │ │ ├─ MetricGrid.jsx // Lưới hiển thị KPIs (New)
-│ │ │ │ ├─ CompositionAnalysis.jsx // Phân tích cơ cấu khách Bento (New)
-│ │ │ │ ├─ PortfolioChart.jsx // Biểu đồ Recharts chuyên nghiệp (New)
-│ │ │ │ ├─ RestaurantCard.jsx // Card hiển thị trạng thái & thông tin tóm tắt
-│ │ │ │ ├─ VenueFilters.jsx // Bộ lọc tìm kiếm & trạng thái (New)
-│ │ │ │ ├─ VenueList.jsx // Lưới hiển thị danh sách nhà hàng (New)
-│ │ │ │ ├─ VenueTable.jsx // Bảng hiển thị danh sách nhà hàng (New)
-│ │ │ │ ├─ EmptyRestaurantsState.jsx // Khi owner chưa có nhà hàng
-│ │ │ │ ├─ RestaurantStatusBadge.jsx // Badge màu cho trạng thái (New)
-│ │ │ │ └─ create-wizard/ // Quy trình đăng ký nhà hàng mới (New)
-│ │ │ │ ├─ CuisineSelector.jsx // Chọn loại hình ẩm thực
-│ │ │ │ ├─ MapLocationPicker.jsx // Trình chọn vị trí trên bản đồ (Modal)
-│ │ │ │ ├─ OpeningHoursForm.jsx // Quản lý giờ mở cửa linh hoạt
-│ │ │ │ └─ DepositPolicyForm.jsx // Cấu hình chính sách đặt cọc
-│ │ │ │
-│ │ │ └─ workspace/ // Cấp từng nhà hàng cụ thể (sau khi đã chọn)
-│ │ │ ├─ dashboard/
-│ │ │ │ ├─ api.js // API dashboard: KPI, revenue, hourly stats, bookings...
-│ │ │ │ ├─ hooks.js // useWorkspaceDashboard: Hook bóc tách dữ liệu dashboard
-│ │ │ │ ├─ pages/
-│ │ │ │ │ └─ OwnerDashboardPage.jsx // Trang Overview chính (Bento Layout)
-│ │ │ │ └─ components/
-│ │ │ │     ├─ KPIStatCard.jsx // Thẻ chỉ số: Doanh thu, Lượt đặt, Tỉ lệ lấp đầy
-│ │ │ │     ├─ RevenueAnalysisChart.jsx // Biểu đồ doanh thu (Recharts)
-│ │ │ │     ├─ BookingVolumeChart.jsx // Biểu đồ lượng đặt chỗ theo giờ (Recharts)
-│ │ │ │     ├─ UpcomingArrivalsTable.jsx // Danh sách khách sắp đến trong ngày (link sang /bookings)
-│ │ │ │     ├─ GuestAnalysisBreakdown.jsx // Phân tích cơ cấu nhóm khách (Couple/SmallGroup/Party)
-│ │ │ │     └─ LiveFloorPlan.jsx // Sơ đồ bàn trực tiếp thời gian thực
-
-│ │ │ │
-│ │ │ ├─ restaurant-profile/
+│ │ │ ├─ portal/ // Cấp tài khoản owner - Quản lý danh sách n│ │ │ ├─ restaurant-profile/
 │ │ │ │ ├─ pages/
 │ │ │ │ │ └─ OwnerRestaurantProfilePage.jsx
 │ │ │ │ └─ components/
@@ -300,21 +252,20 @@ seatnow-fe/
 │ │ │ │ ├─ OpeningHoursForm.jsx (View-only)
 │ │ │ │ └─ DepositPolicyForm.jsx (View-only)
 │ │ │ │
-|   ├─ menu/ // Phân hệ quản lý thực đơn nhà hàng
-|   |   ├─ api.js // API: Truy vấn, tạo mới, cập nhật và xóa món ăn
-|   |   ├─ hooks.js // useMenu: Hook tập trung xử lý phân trang & bộ lọc
-|   |   ├─ pages/
-|   |   |   └─ OwnerMenuPage.jsx // Quản lý thực đơn (Chế độ lưới & bảng)
-|   |   └─ components/
-|   |       ├─ MenuHeader.jsx // Tiêu đề & nút chuyển đổi hiển thị
-|   |       ├─ MenuFilters.jsx // Tìm kiếm & Tabs danh mục i18n
-|   |       ├─ MenuGrid.jsx // Container hiển thị dạng lưới
-|   |       ├─ MenuItemCard.jsx // Card món ăn (Hỗ trợ click xem chi tiết)
-|   |       ├─ MenuItemModal.jsx // Modal tích hợp form thêm/sửa món
-|   |       ├─ MenuItemDetailModal.jsx // Popup xem chi tiết món ăn (Carousel ảnh)
-|   |       ├─ MenuTable.jsx // Danh sách dạng bảng (Hỗ trợ click dòng)
-|   |       └─ MenuItemForm.jsx // Biểu mẫu nhập liệu món ăn (i18n, reset logic)
-
+| ├─ menu/ // Phân hệ quản lý thực đơn nhà hàng
+| | ├─ api.js // API: Truy vấn, tạo mới, cập nhật và xóa món ăn
+| | ├─ hooks.js // useMenu: Hook tập trung xử lý phân trang & bộ lọc
+| | ├─ pages/
+| | | └─ OwnerMenuPage.jsx // Quản lý thực đơn (Chế độ lưới & bảng)
+| | └─ components/
+| | ├─ MenuHeader.jsx // Tiêu đề & nút chuyển đổi hiển thị
+| | ├─ MenuFilters.jsx // Tìm kiếm & Tabs danh mục i18n
+| | ├─ MenuGrid.jsx // Container hiển thị dạng lưới
+| | ├─ MenuItemCard.jsx // Card món ăn (Hỗ trợ click xem chi tiết)
+| | ├─ MenuItemModal.jsx // Modal tích hợp form thêm/sửa món
+| | ├─ MenuItemDetailModal.jsx // Popup xem chi tiết món ăn (Carousel ảnh)
+| | ├─ MenuTable.jsx // Danh sách dạng bảng (Hỗ trợ click dòng)
+| | └─ MenuItemForm.jsx // Biểu mẫu nhập liệu món ăn (i18n, reset logic)
 │ │ │ │
 │ │ │ ├─ tables/ // Phân hệ quản lý sơ đồ bàn (Modular Architecture)
 │ │ │ │ ├─ api.js // API: Lấy danh sách, thống kê, CRUD bàn
@@ -322,11 +273,11 @@ seatnow-fe/
 │ │ │ │ ├─ pages/
 │ │ │ │ │ └─ OwnerTablesPage.jsx // Trang quản lý chính (Orchestrator)
 │ │ │ │ └─ components/
-│ │ │ │     ├─ TableStats.jsx // Chân trang thống kê (KPIs)
-│ │ │ │     ├─ TableFilters.jsx // Bộ lọc tầng & tìm kiếm
-│ │ │ │     ├─ TableGrid.jsx // Chế độ hiển thị lưới (Grid) & TableCard
-│ │ │ │     ├─ TableList.jsx // Chế độ hiển thị danh sách (List View)
-│ │ │ │     └─ TableForm.jsx // Biểu mẫu nhập liệu Modal (Add/Edit)
+│ │ │ │ ├─ TableStats.jsx // Chân trang thống kê (KPIs)
+│ │ │ │ ├─ TableFilters.jsx // Bộ lọc tầng & tìm kiếm
+│ │ │ │ ├─ TableGrid.jsx // Chế độ hiển thị lưới (Grid) & TableCard
+│ │ │ │ ├─ TableList.jsx // Chế độ hiển thị danh sách (List View)
+│ │ │ │ └─ TableForm.jsx // Biểu mẫu nhập liệu Modal (Add/Edit)
 │ │ │ │
 │ │ │ ├─ bookings/ // Phân hệ quản lý đặt bàn cho từng nhà hàng (New)
 │ │ │ │ ├─ api.js // API: getBookings, getBookingDetail, confirm/arrive/complete/noShow/cancel
@@ -335,18 +286,18 @@ seatnow-fe/
 │ │ │ │ │ ├─ OwnerBookingsPage.jsx // Trang quản lý booking chính (Orchestrator)
 │ │ │ │ │ └─ OwnerBookingDetailPage.jsx // Trang chi tiết đặt bàn bento-style cao cấp (New)
 │ │ │ │ └─ components/
-│ │ │ │     ├─ detail/ // Sub-components cho trang chi tiết đặt bàn (New)
-│ │ │ │     │ ├─ DetailHeader.jsx
-│ │ │ │     │ ├─ CustomerCard.jsx
-│ │ │ │     │ ├─ BookingInfoCard.jsx
-│ │ │ │     │ ├─ PaymentInfoCard.jsx
-│ │ │ │     │ ├─ SpecialRequestsCard.jsx
-│ │ │ │     │ ├─ CheckInQRCard.jsx
-│ │ │ │     │ └─ ActionCommandCenter.jsx
-│ │ │ │     ├─ BookingStats.jsx // 3 thẻ KPI (Tổng/Hoàn thành/Hủy+NoShow) theo ngày chọn
-│ │ │ │     ├─ BookingFilters.jsx // Date picker + 7 tabs lọc trạng thái (i18n)
-│ │ │ │     ├─ BookingTable.jsx // Bảng 10 dòng/trang: tên khách, mã code, giờ, số khách, bàn, cọc, status, actions
-│ │ │ │     └─ BookingStatusActions.jsx // Nút chuyển trạng thái: Pending→Confirm, Confirmed→Arrive, Arrived→Complete
+│ │ │ │ ├─ detail/ // Sub-components cho trang chi tiết đặt bàn (New)
+│ │ │ │ │ ├─ DetailHeader.jsx
+│ │ │ │ │ ├─ CustomerCard.jsx
+│ │ │ │ │ ├─ BookingInfoCard.jsx
+│ │ │ │ │ ├─ PaymentInfoCard.jsx
+│ │ │ │ │ ├─ SpecialRequestsCard.jsx
+│ │ │ │ │ ├─ CheckInQRCard.jsx
+│ │ │ │ │ └─ ActionCommandCenter.jsx
+│ │ │ │ ├─ BookingStats.jsx // 3 thẻ KPI (Tổng/Hoàn thành/Hủy+NoShow) theo ngày chọn
+│ │ │ │ ├─ BookingFilters.jsx // Date picker + 7 tabs lọc trạng thái (i18n)
+│ │ │ │ ├─ BookingTable.jsx // Bảng 10 dòng/trang: tên khách, mã code, giờ, số khách, bàn, cọc, status, actions
+│ │ │ │ └─ BookingStatusActions.jsx // Nút chuyển trạng thái: Pending→Confirm, Confirmed→Arrive, Arrived→Complete
 
 │ │ │ │
 │ │ │ ├─ revenue/ // Phân hệ quản lý doanh thu & thống kê chuyên sâu (New)
@@ -355,25 +306,96 @@ seatnow-fe/
 │ │ │ │ ├─ pages/
 │ │ │ │ │ └─ OwnerRevenuePage.jsx // Trang Dashboard Doanh thu & Phân tích (Bento Grid)
 │ │ │ │ └─ components/
-│ │ │ │     ├─ RevenueHeader.jsx // Tiêu đề & Bộ chọn chu kỳ thời gian
-│ │ │ │     ├─ RevenueKPIs.jsx // 4 Thẻ chỉ số tài chính (Net/Gross/Volume/Cancel)
-│ │ │ │     ├─ RevenueTrendChart.jsx // Biểu đồ AreaChart xu hướng doanh thu
-│ │ │ │     ├─ GuestGroupAnalysis.jsx // Biểu đồ Donut phẫu diện nhóm khách hàng
-│ │ │ │     ├─ PeakHoursChart.jsx // Biểu đồ BarChart phân bổ giờ đặt bàn
-│ │ │ │     └─ TransactionHistory.jsx // Bảng danh sách 10 giao dịch gần nhất
+│ │ │ │ ├─ RevenueHeader.jsx // Tiêu đề & Bộ chọn chu kỳ thời gian
+│ │ │ │ ├─ RevenueKPIs.jsx // 4 Thẻ chỉ số tài chính (Net/Gross/Volume/Cancel)
+│ │ │ │ ├─ RevenueTrendChart.jsx // Biểu đồ AreaChart xu hướng doanh thu
+│ │ │ │ ├─ GuestGroupAnalysis.jsx // Biểu đồ Donut phẫu diện nhóm khách hàng
+│ │ │ │ ├─ PeakHoursChart.jsx // Biểu đồ BarChart phân bổ giờ đặt bàn
+│ │ │ │ └─ TransactionHistory.jsx // Bảng danh sách 10 giao dịch gần nhất
+│ │ │ │
+│ │ │ ├─ wallet/ // Phân hệ quản lý ví & yêu cầu rút tiền (New)
+│ │ │ │ ├─ api.js // API: lấy số dư, lịch sử giao dịch, gửi yêu cầu rút tiền, nạp tiền
+│ │ │ │ ├─ hooks.js // Hooks: useWalletBalance, useTransactionHistory, useWithdrawFunds, useTopUpWallet
+│ │ │ │ ├─ pages/
+│ │ │ │ │ ├─ WalletPage.jsx // Trang quản lý Ví & Thanh toán chính (Bento Grid)
+│ │ │ │ │ ├─ TransactionsPage.jsx // Trang lịch sử toàn bộ giao dịch (New)
+│ │ │ │ │ └─ TransactionDetailPage.jsx // Trang chi tiết một giao dịch cụ thể (New)
+│ │ │ │ └─ components/
+│ │ │ │ ├─ WalletBalanceCard.jsx // Thẻ KPI số dư kèm các nút hành động Nạp/Rút
+│ │ │ │ ├─ WithdrawalForm.jsx // Form yêu cầu rút tiền (Bank/QR tabbed interface)
+│ │ │ │ ├─ WithdrawalDialog.jsx // Hộp thoại bọc WithdrawalForm
+│ │ │ │ ├─ TopUpDialog.jsx // Hộp thoại nạp tiền MoMo/VNPAY
+│ │ │ │ ├─ TransactionTable.jsx // Bảng lịch sử biến động số dư chi tiết
+│ │ │ │ ├─ TransactionTypeFilter.jsx // Dropdown lọc theo loại giao dịch (New)
+│ │ │ │ └─ TransactionPagination.jsx // Thanh phân trang tái sử dụng (New)
+├─ MenuFilters.jsx // Tìm kiếm & Tabs danh mục i18n
+| | ├─ MenuGrid.jsx // Container hiển thị dạng lưới
+| | ├─ MenuItemCard.jsx // Card món ăn (Hỗ trợ click xem chi tiết)
+| | ├─ MenuItemModal.jsx // Modal tích hợp form thêm/sửa món
+| | ├─ MenuItemDetailModal.jsx // Popup xem chi tiết món ăn (Carousel ảnh)
+| | ├─ MenuTable.jsx // Danh sách dạng bảng (Hỗ trợ click dòng)
+| | └─ MenuItemForm.jsx // Biểu mẫu nhập liệu món ăn (i18n, reset logic)
+
+│ │ │ │
+│ │ │ ├─ tables/ // Phân hệ quản lý sơ đồ bàn (Modular Architecture)
+│ │ │ │ ├─ api.js // API: Lấy danh sách, thống kê, CRUD bàn
+│ │ │ │ ├─ hooks.js // useTables, useTableStats: Hooks React Query
+│ │ │ │ ├─ pages/
+│ │ │ │ │ └─ OwnerTablesPage.jsx // Trang quản lý chính (Orchestrator)
+│ │ │ │ └─ components/
+│ │ │ │ ├─ TableStats.jsx // Chân trang thống kê (KPIs)
+│ │ │ │ ├─ TableFilters.jsx // Bộ lọc tầng & tìm kiếm
+│ │ │ │ ├─ TableGrid.jsx // Chế độ hiển thị lưới (Grid) & TableCard
+│ │ │ │ ├─ TableList.jsx // Chế độ hiển thị danh sách (List View)
+│ │ │ │ └─ TableForm.jsx // Biểu mẫu nhập liệu Modal (Add/Edit)
+│ │ │ │
+│ │ │ ├─ bookings/ // Phân hệ quản lý đặt bàn cho từng nhà hàng (New)
+│ │ │ │ ├─ api.js // API: getBookings, getBookingDetail, confirm/arrive/complete/noShow/cancel
+│ │ │ │ ├─ hooks.js // useBookingDetail, useBookingActions: Hooks xử lý logic đặt bàn (New)
+│ │ │ │ ├─ pages/
+│ │ │ │ │ ├─ OwnerBookingsPage.jsx // Trang quản lý booking chính (Orchestrator)
+│ │ │ │ │ └─ OwnerBookingDetailPage.jsx // Trang chi tiết đặt bàn bento-style cao cấp (New)
+│ │ │ │ └─ components/
+│ │ │ │ ├─ detail/ // Sub-components cho trang chi tiết đặt bàn (New)
+│ │ │ │ │ ├─ DetailHeader.jsx
+│ │ │ │ │ ├─ CustomerCard.jsx
+│ │ │ │ │ ├─ BookingInfoCard.jsx
+│ │ │ │ │ ├─ PaymentInfoCard.jsx
+│ │ │ │ │ ├─ SpecialRequestsCard.jsx
+│ │ │ │ │ ├─ CheckInQRCard.jsx
+│ │ │ │ │ └─ ActionCommandCenter.jsx
+│ │ │ │ ├─ BookingStats.jsx // 3 thẻ KPI (Tổng/Hoàn thành/Hủy+NoShow) theo ngày chọn
+│ │ │ │ ├─ BookingFilters.jsx // Date picker + 7 tabs lọc trạng thái (i18n)
+│ │ │ │ ├─ BookingTable.jsx // Bảng 10 dòng/trang: tên khách, mã code, giờ, số khách, bàn, cọc, status, actions
+│ │ │ │ └─ BookingStatusActions.jsx // Nút chuyển trạng thái: Pending→Confirm, Confirmed→Arrive, Arrived→Complete
+
+│ │ │ │
+│ │ │ ├─ revenue/ // Phân hệ quản lý doanh thu & thống kê chuyên sâu (New)
+│ │ │ │ ├─ api.js // API: tóm tắt thống kê, xu hướng doanh thu, giờ cao điểm
+│ │ │ │ ├─ hooks.js // useRevenueDashboard: Logic tính toán chu kỳ & fetch dữ liệu
+│ │ │ │ ├─ pages/
+│ │ │ │ │ └─ OwnerRevenuePage.jsx // Trang Dashboard Doanh thu & Phân tích (Bento Grid)
+│ │ │ │ └─ components/
+│ │ │ │ ├─ RevenueHeader.jsx // Tiêu đề & Bộ chọn chu kỳ thời gian
+│ │ │ │ ├─ RevenueKPIs.jsx // 4 Thẻ chỉ số tài chính (Net/Gross/Volume/Cancel)
+│ │ │ │ ├─ RevenueTrendChart.jsx // Biểu đồ AreaChart xu hướng doanh thu
+│ │ │ │ ├─ GuestGroupAnalysis.jsx // Biểu đồ Donut phẫu diện nhóm khách hàng
+│ │ │ │ ├─ PeakHoursChart.jsx // Biểu đồ BarChart phân bổ giờ đặt bàn
+│ │ │ │ └─ TransactionHistory.jsx // Bảng danh sách 10 giao dịch gần nhất
 │ │ │ │
 │ │ │ ├─ wallet/ // Phân hệ quản lý ví & yêu cầu rút tiền (New)
 │ │ │ │ ├─ api.js // API: lấy số dư, lịch sử giao dịch, gửi yêu cầu rút tiền
 │ │ │ │ ├─ hooks.js // Hooks: useWalletBalance, useTransactionHistory, useWithdrawFunds
 │ │ │ │ ├─ pages/
 │ │ │ │ │ ├─ WalletPage.jsx // Trang quản lý Ví & Thanh toán chính (Bento Grid)
-│ │ │ │ │ └─ TransactionsPage.jsx // Trang lịch sử toàn bộ giao dịch (New)
+│ │ │ │ │ ├─ TransactionsPage.jsx // Trang lịch sử toàn bộ giao dịch (New)
+│ │ │ │ │ └─ TransactionDetailPage.jsx // Trang chi tiết một giao dịch cụ thể (New)
 │ │ │ │ └─ components/
-│ │ │ │     ├─ WalletBalanceCard.jsx // 4 Thẻ KPI số dư (Available/Locked/Pending/Total)
-│ │ │ │     ├─ WithdrawalForm.jsx // Form yêu cầu rút tiền (Bank/QR tabbed interface)
-│ │ │ │     ├─ TransactionTable.jsx // Bảng lịch sử biến động số dư chi tiết (có header cột)
-│ │ │ │     ├─ TransactionTypeFilter.jsx // Dropdown lọc theo loại giao dịch (New)
-│ │ │ │     ├─ TransactionPagination.jsx // Thanh phân trang tái sử dụng (New)
+│ │ │ │ ├─ WalletBalanceCard.jsx // 4 Thẻ KPI số dư (Available/Locked/Pending/Total)
+│ │ │ │ ├─ WithdrawalForm.jsx // Form yêu cầu rút tiền (Bank/QR tabbed interface)
+│ │ │ │ ├─ TransactionTable.jsx // Bảng lịch sử biến động số dư chi tiết (có header cột)
+│ │ │ │ ├─ TransactionTypeFilter.jsx // Dropdown lọc theo loại giao dịch (New)
+│ │ │ │ ├─ TransactionPagination.jsx // Thanh phân trang tái sử dụng (New)
 │ │ │ │
 │ │ │ ├─ settings/ // Phân hệ cài đặt hệ thống cho nhà hàng (New)
 │ │ │ │ ├─ api.js // API: cập nhật thông tin chung, chính sách cọc
@@ -381,22 +403,22 @@ seatnow-fe/
 │ │ │ │ ├─ pages/
 │ │ │ │ │ └─ OwnerSettingsPage.jsx // Orchestrator form tổng hợp lưu toàn bộ dữ liệu
 │ │ │ │ └─ components/
-│ │ │ │     ├─ ImageSettings.jsx // Component đăng ảnh thương hiệu (dùng ImageUploader)
-│ │ │ │     ├─ BasicInfoSettings.jsx // Form tên, mô tả, cuisine, mức giá
-│ │ │ │     ├─ ContactSettings.jsx // Form SĐT, Email, Tọa độ bản đồ
-│ │ │ │     ├─ OpeningHoursSettings.jsx // Cấu hình lịch mở cửa các ngày trong tuần
-│ │ │ │     └─ DepositPolicySettings.jsx // Bật/tắt và thiết lập chính sách cọc
+│ │ │ │ ├─ ImageSettings.jsx // Component đăng ảnh thương hiệu (dùng ImageUploader)
+│ │ │ │ ├─ BasicInfoSettings.jsx // Form tên, mô tả, cuisine, mức giá
+│ │ │ │ ├─ ContactSettings.jsx // Form SĐT, Email, Tọa độ bản đồ
+│ │ │ │ ├─ OpeningHoursSettings.jsx // Cấu hình lịch mở cửa các ngày trong tuần
+│ │ │ │ └─ DepositPolicySettings.jsx // Bật/tắt và thiết lập chính sách cọc
 │ │ │ │
 │ │ │ └─ ai/ // [MỚI] Phân hệ AI tích hợp cho từng nhà hàng cụ thể
-│ │ │     └─ pages/
-│ │ │         ├─ WorkspaceAIChatPage.jsx // Wrapper - Truyền restaurantId vào AIAssistantPage
-│ │ │         └─ WorkspaceAIRevenuePage.jsx // Wrapper - Truyền restaurantId vào AIRevenueInsightsPage
+│ │ │ └─ pages/
+│ │ │ ├─ WorkspaceAIChatPage.jsx // Wrapper - Truyền restaurantId vào AIAssistantPage
+│ │ │ └─ WorkspaceAIRevenuePage.jsx // Wrapper - Truyền restaurantId vào AIRevenueInsightsPage
 │ │ │
 │ │ ├─ admin/
 │ │ │ ├─ components/ // [NEW] Thành phần Admin dùng chung
-│ │ │ │ ├─ AdminStatusBadge.jsx 
-│ │ │ │ ├─ AdminActionDialog.jsx 
-│ │ │ │ └─ AdminEmptyState.jsx 
+│ │ │ │ ├─ AdminStatusBadge.jsx
+│ │ │ │ ├─ AdminActionDialog.jsx
+│ │ │ │ └─ AdminEmptyState.jsx
 │ │ │
 │ │ │ ├─ audit/ // [Module] Phân hệ kiểm duyệt hồ sơ
 │ │ │ │ ├─ api.js
@@ -404,7 +426,7 @@ seatnow-fe/
 │ │ │ │ ├─ components/
 │ │ │ │ │ └─ PartnerLeadTable.jsx // [NEW] Bảng duyệt hồ sơ đối tác
 │ │ │ │ └─ pages/
-│ │ │ │     └─ AuditRequestsPage.jsx 
+│ │ │ │ └─ AuditRequestsPage.jsx
 │ │ │
 │ │ │ ├─ partners/ // [Module] Phân hệ quản lý đối tác
 │ │ │ │ ├─ api.js
@@ -413,29 +435,29 @@ seatnow-fe/
 │ │ │ │ │ ├─ OwnerAccountTable.jsx // [NEW] Bảng quản trị tài khoản chủ
 │ │ │ │ │ └─ PartnerDialog.jsx // [NEW] Form thêm/sửa đối tác (i18n)
 │ │ │ │ └─ pages/
-│ │ │ │     └─ PartnerManagementPage.jsx 
+│ │ │ │ └─ PartnerManagementPage.jsx
 │ │ │
 │ │ │ ├─ restaurants/ // [Module] Quản trị vận hành nhà hàng
 │ │ │ │ ├─ api.js
-│ │ │ │ ├─ hooks.js 
+│ │ │ │ ├─ hooks.js
 │ │ │ │ ├─ components/
-│ │ │ │ │ ├─ RestaurantFilters.jsx 
-│ │ │ │ │ ├─ RestaurantTable.jsx 
-│ │ │ │ │ ├─ PendingRestaurantTable.jsx 
-│ │ │ │ │ ├─ EditRestaurantDialog.jsx 
-│ │ │ │ │ ├─ CreateRestaurantDialog.jsx 
-│ │ │ │ │ ├─ RestaurantDetailDialog.jsx 
-│ │ │ │ │ └─ OwnerPicker.jsx 
+│ │ │ │ │ ├─ RestaurantFilters.jsx
+│ │ │ │ │ ├─ RestaurantTable.jsx
+│ │ │ │ │ ├─ PendingRestaurantTable.jsx
+│ │ │ │ │ ├─ EditRestaurantDialog.jsx
+│ │ │ │ │ ├─ CreateRestaurantDialog.jsx
+│ │ │ │ │ ├─ RestaurantDetailDialog.jsx
+│ │ │ │ │ └─ OwnerPicker.jsx
 │ │ │ │ └─ pages/
-│ │ │ │     └─ ActiveVenuesPage.jsx 
+│ │ │ │ └─ ActiveVenuesPage.jsx
 │ │ │
 │ │ │ ├─ users/
 │ │ │ │ ├─ api.js
 │ │ │ │ ├─ hooks.js
 │ │ │ │ ├─ components/
-│ │ │ │ │ └─ UserTable.jsx 
-│ │ │ │ └─ pages/ 
-│ │ │ │     └─ AdminUsersPage.jsx 
+│ │ │ │ │ └─ UserTable.jsx
+│ │ │ │ └─ pages/
+│ │ │ │ └─ AdminUsersPage.jsx
 │ │ │
 │ │ │ ├─ profile/ // [MỚI] Module quản lý hồ sơ Admin
 │ │ │ │ ├─ api.js // API nội bộ module [NEW]
@@ -443,14 +465,14 @@ seatnow-fe/
 │ │ │ │ ├─ pages/
 │ │ │ │ │ └─ AdminProfilePage.jsx // Trang layout chính
 │ │ │ │ └─ components/
-│ │ │ │     ├─ AdminProfileOverview.jsx // Thẻ định danh hệ thống
-│ │ │ │     ├─ AdminProfileSettings.jsx // Form thiết lập thông tin
-│ │ │ │     └─ AdminSecuritySettings.jsx // Form đổi mật khẩu bảo mật
+│ │ │ │ ├─ AdminProfileOverview.jsx // Thẻ định danh hệ thống
+│ │ │ │ ├─ AdminProfileSettings.jsx // Form thiết lập thông tin
+│ │ │ │ └─ AdminSecuritySettings.jsx // Form đổi mật khẩu bảo mật
 │ │ │
 │ │ │ ├─ ai/ // [MỚI] Phân hệ AI Intelligence dành riêng cho Admin
 │ │ │ │ └─ pages/
-│ │ │ │     ├─ AdminAIChatPage.jsx // Trợ lý ảo đa năng (Chat Copilot)
-│ │ │ │     └─ AdminAIAnalyticsPage.jsx // Phân tích doanh thu thông minh (Insights)
+│ │ │ │ ├─ AdminAIChatPage.jsx // Trợ lý ảo đa năng (Chat Copilot)
+│ │ │ │ └─ AdminAIAnalyticsPage.jsx // Phân tích doanh thu thông minh (Insights)
 │ │ │
 │ │ │ ├─ bookings/
 │ │ │ │ ├─ api.js // API: Lấy danh sách & thống kê booking toàn sàn
@@ -460,14 +482,17 @@ seatnow-fe/
 │ │ │ │ │ ├─ BookingFilters.jsx // Bộ lọc Search, Status, Date range
 │ │ │ │ │ └─ BookingTable.jsx // Bảng danh sách booking chi tiết
 │ │ │ │ └─ pages/
-│ │ │ │     └─ AdminBookingsPage.jsx // Trang quản trị booking trung tâm
+│ │ │ │ └─ AdminBookingsPage.jsx // Trang quản trị booking trung tâm
 │ │ │ │
 │ │ │ ├─ transactions/
-│ │ │ │ ├─ api.js // API tra cứu giao dịch
+│ │ │ │ ├─ api.js // API tra cứu giao dịch hệ thống
+│ │ │ │ ├─ hooks.js // useAdminTransactions, useAdminTransactionStats [NEW]
 │ │ │ │ ├─ pages/
-│ │ │ │ │ └─ AdminTransactionsPage.jsx // Trang giao dịch toàn hệ thống
+│ │ │ │ │ └─ AdminTransactionsPage.jsx // Trang điều phối giao dịch toàn sàn
 │ │ │ │ └─ components/
-│ │ │ │ └─ TransactionAuditTable.jsx // Bảng audit giao dịch
+│ │ │ │ ├─ TransactionStats.jsx // [NEW] 4 thẻ KPI tài chính
+│ │ │ │ ├─ TransactionFilters.jsx // [NEW] Bộ lọc loại & nhà hàng
+│ │ │ │ └─ TransactionTable.jsx // [NEW] Bảng dữ liệu phối màu dòng tiền
 │ │ │ │
 │ │ │ ├─ withdrawals/
 │ │ │ │ ├─ api.js // API duyệt/từ chối rút tiền
@@ -491,13 +516,13 @@ seatnow-fe/
 │ │ │ ├─ pages/
 │ │ │ │ └─ AIAssistantPage.jsx // Orchestrator - Hỗ trợ Workspace mode (restaurantId prop)
 │ │ │ └─ components/
-│ │ │     ├─ ChatSidebar.jsx // Quản lý lịch sử hội thoại (Session list)
-│ │ │     ├─ ChatBox.jsx // [TÁCH MỚI] Danh sách tin nhắn + ThinkingIndicator
-│ │ │     ├─ PromptSuggestions.jsx // [TÁCH MỚI] Pills gợi ý câu hỏi theo vai trò
-│ │ │     ├─ MessageBubble.jsx // Render tin nhắn Markdown (Chuyên nghiệp)
-│ │ │     ├─ ChatInputBar.jsx // Ô nhập liệu & Magic AI Tools (dùng PromptSuggestions)
-│ │ │     ├─ ThinkingIndicator.jsx // Hiệu ứng AI đang suy nghĩ
-│ │ │     └─ AnalysisLoadingView.jsx // Loading animation cho trang báo cáo AI
+│ │ │ ├─ ChatSidebar.jsx // Quản lý lịch sử hội thoại (Session list)
+│ │ │ ├─ ChatBox.jsx // [TÁCH MỚI] Danh sách tin nhắn + ThinkingIndicator
+│ │ │ ├─ PromptSuggestions.jsx // [TÁCH MỚI] Pills gợi ý câu hỏi theo vai trò
+│ │ │ ├─ MessageBubble.jsx // Render tin nhắn Markdown (Chuyên nghiệp)
+│ │ │ ├─ ChatInputBar.jsx // Ô nhập liệu & Magic AI Tools (dùng PromptSuggestions)
+│ │ │ ├─ ThinkingIndicator.jsx // Hiệu ứng AI đang suy nghĩ
+│ │ │ └─ AnalysisLoadingView.jsx // Loading animation cho trang báo cáo AI
 │ │ │
 │ │ ├─ map/
 │ │ │ ├─ api.js // API near-me/geocoding nội bộ

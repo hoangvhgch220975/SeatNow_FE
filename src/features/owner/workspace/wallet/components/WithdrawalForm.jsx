@@ -7,10 +7,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CreditCard, QrCode, Send, CloudUpload, Info, AlertCircle } from 'lucide-react';
 import { useWithdrawFunds } from '../hooks';
 import toast from 'react-hot-toast';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/config/routes';
 
+/**
+ * @file WithdrawalForm.jsx
+ * @description Biểu mẫu xử lý yêu cầu rút tiền của nhà hàng.
+ */
+
+// Schema validation cho cấu trúc dữ liệu rút tiền
 const withdrawalSchema = z.object({
-  amount: z.number().min(10000, 'Minimum withdrawal is 10,000 VND'), // t('wallet.min_withdraw_error') will be used in the UI
+  amount: z.number().min(10000, 'Minimum withdrawal is 10,000 VND'),
   description: z.string().optional(),
   withdrawMethod: z.enum(['CARD', 'QR']),
   bankInfo: z.object({
@@ -31,9 +38,10 @@ const withdrawalSchema = z.object({
   path: ["bankInfo"],
 });
 
-const WithdrawalForm = ({ availableBalance }) => {
+const WithdrawalForm = ({ availableBalance, onSuccess, hideHeader = false }) => {
   const { t } = useTranslation();
   const { idOrSlug } = useParams();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('CARD');
   const withdrawMutation = useWithdrawFunds();
 
@@ -53,6 +61,7 @@ const WithdrawalForm = ({ availableBalance }) => {
     }
   });
 
+  // Xử lý khi nhấn nút gửi yêu cầu rút tiền
   const onSubmit = async (data) => {
     if (data.amount > availableBalance) {
       toast.error(t('wallet.insufficient_balance'));
@@ -60,31 +69,42 @@ const WithdrawalForm = ({ availableBalance }) => {
     }
 
     try {
-      await withdrawMutation.mutateAsync({
+      const response = await withdrawMutation.mutateAsync({
         idOrSlug,
         ...data
       });
       toast.success(t('wallet.withdraw_success'));
       reset();
+      
+      // Chuyển hướng sang trang chi tiết giao dịch (Vietnamese comment)
+      if (response.data?.id) {
+        navigate(ROUTES.WORKSPACE_TRANSACTION_DETAIL(idOrSlug, response.data.id));
+      }
+
+      // Thông báo thành công cho component cha (nếu có)
+      if (onSuccess) onSuccess();
     } catch (error) {
       toast.error(t('wallet.withdraw_error'));
     }
   };
 
+  // Thay đổi phương thức rút tiền
   const handleTabChange = (method) => {
     setActiveTab(method);
     setValue('withdrawMethod', method);
   };
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-slate-900">{t('wallet.withdraw_funds')}</h2>
-        <p className="text-sm text-slate-500 mt-2">{t('wallet.subtitle')}</p>
-      </div>
+    <div className={`bg-white ${!hideHeader ? 'p-6 rounded-2xl shadow-sm border border-slate-100' : ''} space-y-6`}>
+      {!hideHeader && (
+        <div>
+          <h2 className="text-xl font-bold text-slate-900">{t('wallet.withdraw_funds')}</h2>
+          <p className="text-sm text-slate-500 mt-2">{t('wallet.subtitle')}</p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Amount Field */}
+        {/* Trường nhập số tiền */}
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
             <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t('wallet.amount')}</label>
@@ -112,7 +132,7 @@ const WithdrawalForm = ({ availableBalance }) => {
           )}
         </div>
 
-        {/* Description Field */}
+        {/* Trường nhập nội dung */}
         <div className="space-y-2">
           <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">{t('wallet.description')}</label>
           <textarea 
@@ -122,7 +142,7 @@ const WithdrawalForm = ({ availableBalance }) => {
           ></textarea>
         </div>
 
-        {/* Method Selection Tabs */}
+        {/* Tab chọn phương thức thanh toán */}
         <div className="space-y-3">
           <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">{t('wallet.method')}</label>
           <div className="grid grid-cols-2 gap-2 bg-slate-100/50 p-1.5 rounded-xl">
@@ -153,6 +173,7 @@ const WithdrawalForm = ({ availableBalance }) => {
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-3 pt-2"
               >
+                {/* Các trường thông tin ngân hàng cụ thể */}
                 <input 
                   {...register('bankInfo.bankName')}
                   className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all" 
@@ -190,6 +211,7 @@ const WithdrawalForm = ({ availableBalance }) => {
                 exit={{ opacity: 0, y: -10 }}
                 className="pt-2"
               >
+                {/* Khu vực upload ảnh mã QR */}
                 <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer group relative overflow-hidden">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                     <CloudUpload className="w-6 h-6 text-primary" />
@@ -200,7 +222,7 @@ const WithdrawalForm = ({ availableBalance }) => {
                     type="file" 
                     className="absolute inset-0 opacity-0 cursor-pointer" 
                     onChange={(e) => {
-                      // Logic upload file thực tế
+                      // Logic upload file thực tế sẽ được tích hợp tại đây
                       setValue('qrCodeUrl', 'https://mock-storage.com/qr-code.png');
                     }}
                   />
@@ -210,6 +232,7 @@ const WithdrawalForm = ({ availableBalance }) => {
           </AnimatePresence>
         </div>
 
+        {/* Nút gửi yêu cầu */}
         <button 
           disabled={withdrawMutation.isPending || !isValid}
           className={`w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-full transition-all duration-300 active:scale-95 shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed`} 
@@ -225,6 +248,7 @@ const WithdrawalForm = ({ availableBalance }) => {
           )}
         </button>
 
+        {/* Chú thích thông tin */}
         <div className="bg-slate-50 rounded-xl p-4 flex gap-3">
           <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
           <p className="text-[10px] text-slate-500 leading-relaxed font-medium">

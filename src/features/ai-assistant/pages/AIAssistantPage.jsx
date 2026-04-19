@@ -145,7 +145,16 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
 
               <div className="flex flex-col">
                 <h1 className="text-lg font-black text-slate-900 leading-tight flex items-center gap-2">
-                    {isAdmin ? 'System Intelligence Copilot' : (isOwner ? 'Business Strategic AI' : (isCustomer ? 'Personalized Dining AI' : t('ai_assistant.header.title')))}
+                    {isAdmin 
+                      ? t('ai_assistant.chat.roles.admin') 
+                      : (isOwner 
+                          ? t('ai_assistant.chat.roles.owner') 
+                          : (isCustomer 
+                              ? t('ai_assistant.chat.roles.customer') 
+                              : t('ai_assistant.chat.roles.guest')
+                            )
+                        )
+                    }
                     <div className="flex gap-1">
                         <span className={`px-2 py-0.5 ${theme.bg} ${theme.text} text-[9px] font-black uppercase tracking-tighter rounded-md shadow-sm border border-current/10`}>
                             {theme.badge}
@@ -154,7 +163,16 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
                 </h1>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5 leading-none mt-0.5">
                     <ShieldCheck className={`w-3 h-3 ${isAdmin ? 'text-amber-500' : (isOwner ? 'text-violet-500' : (isCustomer ? 'text-emerald-500' : 'text-slate-400'))}`} />
-                    {isAdmin ? 'Root Protocol Active' : (isOwner ? 'Portfolio Context Enabled' : (isCustomer ? 'Profile Synchronized' : 'Anonymous Mode'))}
+                    {isAdmin 
+                      ? t('ai_assistant.chat.protocols.admin') 
+                      : (isOwner 
+                          ? t('ai_assistant.chat.protocols.owner') 
+                          : (isCustomer 
+                              ? t('ai_assistant.chat.protocols.customer') 
+                              : t('ai_assistant.chat.protocols.guest')
+                            )
+                        )
+                    }
                 </p>
               </div>
            </div>
@@ -164,7 +182,7 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
                   <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Assistant Status</span>
                   <div className="flex items-center gap-1.5 text-green-500">
                       <Zap className="w-3 h-3 fill-current" />
-                      <span className="text-xs font-black">Ultra Responsive</span>
+                      <span className="text-xs font-black">{t('ai_assistant.chat.ultra_responsive')}</span>
                   </div>
               </div>
               {/* [Role: OWNER/ADMIN]: Ẩn nút quay lại vì đã có sidebar Portal/Admin */}

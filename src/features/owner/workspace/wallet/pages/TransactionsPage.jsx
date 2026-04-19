@@ -82,7 +82,7 @@ const TransactionsPage = () => {
               {t('wallet.all_transactions')}
             </h1>
             <p className="text-slate-400 mt-1 uppercase text-[10px] font-bold tracking-[0.2em]">
-              {t('wallet.transaction_history_full')}
+              {t('wallet.transaction_history_full')} • {t('common.page')} {currentPage} / {totalPages}
             </p>
           </div>
         </div>
@@ -106,11 +106,10 @@ const TransactionsPage = () => {
 
       {/* Bảng giao dịch theo trang */}
       <TransactionTable
-        title={t('wallet.recent_transactions')}
-        subtitle={`${t('wallet.transaction_history_full')} • Page ${currentPage} of ${totalPages}`}
         transactions={pagedTransactions}
         isLoading={isLoading}
         showViewAll={false}
+        hideHeader={true}
       />
 
       {/* Thanh phân trang */}

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Filter, Check, X } from 'lucide-react';
 
 /**
@@ -10,13 +11,13 @@ import { Filter, Check, X } from 'lucide-react';
 
 // Danh sách loại giao dịch dựa theo DB constraint Transactions.type (Vietnamese comment)
 export const TRANSACTION_TYPES = [
-  { value: 'ALL',             label: 'All Types',       color: 'bg-slate-100 text-slate-600'  },
-  { value: 'DEPOSIT_PAYMENT', label: 'Deposit Payment', color: 'bg-green-100 text-green-700'  },
-  { value: 'SETTLEMENT',      label: 'Settlement',      color: 'bg-blue-100 text-blue-700'    },
-  { value: 'COMMISSION',      label: 'Commission',      color: 'bg-purple-100 text-purple-700'},
-  { value: 'WITHDRAWAL',      label: 'Withdrawal',      color: 'bg-red-100 text-red-700'      },
-  { value: 'REFUND',          label: 'Refund',          color: 'bg-amber-100 text-amber-700'  },
-  { value: 'TOP_UP',          label: 'Top Up',          color: 'bg-teal-100 text-teal-700'    },
+  { value: 'ALL',             labelKey: 'all',                color: 'bg-slate-100 text-slate-600'  },
+  { value: 'DEPOSIT_PAYMENT', labelKey: 'DEPOSIT_PAYMENT',    color: 'bg-green-100 text-green-700'  },
+  { value: 'SETTLEMENT',      labelKey: 'SETTLEMENT',         color: 'bg-blue-100 text-blue-700'    },
+  { value: 'COMMISSION',      labelKey: 'COMMISSION',         color: 'bg-purple-100 text-purple-700'},
+  { value: 'WITHDRAWAL',      labelKey: 'WITHDRAWAL',         color: 'bg-red-100 text-red-700'      },
+  { value: 'REFUND',          labelKey: 'REFUND',             color: 'bg-amber-100 text-amber-700'  },
+  { value: 'TOP_UP',          labelKey: 'TOP_UP',             color: 'bg-teal-100 text-teal-700'    },
 ];
 
 /**
@@ -33,6 +34,7 @@ const TransactionTypeFilter = ({
   open,
   onToggle,
 }) => {
+  const { t } = useTranslation();
   // Đóng dropdown khi click ra ngoài (Vietnamese comment)
   const ref = useRef(null);
   useEffect(() => {
@@ -60,7 +62,7 @@ const TransactionTypeFilter = ({
         }`}
       >
         <Filter size={15} />
-        {isFiltered ? activeInfo?.label : 'Filter by Type'}
+        {isFiltered ? t(`wallet.transaction_detail.types.${activeInfo?.labelKey}`) : t('wallet.filter_type')}
 
         {/* Nút xóa filter nhanh (Vietnamese comment) */}
         {isFiltered && (
@@ -105,7 +107,7 @@ const TransactionTypeFilter = ({
                   >
                     <div className="flex items-center gap-2.5">
                       <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-primary' : 'bg-slate-300'}`} />
-                      {type.label}
+                      {t(`wallet.transaction_detail.types.${type.labelKey}`)}
                     </div>
                     <div className="flex items-center gap-2">
                       <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${type.color}`}>

@@ -65,23 +65,23 @@ const BasicInfoSettings = ({ register, control, errors }) => {
 
               return (
                 <div className="flex flex-wrap gap-2 px-2">
-                  {ALL_CUISINES.map((cat) => {
-                    const isSelected = currentCuisines.includes(cat);
-                    return (
-                      <button
-                        type="button"
-                        key={cat}
-                        onClick={() => toggleCuisine(cat)}
-                        className={`px-4 py-2 text-xs font-black rounded-lg uppercase tracking-wider border transition-all ${
-                          isSelected 
-                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200' 
-                            : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'
-                        }`}
-                      >
-                        {cat}
-                      </button>
-                    )
-                  })}
+                      {ALL_CUISINES.map((cat) => {
+                        const isSelected = currentCuisines.includes(cat);
+                        return (
+                          <button
+                            type="button"
+                            key={cat}
+                            onClick={() => toggleCuisine(cat)}
+                            className={`px-4 py-2 text-xs font-black rounded-lg uppercase tracking-wider border transition-all ${
+                              isSelected 
+                                ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200' 
+                                : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'
+                            }`}
+                          >
+                            {t(`common.cuisines.${cat}`)}
+                          </button>
+                        )
+                      })}
                 </div>
               );
             }}

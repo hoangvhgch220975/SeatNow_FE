@@ -16,6 +16,7 @@
     "save": "Save Changes",
     "cancel": "Cancel",
     "back": "Back",
+    "page": "Page",
     "refresh": "Refresh",
     "reloading": "Reloading...",
     "delete": "Delete",
@@ -59,7 +60,33 @@
     "approve": "Approve",
     "clear_all": "Read all",
     "view_details": "View details",
-    "close": "Close"
+    "close": "Close",
+    "coming_soon": "Technical modification module coming soon!",
+    "coming_soon_module": "Feature coming soon!",
+    "cuisines": {
+      "Vietnamese Cuisine": "Vietnamese Cuisine",
+      "European Cuisine": "European Cuisine",
+      "Japanese Cuisine": "Japanese Cuisine",
+      "Chinese Cuisine": "Chinese Cuisine",
+      "Korean Cuisine": "Korean Cuisine",
+      "Italian Cuisine": "Italian Cuisine",
+      "French Cuisine": "French Cuisine",
+      "Spanish Cuisine": "Spanish Cuisine",
+      "Mexican Cuisine": "Mexican Cuisine",
+      "Indian Cuisine": "Indian Cuisine",
+      "Thai Cuisine": "Thai Cuisine",
+      "Hotpot": "Hotpot",
+      "Grill": "Grill",
+      "Seafood": "Seafood",
+      "Street Food": "Street Food",
+      "Fast Food": "Fast Food",
+      "Cafe": "Cafe & Bakery",
+      "Bar & Pub": "Bar & Pub",
+      "Fine Dining": "Fine Dining",
+      "Buffet": "Buffet",
+      "Vegetarian": "Vegetarian"
+    },
+    "no_data_desc": "Try adjusting your filters to find what you are looking for."
   },
   "notifications": {
     "title": "Notifications",
@@ -204,7 +231,8 @@
       "PARTNER_REQUEST_SUBMITTED": "Your partnership request has been submitted successfully! The SeatNow team will contact you soon to begin the journey.",
       "BOOKING_NOT_COMPLETED": "Rating is only available for completed dining experiences.",
       "REVIEW_ALREADY_EXISTS": "You have already posted a review for this booking.",
-      "RESTAURANT_NOT_FOUND": "The restaurant you're trying to review could not be found."
+      "RESTAURANT_NOT_FOUND": "The restaurant you're trying to review could not be found.",
+      "RESTAURANT_SUSPENDED": "This restaurant has been locked by Admin. Please contact support for assistance."
     }
   },
   "auth": {
@@ -290,9 +318,7 @@
       "resend_button": "Resend OTP",
       "resending": "Sending...",
       "verify_email_title": "Verify Your Email",
-      "verify_email_hint": "Enter the 6-digit code sent to",
-      "disclaimer": "Didn't receive a code? Please check your spam folder or wait 60s to resend.",
-      "uploading": "Uploading..."
+      "verify_email_hint": "Enter the 6-digit code sent to"
     },
     "validation": {
       "identifier_required": "Please enter Email or Phone Number",
@@ -662,7 +688,6 @@
         "name_short": "Identity name must be at least 2 characters."
       }
     },
-
     "panel": {
       "restaurant_management": "System Console",
       "search_placeholder": "Search venues, owners...",
@@ -959,12 +984,52 @@
       "system_status": "System Status",
       "healthy": "Healthy",
       "copyright": "© 2026 SeatNow System Administration Center",
-      "compliance": "Compliance Level",
       "security_locked": "Multi-layer Security"
+    },
+    "transactions": {
+      "title": "Transaction Management",
+      "subtitle": "Track cash flow, commission collection, and withdrawals across the system.",
+      "stats": {
+        "total_commission": "Admin Profit",
+        "uncollected_commission": "Uncollected Commission",
+        "total_transactions": "Total Transactions",
+        "total_wallet_balance": "Restaurant Wallet Balance"
+      },
+      "filters": {
+        "date_from": "From Date",
+        "date_to": "To Date",
+        "restaurant_all": "All Restaurants",
+        "type_all": "All Types",
+        "type_deposit": "Deposit",
+        "type_topup": "Wallet Top-up",
+        "type_commission": "Commission Collection",
+        "type_withdrawal": "Partner Withdrawal",
+        "type_refund": "Guest Refund",
+        "type_settlement": "Deposit Disbursement",
+        "status_all": "All Statuses",
+        "status_completed": "Completed",
+        "status_pending": "Pending",
+        "status_failed": "Failed"
+      },
+      "table": {
+        "id": "TXID",
+        "date": "Timestamp",
+        "restaurant": "Restaurant",
+        "type": "Type",
+        "amount": "Amount",
+        "net_amount": "Net Revenue",
+        "commission_amount": "Commission Fee",
+        "total_amount": "Total Transaction Value",
+        "financial_breakdown": "Financial Breakdown",
+        "status": "Status",
+        "action": "Action",
+        "view_booking": "View Booking",
+        "no_data": "No transactions found matching your filters.",
+        "footer_hint": "Transaction history secured by SeatNow Financial",
+        "title": "Transactions"
+      }
     }
   },
-
-
   "guest": {
     "breakdown": "Guest Size Breakdown",
     "demographics": "Portfolio Guest Demographics",
@@ -1573,7 +1638,39 @@
       "placeholder": "Message AI Assistant...",
       "recommend_tooltip": "Get Executive Recommendations",
       "recommend_button": "Recommend",
-      "send_button": "Send"
+      "send_button": "Send",
+      "ultra_responsive": "Ultra Responsive",
+      "roles": {
+        "admin": "System Intelligence Copilot",
+        "owner": "Business Strategic AI",
+        "customer": "Personalized Dining AI",
+        "guest": "Discovery Assistant"
+      },
+      "protocols": {
+        "admin": "Root Protocol Active",
+        "owner": "Portfolio Context Enabled",
+        "customer": "Profile Synchronized",
+        "guest": "Anonymous Mode"
+      }
+    },
+    "insights": {
+      "title_restaurant": "Restaurant AI Insights",
+      "title_portfolio": "Portfolio Business Insights",
+      "refresh": "Refresh",
+      "retry": "Retry Analysis",
+      "error_title": "Oops! Analysis failed",
+      "error_desc": "Failed to generate report. Please try again.",
+      "strategic_report": "Strategic Report",
+      "realtime_data": "Real-time Data Active",
+      "disclaimer": "AI-generated insights based on historical operations. Strategic suggestions are for reference only.",
+      "loading_steps": [
+        "Gathering revenue data...",
+        "Analyzing booking trends for the last 12 months...",
+        "Evaluating restaurant performance...",
+        "Identifying growth opportunities...",
+        "Drafting strategic report..."
+      ],
+      "loading_footer": "Processing thousands of transactions to provide the most accurate forecast."
     },
     "suggestions_guest": [
       "Find premium Japanese restaurants in District 1",
@@ -2398,8 +2495,58 @@
     "all_transactions": "All Transactions",
     "back_to_wallet": "Back to Wallet",
     "transaction_history_full": "Full Transaction History",
+    "commission_fee": "Commission Fee",
+    "net_amount": "Net Amount",
     "min_withdraw_error": "Minimum withdrawal is 10,000 VND",
-    "bank_info_required": "Bank information is required for CARD method"
+    "bank_info_required": "Please enter full bank information",
+    "topup": "Top Up",
+    "topup_funds": "Top Up Wallet",
+    "topup_amount": "Amount to top up",
+    "select_provider": "Select payment provider",
+    "min_topup_error": "Minimum top-up amount is 10,000 VND",
+    "topup_success": "Top-up request created successfully!",
+    "topup_redirect_notice": "Your top-up request has been created. A payment tab will open automatically. If not, click the button below. You can also track this transaction in the details below.",
+    "pay_now": "Pay Now",
+    "transaction_detail": {
+      "title": "Transaction Detail",
+      "back_to_list": "Back to History",
+      "transaction_id": "Transaction ID",
+      "type": "Transaction Type",
+      "status": "Current Status",
+      "method": "Payment Method",
+      "created_at": "Issued At",
+      "description": "Notes",
+      "booking_info": "Related Booking",
+      "customer": "Customer",
+      "table": "Table",
+      "booking_code": "Booking ID",
+      "provider": "Provider",
+      "provider_txn_id": "Provider Txn ID",
+      "reference_code": "Reference Code",
+      "view_receipt": "View receipt",
+      "total_gross": "Total Processed",
+      "system_fee": "System Fee (SeatNow)",
+      "net_revenue": "Net Revenue",
+      "timeline": {
+        "created": "Request Created",
+        "processing": "Processing",
+        "completed": "Successfully Completed",
+        "failed": "Transaction Failed"
+      },
+      "types": {
+        "DEPOSIT_PAYMENT": "Deposit payment",
+        "TOP_UP": "Wallet top-up",
+        "WITHDRAWAL": "Withdrawal",
+        "SETTLEMENT": "Settlement ",
+        "COMMISSION": "Commission fee",
+        "REFUND": "Deposit refund",
+        "all": "All types"
+      }
+    },
+    "all": "All types",
+    "commission_fee": "Commission Fee",
+    "net_amount": "Net Amount",
+    "filter_type": "Filter by type"
   },
   "workspace_booking_detail": {
     "title": "Booking Details",
@@ -2518,6 +2665,45 @@
     }
   },
   "workspace_revenue": {
+    "title": "Revenue & Analytics",
+    "subtitle": "Financial reporting and operational performance at this venue",
+    "kpi": {
+      "total_revenue": "TOTAL NET REVENUE",
+      "net_explainer": "Total actual funds received after system fees and refunds.",
+      "gross_revenue": "GROSS REVENUE",
+      "gross_explainer": "Total transaction volume before any deductions or fees.",
+      "total_bookings": "TOTAL BOOKINGS",
+      "bookings_explainer": "Total number of successful reservations in this period.",
+      "cancel_rate": "CANCELLATION RATE",
+      "cancel_explainer": "Percentage of bookings cancelled or recorded as no-shows.",
+      "data_synced": "Data synced"
+    },
+    "common": {
+      "bookings": "Bookings"
+    },
+    "guest_types": {
+      "couple": "Couple (2)",
+      "small_group": "Small Group (3-7)",
+      "party": "Party (8+)"
+    },
+    "charts": {
+      "revenue_trend": "Growth Trend",
+      "revenue_trend_desc": "Analysis of revenue fluctuations over time.",
+      "guest_analysis": "Guest Analysis",
+      "guest_analysis_desc": "Distribution of guest sizes in this period",
+      "peak_hours": "Peak Hours",
+      "peak_hours_desc": "Booking density by time of day",
+      "no_data": "No data available for this period",
+      "net_revenue": "Net Revenue",
+      "gross": "Gross"
+    },
+    "insights": {
+      "label": "Smart Insights",
+      "title": "Revenue Optimization",
+      "description": "Based on historical data, increasing staff during peak hours could improve efficiency by up to 15%."
+    },
+    "transactions": {
+      "title": "Recent Transactions",
       "title": "Revenue & Analytics",
       "subtitle": "Financial reporting and operational performance at this venue",
       "kpi": {
@@ -2566,5 +2752,19 @@
         "col_net": "Net Received",
         "no_transactions": "No transactions recorded yet."
       }
+    },
+    "restaurants": {
+      "info": {
+        "days": {
+          "Monday": "Monday",
+          "Tuesday": "Tuesday",
+          "Wednesday": "Wednesday",
+          "Thursday": "Thursday",
+          "Friday": "Friday",
+          "Saturday": "Saturday",
+          "Sunday": "Sunday"
+        }
+      }
     }
+  }
 }

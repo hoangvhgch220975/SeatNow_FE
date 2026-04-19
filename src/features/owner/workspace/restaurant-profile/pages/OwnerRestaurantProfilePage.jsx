@@ -36,7 +36,7 @@ const OwnerRestaurantProfilePage = () => {
           onClick={(e) => {
             e.preventDefault();
             toast.dismiss();
-            toast("Technical modification module coming soon!", {
+            toast(t('common.coming_soon'), {
               icon: '🛠️',
               style: {
                 borderRadius: '1rem',

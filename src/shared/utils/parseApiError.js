@@ -62,6 +62,8 @@ const MESSAGE_MAP = {
   'BOOKING_NOT_COMPLETED':            "api.messages.BOOKING_NOT_COMPLETED",
   'REVIEW_ALREADY_EXISTS':            "api.messages.REVIEW_ALREADY_EXISTS",
   'RESTAURANT_NOT_FOUND':             "api.messages.RESTAURANT_NOT_FOUND",
+  'RESTAURANT_SUSPENDED':             "api.messages.RESTAURANT_SUSPENDED",
+  'Nhà hàng đã bị Admin khóa. Vui lòng liên hệ bộ phận hỗ trợ để được mở lại.': "api.messages.RESTAURANT_SUSPENDED",
 };
 
 /**

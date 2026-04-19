@@ -1,38 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Zap, Search, PieChart, TrendingUp, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { BarChart, Search, PieChart, TrendingUp, Sparkles } from 'lucide-react';
 
 /**
  * @file AnalysisLoadingView.jsx
  * @description Trạng thái Loading cao cấp với các thông điệp thay đổi liên tục.
  */
-const AnalysisLoadingView = ({ lang = 'vi' }) => {
+const AnalysisLoadingView = () => {
+  const { t } = useTranslation();
   const [step, setStep] = useState(0);
 
-  const messages = {
-    vi: [
-      "Đang thu thập dữ liệu doanh thu...",
-      "Phân tích xu hướng đặt bàn 12 tháng qua...",
-      "Đánh giá hiệu suất các nhà hàng...",
-      "Xác định cơ hội tăng trưởng...",
-      "Đang biên soạn báo cáo chiến lược..."
-    ],
-    en: [
-      "Gathering revenue data...",
-      "Analyzing booking trends for the last 12 months...",
-      "Evaluating restaurant performance...",
-      "Identifying growth opportunities...",
-      "Drafting strategic report..."
-    ]
-  };
-
-  const currentMessages = messages[lang] || messages.en;
+  // Lấy danh sách steps từ i18n (trả về mảng)
+  const currentMessages = t('ai_assistant.insights.loading_steps', { returnObjects: true });
+  const messageCount = Array.isArray(currentMessages) ? currentMessages.length : 0;
 
   useEffect(() => {
+    if (messageCount === 0) return;
+    
     const timer = setInterval(() => {
-      setStep((prev) => (prev + 1) % currentMessages.length);
+      setStep((prev) => (prev + 1) % messageCount);
     }, 2500);
     return () => clearInterval(timer);
-  }, [currentMessages.length]);
+  }, [messageCount]);
 
   return (
     <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center p-8 bg-[radial-gradient(circle_at_center,rgba(var(--color-primary),0.05),transparent_70%)]">
@@ -76,10 +65,10 @@ const AnalysisLoadingView = ({ lang = 'vi' }) => {
       </h2>
       <div className="flex flex-col items-center gap-2">
         <p className="text-slate-500 font-medium text-lg min-h-[28px] transition-all duration-500">
-          {currentMessages[step]}
+          {Array.isArray(currentMessages) ? currentMessages[step] : ''}
         </p>
         <div className="flex gap-1.5 mt-2">
-          {[0, 1, 2, 3, 4].map((i) => (
+          {Array.isArray(currentMessages) && currentMessages.map((_, i) => (
             <div 
               key={i} 
               className={`h-1.5 rounded-full transition-all duration-500 ${
@@ -91,9 +80,7 @@ const AnalysisLoadingView = ({ lang = 'vi' }) => {
       </div>
 
       <p className="mt-12 text-slate-400 text-sm max-w-sm">
-        {lang === 'vi' 
-          ? "Chúng tôi đang xử lý hàng ngàn giao dịch để đưa ra dự báo chính xác nhất." 
-          : "Processing thousands of transactions to provide the most accurate forecast."}
+        {t('ai_assistant.insights.loading_footer')}
       </p>
     </div>
   );

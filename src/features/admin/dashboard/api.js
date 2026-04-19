@@ -10,8 +10,13 @@ export const dashboardApi = {
    * @param {string} period - day, week, month, quarter, year
    * @returns {Promise} - Dashboard metrics
    */
-  getDashboardStats: async (period = 'month') => {
-    return await axios.get('/admin/dashboard/stats', { params: { period } });
+  getDashboardStats: async (period = 'month', restaurantId = null) => {
+    return await axios.get('/admin/dashboard/stats', { 
+      params: { 
+        period,
+        ...(restaurantId && { restaurantId })
+      } 
+    });
   },
 
   /**

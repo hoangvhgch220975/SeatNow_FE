@@ -46,7 +46,7 @@ const RestaurantProfileForm = ({ restaurant, isLoading }) => {
             {restaurant?.cuisineTypes?.length > 0 ? (
               restaurant.cuisineTypes.map((cat) => (
                 <span key={cat} className="px-4 py-2 bg-violet-50 text-violet-600 text-xs font-black rounded-lg uppercase tracking-wider border border-violet-100">
-                  {cat}
+                  {t(`common.cuisines.${cat}`)}
                 </span>
               ))
             ) : (

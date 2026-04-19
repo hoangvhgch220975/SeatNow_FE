@@ -86,8 +86,8 @@ const AIRevenueInsightsPage = ({ restaurantId: restaurantIdProp = null }) => {
                         <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
                             <FileText className="w-5 h-5 text-primary" />
                             {isWorkspaceContext
-                              ? (currentLang === 'vi' ? 'Phân tích Nhà hàng' : 'Restaurant AI Insights')
-                              : (currentLang === 'vi' ? 'Phân tích Danh mục Kinh doanh' : 'Portfolio Business Insights')
+                              ? t('ai_assistant.insights.title_restaurant')
+                              : t('ai_assistant.insights.title_portfolio')
                             }
                         </h1>
                         <p className="text-xs text-slate-400 font-medium">
@@ -105,10 +105,10 @@ const AIRevenueInsightsPage = ({ restaurantId: restaurantIdProp = null }) => {
                             <button 
                                 onClick={fetchAnalysis}
                                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-600 hover:text-primary hover:bg-indigo-50 rounded-xl transition-all"
-                                title="Làm mới báo cáo"
+                                title={t('ai_assistant.insights.refresh')}
                             >
                                 <RotateCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-                                <span className="hidden sm:inline">{currentLang === 'vi' ? 'Làm mới' : 'Refresh'}</span>
+                                <span className="hidden sm:inline">{t('ai_assistant.insights.refresh')}</span>
                             </button>
                             <button 
                                 onClick={() => window.print()}
@@ -138,14 +138,14 @@ const AIRevenueInsightsPage = ({ restaurantId: restaurantIdProp = null }) => {
                             <div className="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center mb-4 border border-rose-100">
                                 <AlertCircle className="w-8 h-8 text-rose-500" />
                             </div>
-                            <h3 className="text-lg font-bold text-slate-800 mb-2">{currentLang === 'vi' ? 'Đã xảy ra lỗi' : 'Oops! Analysis failed'}</h3>
+                            <h3 className="text-lg font-bold text-slate-800 mb-2">{t('ai_assistant.insights.error_title')}</h3>
                             <p className="text-slate-500 max-w-sm mb-6">{error}</p>
                             <button 
                                 onClick={fetchAnalysis}
                                 className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-105 transition-all flex items-center gap-2"
                             >
                                 <RotateCw className="w-4 h-4" />
-                                {currentLang === 'vi' ? 'Thử lại ngay' : 'Retry Analysis'}
+                                {t('ai_assistant.insights.retry')}
                             </button>
                         </div>
                     )}
@@ -161,7 +161,7 @@ const AIRevenueInsightsPage = ({ restaurantId: restaurantIdProp = null }) => {
                                     </div>
                                     <div>
                                         <div className="text-sm font-bold text-slate-800">
-                                            {currentLang === 'vi' ? 'Báo cáo Chiến lược' : 'Strategic Report'}
+                                            {t('ai_assistant.insights.strategic_report')}
                                         </div>
                                         <div className="text-xs text-slate-400">
                                             {new Date().toLocaleDateString(currentLang === 'vi' ? 'vi-VN' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
@@ -170,7 +170,7 @@ const AIRevenueInsightsPage = ({ restaurantId: restaurantIdProp = null }) => {
                                 </div>
                                 <div className="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold border border-emerald-100 flex items-center gap-1.5">
                                     <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                                    {currentLang === 'vi' ? 'Dữ liệu Thời gian thực' : 'Real-time Data Active'}
+                                    {t('ai_assistant.insights.realtime_data')}
                                 </div>
                             </div>
 
@@ -192,9 +192,7 @@ const AIRevenueInsightsPage = ({ restaurantId: restaurantIdProp = null }) => {
                             {/* Footer / Disclaimer */}
                             <div className="mt-16 pt-8 border-t border-slate-50 flex flex-col md:flex-row items-center justify-between gap-6">
                                 <p className="text-xs text-slate-400 italic text-center md:text-left">
-                                    {currentLang === 'vi' 
-                                        ? "Dữ liệu được AI phân tích dựa trên lịch sử vận hành. Các gợi ý chiến lược chỉ mang tính tham khảo." 
-                                        : "AI-generated insights based on historical operations. Strategic suggestions are for reference only."}
+                                    {t('ai_assistant.insights.disclaimer')}
                                 </p>
                                 <div className="flex items-center gap-2">
                                     <button className="p-2 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg transition-all">

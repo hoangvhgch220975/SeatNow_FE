@@ -119,7 +119,9 @@ const RestaurantCard = ({ restaurant }) => {
                 {t('owner_portal.card.primary_cuisine', { defaultValue: 'Primary Cuisine' })}
               </span>
               <span className={`text-xs font-black ${isSuspended ? 'text-slate-400' : 'text-slate-700'}`}>
-                {cuisineTypes?.[0] || t('owner_portal.card.premium_experience', { defaultValue: 'Premium Experience' })}
+                {cuisineTypes?.[0] 
+                  ? t(`common.cuisines.${cuisineTypes[0]}`) 
+                  : t('owner_portal.card.premium_experience', { defaultValue: 'Premium Experience' })}
               </span>
            </div>
         </div>
@@ -130,7 +132,10 @@ const RestaurantCard = ({ restaurant }) => {
             to={ROUTES.WORKSPACE_DASHBOARD(workspaceIdentifier)}
             className="w-full h-14 rounded-2xl flex items-center justify-center gap-4 bg-slate-900 text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-violet-600 hover:shadow-2xl hover:shadow-violet-200 transition-all active:scale-95 group/btn"
           >
-            {isSuspended ? t('owner_portal.card.manage_suspended', { defaultValue: 'Manage Suspended' }) : t('owner_portal.card.manage_dashboard', { defaultValue: 'Manage Dashboard' })}
+            {isSuspended 
+              ? t('owner_portal.card.management_locked') 
+              : t('owner_portal.card.manage_dashboard')
+            }
             <span className="material-symbols-outlined text-[20px] group-hover/btn:translate-x-1 transition-transform">arrow_right_alt</span>
           </Link>
         </div>
