@@ -23,6 +23,7 @@ export const useAI = (restaurantId = null) => {
   // [Xác định vai trò và định danh]
   const isOwner = isAuthenticated && user?.role?.toUpperCase() === 'RESTAURANT_OWNER';
   const isCustomer = isAuthenticated && user?.role?.toUpperCase() === 'CUSTOMER';
+  const isAdmin = isAuthenticated && user?.role?.toUpperCase() === 'ADMIN';
   const isGuest = !isAuthenticated;
   
   const userId = user?.id || user?._id || 'guest';
@@ -228,11 +229,13 @@ export const useAI = (restaurantId = null) => {
         try {
           if (isCustomer) await aiApi.clearCustomerHistory(sid);
           if (isOwner) await aiApi.clearOwnerHistory(restaurantId, sid);
+          if (isAdmin) await aiApi.clearAdminHistory(sid);
         } catch(e) {}
     },
     hasPersonalization: !isGuest,
     isOwner,
     isCustomer,
+    isAdmin,
     isGuest,
     role
   };

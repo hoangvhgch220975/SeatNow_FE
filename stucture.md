@@ -447,6 +447,11 @@ seatnow-fe/
 │ │ │ │     ├─ AdminProfileSettings.jsx // Form thiết lập thông tin
 │ │ │ │     └─ AdminSecuritySettings.jsx // Form đổi mật khẩu bảo mật
 │ │ │
+│ │ │ ├─ ai/ // [MỚI] Phân hệ AI Intelligence dành riêng cho Admin
+│ │ │ │ └─ pages/
+│ │ │ │     ├─ AdminAIChatPage.jsx // Trợ lý ảo đa năng (Chat Copilot)
+│ │ │ │     └─ AdminAIAnalyticsPage.jsx // Phân tích doanh thu thông minh (Insights)
+│ │ │
 │ │ │ ├─ bookings/
 │ │ │ │ ├─ api.js // API: Lấy danh sách & thống kê booking toàn sàn
 │ │ │ │ ├─ hooks.js // Hooks: useAdminBookings, useAdminBookingStats

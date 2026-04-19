@@ -40,7 +40,7 @@ const AdminDashboardPage = () => {
           <h1 className="text-3xl font-black text-slate-900 tracking-tight mb-1">
             {t('admin.dashboard.title')}
           </h1>
-          <p className="text-sm font-bold text-slate-400">
+          <p className="text-sm font-medium text-slate-500">
             {t('admin.dashboard.subtitle')}
           </p>
         </div>

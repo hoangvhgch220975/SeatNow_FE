@@ -51,6 +51,8 @@ import AIRevenueInsightsPage from '../features/owner/portal/pages/AIRevenueInsig
 import WorkspaceAIChatPage from '../features/owner/workspace/ai/pages/WorkspaceAIChatPage.jsx';
 import WorkspaceAIRevenuePage from '../features/owner/workspace/ai/pages/WorkspaceAIRevenuePage.jsx';
 import AdminProfilePage from '../features/admin/profile/pages/AdminProfilePage.jsx';
+import AdminAIChatPage from '../features/admin/ai/pages/AdminAIChatPage.jsx';
+import AdminAIAnalyticsPage from '../features/admin/ai/pages/AdminAIAnalyticsPage.jsx';
 import CreateReviewPage from '../features/reviews/pages/CreateReviewPage.jsx';
 
 
@@ -302,6 +304,14 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN_PROFILE,
             element: <AdminProfilePage />,
+          },
+          {
+            path: ROUTES.ADMIN_AI_CHAT,
+            element: <AdminAIChatPage />,
+          },
+          {
+            path: ROUTES.ADMIN_AI_ANALYTICS,
+            element: <AdminAIAnalyticsPage />,
           },
         ]
       },

@@ -567,6 +567,22 @@
         "offline": "Ngoại tuyến"
       }
     },
+    "ai_intelligence": {
+      "analytics": {
+        "title": "Phân tích Hệ thống AI",
+        "subtitle": "Được cung cấp bởi SeatNow Business Intelligence",
+        "refresh": "Làm mới Phân tích",
+        "realtime_data": "Dữ liệu Thời gian thực",
+        "strategic_report": "Báo cáo Chiến lược",
+        "disclaimer": "Dữ liệu được AI phân tích dựa trên lịch sử vận hành. Các gợi ý chiến lược chỉ mang tính tham khảo."
+      },
+      "chat": {
+        "title": "SeatNow Copilot",
+        "subtitle": "Trợ lý Quản lý Cấp cao",
+        "placeholder": "Hỏi bất cứ điều gì về vận hành hệ thống...",
+        "welcome": "Xin chào! Tôi là Trợ lý Hệ thống SeatNow. Tôi có thể giúp bạn phân tích dữ liệu, quản lý đối tác hoặc trả lời các câu hỏi về giao thức hệ thống. Tôi có thể giúp gì cho bạn hôm nay?"
+      }
+    },
     "nav": {
       "dashboard": "Tổng quan",
       "partner_accounts": "Tài khoản đối tác",

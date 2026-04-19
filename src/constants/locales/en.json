@@ -567,6 +567,22 @@
         "offline": "Offline"
       }
     },
+    "ai_intelligence": {
+      "analytics": {
+        "title": "System AI Insights",
+        "subtitle": "Powered by SeatNow Business Intelligence",
+        "refresh": "Refresh Analysis",
+        "realtime_data": "Real-time Data Active",
+        "strategic_report": "Strategic Report",
+        "disclaimer": "AI-generated insights based on historical operations. Strategic suggestions are for reference only."
+      },
+      "chat": {
+        "title": "SeatNow Copilot",
+        "subtitle": "Advanced Management Assistant",
+        "placeholder": "Ask anything about system operations...",
+        "welcome": "Hello! I am your SeatNow System Copilot. I can help you analyze data, manage partners, or answer questions about system protocols. How can I assist you today?"
+      }
+    },
     "nav": {
       "dashboard": "Overview",
       "partner_accounts": "Partner Accounts",

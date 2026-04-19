@@ -38,6 +38,7 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
     hasPersonalization,
     isOwner,
     isCustomer,
+    isAdmin,
     isGuest
   } = useAI(restaurantId);
 
@@ -46,6 +47,8 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
     // [Safety]: Đảm bảo luôn trả về mảng để tránh lỗi .map()
     const list = isOwner 
       ? t('ai_assistant.suggestions_owner', { returnObjects: true }) 
+      : isAdmin
+      ? t('admin.ai_intelligence.chat.suggestions', { returnObjects: true })
       : isCustomer 
       ? t('ai_assistant.suggestions_customer', { returnObjects: true }) 
       : t('ai_assistant.suggestions_guest', { returnObjects: true });
@@ -55,25 +58,31 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
 
   // [Style]: Phân tách chủ đề màu sắc theo vai trò
   const theme = useMemo(() => {
+    if (isAdmin) return {
+        primary: 'amber-600',
+        bg: 'bg-amber-500/10',
+        text: 'text-amber-600',
+        badge: 'ADMIN PROTOCOL'
+    };
     if (isOwner) return { 
-        primary: 'amber-600', 
-        bg: 'bg-amber-500/10', 
-        text: 'text-amber-600', 
-        badge: 'Owner Advisor' 
+        primary: 'violet-600', 
+        bg: 'bg-violet-500/10', 
+        text: 'text-violet-600', 
+        badge: 'EXECUTIVE ADVISOR' 
     };
     if (isCustomer) return { 
-        primary: 'indigo-600', 
-        bg: 'bg-indigo-500/10', 
-        text: 'text-indigo-600', 
-        badge: 'Private Concierge' 
+        primary: 'emerald-600', 
+        bg: 'bg-emerald-500/10', 
+        text: 'text-emerald-600', 
+        badge: 'PRIVATE CONCIERGE' 
     };
     return { 
-        primary: 'primary', 
-        bg: 'bg-primary/10', 
-        text: 'text-primary', 
-        badge: 'Guest Discovery' 
+        primary: 'slate-500', 
+        bg: 'bg-slate-500/10', 
+        text: 'text-slate-500', 
+        badge: 'GUEST EXPLORER' 
     };
-  }, [isOwner, isCustomer]);
+  }, [isAdmin, isOwner, isCustomer]);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const scrollRef = useRef(null);
@@ -114,7 +123,7 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
           onStartNewChat={() => startNewChat()}
           onLoadSession={loadSession}
           onDeleteSession={deleteSession}
-          roleBadge={isOwner ? 'EXECUTIVE' : 'MEMBER'}
+          roleBadge={isAdmin ? 'PROTOCOL' : (isOwner ? 'EXECUTIVE' : 'MEMBER')}
         />
       )}
 
@@ -136,7 +145,7 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
 
               <div className="flex flex-col">
                 <h1 className="text-lg font-black text-slate-900 leading-tight flex items-center gap-2">
-                    {isOwner ? 'Business Strategic AI' : (isCustomer ? 'Personalized Dining AI' : t('ai_assistant.header.title'))}
+                    {isAdmin ? 'System Intelligence Copilot' : (isOwner ? 'Business Strategic AI' : (isCustomer ? 'Personalized Dining AI' : t('ai_assistant.header.title')))}
                     <div className="flex gap-1">
                         <span className={`px-2 py-0.5 ${theme.bg} ${theme.text} text-[9px] font-black uppercase tracking-tighter rounded-md shadow-sm border border-current/10`}>
                             {theme.badge}
@@ -144,8 +153,8 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
                     </div>
                 </h1>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5 leading-none mt-0.5">
-                    <ShieldCheck className={`w-3 h-3 ${isOwner ? 'text-amber-500' : 'text-green-500'}`} />
-                    {isOwner ? 'Portfolio Context Enabled' : (isCustomer ? 'Profile Synchronized' : 'Anonymous Mode')}
+                    <ShieldCheck className={`w-3 h-3 ${isAdmin ? 'text-amber-500' : (isOwner ? 'text-violet-500' : (isCustomer ? 'text-emerald-500' : 'text-slate-400'))}`} />
+                    {isAdmin ? 'Root Protocol Active' : (isOwner ? 'Portfolio Context Enabled' : (isCustomer ? 'Profile Synchronized' : 'Anonymous Mode'))}
                 </p>
               </div>
            </div>
@@ -158,8 +167,8 @@ const AIAssistantPage = ({ restaurantId: restaurantIdProp = null }) => {
                       <span className="text-xs font-black">Ultra Responsive</span>
                   </div>
               </div>
-              {/* [Role: OWNER]: Ẩn nút quay lại vì Owner đã có sidebar Portal */}
-              {!isOwner && (
+              {/* [Role: OWNER/ADMIN]: Ẩn nút quay lại vì đã có sidebar Portal/Admin */}
+              {!isOwner && !isAdmin && (
                 <Link to={ROUTES.HOME} className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center text-slate-400 hover:text-primary hover:bg-white hover:shadow-sm transition-all shadow-indigo-100/10">
                   <ChevronLeft className="w-5 h-5" />
                 </Link>
