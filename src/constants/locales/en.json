@@ -24,6 +24,7 @@
     "phone": "Phone",
     "description": "Description",
     "view_all": "View All",
+    "select_to_view": "Select an item to view details",
     "compressing": "Compressing...",
     "uploading": "Uploading...",
     "all_rights_reserved": "All rights reserved",
@@ -51,7 +52,6 @@
       "nov": "Nov",
       "dec": "Dec"
     },
-    "cancel": "Cancel",
     "confirm": "Confirm",
     "done": "Done",
     "confirm_title": "Confirm Action",
@@ -100,19 +100,17 @@
       "BOOKING_CANCELLED": "Booking Cancelled",
       "BOOKING_NO_SHOW": "No-Show Recorded",
       "TRANSACTION_DEPOSIT": "Deposit Received",
-      "TRANSACTION_TOPUP": "Wallet Top-up",
+      "TRANSACTION_TOPUP": "System Fund Top-up Successful",
       "TRANSACTION_WITHDRAW_APPROVED": "Withdrawal Request Approved",
       "REVIEW_NEW": "New Customer Review",
-      "COMMISSION_SETTLED": "Commission Settled",
+      "COMMISSION_SETTLED": "Periodic Commission Settlement",
       "ADMIN_BROADCAST": "System Announcement",
       "RESTAURANT_APPROVED": "Restaurant Approved",
       "RESTAURANT_ACTIVATED": "Restaurant Activated",
       "RESTAURANT_SUSPENDED": "Restaurant Suspended",
       "PARTNER_REQUEST_SUBMITTED": "New Partner Request Submitted",
       "RESTAURANT_CREATED": "New Venue Profile Pending Audit",
-      "WITHDRAWAL_REQUESTED": "New Payout Request from Partner",
-      "TRANSACTION_TOPUP": "System Fund Top-up Successful",
-      "COMMISSION_SETTLED": "Periodic Commission Settlement"
+      "WITHDRAWAL_REQUESTED": "New Payout Request from Partner"
     }
   },
   "analytics": {
@@ -753,7 +751,6 @@
           "approve": "The system will automatically initialize a SeatNow Wallet for this restaurant."
         }
       },
-      "pending_title": "Pending Audit List",
       "pending_subtitle": "Carefully review contact info and facilities before approving new partners into the system.",
       "protocol_check": "Security Protocol Check",
       "protocol_desc": "All approved restaurants will immediately be assigned a unique wallet address. Ensure data accuracy.",
@@ -767,7 +764,7 @@
         "description": "Biography / Description",
         "desc_placeholder": "Tell the world about this venue...",
         "premium_title": "Premium Protocol",
-        "premium_desc": "Enable specialized ranking and priority exposure throughout the portfolio.",
+        "premium_desc": "Priority visibility & Executive badge",
         "commission_label": "Commission Fee",
         "system_status": "System Status",
         "status_active": "ACTIVE / VERIFIED",
@@ -800,7 +797,6 @@
         "economics": "Financial Configuration",
         "commission_rate": "Commission Rate (%)",
         "premium_status": "Premium Status",
-        "premium_desc": "Priority visibility & Executive badge",
         "cuisine_management": "Cuisine Categories",
         "opening_hours": "Operating Hours",
         "mode_all": "All Week",
@@ -1027,6 +1023,49 @@
         "no_data": "No transactions found matching your filters.",
         "footer_hint": "Transaction history secured by SeatNow Financial",
         "title": "Transactions"
+      }
+    },
+    "withdrawals": {
+      "title": "Payout Management",
+      "subtitle": "Review and authorize payout requests from restaurant partners.",
+      "search_placeholder": "Search ID, Restaurant, or Booking...",
+      "stats": {
+        "pending": "Pending Requests",
+        "total_processed": "Total Processed",
+        "system_liquidity": "System Liquidity"
+      },
+      "table": {
+        "restaurant": "Restaurant",
+        "requested": "Requested Amount",
+        "balance": "Current Balance",
+        "status": "Status",
+        "date": "Requested Date",
+        "no_data": "No payout requests found.",
+        "no_data_desc": "All clear! There are no pending payout requests at this moment.",
+        "request_plural": "Requests",
+        "qr_label": "QR Payout",
+        "default_method": "Default Method"
+      },
+      "details": {
+        "inspection": "Request Inspection",
+        "bank_info": "Beneficiary Info",
+        "method": "Method",
+        "risk_flag": "Risk Signals",
+        "verified_revenue": "Verified Revenue",
+        "qr_instruction": "Scan code to process payout",
+        "qr_placeholder": "Payout via QR (Invalid or empty link)"
+      },
+      "actions": {
+        "approve": "Approve Withdrawal",
+        "reject": "Reject Withdrawal",
+        "confirm_title": "Confirm Approval",
+        "confirm_desc": "You are about to authorize a payout of {{amount}} to {{restaurant}}. This action is irreversible.",
+        "confirm_btn": "Confirm Payout",
+        "cancel_btn": "Cancel Review",
+        "reject_title": "Confirm Rejection",
+        "reject_desc": "This request will be cancelled, and the funds will be returned to the restaurant's available balance.",
+        "approve_warning": "This action will permanently move funds to the partner. Ensure you have verified the outbound bank transfer before confirming.",
+        "reject_warning": "Rejecting this will return all funds to the restaurant's wallet. This should only be done if bank details are invalid or suspicious activity is detected."
       }
     }
   },
@@ -2399,53 +2438,90 @@
   "workspace_revenue": {
     "title": "Revenue & Analytics",
     "subtitle": "Financial reporting and operational performance at this venue",
-    "period": "Period",
-    "export": "Export Data",
     "kpi": {
-      "total_revenue": "Total Net Revenue",
-      "gross_revenue": "Gross Revenue",
-      "total_bookings": "Total Bookings",
-      "avg_revenue": "Avg. Revenue/Booking",
-      "cancel_rate": "Cancellation Rate",
-      "net_explainer": "After SeatNow commission fees",
-      "gross_explainer": "Total deposit value collected",
-      "bookings_explainer": "Number of successful bookings",
-      "cancel_explainer": "Based on total actual bookings"
-    },
-    "charts": {
-      "revenue_trend": "Revenue Trend",
-      "revenue_trend_desc": "Track cash flow fluctuations over time",
-      "guest_analysis": "Guest Analysis",
-      "guest_analysis_desc": "Customer group structure at the restaurant",
-      "peak_hours": "Peak Hours",
-      "peak_hours_desc": "Distribution of booking times during the day",
-      "no_data": "No statistical data available for this period"
-    },
-    "guest_types": {
-      "couple": "Couple (1-2)",
-      "small_group": "Small Group (3-7)",
-      "party": "Large Party (8+)"
+      "total_revenue": "TOTAL NET REVENUE",
+      "net_explainer": "Total actual funds received after system fees and refunds.",
+      "gross_revenue": "GROSS REVENUE",
+      "gross_explainer": "Total transaction volume before any deductions or fees.",
+      "total_bookings": "TOTAL BOOKINGS",
+      "bookings_explainer": "Total number of successful reservations in this period.",
+      "cancel_rate": "CANCELLATION RATE",
+      "cancel_explainer": "Percentage of bookings cancelled or recorded as no-shows.",
+      "data_synced": "Data synced"
     },
     "common": {
-      "bookings": "Bookings",
-      "currency": "VND"
+      "bookings": "Bookings"
     },
-    "transactions": {
-      "title": "Recent Revenue Transactions",
-      "col_date": "Booking Date",
-      "col_customer": "Customer",
-      "col_status": "Status",
-      "col_amount": "Amount",
-      "col_net": "Net Received",
-      "view_all": "View all transactions",
-      "subtitle": "Recent deposit payments from guests",
-      "no_transactions": "No transactions found in this period.",
-      "data_synced": "DATA SYNCED"
+    "guest_types": {
+      "couple": "Couple (2)",
+      "small_group": "Small Group (3-7)",
+      "party": "Party (8+)"
+    },
+    "charts": {
+      "revenue_trend": "Growth Trend",
+      "revenue_trend_desc": "Analysis of revenue fluctuations over time.",
+      "guest_analysis": "Guest Analysis",
+      "guest_analysis_desc": "Distribution of guest sizes in this period",
+      "peak_hours": "Peak Hours",
+      "peak_hours_desc": "Booking density by time of day",
+      "no_data": "No data available for this period",
+      "net_revenue": "Net Revenue",
+      "gross": "Gross"
     },
     "insights": {
-      "label": "SMART INSIGHT",
-      "title": "Smart Insight",
-      "description": "Collect more data to see advanced behavioral insights for your venue."
+      "label": "Smart Insights",
+      "title": "Revenue Optimization",
+      "description": "Based on historical data, increasing staff during peak hours could improve efficiency by up to 15%."
+    },
+    "transactions": {
+      "title": "Revenue & Analytics",
+      "subtitle": "Financial reporting and operational performance at this venue",
+      "kpi": {
+        "total_revenue": "TOTAL NET REVENUE",
+        "net_explainer": "Total actual funds received after system fees and refunds.",
+        "gross_revenue": "GROSS REVENUE",
+        "gross_explainer": "Total transaction volume before any deductions or fees.",
+        "total_bookings": "TOTAL BOOKINGS",
+        "bookings_explainer": "Total number of successful reservations in this period.",
+        "cancel_rate": "CANCELLATION RATE",
+        "cancel_explainer": "Percentage of bookings cancelled or recorded as no-shows.",
+        "data_synced": "Data synced"
+      },
+      "common": {
+        "bookings": "Bookings"
+      },
+      "guest_types": {
+        "couple": "Couple (2)",
+        "small_group": "Small Group (3-7)",
+        "party": "Party (8+)"
+      },
+      "charts": {
+        "revenue_trend": "Growth Trend",
+        "revenue_trend_desc": "Analysis of revenue fluctuations over time.",
+        "guest_analysis": "Guest Analysis",
+        "guest_analysis_desc": "Distribution of guest sizes in this period",
+        "peak_hours": "Peak Hours",
+        "peak_hours_desc": "Booking density by time of day",
+        "no_data": "No data available for this period",
+        "net_revenue": "Net Revenue",
+        "gross": "Gross"
+      },
+      "insights": {
+        "label": "Smart Insights",
+        "title": "Revenue Optimization",
+        "description": "Based on historical data, increasing staff during peak hours could improve efficiency by up to 15%."
+      },
+      "transactions": {
+        "title": "Recent Transactions",
+        "subtitle": "Detailed cash flow from latest bookings",
+        "view_all": "View All",
+        "col_date": "Date / ID",
+        "col_customer": "Customer",
+        "col_status": "Status",
+        "col_amount": "Gross Revenue",
+        "col_net": "Net Received",
+        "no_transactions": "No transactions recorded yet."
+      }
     }
   },
   "wallet": {
@@ -2544,8 +2620,6 @@
       }
     },
     "all": "All types",
-    "commission_fee": "Commission Fee",
-    "net_amount": "Net Amount",
     "filter_type": "Filter by type"
   },
   "workspace_booking_detail": {
@@ -2662,109 +2736,6 @@
       "no_show_success": "Marked as no-show",
       "cancel_success": "Booking cancelled",
       "action_error": "Action failed. Please try again."
-    }
-  },
-  "workspace_revenue": {
-    "title": "Revenue & Analytics",
-    "subtitle": "Financial reporting and operational performance at this venue",
-    "kpi": {
-      "total_revenue": "TOTAL NET REVENUE",
-      "net_explainer": "Total actual funds received after system fees and refunds.",
-      "gross_revenue": "GROSS REVENUE",
-      "gross_explainer": "Total transaction volume before any deductions or fees.",
-      "total_bookings": "TOTAL BOOKINGS",
-      "bookings_explainer": "Total number of successful reservations in this period.",
-      "cancel_rate": "CANCELLATION RATE",
-      "cancel_explainer": "Percentage of bookings cancelled or recorded as no-shows.",
-      "data_synced": "Data synced"
-    },
-    "common": {
-      "bookings": "Bookings"
-    },
-    "guest_types": {
-      "couple": "Couple (2)",
-      "small_group": "Small Group (3-7)",
-      "party": "Party (8+)"
-    },
-    "charts": {
-      "revenue_trend": "Growth Trend",
-      "revenue_trend_desc": "Analysis of revenue fluctuations over time.",
-      "guest_analysis": "Guest Analysis",
-      "guest_analysis_desc": "Distribution of guest sizes in this period",
-      "peak_hours": "Peak Hours",
-      "peak_hours_desc": "Booking density by time of day",
-      "no_data": "No data available for this period",
-      "net_revenue": "Net Revenue",
-      "gross": "Gross"
-    },
-    "insights": {
-      "label": "Smart Insights",
-      "title": "Revenue Optimization",
-      "description": "Based on historical data, increasing staff during peak hours could improve efficiency by up to 15%."
-    },
-    "transactions": {
-      "title": "Recent Transactions",
-      "title": "Revenue & Analytics",
-      "subtitle": "Financial reporting and operational performance at this venue",
-      "kpi": {
-        "total_revenue": "TOTAL NET REVENUE",
-        "net_explainer": "Total actual funds received after system fees and refunds.",
-        "gross_revenue": "GROSS REVENUE",
-        "gross_explainer": "Total transaction volume before any deductions or fees.",
-        "total_bookings": "TOTAL BOOKINGS",
-        "bookings_explainer": "Total number of successful reservations in this period.",
-        "cancel_rate": "CANCELLATION RATE",
-        "cancel_explainer": "Percentage of bookings cancelled or recorded as no-shows.",
-        "data_synced": "Data synced"
-      },
-      "common": {
-        "bookings": "Bookings"
-      },
-      "guest_types": {
-        "couple": "Couple (2)",
-        "small_group": "Small Group (3-7)",
-        "party": "Party (8+)"
-      },
-      "charts": {
-        "revenue_trend": "Growth Trend",
-        "revenue_trend_desc": "Analysis of revenue fluctuations over time.",
-        "guest_analysis": "Guest Analysis",
-        "guest_analysis_desc": "Distribution of guest sizes in this period",
-        "peak_hours": "Peak Hours",
-        "peak_hours_desc": "Booking density by time of day",
-        "no_data": "No data available for this period",
-        "net_revenue": "Net Revenue",
-        "gross": "Gross"
-      },
-      "insights": {
-        "label": "Smart Insights",
-        "title": "Revenue Optimization",
-        "description": "Based on historical data, increasing staff during peak hours could improve efficiency by up to 15%."
-      },
-      "transactions": {
-        "title": "Recent Transactions",
-        "subtitle": "Detailed cash flow from latest bookings",
-        "view_all": "View All",
-        "col_date": "Date / ID",
-        "col_customer": "Customer",
-        "col_status": "Status",
-        "col_amount": "Gross Revenue",
-        "col_net": "Net Received",
-        "no_transactions": "No transactions recorded yet."
-      }
-    },
-    "restaurants": {
-      "info": {
-        "days": {
-          "Monday": "Monday",
-          "Tuesday": "Tuesday",
-          "Wednesday": "Wednesday",
-          "Thursday": "Thursday",
-          "Friday": "Friday",
-          "Saturday": "Saturday",
-          "Sunday": "Sunday"
-        }
-      }
     }
   }
 }

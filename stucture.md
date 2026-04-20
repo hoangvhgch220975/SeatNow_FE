@@ -495,12 +495,13 @@ seatnow-fe/
 │ │ │ │ └─ TransactionTable.jsx // [NEW] Bảng dữ liệu phối màu dòng tiền
 │ │ │ │
 │ │ │ ├─ withdrawals/
-│ │ │ │ ├─ api.js // API duyệt/từ chối rút tiền
+│ │ │ │ ├─ api.js // API xử lý Payout (Approve/Reject) [DONE]
+│ │ │ │ ├─ hooks.js // useAdminWithdrawals, useWithdrawalActions [DONE]
 │ │ │ │ ├─ pages/
-│ │ │ │ │ └─ AdminWithdrawalsPage.jsx // Trang duyệt withdrawal
+│ │ │ │ │ └─ AdminWithdrawalsPage.jsx // Trang quản trị giải ngân trung tâm [DONE]
 │ │ │ │ └─ components/
-│ │ │ │ ├─ WithdrawalTable.jsx // Bảng yêu cầu rút
-│ │ │ │ └─ WithdrawalDecisionDialog.jsx // Dialog approve/reject
+│ │ │ │ ├─ WithdrawalTable.jsx // Bảng liệt kê yêu cầu rút tiền [DONE]
+│ │ │ │ └─ WithdrawalDecisionDialog.jsx // Modal xác nhận duyệt/từ chối [DONE]
 │ │ │ │
 │ │ │ └─ commissions/
 │ │ │ ├─ api.js // API đối soát commission

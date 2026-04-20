@@ -55,6 +55,7 @@ import AdminProfilePage from '../features/admin/profile/pages/AdminProfilePage.j
 import AdminAIChatPage from '../features/admin/ai/pages/AdminAIChatPage.jsx';
 import AdminAIAnalyticsPage from '../features/admin/ai/pages/AdminAIAnalyticsPage.jsx';
 import AdminTransactionsPage from '../features/admin/transactions/pages/AdminTransactionsPage.jsx';
+import AdminWithdrawalsPage from '../features/admin/withdrawals/pages/AdminWithdrawalsPage.jsx';
 import CreateReviewPage from '../features/reviews/pages/CreateReviewPage.jsx';
 
 
@@ -310,6 +311,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN_TRANSACTIONS,
             element: <AdminTransactionsPage />,
+          },
+          {
+            path: ROUTES.ADMIN_WITHDRAWALS,
+            element: <AdminWithdrawalsPage />,
           },
           {
             path: ROUTES.ADMIN_PROFILE,
