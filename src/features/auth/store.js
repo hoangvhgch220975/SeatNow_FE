@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { storage } from '../../lib/storage.js';
-import { queryClient } from '../../lib/queryClient.js'; // Import queryClient để xóa cache (Vietnamese comment)
+import { queryClient } from '../../lib/queryClient.js';
+import useNotificationStore from '../../shared/hooks/useNotificationStore.hooks.js';
 
 /**
  * Zustand Store Global quản lý State Đăng Nhập / Token của User
@@ -25,6 +26,9 @@ export const useAuthStore = create((set) => ({
     // 2. Xóa thông tin đăng nhập trong Storage (Vietnamese comment)
     storage.clearToken();
     storage.removeItem('user');
+    
+    // 3. Ngắt kết nối Socket (Vietnamese comment)
+    useNotificationStore.getState().cleanupSocket();
 
     // 3. Reset state trong Store (Vietnamese comment)
     set({ user: null, token: null, isAuthenticated: false });

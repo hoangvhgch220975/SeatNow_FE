@@ -36,7 +36,7 @@ export const useWithdrawalActions = () => {
   const approve = useMutation({
     mutationFn: (id) => withdrawalsApi.approveWithdrawal(id),
     onSuccess: () => {
-      toast.success(t('admin.withdrawals.actions.approve_success') || 'Withdrawal approved successfully');
+      toast.success(t('admin.withdrawals.actions.approve') || 'Withdrawal approved successfully');
       // Làm mới danh sách và thống kê liên quan
       queryClient.invalidateQueries({ queryKey: ['admin', 'withdrawals'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'transactions'] });
@@ -51,7 +51,7 @@ export const useWithdrawalActions = () => {
   const reject = useMutation({
     mutationFn: (id) => withdrawalsApi.rejectWithdrawal(id),
     onSuccess: () => {
-      toast.success(t('admin.withdrawals.actions.reject_success') || 'Withdrawal rejected successfully');
+      toast.success(t('admin.withdrawals.actions.reject') || 'Withdrawal rejected successfully');
       queryClient.invalidateQueries({ queryKey: ['admin', 'withdrawals'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'transactions'] });
     },

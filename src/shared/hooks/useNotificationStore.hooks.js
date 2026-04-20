@@ -21,6 +21,7 @@ const NOTIFICATION_EVENTS = [
   'TRANSACTION_DEPOSIT',
   'TRANSACTION_TOPUP',
   'TRANSACTION_WITHDRAW_APPROVED',
+  'TRANSACTION_WITHDRAW_REJECTED',
   'REVIEW_NEW',
   'COMMISSION_SETTLED',
   'RESTAURANT_APPROVED',
@@ -46,6 +47,11 @@ const useNotificationStore = create(
        */
       extractRestaurantId: (payload) => {
         return payload.restaurantId || 
+               payload.restaurant_id ||
+               payload.data?.restaurantId || 
+               payload.data?.restaurant_id ||
+               payload.metadata?.restaurantId ||
+               payload.metadata?.restaurant_id ||
                payload.data?.booking?.restaurantId || 
                payload.metadata?.booking?.restaurantId || 
                payload.data?.restaurant?.id || 
@@ -134,6 +140,9 @@ const useNotificationStore = create(
           }
 
           // 2. Cập nhật Store (Store-only deduplication)
+          // Không lưu vào Store các thông báo Reject (do không lưu DB) theo yêu cầu User (Vietnamese: Không lưu Reject)
+          if (eventName === 'TRANSACTION_WITHDRAW_REJECTED') return;
+
           set((state) => {
             const existsInStore = payloadId && state.activities.some(a => a.id === payloadId);
             if (existsInStore) return state;

@@ -19,37 +19,36 @@ const AdminNotificationToast = ({ t, payload }) => {
     // Đóng toast
     toast.dismiss(t.id);
     
-    // 1. Ưu tiên sử dụng link trực tiếp từ payload
-    const rawLink = payload.link || payload.data?.link || payload.metadata?.link;
-    
-    if (rawLink) {
-      // Mapping các link đặc biệt từ BE -> FE
-      if (rawLink.includes('/audit-requests') || rawLink.includes('/partner-requests')) {
-        return navigate('/admin/partner-requests');
-      }
-      if (rawLink.includes('/withdraw')) {
-        return navigate('/admin/payouts'); // Giả định path
-      }
-      
-      return navigate(rawLink);
-    }
-
-    // 2. Fallback dựa trên type nếu không có link
     const type = payload.type || payload.event;
+    let targetPath = '';
+
+    // 1. Ưu tiên ánh xạ theo Type để đảm bảo độ chính xác
     switch (type) {
       case 'PARTNER_REQUEST_SUBMITTED':
-        navigate('/admin/partner-requests');
-        break;
       case 'RESTAURANT_CREATED':
-        navigate('/admin/partner-requests?tab=venues');
+        targetPath = '/admin/partner-requests';
         break;
       case 'WITHDRAWAL_REQUESTED':
+        targetPath = '/admin/withdrawals';
+        break;
       case 'TRANSACTION_TOPUP':
       case 'COMMISSION_SETTLED':
-        toast.success('Admin Management feature is coming soon!', { icon: '🚀' });
+        targetPath = '/admin/transactions';
         break;
       default:
-        break;
+        // 2. Dự phòng: Sử dụng link trực tiếp từ payload nếu có
+        const rawLink = payload.link || payload.data?.link || payload.metadata?.link;
+        if (rawLink) {
+          targetPath = rawLink.includes('/audit-requests') || rawLink.includes('/partner-requests')
+            ? '/admin/partner-requests'
+            : rawLink;
+        } else {
+          targetPath = '/admin';
+        }
+    }
+
+    if (targetPath) {
+      navigate(targetPath);
     }
   };
 

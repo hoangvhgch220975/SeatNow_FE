@@ -89,6 +89,7 @@ seatnow-fe/
 │ │ └─ utils/
 │ │ ├─ formatCurrency.js // Format tiền tệ
 │ │ ├─ formatDateTime.js // Format ngày giờ
+│ │ ├─ formatCardNumber.js // Format số thẻ ngân hàng
 │ │ ├─ getStatusColor.js // Mapping status -> màu
 │ │ ├─ buildQueryString.js // Build query string cho filter/search
 │ │ ├─ parseApiError.js // Chuẩn hóa lỗi trả về từ BE
@@ -503,13 +504,14 @@ seatnow-fe/
 │ │ │ │ ├─ WithdrawalTable.jsx // Bảng liệt kê yêu cầu rút tiền [DONE]
 │ │ │ │ └─ WithdrawalDecisionDialog.jsx // Modal xác nhận duyệt/từ chối [DONE]
 │ │ │ │
-│ │ │ └─ commissions/
-│ │ │ ├─ api.js // API đối soát commission
-│ │ │ ├─ pages/
-│ │ │ │ └─ CommissionSettlementPage.jsx // Trang đối soát hoa hồng
-│ │ │ └─ components/
-│ │ │ ├─ SettlementFilters.jsx
-│ │ │ └─ SettlementResultTable.jsx
+│ │ │ ├─ settings/ // [MỚI] Phân hệ Cấu hình & Giám sát Hệ thống (Health Check)
+│ │ │ │ ├─ api.js // API cấu hình hoa hồng & health check
+│ │ │ │ ├─ hooks.js // useCommissionConfig, useServiceHealth
+│ │ │ │ ├─ pages/
+│ │ │ │ │ └─ AdminSettingsPage.jsx // Dashboard giám sát 9 services (Bento Grid)
+│ │ │ │ └─ components/
+│ │ │ │   ├─ CommissionConfigCard.jsx // Thẻ cấu hình thu phí tự động
+│ │ │ │   └─ ServiceHealthCard.jsx // Thẻ giám sát trạng thái 9 core services
 │ │ │
 │ │ ├─ ai-assistant/
 │ │ │ ├─ api.js // API đa vai trò (lang, sessionId, restaurantId context)

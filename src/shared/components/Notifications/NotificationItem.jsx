@@ -41,6 +41,14 @@ const NotificationItem = ({ activity, onClose }) => {
         borderColor: 'border-blue-100'
       };
     }
+    if (type === 'TRANSACTION_WITHDRAW_REJECTED') {
+      return {
+        icon: AlertTriangle,
+        color: 'text-rose-500',
+        bgColor: 'bg-rose-50',
+        borderColor: 'border-rose-100'
+      };
+    }
     if (type.startsWith('TRANSACTION_') || type === 'COMMISSION_SETTLED') {
       return {
         icon: Wallet,
@@ -94,15 +102,19 @@ const NotificationItem = ({ activity, onClose }) => {
 
   const queryClient = useQueryClient();
 
-  const restaurantId = metadata?.booking?.restaurantId || metadata?.restaurant?.id || activity.restaurantId;
+  const restaurantId = activity.restaurantId || 
+                        metadata?.restaurantId || 
+                        metadata?.restaurant_id ||
+                        metadata?.booking?.restaurantId || 
+                        metadata?.restaurant?.id;
   const [restaurantName, setRestaurantName] = React.useState(null);
   const [idOrSlug, setIdOrSlug] = React.useState(restaurantId);
 
   React.useEffect(() => {
     if (restaurantId) {
       const queriesData = queryClient.getQueriesData({ queryKey: ['owner', 'restaurants'] });
-      for (const [_, data] of queriesData) {
-        const restaurants = data?.data || data?.items || data;
+      for (const [_, qData] of queriesData) {
+        const restaurants = qData?.data || qData?.items || qData;
         if (Array.isArray(restaurants)) {
           const found = restaurants.find(r => r.id === restaurantId);
           if (found) {
@@ -120,28 +132,37 @@ const NotificationItem = ({ activity, onClose }) => {
       await markAsRead(activity.id);
     }
 
+    // Helper: Chuyển đổi link /restaurant/ về đường dẫn workspace (Vietnamese: Giải mã link)
+    const resolveWorkspacePath = (path) => {
+      if (!idOrSlug) return null;
+      if (path.startsWith('/restaurant/')) {
+        return path.replace('/restaurant/', `/owner/restaurants/${idOrSlug}/`);
+      }
+      return path;
+    };
+
     // Ưu tiên sử dụng link từ Backend và Map vào Workspace (Vietnamese: Ưu tiên link BE)
     if (activity.link && idOrSlug) {
-      if (activity.link === '/restaurant/bookings') return navigate(`/owner/restaurants/${idOrSlug}/bookings`);
-      if (activity.link === '/restaurant/reviews') return navigate(`/owner/restaurants/${idOrSlug}/dashboard`);
-      if (activity.link === '/restaurant/wallet') return navigate(`/owner/restaurants/${idOrSlug}/wallet`);
-      if (activity.link === '/restaurant/settings') return navigate(`/owner/restaurants/${idOrSlug}/settings`);
-      
-      // Nếu là link khác thì đi thẳng
-      return navigate(activity.link);
+      const target = resolveWorkspacePath(activity.link);
+      if (target) return navigate(target);
     }
 
     let targetPath = '';
     if (type.startsWith('BOOKING_')) {
-      const bookingId = metadata?.booking?.id;
-      if (idOrSlug && bookingId) {
-        targetPath = `/owner/restaurants/${idOrSlug}/bookings/${bookingId}`;
+      const bookingId = metadata?.booking?.id || metadata?.id;
+      if (idOrSlug) {
+        targetPath = bookingId 
+          ? `/owner/restaurants/${idOrSlug}/bookings/${bookingId}`
+          : `/owner/restaurants/${idOrSlug}/bookings`;
       }
     } else if (type.startsWith('TRANSACTION_') || type === 'COMMISSION_SETTLED') {
+      const transactionId = metadata?.transactionId || metadata?.transaction_id || metadata?.withdrawalId || metadata?.id;
       if (idOrSlug) {
-        targetPath = `/owner/restaurants/${idOrSlug}/wallet`;
+        targetPath = transactionId
+          ? `/owner/restaurants/${idOrSlug}/wallet/transactions/${transactionId}`
+          : `/owner/restaurants/${idOrSlug}/wallet`;
       }
-    } else if (type === 'REVIEW_NEW' || type === 'RESTAURANT_APPROVED' || type === 'RESTAURANT_ACTIVATED') {
+    } else if (type === 'RESTAURANT_APPROVED' || type === 'RESTAURANT_ACTIVATED' || type === 'REVIEW_NEW') {
       if (idOrSlug) {
         targetPath = `/owner/restaurants/${idOrSlug}/dashboard`;
       }
@@ -154,7 +175,16 @@ const NotificationItem = ({ activity, onClose }) => {
     if (targetPath) {
       navigate(targetPath);
       if (onClose) onClose();
+      return;
     }
+
+    // Cuối cùng, nếu vẫn không xác định được targetPath nhưng có idOrSlug, về Dashboard nhà hàng (Vietnamese: Fallback cuối)
+    if (idOrSlug) {
+      navigate(`/owner/restaurants/${idOrSlug}/dashboard`);
+    } else {
+      navigate('/owner');
+    }
+    if (onClose) onClose();
   };
 
   const timeAgo = formatDistanceToNow(new Date(createdAt), {

@@ -27,11 +27,7 @@ const RestaurantWorkspaceLayout = () => {
       initNotificationSocket(user.id, user.role, token);
       fetchActivities();
     }
-
-    return () => {
-      cleanupSocket();
-    };
-  }, [isAuthenticated, user, initNotificationSocket, fetchActivities, cleanupSocket]);
+  }, [isAuthenticated, user, initNotificationSocket, fetchActivities]);
 
   return (
     <div className="min-h-screen bg-slate-50 flex font-body">

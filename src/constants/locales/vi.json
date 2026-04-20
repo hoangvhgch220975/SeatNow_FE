@@ -87,7 +87,8 @@
       "Buffet": "Buffet",
       "Vegetarian": "Ẩm Thực Chay"
     },
-    "no_data_desc": "Thử điều chỉnh bộ lọc để tìm kiếm những gì bạn đang cần."
+    "no_data_desc": "Thử điều chỉnh bộ lọc để tìm kiếm những gì bạn đang cần.",
+    "copied": "Đã sao chép vào bộ nhớ tạm"
   },
   "notifications": {
     "title": "Thông Báo",
@@ -103,6 +104,7 @@
       "TRANSACTION_DEPOSIT": "Nhận tiền đặt cọc",
       "TRANSACTION_TOPUP": "Nạp tiền vào ví",
       "TRANSACTION_WITHDRAW_APPROVED": "Lệnh rút tiền đã được duyệt",
+      "TRANSACTION_WITHDRAW_REJECTED": "Yêu cầu rút tiền bị từ chối",
       "REVIEW_NEW": "Đánh giá mới từ khách hàng",
       "COMMISSION_SETTLED": "Đã đối soát hoa hồng",
       "ADMIN_BROADCAST": "Thông báo từ quản trị viên",
@@ -626,6 +628,59 @@
       "settings": "Cài đặt",
       "soon": "Soon"
     },
+    "settings": {
+      "title": "Cấu hình & Sức khỏe Hệ thống",
+      "subtitle": "Quản lý các thiết lập toàn sàn và giám sát trạng thái hoạt động của microservices.",
+      "commission": {
+        "title": "Thu phí Hoa hồng Tự động",
+        "description": "Tự động khấu trừ phí hoa hồng từ ví nhà hàng dựa trên chu kỳ đã cấu hình.",
+        "auto_enabled": "Bật Thu phí Tự động",
+        "interval": "Chu kỳ Thu phí",
+        "intervals": {
+          "DAY": "Hàng ngày",
+          "WEEK": "Hàng tuần",
+          "MONTH": "Hàng tháng",
+          "QUARTER": "Hàng quý",
+          "YEAR": "Hàng năm"
+        },
+        "update_success": "Cập nhật cấu hình hoa hồng thành công",
+        "update_error": "Lỗi cập nhật cấu hình hoa hồng"
+      },
+      "health": {
+        "title": "Sức khỏe Vận hành Microservices",
+        "description": "Trạng thái thời gian thực của 8 microservices cốt lõi trong mạng lưới SeatNow.",
+        "refresh": "Làm mới trạng thái",
+        "status": "Trạng thái Giao thức",
+        "latency": "Độ trễ",
+        "online": "Đang hoạt động (UP)",
+        "offline": "Đang gián đoạn (DOWN)",
+        "dependency_check": "Tính toàn vẹn phụ thuộc",
+        "database": "Cơ sở dữ liệu",
+        "redis": "Bộ nhớ đệm (Redis)",
+        "mongodb": "NoSQL (Mongo)"
+      },
+      "services": {
+        "auth": "Xác thực & Định danh",
+        "users": "Hồ sơ & Quản lý người dùng",
+        "restaurants": "Cốt lõi Nhà hàng & Menu",
+        "bookings": "Bộ máy Đặt bàn Real-time",
+        "payment": "Giao dịch tài chính & Ví",
+        "admin": "Logic Điều hành Quản trị",
+        "ai": "Tư vấn & Phân tích AI",
+        "notifications": "Hệ thống Cảnh báo Đa kênh",
+        "gateway": "API Gateway",
+        "roles": {
+          "auth": "Xác thực & Định danh",
+          "users": "Hồ sơ & Quản lý người dùng",
+          "restaurants": "Cốt lõi Nhà hàng & Menu",
+          "bookings": "Bộ máy Đặt bàn Real-time",
+          "payment": "Giao dịch tài chính & Ví",
+          "admin": "Logic Điều hành Quản trị",
+          "ai": "Tư vấn & Phân tích AI",
+          "notifications": "Hệ thống Cảnh báo Đa kênh"
+        }
+      }
+    },
     "profile": {
       "role_super_admin": "Quản trị viên Cấp cao",
       "system_status": "Giao thức Truy cập",
@@ -1048,7 +1103,7 @@
         "no_data": "Không có yêu cầu rút tiền nào.",
         "no_data_desc": "Tất cả đã được xử lý! Hiện tại không có yêu cầu giải ngân nào đang chờ.",
         "request_plural": "Yêu cầu",
-        "qr_label": "Giải ngân qua QR",
+        "qr_label": "QR",
         "default_method": "Phương thức mặc định"
       },
       "details": {
@@ -2481,6 +2536,8 @@
       "cvv": "Mã bảo mật (CVV)",
       "qr_hint": "Tải lên mã QR của bạn",
       "qr_upload_desc": "Kéo thả hoặc nhấp để tải lên",
+      "qr_error": "Vui lòng tải lên mã QR",
+      "qr_success": "QR Code uploaded successfully",
       "payout_history": "Yêu Cầu Rút Tiền Gần Đây",
       "recent_transactions": "Lịch Sử Giao Dịch Gần Đây",
       "date": "Ngày",
@@ -2516,6 +2573,16 @@
       "select_provider": "Chọn cổng thanh toán",
       "min_topup_error": "Số tiền nạp tối thiểu là 10.000 VND",
       "topup_success": "Yêu cầu nạp tiền đã được khởi tạo!",
+      "topup_url_not_found": "Cổng thanh toán không trả về đường dẫn hợp lệ. Vui lòng thử lại.",
+      "topup_error": "Không thể tạo yêu cầu nạp tiền. Vui lòng thử lại.",
+      "topup_processing": "Đang xử lý nạp tiền...",
+      "topup_confirmed": "Nạp tiền hoàn tất!",
+      "topup_success_desc": "Số dư ví của bạn đã được cập nhật thành công.",
+      "topup_success_confirmed": "Nạp tiền thành công!",
+      "topup_failed_title": "Giao dịch không thành công",
+      "topup_failed_desc": "Có lỗi xảy ra trong quá trình thanh toán. Vui lòng thử lại.",
+      "change_amount": "Thay đổi phương thức/số tiền",
+      "view_details": "Xem chi tiết giao dịch",
       "topup_redirect_notice": "Yêu cầu nạp tiền đã được tạo. Trang thanh toán sẽ tự động mở. Nếu không, hãy nhấn nút bên dưới. Bạn cũng có thể theo dõi giao dịch này trong chi tiết dưới đây.",
       "pay_now": "Thanh toán ngay",
       "transaction_detail": {
@@ -2559,6 +2626,7 @@
       "net_amount": "Thực nhận",
       "filter_type": "Lọc theo loại"
     },
+
     "workspace_booking_detail": {
       "title": "Chi tiết Đặt bàn",
       "subtitle": "Xem thông tin đầy đủ và quản lý trạng thái đơn đặt chỗ",

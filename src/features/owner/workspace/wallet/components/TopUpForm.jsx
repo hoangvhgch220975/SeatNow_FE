@@ -6,8 +6,9 @@ import * as z from 'zod';
 import { Wallet, AlertCircle, ExternalLink, ArrowRight } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/config/routes';
-import { useTopUpWallet } from '../hooks';
+import { useTopUpWallet, useTransactionDetail } from '../hooks';
 import toast from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 /**
  * @file TopUpForm.jsx
@@ -26,8 +27,39 @@ const TopUpForm = ({ restaurantId, onSuccess }) => {
   const { idOrSlug } = useParams();
   const navigate = useNavigate();
   const topUpMutation = useTopUpWallet();
+  const queryClient = useQueryClient();
+  const [step, setStep] = useState('INPUT'); // INPUT, PROCESSING, SUCCESS, ERROR
   const [payUrl, setPayUrl] = useState(null);
   const [transactionId, setTransactionId] = useState(null);
+
+  // Hook Polling trạng thái giao dịch
+  const { data: statusData } = useTransactionDetail(transactionId);
+  const currentStatus = statusData?.data?.status || statusData?.status;
+
+  // Effect theo dõi trạng thái giao dịch
+  React.useEffect(() => {
+    if (step === 'PROCESSING') {
+      if (currentStatus === 'completed' || currentStatus === 'PAID' || currentStatus === 'SUCCESS') {
+        setStep('SUCCESS');
+        toast.success(t('wallet.topup_success_confirmed', 'Nạp tiền thành công!'));
+        // Làm mới số dư ngay lập tức
+        queryClient.invalidateQueries({ queryKey: ['wallet', 'balance', idOrSlug] });
+        queryClient.invalidateQueries({ queryKey: ['wallet', 'history', idOrSlug] });
+      } else if (currentStatus === 'failed' || currentStatus === 'FAILED') {
+        setStep('ERROR');
+        toast.error(t('wallet.topup_failed', 'Giao dịch thất bại.'));
+      }
+    }
+  }, [currentStatus, step, queryClient, idOrSlug, t]);
+
+  const openPaymentPopup = (url) => {
+    const width = 600;
+    const height = 700;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    const features = `width=${width},height=${height},left=${left},top=${top},status=no,resizable=yes,scrollbars=yes`;
+    return window.open(url, 'SeatNowTopUp', features);
+  };
 
   const {
     register,
@@ -54,52 +86,114 @@ const TopUpForm = ({ restaurantId, onSuccess }) => {
         ...data
       });
 
-      if (response.data?.payUrl) {
+      const resolvedPayUrl = response.data?.paymentUrl || response.data?.payUrl;
+      if (resolvedPayUrl) {
         const newTransactionId = response.data.transactionId;
-        setPayUrl(response.data.payUrl);
+        setPayUrl(resolvedPayUrl);
         setTransactionId(newTransactionId);
+        setStep('PROCESSING');
+        
         toast.success(t('wallet.topup_success'));
         
-        // Mở cửa sổ thanh toán trong tab mới
-        window.open(response.data.payUrl, '_blank');
+        // Mở Popup thay vì tab mới
+        openPaymentPopup(resolvedPayUrl);
         
-        // Chuyển hướng trang hiện tại sang chi tiết giao dịch (Vietnamese comment)
-        if (newTransactionId) {
-          navigate(ROUTES.WORKSPACE_TRANSACTION_DETAIL(idOrSlug, newTransactionId));
-        }
-
-        // Thông báo cho component cha (nếu cần đóng dialog)
-        if (onSuccess) onSuccess(response.data.payUrl);
+        if (onSuccess) onSuccess(resolvedPayUrl);
       } else {
-        toast.error('Payment URL not found');
+        toast.error(t('wallet.topup_url_not_found'));
       }
     } catch (error) {
-      toast.error('Failed to create top-up request');
+      toast.error(t('wallet.topup_error'));
     }
   };
 
-  // Giao diện hiển thị sau khi đã lấy được payUrl (Yêu cầu thanh toán đang chờ)
-  if (payUrl) {
+  // Giao diện Processing
+  if (step === 'PROCESSING') {
     return (
-      <div className="py-6 flex flex-col items-center text-center space-y-6">
-        <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center">
-          <ExternalLink className="w-10 h-10 text-green-600" />
+      <div className="py-8 flex flex-col items-center text-center space-y-6">
+        <div className="relative">
+          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center animate-pulse">
+            <Wallet className="w-10 h-10 text-primary" />
+          </div>
+          <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full shadow-sm flex items-center justify-center">
+            <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
         </div>
         <div>
-          <h4 className="text-lg font-bold text-slate-900">{t('wallet.topup_success')}</h4>
-          <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+          <h4 className="text-lg font-bold text-slate-900">{t('wallet.topup_processing', 'Đang xử lý nạp tiền...')}</h4>
+          <p className="text-sm text-slate-500 mt-2 leading-relaxed max-w-[280px]">
             {t('wallet.topup_redirect_notice')}
           </p>
         </div>
-        <a 
-          href={payUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-100 active:scale-95"
+        
+        <div className="w-full space-y-3">
+          <button 
+            onClick={() => openPaymentPopup(payUrl)}
+            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 active:scale-95"
+          >
+            {t('wallet.pay_now')}
+            <ArrowRight size={18} />
+          </button>
+          
+          <button 
+            onClick={() => setStep('INPUT')}
+            className="w-full bg-white border border-slate-200 text-slate-500 font-bold py-3 rounded-xl hover:bg-slate-50 transition-all text-xs"
+          >
+            {t('wallet.change_amount', 'Thay đổi phương thức/số tiền')}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Giao diện Thành công
+  if (step === 'SUCCESS') {
+    return (
+      <div className="py-10 flex flex-col items-center text-center space-y-6">
+        <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center scale-110 shadow-lg shadow-green-100">
+          <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <h4 className="text-xl font-bold text-slate-900">{t('wallet.topup_confirmed', 'Nạp tiền hoàn tất!')}</h4>
+          <p className="text-sm text-slate-500 mt-2">
+            {t('wallet.topup_success_desc', 'Số dư ví của bạn đã được cập nhật thành công.')}
+          </p>
+        </div>
+        <button 
+          onClick={() => {
+            if (transactionId) navigate(ROUTES.WORKSPACE_TRANSACTION_DETAIL(idOrSlug, transactionId));
+          }}
+          className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all hover:bg-slate-800"
         >
-          {t('wallet.pay_now')}
-          <ArrowRight size={18} />
-        </a>
+          {t('wallet.view_details', 'Xem chi tiết giao dịch')}
+        </button>
+      </div>
+    );
+  }
+
+  // Giao diện Lỗi (Optional - có thể gộp vào Processing)
+  if (step === 'ERROR') {
+    return (
+      <div className="py-10 flex flex-col items-center text-center space-y-6">
+        <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center scale-110 shadow-lg shadow-red-100">
+          <AlertCircle className="w-10 h-10 text-red-500" />
+        </div>
+        <div>
+          <h4 className="text-xl font-bold text-slate-900">{t('wallet.topup_failed_title', 'Giao dịch không thành công')}</h4>
+          <p className="text-sm text-slate-500 mt-2">
+            {t('wallet.topup_failed_desc', 'Có lỗi xảy ra trong quá trình thanh toán. Vui lòng thử lại.')}
+          </p>
+        </div>
+        <button 
+          onClick={() => setStep('INPUT')}
+          className="w-full bg-primary text-white font-bold py-4 rounded-xl transition-all hover:bg-primary-dark"
+        >
+          {t('common.retry', 'Thử lại')}
+        </button>
       </div>
     );
   }

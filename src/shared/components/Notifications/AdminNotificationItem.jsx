@@ -50,27 +50,37 @@ const AdminNotificationItem = ({ notification, onClose }) => {
   const handleClick = () => {
     markAsRead(notification.id);
     
-    // Ưu tiên sử dụng link từ Backend (Vietnamese: Ưu tiên link từ BE)
-    const rawLink = notification.link || notification.metadata?.link;
-    if (rawLink) {
-      if (rawLink === '/audit-requests') {
-        navigate('/admin/partner-requests');
-      } else {
-        navigate(rawLink);
-      }
-      if (onClose) onClose();
-      return;
+    // Logic điều hướng (Vietnamese: Điều hướng khi click)
+    // Ưu tiên ánh xạ Type để tránh bị Backend ghi đè bằng link chung chung
+    let targetPath = '';
+
+    switch (type) {
+      case 'PARTNER_REQUEST_SUBMITTED':
+      case 'RESTAURANT_CREATED':
+        // Dẫn tới trang phê duyệt đối tác và nhà hàng (Audit)
+        targetPath = '/admin/partner-requests';
+        break;
+      case 'WITHDRAWAL_REQUESTED':
+        // Dẫn tới trang quản lý rút tiền (Payout)
+        targetPath = '/admin/withdrawals';
+        break;
+      case 'TRANSACTION_TOPUP':
+      case 'COMMISSION_SETTLED':
+        // Dẫn tới trang quản lý giao dịch (Transactions)
+        targetPath = '/admin/transactions';
+        break;
+      default:
+        // Nếu không khớp các loại trên, sử dụng link từ BE nếu có
+        const rawLink = notification.link || notification.metadata?.link;
+        if (rawLink) {
+          targetPath = rawLink === '/audit-requests' ? '/admin/partner-requests' : rawLink;
+        } else {
+          targetPath = '/admin';
+        }
     }
 
-    // Logic điều hướng (Vietnamese: Điều hướng khi click)
-    if (type === 'PARTNER_REQUEST_SUBMITTED') {
-      navigate('/admin/partner-requests');
-    } else if (type === 'RESTAURANT_CREATED') {
-      navigate('/admin/partner-requests?tab=venues');
-    } else if (type === 'WITHDRAWAL_REQUESTED') {
-      toast.success('Payout Management module is coming soon!', { icon: '💰' });
-    } else if (type === 'TRANSACTION_TOPUP' || type === 'COMMISSION_SETTLED') {
-      toast.success('Transaction Management module is coming soon!', { icon: '📊' });
+    if (targetPath) {
+      navigate(targetPath);
     }
 
     if (onClose) onClose();

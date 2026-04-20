@@ -24,12 +24,7 @@ const OwnerMainLayout = () => {
       initNotificationSocket(user.id, user.role, token);
       fetchActivities();
     }
-
-    return () => {
-      // Cleanup socket khi rời khỏi vùng Owner hoặc unmount layout
-      cleanupSocket();
-    };
-  }, [isAuthenticated, user, initNotificationSocket, fetchActivities, cleanupSocket]);
+  }, [isAuthenticated, user, initNotificationSocket, fetchActivities]);
 
   // Kiểm tra quyền truy cập: Chỉ cho phép OWNER
   if (!isAuthenticated) return <Navigate to="/login" replace />;

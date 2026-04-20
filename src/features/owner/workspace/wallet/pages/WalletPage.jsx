@@ -96,7 +96,7 @@ const WalletPage = () => {
       <TopUpDialog 
         isOpen={isTopUpOpen} 
         onClose={() => setIsTopUpOpen(false)} 
-        restaurantId={balanceData?.data?.restaurantId || idOrSlug}
+        restaurantId={idOrSlug}
       />
 
       {/* Dialog Rút tiền */}

@@ -56,6 +56,7 @@ import AdminAIChatPage from '../features/admin/ai/pages/AdminAIChatPage.jsx';
 import AdminAIAnalyticsPage from '../features/admin/ai/pages/AdminAIAnalyticsPage.jsx';
 import AdminTransactionsPage from '../features/admin/transactions/pages/AdminTransactionsPage.jsx';
 import AdminWithdrawalsPage from '../features/admin/withdrawals/pages/AdminWithdrawalsPage.jsx';
+import AdminSettingsPage from '../features/admin/settings/pages/AdminSettingsPage.jsx';
 import CreateReviewPage from '../features/reviews/pages/CreateReviewPage.jsx';
 
 
@@ -327,6 +328,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN_AI_ANALYTICS,
             element: <AdminAIAnalyticsPage />,
+          },
+          {
+            path: ROUTES.ADMIN_SETTINGS,
+            element: <AdminSettingsPage />,
           },
         ]
       },

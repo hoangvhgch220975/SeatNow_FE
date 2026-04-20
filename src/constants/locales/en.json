@@ -86,7 +86,8 @@
       "Buffet": "Buffet",
       "Vegetarian": "Vegetarian"
     },
-    "no_data_desc": "Try adjusting your filters to find what you are looking for."
+    "no_data_desc": "Try adjusting your filters to find what you are looking for.",
+    "copied": "Copied to clipboard"
   },
   "notifications": {
     "title": "Notifications",
@@ -102,6 +103,7 @@
       "TRANSACTION_DEPOSIT": "Deposit Received",
       "TRANSACTION_TOPUP": "System Fund Top-up Successful",
       "TRANSACTION_WITHDRAW_APPROVED": "Withdrawal Request Approved",
+      "TRANSACTION_WITHDRAW_REJECTED": "Withdrawal Request Rejected",
       "REVIEW_NEW": "New Customer Review",
       "COMMISSION_SETTLED": "Periodic Commission Settlement",
       "ADMIN_BROADCAST": "System Announcement",
@@ -621,6 +623,59 @@
       "settings": "Settings",
       "soon": "Soon"
     },
+    "settings": {
+      "title": "System Configuration & Health",
+      "subtitle": "Manage platform-wide configurations and monitor microservices health status.",
+      "commission": {
+        "title": "Automatic Commission Collection",
+        "description": "Automatically deduct commission fees from restaurant wallets based on the configured cycle.",
+        "auto_enabled": "Enable Auto-Collection",
+        "interval": "Collection Interval",
+        "intervals": {
+          "DAY": "Daily",
+          "WEEK": "Weekly",
+          "MONTH": "Monthly",
+          "QUARTER": "Quarterly",
+          "YEAR": "Yearly"
+        },
+        "update_success": "Commission configuration updated successfully",
+        "update_error": "Failed to update commission configuration"
+      },
+      "health": {
+        "title": "Microservices Operational Health",
+        "description": "Real-time status of the 8 core microservices across the SeatNow network.",
+        "refresh": "Refresh Status",
+        "status": "Protocol Status",
+        "latency": "Latency",
+        "online": "Operational (UP)",
+        "offline": "Disrupted (DOWN)",
+        "dependency_check": "Dependency Integrity",
+        "database": "Database",
+        "redis": "Cache (Redis)",
+        "mongodb": "NoSQL (Mongo)"
+      },
+      "services": {
+        "auth": "Auth Service",
+        "users": "User Service",
+        "restaurants": "Restaurant Service",
+        "bookings": "Booking Service",
+        "payment": "Payment Service",
+        "admin": "Admin Service",
+        "ai": "AI Intelligence",
+        "notifications": "Notification Hub",
+        "gateway": "API Gateway",
+        "roles": {
+          "auth": "Authentication & Identity",
+          "users": "User Profile & Management",
+          "restaurants": "Restaurant & Menu Core",
+          "bookings": "Real-time Reservation Engine",
+          "payment": "Financial Transactions",
+          "admin": "Administrative Console Logic",
+          "ai": "AI Consultation & Analytics",
+          "notifications": "Multi-channel Alert System"
+        }
+      }
+    },
     "profile": {
       "role_super_admin": "Root Administrator",
       "system_status": "Access Protocol",
@@ -1043,7 +1098,7 @@
         "no_data": "No payout requests found.",
         "no_data_desc": "All clear! There are no pending payout requests at this moment.",
         "request_plural": "Requests",
-        "qr_label": "QR Payout",
+        "qr_label": "QR",
         "default_method": "Default Method"
       },
       "details": {
@@ -2546,6 +2601,8 @@
     "cvv": "Security Code (CVV)",
     "qr_hint": "Drop your QR code here",
     "qr_upload_desc": "or click to browse",
+    "qr_error": "Please upload a QR code",
+    "qr_success": "QR Code uploaded successfully",
     "payout_history": "Recent Payout Requests",
     "recent_transactions": "Recent Transaction History",
     "date": "Date",
@@ -2581,6 +2638,16 @@
     "select_provider": "Select payment provider",
     "min_topup_error": "Minimum top-up amount is 10,000 VND",
     "topup_success": "Top-up request created successfully!",
+    "topup_url_not_found": "Payment gateway did not return a valid URL. Please try again.",
+    "topup_error": "Failed to create top-up request. Please try again.",
+    "topup_processing": "Processing your top-up...",
+    "topup_confirmed": "Top-up Completed!",
+    "topup_success_desc": "Your wallet balance has been successfully updated.",
+    "topup_success_confirmed": "Top-up successful!",
+    "topup_failed_title": "Transaction Failed",
+    "topup_failed_desc": "An error occurred during payment. Please try again.",
+    "change_amount": "Change amount or method",
+    "view_details": "View transaction details",
     "topup_redirect_notice": "Your top-up request has been created. A payment tab will open automatically. If not, click the button below. You can also track this transaction in the details below.",
     "pay_now": "Pay Now",
     "transaction_detail": {

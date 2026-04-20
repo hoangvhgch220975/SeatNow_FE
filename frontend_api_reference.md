@@ -1599,6 +1599,7 @@ API cung cấp dữ liệu bền vững (persistent) cho bảng "Recent Global A
 | `TRANSACTION_DEPOSIT`          | Nhận tiền cọc từ khách hàng                          |
 | `TRANSACTION_TOPUP`            | Nạp tiền ví thành công                               |
 | `TRANSACTION_WITHDRAW_APPROVED`| Admin duyệt yêu cầu rút tiền                         |
+| `TRANSACTION_WITHDRAW_REJECTED`| Admin từ chối yêu cầu rút tiền                       |
 | `REVIEW_NEW`                   | Nhận được đánh giá mới                               |
 | `COMMISSION_SETTLED`           | Phí hoa hồng tháng đã được khấu trừ                  |
 | `RESTAURANT_APPROVED`         | Nhà hàng được Admin phê duyệt (Approve)             |
@@ -1684,11 +1685,13 @@ Notification Service gửi push notification qua Socket.IO theo 2 cấp độ:
 | **`RESTAURANT_APPROVED`**   | `{ message, data: { restaurantId } }`           | `OWNER`        | Khi Admin nhấn "Approve" hồ sơ nhà hàng của bạn.                          |
 | **`RESTAURANT_ACTIVATED`**  | `{ message, data: { restaurantId } }`           | `OWNER`        | Khi Admin mở khóa hoạt động cho nhà hàng.                                 |
 | **`RESTAURANT_SUSPENDED`**  | `{ message, data: { restaurantId } }`           | `OWNER`        | Khi Admin tạm ngưng hoạt động nhà hàng (Khoá).                            |
+| **`TRANSACTION_WITHDRAW_APPROVED`**| `{ restaurantId, message, link: '/restaurant/wallet/transactions/:id', data: { transactionId, restaurantId, ... } }` | `OWNER`        | Khi Admin phê duyệt yêu cầu rút tiền của bạn. |
+| **`TRANSACTION_WITHDRAW_REJECTED`**| `{ restaurantId, message, link: '/restaurant/wallet/transactions/:id', data: { transactionId, restaurantId, reason, ... } }` | `OWNER`        | Khi Admin từ chối yêu cầu rút tiền của bạn. |
 | `bookingChanged`            | `{ type, booking }`                             | OWNER, ADMIN   | Kích hoạt khi có thay đổi trạng thái đặt bàn (created, confirmed, cancelled, ...). Dùng để refresh Dashboard realtime. |
 | **`WITHDRAWAL_REQUESTED`**  | `{ message, data: { restaurantName, amount } }` | `role:ADMIN`   | Kích hoạt ngay lập tức khi một Owner nộp đơn yêu cầu Rút tiền thành công. |
 | **`PARTNER_REQUEST_SUBMITTED`**| `{ message, link, data: { ...requestData } }` | `role:ADMIN`   | Kích hoạt khi partner hoàn tất form "Be my member". Có kèm `link: '/audit-requests'`. |
 | **`RESTAURANT_CREATED`**    | `{ message, link, data: { restaurantId, name } }` | `role:ADMIN`   | Kích hoạt khi Owner tạo nhà hàng mới và chờ duyệt. Có kèm `link: '/audit-requests'`. |
-| **`TRANSACTION_TOPUP`**     | `{ message, data: { amount, ... } }`            | `role:ADMIN`   | Thông báo khi nhà hàng nạp tiền thành công.                               |
+| **`TRANSACTION_TOPUP`**     | `{ restaurantId, message, link: '/restaurant/wallet/transactions/:id', data: { transactionId, restaurantId, ... } }`            | `role:ADMIN`, `OWNER` | Thông báo khi nhà hàng nạp tiền thành công.                               |
 | **`COMMISSION_SETTLED`**    | `{ message, data: { amount, ... } }`            | `role:ADMIN`   | Thông báo khi hệ thống thực hiện thu phí hoa hồng.                        |
 
 ---
@@ -2182,4 +2185,43 @@ Hệ thống thông báo được thiết kế với cơ chế bảo vệ nhiề
 - **Quản lý Hàng đợi (Redis/Bull):** Sử dụng Bull Queue để xử lý bất đồng bộ. Mọi lỗi phát sinh trong quá trình gửi (mail service down, socket lỗi) sẽ được **tự động thử lại 3 lần** với khoảng thời gian chờ tăng dần (Exponential Backoff).
 - **Ghi dữ liệu Tin cậy:** Trong `notification.worker.js`, thông báo web luôn được yêu cầu lưu vào Database SQL trước khi gửi qua Socket. Nếu lưu DB thất bại, worker sẽ chủ động báo lỗi để hàng đợi thực hiện gửi lại sau.
 - **Failover (Dự phòng khẩn cấp):** Tại Service gốc (ví dụ `booking-service`), nếu kết nối tới Redis bị lỗi khiến việc thêm vào hàng đợi (Queue Add) thất bại, hệ thống sẽ **tự động chuyển sang ghi trực tiếp vào bảng `Notifications` trong SQL**. Điều này đảm bảo thông báo luôn được ghi nhận ngay cả khi hạ tầng Redis gặp sự cố.
+
+---
+
+# 12. Hệ thống Giám sát Sức khỏe (System Health Monitoring)
+
+Toàn bộ các microservices hiện đã được chuẩn hóa endpoint `/health` để phục vụ Dashboard giám sát.
+
+### Cấu trúc phản hồi chuẩn (Standard Response)
+
+Tất cả các endpoint `/health` trả về kết quả dưới định dạng JSON sau:
+
+```json
+{
+  "status": "UP",           // "UP" hoặc "DOWN"
+  "service": "auth-service", // Tên của service
+  "timestamp": "2026-04-21T00:50:00.000Z", // Thời gian server kiểm tra
+  "details": {               // Trạng thái chi tiết của các thành phần phụ thuộc
+    "database": "up",        // "up" hoặc "down"
+    "redis": "up",           // "up" hoặc "down" (nếu có dùng)
+    "mongodb": "up"          // (chỉ có ở restaurant-service)
+  }
+}
+```
+
+### Danh sách các Endpoint Health Check
+
+| Service | Endpoint (Internal) | Port | Thành phần kiểm tra |
+| :--- | :--- | :--- | :--- |
+| **Auth** | `http://localhost:3001/health` | 3001 | SQL Server, Redis |
+| **User** | `http://localhost:3002/health` | 3002 | SQL Server |
+| **Restaurant** | `http://localhost:3003/health` | 3003 | SQL Server, MongoDB, Redis |
+| **Booking** | `http://localhost:3004/health` | 3004 | SQL Server, Redis |
+| **Payment** | `http://localhost:3005/health` | 3005 | SQL Server, Redis |
+| **Admin** | `http://localhost:3006/health` | 3006 | SQL Server |
+| **AI** | `http://localhost:3007/health` | 3007 | Redis |
+| **Notification** | `http://localhost:3008/health` | 3008 | Redis (Bull Queue) |
+| **Gateway** | `http://localhost:5000/health` | 5000 | Ocelot Status |
+
+---
 

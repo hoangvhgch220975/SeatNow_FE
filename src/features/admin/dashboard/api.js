@@ -34,7 +34,7 @@ export const dashboardApi = {
    * @returns {Promise} - List of partner requests
    */
   getRecentPartnerRequests: async (limit = 5) => {
-    return await axios.get('/admin/partners', { params: { limit } });
+    return await axios.get('/admin/partner-requests', { params: { limit } });
   },
 
   /**

@@ -16,14 +16,21 @@ const NotificationToast = ({ t, payload, eventName, restaurantName }) => {
     e?.stopPropagation();
     toast.dismiss(t.id);
 
-    // Tìm idOrSlug từ cache để xây dựng URL Workspace (Vietnamese: Tìm info nhà hàng)
-    const restaurantId = payload.restaurantId || payload.data?.restaurantId || payload.metadata?.restaurant?.id;
+    // 1. Tìm thông tin Nhà hàng (Vietnamese: Tìm info nhà hàng)
+    const data = payload.data || payload.metadata || {};
+    const restaurantId = payload.restaurantId || 
+                        payload.restaurant_id ||
+                        data.restaurantId || 
+                        data.restaurant_id ||
+                        data.booking?.restaurantId || 
+                        data.restaurant?.id;
+    
     let idOrSlug = restaurantId;
 
     if (restaurantId) {
       const queriesData = queryClient.getQueriesData({ queryKey: ['owner', 'restaurants'] });
-      for (const [_, data] of queriesData) {
-        const restaurants = data?.data || data?.items || data;
+      for (const [_, qData] of queriesData) {
+        const restaurants = qData?.data || qData?.items || qData;
         if (Array.isArray(restaurants)) {
           const found = restaurants.find(r => r.id === restaurantId);
           if (found && found.slug) {
@@ -34,25 +41,43 @@ const NotificationToast = ({ t, payload, eventName, restaurantName }) => {
       }
     }
 
-    // Ưu tiên link từ Backend và Map vào Workspace (Vietnamese: Ưu tiên link BE)
-    const rawLink = payload.link || payload.data?.link || payload.metadata?.link;
+    // 2. Xác định đường dẫn tương ứng (Vietnamese: Xác định path)
+    const rawLink = payload.link || data.link || "";
+    const transactionId = data.transactionId || data.transaction_id || data.withdrawalId || data.id;
+
+    // Helper: Chuyển đổi link /restaurant/ về đường dẫn workspace (Vietnamese: Giải mã link)
+    const resolveWorkspacePath = (path) => {
+      if (!idOrSlug) return '/owner';
+      if (path.startsWith('/restaurant/')) {
+        return path.replace('/restaurant/', `/owner/restaurants/${idOrSlug}/`);
+      }
+      // Nếu là link tài chính mà có ID giao dịch thì dẫn sâu (Vietnamese: Link sâu trans)
+      if (eventName.startsWith('TRANSACTION') && transactionId) {
+        return `/owner/restaurants/${idOrSlug}/wallet/transactions/${transactionId}`;
+      }
+      return path;
+    };
+
+    // Ưu tiên 1: Link từ Backend (Vietnamese: Ưu tiên link BE)
     if (rawLink && idOrSlug) {
-      if (rawLink === '/restaurant/bookings') return navigate(`/owner/restaurants/${idOrSlug}/bookings`);
-      if (rawLink === '/restaurant/reviews') return navigate(`/owner/restaurants/${idOrSlug}/dashboard`);
-      if (rawLink === '/restaurant/wallet') return navigate(`/owner/restaurants/${idOrSlug}/wallet`);
-      if (rawLink === '/restaurant/settings') return navigate(`/owner/restaurants/${idOrSlug}/settings`);
-      
-      // Nếu là link khác thì đi thẳng
-      return navigate(rawLink);
+      return navigate(resolveWorkspacePath(rawLink));
     }
 
-    // Fallback logic nếu BE không gửi link hoặc không map được (Vietnamese: Dự phòng)
+    // Ưu tiên 2: Fallback theo Event Name (Vietnamese: Dự phòng theo event)
     if (idOrSlug) {
       if (eventName.startsWith('BOOKING')) return navigate(`/owner/restaurants/${idOrSlug}/bookings`);
-      if (eventName.startsWith('TRANSACTION')) return navigate(`/owner/restaurants/${idOrSlug}/wallet`);
+      if (eventName.startsWith('TRANSACTION')) {
+        if (transactionId) return navigate(`/owner/restaurants/${idOrSlug}/wallet/transactions/${transactionId}`);
+        return navigate(`/owner/restaurants/${idOrSlug}/wallet`);
+      }
       if (eventName === 'RESTAURANT_APPROVED' || eventName === 'RESTAURANT_ACTIVATED') return navigate(`/owner/restaurants/${idOrSlug}/dashboard`);
       if (eventName === 'RESTAURANT_SUSPENDED') return navigate(`/owner/restaurants/${idOrSlug}/profile`);
+      
+      return navigate(`/owner/restaurants/${idOrSlug}/dashboard`);
     }
+
+    // Cuối cùng: Về Portal
+    navigate('/owner');
   };
 
   return (
@@ -65,9 +90,14 @@ const NotificationToast = ({ t, payload, eventName, restaurantName }) => {
       <div className="flex-1 w-0 p-6">
         <div className="flex items-start">
           <div className="flex-shrink-0 pt-0.5">
-            <div className="h-12 w-12 rounded-2xl bg-violet-600 flex items-center justify-center text-white shadow-lg shadow-violet-200 group-hover:scale-110 transition-transform">
+            <div className={`h-12 w-12 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform ${
+              eventName === 'TRANSACTION_WITHDRAW_REJECTED' || eventName === 'RESTAURANT_SUSPENDED'
+                ? 'bg-rose-600 shadow-rose-200'
+                : 'bg-violet-600 shadow-violet-200'
+            }`}>
               <span className="material-symbols-outlined">
-                {eventName.startsWith('BOOKING') ? 'calendar_today' : 
+                {eventName === 'TRANSACTION_WITHDRAW_REJECTED' ? 'cancel' :
+                 eventName.startsWith('BOOKING') ? 'calendar_today' : 
                  eventName.startsWith('TRANSACTION') || eventName === 'COMMISSION_SETTLED' ? 'payments' :
                  eventName === 'RESTAURANT_APPROVED' ? 'verified' :
                  eventName === 'RESTAURANT_ACTIVATED' ? 'bolt' :
