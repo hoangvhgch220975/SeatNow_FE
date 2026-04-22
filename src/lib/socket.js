@@ -13,6 +13,7 @@ export const bookingSocket = io(SOCKET_URL, {
   reconnection: true,
   reconnectionAttempts: 5,
   reconnectionDelay: 1000,
+  transports: ['websocket'], // Force WebSocket transport
 });
 
 // 2. Notification Socket (Path riêng /notification.io/)
@@ -54,6 +55,7 @@ export const connectNotificationSocket = (userId, role, token) => {
     reconnection: true,
     reconnectionAttempts: 10,
     reconnectionDelay: 1000,
+    transports: ['websocket'], // Force WebSocket transport
   });
 
   // [DISCOVERY] Nghe mọi event để bắt đúng tên event từ BE
